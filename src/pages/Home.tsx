@@ -5,11 +5,10 @@ import ModelGrid from '../components/ModelGrid';
 import { api } from '../lib/api';
 import { Model } from '../lib/models';
 import { categorizeModels, categories as categoryList } from '../lib/categories';
-import { tags } from '../lib/tags';
-import { generateCombinationRoutes } from '../lib/combinations';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 
-const CATEGORY_PREVIEW_LIMIT = 4;
+const HOME_LIVE_LIMIT = 96;
+const CATEGORY_PREVIEW_LIMIT = 8;
 
 export default function Home() {
   const [models, setModels] = useState<Model[]>([]);
@@ -22,8 +21,8 @@ export default function Home() {
 
   useEffect(() => {
     setLoading(true);
-    void api.getModels({ limit: 120, tag: 'girls,couples,trans,men' })
-      .then((data) => setModels(data.models.slice(0, 24)))
+    void api.getModels({ limit: HOME_LIVE_LIMIT, tag: 'girls,couples,trans,men' })
+      .then((data) => setModels(data.models))
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load models'))
       .finally(() => setLoading(false));
   }, []);
@@ -53,18 +52,17 @@ export default function Home() {
       };
     });
   }, [models, categoryModels]);
-  const trending = useMemo(() => [...models].sort((a, b) => b.viewers - a.viewers).slice(0, 8), [models]);
-  const combos = useMemo(
-    () => generateCombinationRoutes().filter((item) => item.category && item.tag).slice(0, 9),
-    []
+  const topCategories = useMemo(
+    () => categories.filter((category) => (categoryModels[category.slug]?.length ?? 0) > 0),
+    [categories, categoryModels]
   );
 
   return (
     <div className="space-y-12">
       <section className="rounded-3xl border border-border bg-gradient-to-br from-zinc-900 to-zinc-950 p-8">
         <p className="inline-flex rounded-full bg-accent/20 px-3 py-1 text-xs font-semibold text-accent">Live now</p>
-        <h1 className="mt-4 max-w-4xl text-3xl font-extrabold text-white sm:text-5xl">All live cams in homepage, gia divise per categoria.</h1>
-        <p className="mt-4 max-w-3xl text-zinc-300">La home mostra subito le cam reali delle categorie principali. Niente pagine vuote, niente soli pulsanti: ogni blocco pesca dal feed live e apre la directory completa della categoria.</p>
+        <h1 className="mt-4 max-w-4xl text-3xl font-extrabold text-white sm:text-5xl">All live cams in home, come una vera directory.</h1>
+        <p className="mt-4 max-w-3xl text-zinc-300">Prima vedi subito la griglia completa delle live, poi sotto trovi tutte le categorie con le rispettive anteprime reali gia filtrate.</p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link to="/live" className="rounded-full bg-accent px-6 py-3 font-semibold text-white">Explore Live</Link>
           <Link to="/cam/milf" className="rounded-full border border-border bg-zinc-900 px-6 py-3 font-semibold text-zinc-200">Browse Categories</Link>
@@ -72,7 +70,10 @@ export default function Home() {
       </section>
 
       <section>
-        <h2 className="mb-4 text-2xl font-bold text-white">Live Models</h2>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-white">All Live Cams</h2>
+          <Link to="/live" className="text-sm font-semibold text-accent">Apri solo la directory live</Link>
+        </div>
         {error ? <p className="mb-3 text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName="Home Live Models" />
       </section>
@@ -92,79 +93,22 @@ export default function Home() {
           <Link to="/live" className="text-sm font-semibold text-accent">Apri directory completa</Link>
         </div>
 
-        {categoryList.map((category) => (
-          <section key={category} className="space-y-4">
+        {topCategories.map((category) => (
+          <section key={category.slug} className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-bold text-white">{category.charAt(0).toUpperCase() + category.slice(1)}</h3>
-                <p className="text-sm text-zinc-400">Cam reali filtrate dal feed live per la categoria {category}.</p>
+                <h3 className="text-xl font-bold text-white">{category.name}</h3>
+                <p className="text-sm text-zinc-400">Preview reali della categoria {category.slug} direttamente dal feed live.</p>
               </div>
-              <Link to={`/cam/${category}`} className="text-sm font-semibold text-accent">Vedi tutte</Link>
+              <Link to={`/cam/${category.slug}`} className="text-sm font-semibold text-accent">Vedi tutte</Link>
             </div>
             <ModelGrid
-              models={categoryModels[category] || []}
+              models={categoryModels[category.slug] || []}
               loading={categoryLoading}
-              listName={`${category} home preview`}
+              listName={`${category.slug} home preview`}
             />
           </section>
         ))}
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-2xl font-bold text-white">Trending Models</h2>
-        <ModelGrid models={trending} loading={loading} listName="Trending Models" />
-      </section>
-
-      <section className="space-y-6">
-        <header className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">Categorie e tag in evidenza</h2>
-          <Link to="/live" className="text-sm font-semibold text-accent">Vedi tutte le live</Link>
-        </header>
-
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="rounded-2xl border border-border bg-panel p-4">
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-pink-400">Categorie</h3>
-            <div className="flex flex-wrap gap-2">
-              {categoryList.map((category) => (
-                <Link
-                  key={category}
-                  to={`/cam/${category}`}
-                  className="rounded-full border border-zinc-700 px-3 py-1 text-xs text-zinc-200 hover:border-pink-400 hover:text-pink-300"
-                >
-                  {category}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="rounded-2xl border border-border bg-panel p-4">
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-pink-400">Tag</h3>
-            <div className="flex flex-wrap gap-2">
-              {tags.map((tag) => (
-                <Link
-                  key={tag}
-                  to={`/tag/${tag}`}
-                  className="rounded-full border border-zinc-700 px-3 py-1 text-xs text-zinc-200 hover:border-pink-400 hover:text-pink-300"
-                >
-                  {tag}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="rounded-2xl border border-border bg-panel p-4">
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-pink-400">Combinazioni</h3>
-            <div className="flex flex-wrap gap-2">
-              {combos.map((combo) => (
-                <Link
-                  key={combo.path}
-                  to={combo.path}
-                  className="rounded-full border border-zinc-700 px-3 py-1 text-xs text-zinc-200 hover:border-pink-400 hover:text-pink-300"
-                >
-                  {combo.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
       </section>
     </div>
   );
