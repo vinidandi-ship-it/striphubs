@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import BannerAd from '../components/BannerAd';
+import CampaignAd from '../components/CampaignAd';
 import CategoryCard from '../components/CategoryCard';
 import ModelGrid from '../components/ModelGrid';
 import { api } from '../lib/api';
@@ -45,6 +46,9 @@ export default function Home() {
         {error ? <p className="mb-3 text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName="Home Live Models" />
       </section>
+
+      <BannerAd />
+      <CampaignAd />
 
       <section>
         <h2 className="mb-4 text-2xl font-bold text-white">Popular Categories</h2>
