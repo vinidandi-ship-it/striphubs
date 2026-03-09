@@ -5,21 +5,15 @@ import ModelGrid from '../components/ModelGrid';
 import { api } from '../lib/api';
 import { Model } from '../lib/models';
 import { categorizeModels, categories as categoryList } from '../lib/categories';
-import { tags } from '../lib/tags';
+import { featuredTagGroups } from '../lib/tags';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 
-const HOME_LIVE_LIMIT = 96;
+const HOME_LIVE_LIMIT = 180;
 const CATEGORY_PREVIEW_LIMIT = 8;
-const TAG_PREVIEW_LIMIT = 8;
-const HOME_TAGS = tags.slice(0, 6);
 
 export default function Home() {
   const [models, setModels] = useState<Model[]>([]);
-  const [categoryModels, setCategoryModels] = useState<Record<string, Model[]>>({});
-  const [tagModels, setTagModels] = useState<Record<string, Model[]>>({});
   const [loading, setLoading] = useState(true);
-  const [categoryLoading, setCategoryLoading] = useState(true);
-  const [tagLoading, setTagLoading] = useState(true);
   const [error, setError] = useState('');
 
   useSEO(generateTitle('home'), generateDescription('home'), '/');
@@ -32,51 +26,46 @@ export default function Home() {
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    setCategoryLoading(true);
-    void Promise.all(
-      categoryList.map(async (category) => {
-        const data = await api.getModels({ category, limit: CATEGORY_PREVIEW_LIMIT });
-        return [category, data.models] as const;
-      })
-    )
-      .then((entries) => setCategoryModels(Object.fromEntries(entries)))
-      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load category previews'))
-      .finally(() => setCategoryLoading(false));
-  }, []);
-
-  useEffect(() => {
-    setTagLoading(true);
-    void Promise.all(
-      HOME_TAGS.map(async (tag) => {
-        const data = await api.getModels({ tag, limit: TAG_PREVIEW_LIMIT });
-        return [tag, data.models] as const;
-      })
-    )
-      .then((entries) => setTagModels(Object.fromEntries(entries)))
-      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load tag previews'))
-      .finally(() => setTagLoading(false));
-  }, []);
-
   const categories = useMemo(() => {
     const fromHomeFeed = categorizeModels(models);
     return categoryList.map((slug) => {
       const existing = fromHomeFeed.find((item) => item.slug === slug);
-      const previewCount = categoryModels[slug]?.length ?? 0;
+      const previewCount = models.filter((model) => model.category === slug).length;
       return {
         slug,
         name: existing?.name ?? slug.charAt(0).toUpperCase() + slug.slice(1),
         count: Math.max(existing?.count ?? 0, previewCount)
       };
     });
-  }, [models, categoryModels]);
+  }, [models]);
+  const categoryModels = useMemo(
+    () =>
+      Object.fromEntries(
+        categoryList.map((category) => [
+          category,
+          models.filter((model) => model.category === category).slice(0, CATEGORY_PREVIEW_LIMIT)
+        ])
+      ) as Record<string, Model[]>,
+    [models]
+  );
   const topCategories = useMemo(
     () => categories.filter((category) => (categoryModels[category.slug]?.length ?? 0) > 0),
     [categories, categoryModels]
   );
-  const topTags = useMemo(
-    () => HOME_TAGS.filter((tag) => (tagModels[tag]?.length ?? 0) > 0),
-    [tagModels]
+  const tagSections = useMemo(
+    () =>
+      Object.entries(featuredTagGroups)
+        .map(([group, groupTags]) => ({
+          group,
+          items: groupTags
+            .map((tag) => ({
+              tag,
+              models: models.filter((model) => model.tags.some((item) => item.includes(tag))).slice(0, CATEGORY_PREVIEW_LIMIT)
+            }))
+            .filter((entry) => entry.models.length > 0)
+        }))
+        .filter((section) => section.items.length > 0),
+    [models]
   );
 
   return (
@@ -126,7 +115,7 @@ export default function Home() {
             </div>
             <ModelGrid
               models={categoryModels[category.slug] || []}
-              loading={categoryLoading}
+              loading={loading}
               listName={`${category.slug} home preview`}
             />
           </section>
@@ -139,20 +128,28 @@ export default function Home() {
           <Link to="/live" className="text-sm font-semibold text-accent">Apri tutte le live</Link>
         </div>
 
-        {topTags.map((tag) => (
-          <section key={tag} className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-xl font-bold text-white">{tag}</h3>
-                <p className="text-sm text-zinc-400">Preview reali del feed live per il tag {tag}.</p>
-              </div>
-              <Link to={`/tag/${tag}`} className="text-sm font-semibold text-accent">Vedi tutte</Link>
+        {tagSections.map((section) => (
+          <section key={section.group} className="space-y-6">
+            <div>
+              <h3 className="text-xl font-bold capitalize text-white">{section.group}</h3>
+              <p className="text-sm text-zinc-400">Blocchi ricavati dal feed live reale, come nelle directory piu dense.</p>
             </div>
-            <ModelGrid
-              models={tagModels[tag] || []}
-              loading={tagLoading}
-              listName={`${tag} home preview`}
-            />
+            {section.items.map((entry) => (
+              <section key={entry.tag} className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-lg font-bold text-white">{entry.tag}</h4>
+                    <p className="text-sm text-zinc-400">Preview reali del feed live per il tag {entry.tag}.</p>
+                  </div>
+                  <Link to={`/tag/${entry.tag}`} className="text-sm font-semibold text-accent">Vedi tutte</Link>
+                </div>
+                <ModelGrid
+                  models={entry.models}
+                  loading={loading}
+                  listName={`${entry.tag} home preview`}
+                />
+              </section>
+            ))}
           </section>
         ))}
       </section>
