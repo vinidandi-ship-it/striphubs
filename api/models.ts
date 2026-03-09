@@ -12,6 +12,39 @@ import {
 const CACHE_TTL_MS = 60_000;
 const DEFAULT_ENDPOINT = 'https://go.mavrtracktor.com/api/models';
 
+const FALLBACK_MODELS: NormalizedModel[] = [
+  {
+    username: 'alana15',
+    thumbnail: 'https://img.doppiocdn.com/thumbs/1773094080/5532496_webp',
+    viewers: 4023,
+    tags: ['girls', 'girls/blondes', 'girls/blondes-young'],
+    country: 'N/A',
+    category: 'blonde',
+    isLive: true,
+    clickUrl: `https://stripchat.com/alana15?userId=${AFFILIATE_ID}`
+  },
+  {
+    username: 'Daddyslut2_0',
+    thumbnail: 'https://img.doppiocdn.com/thumbs/1773094080/163031604_webp',
+    viewers: 2130,
+    tags: ['couples', 'couples/doggy-style', 'girls/big-clit'],
+    country: 'IT',
+    category: 'couple',
+    isLive: true,
+    clickUrl: `https://stripchat.com/Daddyslut2_0?userId=${AFFILIATE_ID}`
+  },
+  {
+    username: 'alicee16',
+    thumbnail: 'https://img.doppiocdn.com/thumbs/1773094080/97970164_webp',
+    viewers: 1055,
+    tags: ['couples', 'girls/blondes', 'girls/latin'],
+    country: 'CO',
+    category: 'blonde',
+    isLive: true,
+    clickUrl: `https://stripchat.com/alicee16?userId=${AFFILIATE_ID}`
+  }
+];
+
 const CATEGORY_TAG_MAP: Record<string, string> = CATEGORY_DEFINITIONS.reduce<Record<string, string>>((acc, category) => {
   acc[category.slug] = category.tag;
   return acc;
@@ -101,6 +134,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .map(createNormalizedModel)
         .filter((item): item is NormalizedModel => Boolean(item))
         .filter((model) => model.isLive);
+
+      if (!normalized.length) {
+        normalized = [...FALLBACK_MODELS];
+      }
 
       cache = {
         key: upstreamUrl,
