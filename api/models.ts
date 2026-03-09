@@ -150,6 +150,7 @@ const buildUpstreamUrl = (req: VercelRequest): string => {
   }
 
   if (!url.searchParams.has('strict')) url.searchParams.set('strict', '1');
+  if (!url.searchParams.has('fields')) url.searchParams.set('fields', 'tags');
   return url.toString();
 };
 

@@ -51,6 +51,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     url.searchParams.set('userId', AFFILIATE_ID);
     url.searchParams.set('limit', '1000');
     url.searchParams.set('strict', '1');
+    url.searchParams.set('fields', 'tags');
 
     await waitForRateLimit(5000);
 
