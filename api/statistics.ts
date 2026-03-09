@@ -44,7 +44,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     lastUpstreamRequestAt = Date.now();
 
     if (!response.ok) {
-      throw new Error(`Statistics API failed with status ${response.status}`);
+      const detail = await response.text();
+      throw new Error(`Statistics API failed with status ${response.status}: ${detail.slice(0, 400)}`);
     }
 
     const payload = await response.json();
