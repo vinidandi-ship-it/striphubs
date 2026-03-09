@@ -27,7 +27,7 @@ export default function Home() {
   const categories = useMemo(() => categorizeModels(models).slice(0, 6), [models]);
   const trending = useMemo(() => [...models].sort((a, b) => b.viewers - a.viewers).slice(0, 8), [models]);
   const combos = useMemo(
-    () => generateCombinationRoutes().filter((item) => item.category && item.tag).slice(0, 8),
+    () => generateCombinationRoutes().filter((item) => item.category && item.tag).slice(0, 9),
     []
   );
 
@@ -63,15 +63,24 @@ export default function Home() {
         <ModelGrid models={trending} loading={loading} listName="Trending Models" />
       </section>
 
+      <section>
+        <h2 className="mb-4 text-2xl font-bold text-white">Tutte le categorie</h2>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {categories.map((category) => (
+            <CategoryCard key={category.slug} slug={category.slug} name={category.name} count={category.count} />
+          ))}
+        </div>
+      </section>
+
       <section className="space-y-6">
         <header className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">Explore More</h2>
-          <Link to="/live" className="text-sm font-semibold text-accent">Browse all live cams</Link>
+          <h2 className="text-2xl font-bold text-white">Categorie e tag in evidenza</h2>
+          <Link to="/live" className="text-sm font-semibold text-accent">Vedi tutte le live</Link>
         </header>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div className="rounded-2xl border border-border bg-panel p-4">
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-pink-400">Categories</h3>
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-pink-400">Categorie</h3>
             <div className="flex flex-wrap gap-2">
               {categoryList.map((category) => (
                 <Link
@@ -79,13 +88,13 @@ export default function Home() {
                   to={`/cam/${category}`}
                   className="rounded-full border border-zinc-700 px-3 py-1 text-xs text-zinc-200 hover:border-pink-400 hover:text-pink-300"
                 >
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                  {category}
                 </Link>
               ))}
             </div>
           </div>
           <div className="rounded-2xl border border-border bg-panel p-4">
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-pink-400">Tags</h3>
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-pink-400">Tag</h3>
             <div className="flex flex-wrap gap-2">
               {tags.map((tag) => (
                 <Link
@@ -99,7 +108,7 @@ export default function Home() {
             </div>
           </div>
           <div className="rounded-2xl border border-border bg-panel p-4">
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-pink-400">Combo Picks</h3>
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-pink-400">Combinazioni</h3>
             <div className="flex flex-wrap gap-2">
               {combos.map((combo) => (
                 <Link
