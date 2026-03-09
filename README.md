@@ -8,6 +8,7 @@ Production-ready React + TypeScript + Vite web app for a live cam directory with
 - Vite
 - Tailwind CSS
 - React Router DOM
+- Multilingual UI (EN, IT, ES, FR, DE, PT)
 
 ## Local Development
 Prerequisites:
@@ -84,4 +85,5 @@ SPA routing is handled through `vercel.json` rewrites.
 
 ## Notes
 - Fake model data is generated from `src/lib/models.ts` to keep the UI functional without external APIs.
+- Real-time sections are rendered through the Stripchat widget feed.
 - This project is intended for adults only (18+).

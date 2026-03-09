@@ -6,6 +6,7 @@ import AgeVerification from './components/AgeVerification';
 import CookieConsent from './components/CookieConsent';
 import { SITE_NAME, SITE_URL } from './lib/constants';
 import { injectJsonLd } from './lib/seo';
+import { LanguageProvider } from './lib/i18n';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
 const LivePage = lazy(() => import('./pages/LivePage'));
@@ -33,27 +34,34 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-bg text-zinc-100">
-      <Header />
-      <main className="mx-auto min-h-[65vh] w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <Suspense fallback={<div className="rounded-xl border border-border bg-panel p-6">Loading...</div>}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/live" element={<LivePage />} />
-            <Route path="/cam/:category" element={<CategoryPage />} />
-            <Route path="/tag/:tag" element={<TagPage />} />
-            <Route path="/model/:name" element={<ModelPage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="/terms" element={<TermsPage />} />
-            <Route path="/cookies" element={<CookiesPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Suspense>
-      </main>
-      <Footer />
-      <AgeVerification />
-      <CookieConsent />
-    </div>
+    <LanguageProvider>
+      <div className="min-h-screen bg-bg text-zinc-100">
+        <div className="pointer-events-none fixed inset-0 -z-10 opacity-80">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(255,45,117,.18),transparent_35%),radial-gradient(circle_at_82%_8%,rgba(35,198,255,.14),transparent_28%),radial-gradient(circle_at_50%_80%,rgba(255,45,117,.1),transparent_40%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,.03)_1px,transparent_1px)] bg-[size:48px_48px]" />
+        </div>
+
+        <Header />
+        <main className="mx-auto min-h-[65vh] w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          <Suspense fallback={<div className="rounded-2xl border border-border bg-panel p-6">Loading...</div>}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/live" element={<LivePage />} />
+              <Route path="/cam/:category" element={<CategoryPage />} />
+              <Route path="/tag/:tag" element={<TagPage />} />
+              <Route path="/model/:name" element={<ModelPage />} />
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/cookies" element={<CookiesPage />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
+        </main>
+        <Footer />
+        <AgeVerification />
+        <CookieConsent />
+      </div>
+    </LanguageProvider>
   );
 }

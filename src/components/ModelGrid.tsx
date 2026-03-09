@@ -1,13 +1,16 @@
 import ModelCard from './ModelCard';
 import { Model } from '../lib/models';
+import { useI18n } from '../lib/i18n';
 
 type ModelGridProps = {
   models: Model[];
 };
 
 export default function ModelGrid({ models }: ModelGridProps) {
+  const { t } = useI18n();
+
   if (!models.length) {
-    return <div className="rounded-xl border border-border bg-panel p-6 text-zinc-400">No models found.</div>;
+    return <div className="rounded-xl border border-border bg-panel p-6 text-zinc-400">{t('noModels')}</div>;
   }
 
   return (

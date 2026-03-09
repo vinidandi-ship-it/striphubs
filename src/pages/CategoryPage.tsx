@@ -1,24 +1,27 @@
-import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
-import ModelGrid from '../components/ModelGrid';
-import { getByCategory } from '../lib/models';
+import StripchatWidget from '../components/StripchatWidget';
+import { useI18n } from '../lib/i18n';
 import { useSEO } from '../lib/seo';
+import { normalizeWidgetTag } from '../lib/widgetTags';
 
 export default function CategoryPage() {
   const params = useParams();
   const category = params.category || '';
   const titleCase = category.charAt(0).toUpperCase() + category.slice(1);
+  const widgetTag = normalizeWidgetTag(category);
+  const { t } = useI18n();
 
-  useSEO(`${titleCase} Cams`, `Watch live ${titleCase} cam models now.`, `/cam/${category}`);
-
-  const models = useMemo(() => getByCategory(category), [category]);
+  useSEO(t('categoryLive', { category: titleCase }), `Watch live ${titleCase} cam models now.`, `/cam/${category}`);
 
   return (
-    <div>
-      <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Category', to: '/live' }, { label: titleCase }]} />
-      <h1 className="mb-4 text-3xl font-bold">{titleCase} Live Cams</h1>
-      <ModelGrid models={models} />
+    <div className="space-y-6">
+      <Breadcrumbs items={[{ label: t('navHome'), to: '/' }, { label: t('navCategories'), to: '/live' }, { label: titleCase }]} />
+      <h1 className="mb-1 text-3xl font-bold">{t('categoryLive', { category: titleCase })}</h1>
+      <p className="text-sm text-zinc-400">{t('categoryRealtime')}</p>
+      <div className="card-glow rounded-2xl border border-border bg-panel p-4">
+        <StripchatWidget tag={widgetTag} limit={48} />
+      </div>
     </div>
   );
 }
