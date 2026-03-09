@@ -4,7 +4,9 @@ import CategoryCard from '../components/CategoryCard';
 import ModelGrid from '../components/ModelGrid';
 import { api } from '../lib/api';
 import { Model } from '../lib/models';
-import { deriveCategories } from '../lib/categories';
+import { categorizeModels, categories as categoryList } from '../lib/categories';
+import { tags } from '../lib/tags';
+import { generateCombinationRoutes } from '../lib/combinations';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 
 export default function Home() {
@@ -22,8 +24,12 @@ export default function Home() {
       .finally(() => setLoading(false));
   }, []);
 
-  const categories = useMemo(() => deriveCategories(models).slice(0, 6), [models]);
+  const categories = useMemo(() => categorizeModels(models).slice(0, 6), [models]);
   const trending = useMemo(() => [...models].sort((a, b) => b.viewers - a.viewers).slice(0, 8), [models]);
+  const combos = useMemo(
+    () => generateCombinationRoutes().filter((item) => item.category && item.tag).slice(0, 8),
+    []
+  );
 
   return (
     <div className="space-y-12">
@@ -55,6 +61,58 @@ export default function Home() {
       <section>
         <h2 className="mb-4 text-2xl font-bold text-white">Trending Models</h2>
         <ModelGrid models={trending} loading={loading} listName="Trending Models" />
+      </section>
+
+      <section className="space-y-6">
+        <header className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-white">Explore More</h2>
+          <Link to="/live" className="text-sm font-semibold text-accent">Browse all live cams</Link>
+        </header>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="rounded-2xl border border-border bg-panel p-4">
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-pink-400">Categories</h3>
+            <div className="flex flex-wrap gap-2">
+              {categoryList.map((category) => (
+                <Link
+                  key={category}
+                  to={`/cam/${category}`}
+                  className="rounded-full border border-zinc-700 px-3 py-1 text-xs text-zinc-200 hover:border-pink-400 hover:text-pink-300"
+                >
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-2xl border border-border bg-panel p-4">
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-pink-400">Tags</h3>
+            <div className="flex flex-wrap gap-2">
+              {tags.map((tag) => (
+                <Link
+                  key={tag}
+                  to={`/tag/${tag}`}
+                  className="rounded-full border border-zinc-700 px-3 py-1 text-xs text-zinc-200 hover:border-pink-400 hover:text-pink-300"
+                >
+                  {tag}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-2xl border border-border bg-panel p-4">
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-pink-400">Combo Picks</h3>
+            <div className="flex flex-wrap gap-2">
+              {combos.map((combo) => (
+                <Link
+                  key={combo.path}
+                  to={combo.path}
+                  className="rounded-full border border-zinc-700 px-3 py-1 text-xs text-zinc-200 hover:border-pink-400 hover:text-pink-300"
+                >
+                  {combo.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   );

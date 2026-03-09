@@ -17,6 +17,7 @@ const Search = lazy(() => import('./pages/Search'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const Cookies = lazy(() => import('./pages/Cookies'));
+const Combination = lazy(() => import('./pages/Combination'));
 
 export default function App() {
   useEffect(() => {
@@ -41,6 +42,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/live" element={<Live />} />
+            <Route path="/cam/:category/:tag" element={<Combination />} />
             <Route path="/cam/:category" element={<Category />} />
             <Route path="/tag/:tag" element={<Tag />} />
             <Route path="/model/:username" element={<ModelPage />} />

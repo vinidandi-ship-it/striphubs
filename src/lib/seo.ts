@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
 import { SITE_NAME, SITE_URL } from './models';
+import { categoryName } from './categories';
+
+type PageType = 'home' | 'live' | 'category' | 'tag' | 'combination' | 'model' | 'search';
 
 const ensureMeta = (name: string): HTMLMetaElement => {
   let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
@@ -21,23 +24,36 @@ const ensureCanonical = (): HTMLLinkElement => {
   return el;
 };
 
-export const generateTitle = (page: string, data?: Record<string, string>): string => {
-  if (page === 'home') return 'Live Cam Models - Free Webcam Shows';
-  if (page === 'live') return 'All Live Cam Models';
-  if (page === 'category') return `Watch Live ${(data?.category || '').toUpperCase()} Cam Models`;
+export const generateTitle = (page: PageType, data?: Record<string, string>): string => {
+  if (page === 'home') return 'Live Cam Models – Free Webcam Shows';
+  if (page === 'live') return 'Live Cam Directory – StripHubs';
+  if (page === 'category') {
+    const label = categoryName(data?.category || '');
+    return `Live ${label} Cam Models – Free Webcam Shows`;
+  }
+  if (page === 'tag') {
+    const tag = data?.tag || '';
+    return `${tag.charAt(0).toUpperCase() + tag.slice(1)} Cam Girls – Live Webcam Shows`;
+  }
+  if (page === 'combination') {
+    const cat = categoryName(data?.category || '');
+    const tag = data?.tag || '';
+    return `${cat} ${tag} Cam Models – Live Webcam Shows`;
+  }
   if (page === 'model') return `Watch ${data?.username || 'Model'} Live Cam Show`;
-  if (page === 'search') return 'Search Live Cam Models';
-  if (page === 'tag') return `Live Cam Tag: ${data?.tag || ''}`;
+  if (page === 'search') return 'Search Live Cam Models – StripHubs';
   return SITE_NAME;
 };
 
-export const generateDescription = (page: string, data?: Record<string, string>): string => {
+export const generateDescription = (page: PageType, data?: Record<string, string>): string => {
   if (page === 'home') return 'Discover live cam models with fast filters and real-time listings.';
   if (page === 'live') return 'Browse all currently online live cam performers.';
-  if (page === 'category') return `Explore live ${data?.category || ''} cam models.`;
-  if (page === 'model') return `Watch ${data?.username || 'this model'} with one-click access.`;
+  if (page === 'category') return `Watch live ${data?.category || ''} cam models streaming now.`;
+  if (page === 'tag') return `Explore live models with the ${data?.tag || ''} tag.`;
+  if (page === 'combination')
+    return `Discover live ${data?.category || ''} cam models featuring ${data?.tag || ''}.`;
+  if (page === 'model') return `Watch ${data?.username || 'this model'} live with one click.`;
   if (page === 'search') return 'Search cam models by username, tags, and country.';
-  if (page === 'tag') return `Browse live models for tag ${data?.tag || ''}.`;
   return 'Live cam directory.';
 };
 

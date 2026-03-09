@@ -7,6 +7,7 @@ import {
   NormalizedModel,
   parseProviderModels,
   sanitizeTagForRoute,
+  STATIC_TAGS,
   waitForRateLimit
 } from './shared';
 
@@ -65,7 +66,11 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
     addRoute('/search');
 
     CATEGORY_DEFINITIONS.forEach((category) => addRoute(`/cam/${category.slug}`));
+    STATIC_TAGS.forEach((tag) => addRoute(`/tag/${tag}`));
     Array.from(tags).forEach((tag) => addRoute(`/tag/${tag}`));
+    CATEGORY_DEFINITIONS.forEach((category) =>
+      STATIC_TAGS.forEach((tag) => addRoute(`/cam/${category.slug}/${tag}`))
+    );
     models.slice(0, MAX_MODEL_ROUTES).forEach((model) => addRoute(`/model/${encodeURIComponent(model.username)}`));
 
     const now = new Date().toISOString();

@@ -5,6 +5,7 @@ import ModelGrid from '../components/ModelGrid';
 import { api } from '../lib/api';
 import { Model } from '../lib/models';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
+import { seoTextForTag } from '../lib/seoText';
 
 export default function Tag() {
   const { tag = 'girls' } = useParams();
@@ -26,6 +27,7 @@ export default function Tag() {
     <div className="space-y-6">
       <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Tag', to: '/live' }, { label: tag }]} />
       <h1 className="text-3xl font-bold text-white">#{tag}</h1>
+      <p className="text-sm text-zinc-400">{seoTextForTag(tag)}</p>
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`Tag ${tag} Models`} />
     </div>

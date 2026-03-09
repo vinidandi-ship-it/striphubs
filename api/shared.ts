@@ -14,6 +14,21 @@ export const CATEGORY_DEFINITIONS = [
   { slug: 'ebony', name: 'Ebony', match: /(ebony|black)/i, tag: 'girls/ebony' }
 ] as const;
 
+export const STATIC_TAGS = [
+  'tattoo',
+  'big-boobs',
+  'petite',
+  'teen',
+  'ebony',
+  'redhead',
+  'curvy',
+  'college',
+  'cosplay',
+  'piercing',
+  'feet',
+  'lingerie'
+] as const;
+
 export type CategoryDefinition = (typeof CATEGORY_DEFINITIONS)[number];
 
 export type NormalizedModel = {

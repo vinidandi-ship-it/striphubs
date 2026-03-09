@@ -3,8 +3,10 @@ import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import ModelGrid from '../components/ModelGrid';
 import { api } from '../lib/api';
-import { Model, categoryName } from '../lib/models';
+import { Model } from '../lib/models';
+import { categoryName } from '../lib/categories';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
+import { seoTextForCategory } from '../lib/seoText';
 
 export default function Category() {
   const { category = 'milf' } = useParams();
@@ -30,6 +32,7 @@ export default function Category() {
     <div className="space-y-6">
       <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Category', to: '/live' }, { label: categoryName(category) }]} />
       <h1 className="text-3xl font-bold text-white">{categoryName(category)} Live Cams</h1>
+      <p className="text-sm text-zinc-400">{seoTextForCategory(category)}</p>
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`${categoryName(category)} Models`} />
     </div>
