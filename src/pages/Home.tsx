@@ -9,9 +9,13 @@ import { tags } from '../lib/tags';
 import { generateCombinationRoutes } from '../lib/combinations';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 
+const CATEGORY_PREVIEW_LIMIT = 4;
+
 export default function Home() {
   const [models, setModels] = useState<Model[]>([]);
+  const [categoryModels, setCategoryModels] = useState<Record<string, Model[]>>({});
   const [loading, setLoading] = useState(true);
+  const [categoryLoading, setCategoryLoading] = useState(true);
   const [error, setError] = useState('');
 
   useSEO(generateTitle('home'), generateDescription('home'), '/');
@@ -24,7 +28,31 @@ export default function Home() {
       .finally(() => setLoading(false));
   }, []);
 
-  const categories = useMemo(() => categorizeModels(models).slice(0, 6), [models]);
+  useEffect(() => {
+    setCategoryLoading(true);
+    void Promise.all(
+      categoryList.map(async (category) => {
+        const data = await api.getModels({ category, limit: CATEGORY_PREVIEW_LIMIT });
+        return [category, data.models] as const;
+      })
+    )
+      .then((entries) => setCategoryModels(Object.fromEntries(entries)))
+      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load category previews'))
+      .finally(() => setCategoryLoading(false));
+  }, []);
+
+  const categories = useMemo(() => {
+    const fromHomeFeed = categorizeModels(models);
+    return categoryList.map((slug) => {
+      const existing = fromHomeFeed.find((item) => item.slug === slug);
+      const previewCount = categoryModels[slug]?.length ?? 0;
+      return {
+        slug,
+        name: existing?.name ?? slug.charAt(0).toUpperCase() + slug.slice(1),
+        count: Math.max(existing?.count ?? 0, previewCount)
+      };
+    });
+  }, [models, categoryModels]);
   const trending = useMemo(() => [...models].sort((a, b) => b.viewers - a.viewers).slice(0, 8), [models]);
   const combos = useMemo(
     () => generateCombinationRoutes().filter((item) => item.category && item.tag).slice(0, 9),
@@ -70,6 +98,30 @@ export default function Home() {
             <CategoryCard key={category.slug} slug={category.slug} name={category.name} count={category.count} />
           ))}
         </div>
+      </section>
+
+      <section className="space-y-8">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-white">Cam live per categoria</h2>
+          <Link to="/live" className="text-sm font-semibold text-accent">Apri directory completa</Link>
+        </div>
+
+        {categoryList.map((category) => (
+          <section key={category} className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xl font-bold text-white">{category.charAt(0).toUpperCase() + category.slice(1)}</h3>
+                <p className="text-sm text-zinc-400">Cam reali filtrate dal feed live per la categoria {category}.</p>
+              </div>
+              <Link to={`/cam/${category}`} className="text-sm font-semibold text-accent">Vedi tutte</Link>
+            </div>
+            <ModelGrid
+              models={categoryModels[category] || []}
+              loading={categoryLoading}
+              listName={`${category} home preview`}
+            />
+          </section>
+        ))}
       </section>
 
       <section className="space-y-6">
