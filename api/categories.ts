@@ -34,35 +34,23 @@ const parseProviderModels = (payload: unknown): Record<string, unknown>[] => {
   return [];
 };
 
-const FALLBACK_ORDER = ['milf', 'blonde', 'asian', 'brunette', 'couple', 'trans'];
+const CORE_CATEGORIES = [
+  { slug: 'milf', name: 'Milf', match: /(milf|milfs|mature)/ },
+  { slug: 'blonde', name: 'Blonde', match: /blonde/ },
+  { slug: 'asian', name: 'Asian', match: /asian/ },
+  { slug: 'brunette', name: 'Brunette', match: /brunette/ },
+  { slug: 'couple', name: 'Couple', match: /(couple|couples)/ },
+  { slug: 'trans', name: 'Trans', match: /trans/ }
+] as const;
 
-const normalizeTag = (tag: string): string => tag.toLowerCase().replace(/^girls\//, '').trim();
-const toSlug = (value: string): string => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-
-const deriveCategories = (models: Array<{ tags: string[]; category?: string }>) => {
-  const map = new Map<string, number>();
-  for (const model of models) {
-    const tags = model.tags.length ? model.tags : [model.category || 'general'];
-    for (const raw of tags) {
-      const slug = toSlug(normalizeTag(raw));
-      if (!slug) continue;
-      map.set(slug, (map.get(slug) || 0) + 1);
-    }
-  }
-  for (const base of FALLBACK_ORDER) {
-    if (!map.has(base)) map.set(base, 0);
-  }
-  return [...map.entries()]
-    .map(([slug, count]) => ({ slug, name: slug.charAt(0).toUpperCase() + slug.slice(1), count }))
-    .sort((a, b) => {
-      const ai = FALLBACK_ORDER.indexOf(a.slug);
-      const bi = FALLBACK_ORDER.indexOf(b.slug);
-      if (ai !== -1 && bi !== -1) return ai - bi;
-      if (ai !== -1) return -1;
-      if (bi !== -1) return 1;
-      return b.count - a.count;
-    });
-};
+const deriveCategories = (models: Array<{ tags: string[] }>) =>
+  CORE_CATEGORIES.map((category) => {
+    const count = models.reduce((acc, model) => {
+      const hit = model.tags.some((tag) => category.match.test(tag.toLowerCase()));
+      return acc + (hit ? 1 : 0);
+    }, 0);
+    return { slug: category.slug, name: category.name, count };
+  });
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') return apiError(res, 'Method not allowed', 405);
