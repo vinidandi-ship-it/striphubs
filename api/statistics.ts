@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { apiError, waitForRateLimit } from './shared';
+import { apiError, waitForRateLimit } from './shared.js';
 
 const STATS_ENDPOINT = 'https://api.stripcash.com/external/v1/user/statistics';
 

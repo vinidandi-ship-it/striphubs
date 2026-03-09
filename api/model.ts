@@ -6,7 +6,7 @@ import {
   NormalizedModel,
   parseProviderModels,
   waitForRateLimit
-} from './shared';
+} from './shared.js';
 
 const DEFAULT_ENDPOINT = 'https://go.mavrtracktor.com/api/models';
 

@@ -9,7 +9,7 @@ import {
   sanitizeTagForRoute,
   STATIC_TAGS,
   waitForRateLimit
-} from './shared';
+} from './shared.js';
 
 const SITE_URL = process.env.VITE_SITE_URL || 'https://striphubs.vercel.app';
 const MODELS_ENDPOINT = process.env.STRIPCHAT_API_ENDPOINT || 'https://go.mavrtracktor.com/api/models';
