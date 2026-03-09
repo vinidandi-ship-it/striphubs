@@ -4,10 +4,10 @@ export const AFFILIATE_ID = 'd28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b2
 
 export const CATEGORY_DEFINITIONS = [
   { slug: 'milf', name: 'MILF', match: /(milf|milfs|mature)/i, tag: 'girls/milfs' },
-  { slug: 'blonde', name: 'Blonde', match: /blonde/i, tag: 'girls/blonde' },
+  { slug: 'blonde', name: 'Blonde', match: /blonde/i, tag: 'girls/blondes' },
   { slug: 'asian', name: 'Asian', match: /asian/i, tag: 'girls/asian' },
-  { slug: 'brunette', name: 'Brunette', match: /brunette/i, tag: 'girls/brunette' },
-  { slug: 'latina', name: 'Latina', match: /(latina|latin)/i, tag: 'girls/latina' },
+  { slug: 'brunette', name: 'Brunette', match: /brunette/i, tag: 'girls/brunettes' },
+  { slug: 'latina', name: 'Latina', match: /(latina|latin)/i, tag: 'girls/latin' },
   { slug: 'couple', name: 'Couple', match: /(couple|couples)/i, tag: 'couples' },
   { slug: 'trans', name: 'Trans', match: /trans/i, tag: 'trans' },
   { slug: 'teen', name: 'Teen', match: /teen/i, tag: 'girls/teens' },
