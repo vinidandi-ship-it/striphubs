@@ -28,10 +28,10 @@ const CATEGORY_MAP: Record<string, string[]> = {
 };
 
 const TAG_BY_CATEGORY: Record<string, string | undefined> = {
-  milf: 'girls',
-  blonde: 'girls',
-  asian: 'girls',
-  brunette: 'girls',
+  milf: 'girls/milfs',
+  blonde: 'girls/blonde',
+  asian: 'girls/asian',
+  brunette: 'girls/brunette',
   couple: 'couples',
   trans: 'trans'
 };
@@ -126,17 +126,6 @@ const applyFilters = (models: LiveModel[], req: VercelRequest): LiveModel[] => {
   const limit = Math.min(Math.max(toNumber(req.query.limit) || 48, 1), 120);
 
   let filtered = models;
-
-  if (category && CATEGORY_MAP[category]) {
-    const baseTag = TAG_BY_CATEGORY[category];
-    const tags = CATEGORY_MAP[category];
-    filtered = filtered.filter((model) =>
-      model.tags.some((modelTag) =>
-        tags.some((allowed) => modelTag.includes(allowed)) &&
-        (!baseTag || modelTag.startsWith(`${baseTag}/`) || modelTag === baseTag)
-      )
-    );
-  }
 
   if (search) {
     filtered = filtered.filter((model) =>

@@ -18,21 +18,7 @@ export default function Home() {
       .then((data) => {
         setModels(data.models.slice(0, 24));
 
-        const computed = CATEGORIES.map((slug) => {
-          const count = data.models.filter((model) => {
-            const tags = model.tags.join(',');
-            if (slug === 'milf') return /milf|milfs|mature/.test(tags);
-            if (slug === 'blonde') return /blonde/.test(tags);
-            if (slug === 'asian') return /asian/.test(tags);
-            if (slug === 'brunette') return /brunette/.test(tags);
-            if (slug === 'couple') return /couple|couples/.test(tags);
-            if (slug === 'trans') return /trans/.test(tags);
-            return false;
-          }).length;
-
-          return { slug, name: categoryName(slug), count };
-        });
-
+        const computed = CATEGORIES.map((slug) => ({ slug, name: categoryName(slug), count: undefined as number | undefined }));
         setCategories(computed);
       })
       .catch((err) => {
