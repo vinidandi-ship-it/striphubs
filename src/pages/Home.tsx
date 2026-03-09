@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import BannerAd from '../components/BannerAd';
 import CategoryCard from '../components/CategoryCard';
 import ModelGrid from '../components/ModelGrid';
 import { api } from '../lib/api';
@@ -36,6 +37,8 @@ export default function Home() {
           <Link to="/cam/milf" className="rounded-full border border-border bg-zinc-900 px-6 py-3 font-semibold text-zinc-200">Browse Categories</Link>
         </div>
       </section>
+
+      <BannerAd />
 
       <section>
         <h2 className="mb-4 text-2xl font-bold text-white">Live Models</h2>
