@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { AFFILIATE_ID, WIDGET_BASE } from '../lib/constants';
 import { useI18n } from '../lib/i18n';
 
@@ -8,7 +8,6 @@ type StripchatWidgetProps = {
 };
 
 export default function StripchatWidget({ tag = 'girls', limit = 24 }: StripchatWidgetProps) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
   const { t } = useI18n();
 
   const widgetSrc = useMemo(() => {
@@ -22,24 +21,15 @@ export default function StripchatWidget({ tag = 'girls', limit = 24 }: Stripchat
     return `${WIDGET_BASE}?${params.toString()}`;
   }, [tag, limit]);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    container.innerHTML = '';
-    const script = document.createElement('script');
-    script.src = widgetSrc;
-    script.async = false;
-    container.appendChild(script);
-
-    return () => {
-      container.innerHTML = '';
-    };
-  }, [widgetSrc]);
-
   return (
     <div>
-      <div ref={containerRef} className="min-h-[300px]" />
+      <iframe
+        src={widgetSrc}
+        title={`live-widget-${tag}`}
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        className="h-[820px] w-full rounded-xl border border-border bg-black"
+      />
       <p className="mt-3 text-xs text-zinc-400">
         {t('ifNoFeed')}{' '}
         <a
