@@ -17,12 +17,21 @@ export default function ModelPage() {
   useSEO(`${decodedName} Live Cam`, `Watch ${decodedName} live now.`, `/model/${encodeURIComponent(decodedName)}`);
 
   useEffect(() => {
-    void api.getModel(decodedName)
+    void api.getModels({
+      modelsList: decodedName,
+      strict: 1,
+      limit: 120,
+      tag: 'girls,couples,trans,men'
+    })
       .then((data) => {
-        setModel(data);
-        return api.getModels({ search: data.tags[0] || '', limit: 12 });
+        const selected = data.models.find((item) => item.username.toLowerCase() === decodedName.toLowerCase()) || null;
+        if (!selected) {
+          throw new Error('Model not found in current live feed');
+        }
+        setModel(selected);
+        return data;
       })
-      .then((data) => setRelated(data.models.filter((item) => item.username !== decodedName).slice(0, 8)))
+      .then((data) => setRelated(data.models.filter((item) => item.username.toLowerCase() !== decodedName.toLowerCase()).slice(0, 8)))
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load model profile'));
   }, [decodedName]);
 

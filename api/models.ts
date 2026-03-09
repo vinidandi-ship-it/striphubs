@@ -15,11 +15,11 @@ type LiveModel = {
   clickUrl?: string;
 };
 
-let cache: { data: LiveModel[]; expiresAt: number } | null = null;
+let cache: { key: string; data: LiveModel[]; expiresAt: number } | null = null;
 let lastUpstreamRequestAt = 0;
 
 const CATEGORY_MAP: Record<string, string[]> = {
-  milf: ['milf', 'mature'],
+  milf: ['milf', 'milfs', 'mature'],
   blonde: ['blonde'],
   asian: ['asian'],
   brunette: ['brunette'],
@@ -120,58 +120,12 @@ const normalizeModel = (item: unknown): LiveModel | null => {
   };
 };
 
-const fetchProviderModels = async (): Promise<LiveModel[]> => {
-  if (cache && cache.expiresAt > Date.now()) return cache.data;
-
-  const endpoint = process.env.STRIPCHAT_API_ENDPOINT || DEFAULT_ENDPOINT;
-  const apiKey = process.env.STRIPCASH_API_KEY;
-  if (!apiKey) throw new Error('Missing STRIPCASH_API_KEY environment variable.');
-
-  const delta = Date.now() - lastUpstreamRequestAt;
-  if (delta < MIN_UPSTREAM_INTERVAL_MS) {
-    await new Promise((resolve) => setTimeout(resolve, MIN_UPSTREAM_INTERVAL_MS - delta));
-  }
-
-  const url = new URL(endpoint);
-  url.searchParams.set('userId', AFFILIATE_ID);
-  url.searchParams.set('strict', '1');
-  url.searchParams.set('tag', 'girls');
-
-  const response = await fetch(url.toString(), {
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${apiKey}`
-    }
-  });
-  lastUpstreamRequestAt = Date.now();
-
-  if (!response.ok) {
-    throw new Error(`Provider API failed with status ${response.status}`);
-  }
-
-  const payload = (await response.json()) as unknown;
-  const normalized = extractArray(payload)
-    .map(normalizeModel)
-    .filter((model): model is LiveModel => Boolean(model))
-    .filter((model) => model.isLive);
-
-  cache = { data: normalized, expiresAt: Date.now() + CACHE_TTL_MS };
-  return normalized;
-};
-
 const applyFilters = (models: LiveModel[], req: VercelRequest): LiveModel[] => {
   const category = toString(req.query.category).toLowerCase();
   const search = toString(req.query.search).toLowerCase();
   const limit = Math.min(Math.max(toNumber(req.query.limit) || 48, 1), 120);
-  const tag = toString(req.query.tag).toLowerCase();
 
   let filtered = models;
-
-  if (tag) {
-    filtered = filtered.filter((model) =>
-      model.tags.some((modelTag) => modelTag.startsWith(`${tag}/`) || modelTag === tag)
-    );
-  }
 
   if (category && CATEGORY_MAP[category]) {
     const baseTag = TAG_BY_CATEGORY[category];
@@ -229,27 +183,34 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const apiKey = process.env.STRIPCASH_API_KEY;
     if (!apiKey) throw new Error('Missing STRIPCASH_API_KEY environment variable.');
 
-    const delta = Date.now() - lastUpstreamRequestAt;
-    if (delta < MIN_UPSTREAM_INTERVAL_MS) {
-      await new Promise((resolve) => setTimeout(resolve, MIN_UPSTREAM_INTERVAL_MS - delta));
+    const upstreamKey = upstream.toString();
+    let models: LiveModel[];
+    if (cache && cache.key === upstreamKey && cache.expiresAt > Date.now()) {
+      models = cache.data;
+    } else {
+      const delta = Date.now() - lastUpstreamRequestAt;
+      if (delta < MIN_UPSTREAM_INTERVAL_MS) {
+        await new Promise((resolve) => setTimeout(resolve, MIN_UPSTREAM_INTERVAL_MS - delta));
+      }
+
+      const response = await fetch(upstreamKey, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${apiKey}`
+        }
+      });
+      lastUpstreamRequestAt = Date.now();
+      if (!response.ok) throw new Error(`Provider API failed with status ${response.status}`);
+
+      const payload = (await response.json()) as unknown;
+      models = extractArray(payload)
+        .map(normalizeModel)
+        .filter((model): model is LiveModel => Boolean(model))
+        .filter((model) => model.isLive);
+
+      cache = { key: upstreamKey, data: models, expiresAt: Date.now() + CACHE_TTL_MS };
     }
 
-    const response = await fetch(upstream.toString(), {
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${apiKey}`
-      }
-    });
-    lastUpstreamRequestAt = Date.now();
-    if (!response.ok) throw new Error(`Provider API failed with status ${response.status}`);
-
-    const payload = (await response.json()) as unknown;
-    const models = extractArray(payload)
-      .map(normalizeModel)
-      .filter((model): model is LiveModel => Boolean(model))
-      .filter((model) => model.isLive);
-
-    cache = { data: models, expiresAt: Date.now() + CACHE_TTL_MS };
     const output = applyFilters(models, req);
 
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
