@@ -1,7 +1,40 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { AFFILIATE_ID, apiError, parseProviderModels, toString, waitForRateLimit } from './shared';
 
+const AFFILIATE_ID = 'd28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881';
 const DEFAULT_ENDPOINT = 'https://go.mavrtracktor.com/api/models';
+
+let nextAllowedAt = 0;
+let queue: Promise<void> = Promise.resolve();
+
+const waitForRateLimit = (intervalMs = 5000): Promise<void> => {
+  queue = queue.then(async () => {
+    const now = Date.now();
+    const waitMs = Math.max(0, nextAllowedAt - now);
+    if (waitMs > 0) await new Promise((resolve) => setTimeout(resolve, waitMs));
+    nextAllowedAt = Date.now() + intervalMs;
+  });
+  return queue;
+};
+
+const apiError = (res: VercelResponse, message: string, providerStatus = 500) =>
+  res.status(providerStatus >= 400 && providerStatus < 600 ? providerStatus : 500).json({
+    error: true,
+    message,
+    providerStatus
+  });
+
+const toString = (value: unknown): string => (typeof value === 'string' ? value.trim() : '');
+
+const parseProviderModels = (payload: unknown): Record<string, unknown>[] => {
+  if (Array.isArray(payload)) return payload as Record<string, unknown>[];
+  if (!payload || typeof payload !== 'object') return [];
+  const raw = payload as Record<string, unknown>;
+  if (Array.isArray(raw.models)) return raw.models as Record<string, unknown>[];
+  if (raw.data && typeof raw.data === 'object' && Array.isArray((raw.data as Record<string, unknown>).models)) {
+    return (raw.data as Record<string, unknown>).models as Record<string, unknown>[];
+  }
+  return [];
+};
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') return apiError(res, 'Method not allowed', 405);

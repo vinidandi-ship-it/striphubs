@@ -1,7 +1,27 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { AFFILIATE_ID, apiError, waitForRateLimit } from './shared';
 
+const AFFILIATE_ID = 'd28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881';
 const STATS_ENDPOINT = 'https://api.stripcash.com/external/v1/user/statistics';
+
+let nextAllowedAt = 0;
+let queue: Promise<void> = Promise.resolve();
+
+const waitForRateLimit = (intervalMs = 5000): Promise<void> => {
+  queue = queue.then(async () => {
+    const now = Date.now();
+    const waitMs = Math.max(0, nextAllowedAt - now);
+    if (waitMs > 0) await new Promise((resolve) => setTimeout(resolve, waitMs));
+    nextAllowedAt = Date.now() + intervalMs;
+  });
+  return queue;
+};
+
+const apiError = (res: VercelResponse, message: string, providerStatus = 500) =>
+  res.status(providerStatus >= 400 && providerStatus < 600 ? providerStatus : 500).json({
+    error: true,
+    message,
+    providerStatus
+  });
 
 const extractNumber = (input: unknown, fallback = 0): number => {
   const n = Number(input);

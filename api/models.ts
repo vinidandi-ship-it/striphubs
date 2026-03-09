@@ -1,13 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import {
-  AFFILIATE_ID,
-  apiError,
-  detectCategory,
-  parseProviderModels,
-  toString,
-  waitForRateLimit
-} from './shared';
 
+const AFFILIATE_ID = 'd28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881';
 const CACHE_TTL_MS = 60_000;
 const DEFAULT_ENDPOINT = 'https://go.mavrtracktor.com/api/models';
 
@@ -25,9 +18,53 @@ type NormalizedModel = {
 };
 
 let cache: { key: string; expiresAt: number; models: NormalizedModel[] } | null = null;
+
+let nextAllowedAt = 0;
+let queue: Promise<void> = Promise.resolve();
+
+const waitForRateLimit = (intervalMs = 5000): Promise<void> => {
+  queue = queue.then(async () => {
+    const now = Date.now();
+    const waitMs = Math.max(0, nextAllowedAt - now);
+    if (waitMs > 0) await new Promise((resolve) => setTimeout(resolve, waitMs));
+    nextAllowedAt = Date.now() + intervalMs;
+  });
+  return queue;
+};
+
+const apiError = (res: VercelResponse, message: string, providerStatus = 500) =>
+  res.status(providerStatus >= 400 && providerStatus < 600 ? providerStatus : 500).json({
+    error: true,
+    message,
+    providerStatus
+  });
+
+const toString = (value: unknown): string => (typeof value === 'string' ? value.trim() : '');
 const toNumber = (value: unknown): number => {
   const n = Number(value ?? 0);
   return Number.isFinite(n) ? n : 0;
+};
+
+const parseProviderModels = (payload: unknown): ProviderModel[] => {
+  if (Array.isArray(payload)) return payload as ProviderModel[];
+  if (!payload || typeof payload !== 'object') return [];
+  const raw = payload as Record<string, unknown>;
+  if (Array.isArray(raw.models)) return raw.models as ProviderModel[];
+  if (raw.data && typeof raw.data === 'object' && Array.isArray((raw.data as Record<string, unknown>).models)) {
+    return (raw.data as Record<string, unknown>).models as ProviderModel[];
+  }
+  return [];
+};
+
+const detectCategory = (tags: string[]): string => {
+  const joined = tags.join(',').toLowerCase();
+  if (/milf|milfs|mature/.test(joined)) return 'milf';
+  if (/blonde/.test(joined)) return 'blonde';
+  if (/asian/.test(joined)) return 'asian';
+  if (/brunette/.test(joined)) return 'brunette';
+  if (/couple|couples/.test(joined)) return 'couple';
+  if (/trans/.test(joined)) return 'trans';
+  return 'general';
 };
 
 const normalizeModel = (model: ProviderModel): NormalizedModel | null => {

@@ -1,16 +1,71 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import {
-  AFFILIATE_ID,
-  apiError,
-  deriveCategories,
-  parseProviderModels,
-  waitForRateLimit
-} from './shared';
 
+const AFFILIATE_ID = 'd28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881';
 const SITE_URL = process.env.VITE_SITE_URL || 'https://striphubs.vercel.app';
 const MODELS_ENDPOINT = process.env.STRIPCHAT_API_ENDPOINT || 'https://go.mavrtracktor.com/api/models';
 
 const baseRoutes = ['/', '/live', '/search'];
+
+let nextAllowedAt = 0;
+let queue: Promise<void> = Promise.resolve();
+
+const waitForRateLimit = (intervalMs = 5000): Promise<void> => {
+  queue = queue.then(async () => {
+    const now = Date.now();
+    const waitMs = Math.max(0, nextAllowedAt - now);
+    if (waitMs > 0) await new Promise((resolve) => setTimeout(resolve, waitMs));
+    nextAllowedAt = Date.now() + intervalMs;
+  });
+  return queue;
+};
+
+const apiError = (res: VercelResponse, message: string, providerStatus = 500) =>
+  res.status(providerStatus >= 400 && providerStatus < 600 ? providerStatus : 500).json({
+    error: true,
+    message,
+    providerStatus
+  });
+
+const parseProviderModels = (payload: unknown): Record<string, unknown>[] => {
+  if (Array.isArray(payload)) return payload as Record<string, unknown>[];
+  if (!payload || typeof payload !== 'object') return [];
+  const raw = payload as Record<string, unknown>;
+  if (Array.isArray(raw.models)) return raw.models as Record<string, unknown>[];
+  if (raw.data && typeof raw.data === 'object' && Array.isArray((raw.data as Record<string, unknown>).models)) {
+    return (raw.data as Record<string, unknown>).models as Record<string, unknown>[];
+  }
+  return [];
+};
+
+const FALLBACK_ORDER = ['milf', 'blonde', 'asian', 'brunette', 'couple', 'trans'];
+
+const normalizeTag = (tag: string): string => tag.toLowerCase().replace(/^girls\//, '').trim();
+const toSlug = (value: string): string => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+
+const deriveCategories = (models: Array<{ tags: string[]; category?: string }>) => {
+  const map = new Map<string, number>();
+  for (const model of models) {
+    const tags = model.tags.length ? model.tags : [model.category || 'general'];
+    for (const raw of tags) {
+      const slug = toSlug(normalizeTag(raw));
+      if (!slug) continue;
+      map.set(slug, (map.get(slug) || 0) + 1);
+    }
+  }
+  for (const base of FALLBACK_ORDER) {
+    if (!map.has(base)) map.set(base, 0);
+  }
+  return [...map.entries()]
+    .map(([slug, count]) => ({ slug, name: slug.charAt(0).toUpperCase() + slug.slice(1), count }))
+    .sort((a, b) => {
+      const ai = FALLBACK_ORDER.indexOf(a.slug);
+      const bi = FALLBACK_ORDER.indexOf(b.slug);
+      if (ai !== -1 && bi !== -1) return ai - bi;
+      if (ai !== -1) return -1;
+      if (bi !== -1) return 1;
+      return b.count - a.count;
+    });
+};
 
 export default async function handler(_req: VercelRequest, res: VercelResponse) {
   try {
