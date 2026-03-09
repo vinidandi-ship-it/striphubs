@@ -1,7 +1,13 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { waitForRateLimit } from '../src/lib/rateLimiter';
+import {
+  AFFILIATE_ID,
+  apiError,
+  detectCategory,
+  parseProviderModels,
+  toString,
+  waitForRateLimit
+} from './_shared';
 
-const AFFILIATE_ID = 'd28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881';
 const CACHE_TTL_MS = 60_000;
 const DEFAULT_ENDPOINT = 'https://go.mavrtracktor.com/api/models';
 
@@ -19,41 +25,9 @@ type NormalizedModel = {
 };
 
 let cache: { key: string; expiresAt: number; models: NormalizedModel[] } | null = null;
-
-const err = (res: VercelResponse, message: string, providerStatus = 500) =>
-  res.status(providerStatus >= 400 && providerStatus < 600 ? providerStatus : 500).json({
-    error: true,
-    message,
-    providerStatus
-  });
-
-const toString = (value: unknown): string => (typeof value === 'string' ? value.trim() : '');
 const toNumber = (value: unknown): number => {
   const n = Number(value ?? 0);
   return Number.isFinite(n) ? n : 0;
-};
-
-const parseModels = (payload: unknown): ProviderModel[] => {
-  if (Array.isArray(payload)) return payload as ProviderModel[];
-  if (!payload || typeof payload !== 'object') return [];
-
-  const raw = payload as Record<string, unknown>;
-  if (Array.isArray(raw.models)) return raw.models as ProviderModel[];
-  if (raw.data && typeof raw.data === 'object' && Array.isArray((raw.data as Record<string, unknown>).models)) {
-    return (raw.data as Record<string, unknown>).models as ProviderModel[];
-  }
-  return [];
-};
-
-const detectCategory = (tags: string[]): string => {
-  const joined = tags.join(',').toLowerCase();
-  if (/milf|milfs|mature/.test(joined)) return 'milf';
-  if (/blonde/.test(joined)) return 'blonde';
-  if (/asian/.test(joined)) return 'asian';
-  if (/brunette/.test(joined)) return 'brunette';
-  if (/couple|couples/.test(joined)) return 'couple';
-  if (/trans/.test(joined)) return 'trans';
-  return 'general';
 };
 
 const normalizeModel = (model: ProviderModel): NormalizedModel | null => {
@@ -143,11 +117,11 @@ const buildUpstreamUrl = (req: VercelRequest): string => {
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'GET') return err(res, 'Method not allowed', 405);
+  if (req.method !== 'GET') return apiError(res, 'Method not allowed', 405);
 
   try {
     const apiKey = process.env.STRIPCASH_API_KEY;
-    if (!apiKey) return err(res, 'Missing STRIPCASH_API_KEY environment variable.', 500);
+    if (!apiKey) return apiError(res, 'Missing STRIPCASH_API_KEY environment variable.', 500);
 
     const upstreamUrl = buildUpstreamUrl(req);
 
@@ -165,11 +139,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       if (!upstreamRes.ok) {
         const detail = await upstreamRes.text();
-        return err(res, `upstream error: ${detail.slice(0, 250)}`, upstreamRes.status);
+        return apiError(res, `upstream error: ${detail.slice(0, 250)}`, upstreamRes.status);
       }
 
       const providerPayload = await upstreamRes.json();
-      normalized = parseModels(providerPayload)
+      normalized = parseProviderModels(providerPayload)
         .map(normalizeModel)
         .filter((item): item is NormalizedModel => Boolean(item))
         .filter((item) => item.isLive);
@@ -185,6 +159,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
     res.status(200).json({ models });
   } catch (error) {
-    return err(res, error instanceof Error ? error.message : 'upstream error', 500);
+    return apiError(res, error instanceof Error ? error.message : 'upstream error', 500);
   }
 }

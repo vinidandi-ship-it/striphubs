@@ -1,34 +1,14 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { deriveCategories } from '../src/lib/categories';
-import { AFFILIATE_ID } from '../src/lib/models';
-import { waitForRateLimit } from '../src/lib/rateLimiter';
+import { AFFILIATE_ID, apiError, deriveCategories, parseProviderModels, waitForRateLimit } from './_shared';
 
 const DEFAULT_ENDPOINT = 'https://go.mavrtracktor.com/api/models';
 
-const err = (res: VercelResponse, message: string, providerStatus = 500) =>
-  res.status(providerStatus >= 400 && providerStatus < 600 ? providerStatus : 500).json({
-    error: true,
-    message,
-    providerStatus
-  });
-
-const parseModels = (payload: unknown): Record<string, unknown>[] => {
-  if (Array.isArray(payload)) return payload as Record<string, unknown>[];
-  if (!payload || typeof payload !== 'object') return [];
-  const raw = payload as Record<string, unknown>;
-  if (Array.isArray(raw.models)) return raw.models as Record<string, unknown>[];
-  if (raw.data && typeof raw.data === 'object' && Array.isArray((raw.data as Record<string, unknown>).models)) {
-    return (raw.data as Record<string, unknown>).models as Record<string, unknown>[];
-  }
-  return [];
-};
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'GET') return err(res, 'Method not allowed', 405);
+  if (req.method !== 'GET') return apiError(res, 'Method not allowed', 405);
 
   try {
     const apiKey = process.env.STRIPCASH_API_KEY;
-    if (!apiKey) return err(res, 'Missing STRIPCASH_API_KEY environment variable.', 500);
+    if (!apiKey) return apiError(res, 'Missing STRIPCASH_API_KEY environment variable.', 500);
 
     const endpoint = process.env.STRIPCHAT_API_ENDPOINT || DEFAULT_ENDPOINT;
     const url = new URL(endpoint);
@@ -48,10 +28,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!upstreamRes.ok) {
       const detail = await upstreamRes.text();
-      return err(res, `upstream error: ${detail.slice(0, 250)}`, upstreamRes.status);
+      return apiError(res, `upstream error: ${detail.slice(0, 250)}`, upstreamRes.status);
     }
 
-    const providerModels = parseModels(await upstreamRes.json());
+    const providerModels = parseProviderModels(await upstreamRes.json());
     const normalized = providerModels.map((model) => ({
       username: String(model.username || ''),
       thumbnail: String(model.snapshotUrl || model.previewUrlThumbSmall || ''),
@@ -65,6 +45,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const categories = deriveCategories(normalized);
     return res.status(200).json({ categories });
   } catch (error) {
-    return err(res, error instanceof Error ? error.message : 'upstream error', 500);
+    return apiError(res, error instanceof Error ? error.message : 'upstream error', 500);
   }
 }

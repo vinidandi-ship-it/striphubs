@@ -1,31 +1,21 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { AFFILIATE_ID } from '../src/lib/models';
-import { deriveCategories } from '../src/lib/categories';
-import { waitForRateLimit } from '../src/lib/rateLimiter';
+import {
+  AFFILIATE_ID,
+  apiError,
+  deriveCategories,
+  parseProviderModels,
+  waitForRateLimit
+} from './_shared';
 
 const SITE_URL = process.env.VITE_SITE_URL || 'https://striphubs.vercel.app';
 const MODELS_ENDPOINT = process.env.STRIPCHAT_API_ENDPOINT || 'https://go.mavrtracktor.com/api/models';
 
 const baseRoutes = ['/', '/live', '/search'];
 
-const parseModels = (payload: unknown): Record<string, unknown>[] => {
-  if (Array.isArray(payload)) return payload as Record<string, unknown>[];
-  if (!payload || typeof payload !== 'object') return [];
-  const raw = payload as Record<string, unknown>;
-  if (Array.isArray(raw.models)) return raw.models as Record<string, unknown>[];
-  if (raw.data && typeof raw.data === 'object' && Array.isArray((raw.data as Record<string, unknown>).models)) {
-    return (raw.data as Record<string, unknown>).models as Record<string, unknown>[];
-  }
-  return [];
-};
-
 export default async function handler(_req: VercelRequest, res: VercelResponse) {
   try {
     const apiKey = process.env.STRIPCASH_API_KEY;
-    if (!apiKey) {
-      res.status(500).send('Missing STRIPCASH_API_KEY');
-      return;
-    }
+    if (!apiKey) return apiError(res, 'Missing STRIPCASH_API_KEY environment variable.', 500);
 
     const url = new URL(MODELS_ENDPOINT);
     url.searchParams.set('userId', AFFILIATE_ID);
@@ -42,7 +32,12 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
       }
     });
 
-    const providerModels = upstreamRes.ok ? parseModels(await upstreamRes.json()) : [];
+    if (!upstreamRes.ok) {
+      const detail = await upstreamRes.text();
+      return apiError(res, `upstream error: ${detail.slice(0, 250)}`, upstreamRes.status);
+    }
+
+    const providerModels = parseProviderModels(await upstreamRes.json());
     const models = providerModels
       .map((item) => String(item.username || '').trim())
       .filter(Boolean)
@@ -87,6 +82,6 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');
     res.status(200).send(xml);
   } catch (error) {
-    res.status(500).send(error instanceof Error ? error.message : 'sitemap error');
+    return apiError(res, error instanceof Error ? error.message : 'sitemap error', 500);
   }
 }
