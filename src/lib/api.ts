@@ -10,7 +10,12 @@ type CategoryResponse = {
 };
 
 const request = async <T>(path: string): Promise<T> => {
-  const response = await fetch(path, {
+  // In development, API routes from /api/ don't work with Vite dev server
+  // We need to use a different approach or mock data
+  const isDev = import.meta.env.DEV;
+  const url = isDev ? `/api-mock${path}` : path;
+  
+  const response = await fetch(url, {
     method: 'GET',
     headers: { Accept: 'application/json' }
   });

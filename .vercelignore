@@ -1,0 +1,16 @@
+# Ignore everything (folders and files) on root only
+/*
+!api
+!src
+!public
+!scripts
+!vercel.json
+!package.json
+!postcss.config.js
+!tailwind.config.js
+!tsconfig.json
+!vite.config.ts
+!index.html
+!README.md
+!.env.example
+!.gitignore
