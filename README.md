@@ -1,6 +1,6 @@
 # StripHubs
 
-Production-ready React + TypeScript + Vite web app for a live cam directory with Stripchat affiliate monetization.
+Production-ready React + TypeScript + Vite web app for a live cam directory with Vercel serverless proxy and affiliate monetization.
 
 ## Tech Stack
 - React 18
@@ -8,7 +8,6 @@ Production-ready React + TypeScript + Vite web app for a live cam directory with
 - Vite
 - Tailwind CSS
 - React Router DOM
-- Multilingual UI (EN, IT, ES, FR, DE, PT)
 
 ## Local Development
 Prerequisites:
@@ -39,7 +38,6 @@ npm run preview
 - `/`
 - `/live`
 - `/cam/:category`
-- `/tag/:tag`
 - `/model/:name`
 - `/search`
 - `/privacy`
@@ -60,7 +58,17 @@ Affiliate ID used globally:
 Model outbound links follow:
 `https://stripchat.com/{modelname}?userId=<AFFILIATE_ID>`
 
-Widget embed is injected dynamically via `StripchatWidget` component.
+### Serverless APIs
+- `GET /api/models` live models list (proxy to aggregator API)
+- `GET /api/model?name={username}` single model data
+- `GET /api/categories` computed category counts
+- `GET /api/statistics?...` proxy to Stripcash statistics endpoint
+
+### Required Environment Variables
+- `STRIPCASH_API_KEY` (Bearer token for models API)
+- `STRIPCASH_STATS_API_KEY` (optional, dedicated token for statistics API; falls back to `STRIPCASH_API_KEY`)
+- `STRIPCHAT_API_ENDPOINT` (optional override; default `https://go.mavrtracktor.com/api/models`)
+- `VITE_SITE_URL` (recommended)
 
 ## Vercel Deploy
 1. Push repository to GitHub.
@@ -68,7 +76,7 @@ Widget embed is injected dynamically via `StripchatWidget` component.
 3. Framework preset: `Vite`.
 4. Build command: `npm run build`.
 5. Output directory: `dist`.
-6. Optional env: `VITE_SITE_URL=https://your-domain.com`.
+6. Add environment variables listed above.
 7. Deploy.
 
 SPA routing is handled through `vercel.json` rewrites.
@@ -84,6 +92,5 @@ SPA routing is handled through `vercel.json` rewrites.
 - [ ] Core pages load correctly on mobile and desktop
 
 ## Notes
-- Fake model data is generated from `src/lib/models.ts` to keep the UI functional without external APIs.
-- Real-time sections are rendered through the Stripchat widget feed.
+- Live models and statistics are fetched server-side to avoid exposing API keys in the browser.
 - This project is intended for adults only (18+).
