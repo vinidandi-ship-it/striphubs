@@ -49,6 +49,8 @@ const buildUpstreamUrl = (req: VercelRequest): string => {
   const endpoint = process.env.STRIPCHAT_API_ENDPOINT || DEFAULT_ENDPOINT;
   const url = new URL(endpoint);
   url.searchParams.set('userId', AFFILIATE_ID);
+  const hasSearch = Boolean((req.query.search as string | undefined)?.trim());
+  const hasCategory = Boolean((req.query.category as string | undefined)?.trim());
 
   const pass = ['limit', 'offset', 'tag', 'modelsList', 'excludeModelsList', 'strict'];
   for (const key of pass) {
@@ -62,7 +64,15 @@ const buildUpstreamUrl = (req: VercelRequest): string => {
 
   if (!url.searchParams.has('tag')) {
     const category = (req.query.category as string | undefined)?.toLowerCase() ?? '';
-    url.searchParams.set('tag', CATEGORY_TAG_MAP[category] || 'girls');
+    if (hasCategory) {
+      url.searchParams.set('tag', CATEGORY_TAG_MAP[category] || 'girls');
+    } else {
+      url.searchParams.set('tag', 'girls,couples,trans,men');
+    }
+  }
+
+  if (hasSearch && !url.searchParams.has('limit')) {
+    url.searchParams.set('limit', '1000');
   }
 
   if (!url.searchParams.has('strict')) url.searchParams.set('strict', '1');

@@ -19,7 +19,7 @@ export default function Search() {
 
   useEffect(() => {
     setLoading(true);
-    void api.getModels({ search: query, limit: 96 })
+    void api.getModels({ search: query, limit: query ? 1000 : 96 })
       .then((data) => setModels(data.models))
       .catch((err) => setError(err instanceof Error ? err.message : 'Search failed'))
       .finally(() => setLoading(false));
