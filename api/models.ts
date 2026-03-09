@@ -1,217 +1,190 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { waitForRateLimit } from '../src/lib/rateLimiter';
 
 const AFFILIATE_ID = 'd28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881';
-const CACHE_TTL_MS = 30_000;
-const MIN_UPSTREAM_INTERVAL_MS = 5_000;
+const CACHE_TTL_MS = 60_000;
 const DEFAULT_ENDPOINT = 'https://go.mavrtracktor.com/api/models';
 
-type LiveModel = {
+type ProviderModel = Record<string, unknown>;
+
+type NormalizedModel = {
   username: string;
   thumbnail: string;
   viewers: number;
   tags: string[];
   country: string;
+  category: string;
   isLive: boolean;
-  clickUrl?: string;
+  clickUrl: string;
 };
 
-let cache: { key: string; data: LiveModel[]; expiresAt: number } | null = null;
-let lastUpstreamRequestAt = 0;
+let cache: { key: string; expiresAt: number; models: NormalizedModel[] } | null = null;
 
-const CATEGORY_MAP: Record<string, string[]> = {
-  milf: ['milf', 'milfs', 'mature'],
-  blonde: ['blonde'],
-  asian: ['asian'],
-  brunette: ['brunette'],
-  couple: ['couple', 'couples'],
-  trans: ['trans', 'transgender']
-};
+const err = (res: VercelResponse, message: string, providerStatus = 500) =>
+  res.status(providerStatus >= 400 && providerStatus < 600 ? providerStatus : 500).json({
+    error: true,
+    message,
+    providerStatus
+  });
 
-const TAG_BY_CATEGORY: Record<string, string | undefined> = {
-  milf: 'girls/milfs',
-  blonde: 'girls/blonde',
-  asian: 'girls/asian',
-  brunette: 'girls/brunette',
-  couple: 'couples',
-  trans: 'trans'
-};
-
-const PASS_THROUGH_PARAMS = new Set([
-  'modelsList',
-  'excludeModelsList',
-  'tag',
-  'mlBoost',
-  'limit',
-  'isNew',
-  'broadcastHD',
-  'broadcastVR',
-  'broadcastMobile',
-  'goalEnabled',
-  'isMlAnal',
-  'isMlBlowjob',
-  'profileInterestedIn',
-  'profileBodyType',
-  'profileSpecifics',
-  'profileEthnicity',
-  'profileHairColor',
-  'profileEyesColor',
-  'profileSubculture',
-  'modelsLanguage',
-  'modelsCountry',
-  'aspectRatio',
-  'streamOrientation',
-  'strict'
-]);
-
+const toString = (value: unknown): string => (typeof value === 'string' ? value.trim() : '');
 const toNumber = (value: unknown): number => {
-  const num = Number(value ?? 0);
-  return Number.isFinite(num) ? num : 0;
+  const n = Number(value ?? 0);
+  return Number.isFinite(n) ? n : 0;
 };
 
-const toString = (value: unknown, fallback = ''): string =>
-  typeof value === 'string' && value.trim() ? value.trim() : fallback;
-
-const extractArray = (payload: unknown): unknown[] => {
-  if (Array.isArray(payload)) return payload;
+const parseModels = (payload: unknown): ProviderModel[] => {
+  if (Array.isArray(payload)) return payload as ProviderModel[];
   if (!payload || typeof payload !== 'object') return [];
 
-  const obj = payload as Record<string, unknown>;
-  const candidates = [obj.models, obj.data, obj.results, obj.items];
-  for (const candidate of candidates) {
-    if (Array.isArray(candidate)) return candidate;
-    if (candidate && typeof candidate === 'object' && Array.isArray((candidate as Record<string, unknown>).models)) {
-      return (candidate as Record<string, unknown>).models as unknown[];
-    }
+  const raw = payload as Record<string, unknown>;
+  if (Array.isArray(raw.models)) return raw.models as ProviderModel[];
+  if (raw.data && typeof raw.data === 'object' && Array.isArray((raw.data as Record<string, unknown>).models)) {
+    return (raw.data as Record<string, unknown>).models as ProviderModel[];
   }
   return [];
 };
 
-const normalizeModel = (item: unknown): LiveModel | null => {
-  if (!item || typeof item !== 'object') return null;
-  const raw = item as Record<string, unknown>;
+const detectCategory = (tags: string[]): string => {
+  const joined = tags.join(',').toLowerCase();
+  if (/milf|milfs|mature/.test(joined)) return 'milf';
+  if (/blonde/.test(joined)) return 'blonde';
+  if (/asian/.test(joined)) return 'asian';
+  if (/brunette/.test(joined)) return 'brunette';
+  if (/couple|couples/.test(joined)) return 'couple';
+  if (/trans/.test(joined)) return 'trans';
+  return 'general';
+};
 
-  const username = toString(raw.username || raw.user || raw.model_name || raw.nick);
+const normalizeModel = (model: ProviderModel): NormalizedModel | null => {
+  const username = toString(model.username || model.user || model.model_name || model.nick);
   if (!username) return null;
 
-  const thumb =
-    toString(raw.snapshotUrl) ||
-    toString(raw.popularSnapshotUrl) ||
-    toString(raw.previewUrlThumbSmall) ||
-    toString(raw.thumbnail) ||
-    toString(raw.image_url) ||
-    toString(raw.preview) ||
-    toString(raw.avatar_url) ||
-    `https://picsum.photos/seed/${encodeURIComponent(username)}/600/760`;
-
-  const rawTags = Array.isArray(raw.tags)
-    ? raw.tags
-    : typeof raw.tags === 'string'
-      ? raw.tags.split(',')
+  const tags = Array.isArray(model.tags)
+    ? model.tags.map((item) => String(item).toLowerCase())
+    : typeof model.tags === 'string'
+      ? model.tags.split(',').map((item) => item.trim().toLowerCase()).filter(Boolean)
       : [];
+
+  const isLive = ['public', 'groupShow', 'p2p', 'private'].includes(toString(model.status)) || Boolean(model.isLive ?? model.is_live ?? true);
 
   return {
     username,
-    thumbnail: thumb,
-    viewers: toNumber(raw.viewersCount ?? raw.viewers ?? raw.users_count ?? raw.members_count ?? raw.numUsers),
-    tags: rawTags.map((tag) => String(tag).trim().toLowerCase()).filter(Boolean),
-    country: toString(raw.modelsCountry || raw.country || raw.country_code || raw.location || 'N/A').toUpperCase(),
-    isLive: ['public', 'groupShow', 'p2p', 'private'].includes(toString(raw.status)) || Boolean(raw.isLive ?? raw.is_live ?? true),
-    clickUrl: toString(raw.clickUrl)
+    thumbnail:
+      toString(model.snapshotUrl) ||
+      toString(model.popularSnapshotUrl) ||
+      toString(model.previewUrlThumbSmall) ||
+      toString(model.thumbnail) ||
+      `https://picsum.photos/seed/${encodeURIComponent(username)}/640/800`,
+    viewers: toNumber(model.viewersCount ?? model.viewers ?? model.users_count),
+    tags,
+    country: (toString(model.modelsCountry || model.country || model.country_code) || 'N/A').toUpperCase(),
+    category: detectCategory(tags),
+    isLive,
+    clickUrl: toString(model.clickUrl)
   };
 };
 
-const applyFilters = (models: LiveModel[], req: VercelRequest): LiveModel[] => {
-  const category = toString(req.query.category).toLowerCase();
+const filterModels = (models: NormalizedModel[], req: VercelRequest): NormalizedModel[] => {
   const search = toString(req.query.search).toLowerCase();
-  const limit = Math.min(Math.max(toNumber(req.query.limit) || 48, 1), 120);
+  const category = toString(req.query.category).toLowerCase();
+  const tag = toString(req.query.tag).toLowerCase();
+  const limit = Math.min(Math.max(toNumber(req.query.limit) || 48, 1), 1000);
+  const offset = Math.max(toNumber(req.query.offset) || 0, 0);
 
-  let filtered = models;
+  let out = models;
 
+  if (category) out = out.filter((m) => m.category === category);
+  if (tag) {
+    const required = tag.split(',').map((v) => v.trim()).filter(Boolean);
+    out = out.filter((m) => required.some((needle) => m.tags.some((t) => t.includes(needle))));
+  }
   if (search) {
-    filtered = filtered.filter((model) =>
-      model.username.toLowerCase().includes(search) ||
-      model.country.toLowerCase().includes(search) ||
-      model.tags.some((tag) => tag.includes(search))
+    out = out.filter((m) =>
+      m.username.toLowerCase().includes(search) ||
+      m.country.toLowerCase().includes(search) ||
+      m.tags.some((t) => t.includes(search))
     );
   }
 
-  return filtered.sort((a, b) => b.viewers - a.viewers).slice(0, limit);
+  return out.sort((a, b) => b.viewers - a.viewers).slice(offset, offset + limit);
+};
+
+const buildUpstreamUrl = (req: VercelRequest): string => {
+  const endpoint = process.env.STRIPCHAT_API_ENDPOINT || DEFAULT_ENDPOINT;
+  const url = new URL(endpoint);
+  url.searchParams.set('userId', AFFILIATE_ID);
+
+  const pass = ['limit', 'offset', 'tag', 'modelsList', 'excludeModelsList', 'strict'];
+  for (const key of pass) {
+    const value = req.query[key];
+    if (Array.isArray(value)) {
+      for (const item of value) url.searchParams.append(key, String(item));
+    } else if (value !== undefined && value !== null && String(value).trim()) {
+      url.searchParams.set(key, String(value));
+    }
+  }
+
+  if (!url.searchParams.has('tag')) {
+    const category = toString(req.query.category).toLowerCase();
+    const categoryTag: Record<string, string> = {
+      milf: 'girls/milfs',
+      blonde: 'girls/blonde',
+      asian: 'girls/asian',
+      brunette: 'girls/brunette',
+      couple: 'couples',
+      trans: 'trans'
+    };
+    url.searchParams.set('tag', categoryTag[category] || 'girls');
+  }
+
+  if (!url.searchParams.has('strict')) url.searchParams.set('strict', '1');
+  return url.toString();
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'GET') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
-  }
+  if (req.method !== 'GET') return err(res, 'Method not allowed', 405);
 
   try {
-    const endpoint = process.env.STRIPCHAT_API_ENDPOINT || DEFAULT_ENDPOINT;
-    const upstream = new URL(endpoint);
-    upstream.searchParams.set('userId', AFFILIATE_ID);
-
-    const category = toString(req.query.category).toLowerCase();
-    const tagFromCategory = category ? TAG_BY_CATEGORY[category] : undefined;
-    const hasTag = typeof req.query.tag === 'string' && req.query.tag.trim().length > 0;
-
-    for (const [key, value] of Object.entries(req.query)) {
-      if (!PASS_THROUGH_PARAMS.has(key)) continue;
-      if (Array.isArray(value)) {
-        for (const item of value) upstream.searchParams.append(key, String(item));
-      } else if (value !== undefined && value !== null && String(value).trim().length > 0) {
-        upstream.searchParams.set(key, String(value));
-      }
-    }
-
-    if (!hasTag) {
-      upstream.searchParams.set('tag', tagFromCategory || 'girls');
-    }
-    if (!upstream.searchParams.has('strict')) {
-      upstream.searchParams.set('strict', '1');
-    }
-
     const apiKey = process.env.STRIPCASH_API_KEY;
-    if (!apiKey) throw new Error('Missing STRIPCASH_API_KEY environment variable.');
+    if (!apiKey) return err(res, 'Missing STRIPCASH_API_KEY environment variable.', 500);
 
-    const upstreamKey = upstream.toString();
-    let models: LiveModel[];
-    if (cache && cache.key === upstreamKey && cache.expiresAt > Date.now()) {
-      models = cache.data;
+    const upstreamUrl = buildUpstreamUrl(req);
+
+    let normalized: NormalizedModel[];
+    if (cache && cache.key === upstreamUrl && cache.expiresAt > Date.now()) {
+      normalized = cache.models;
     } else {
-      const delta = Date.now() - lastUpstreamRequestAt;
-      if (delta < MIN_UPSTREAM_INTERVAL_MS) {
-        await new Promise((resolve) => setTimeout(resolve, MIN_UPSTREAM_INTERVAL_MS - delta));
-      }
-
-      const response = await fetch(upstreamKey, {
+      await waitForRateLimit(5000);
+      const upstreamRes = await fetch(upstreamUrl, {
         headers: {
           Accept: 'application/json',
           Authorization: `Bearer ${apiKey}`
         }
       });
-      lastUpstreamRequestAt = Date.now();
-      if (!response.ok) throw new Error(`Provider API failed with status ${response.status}`);
 
-      const payload = (await response.json()) as unknown;
-      models = extractArray(payload)
+      if (!upstreamRes.ok) {
+        const detail = await upstreamRes.text();
+        return err(res, `upstream error: ${detail.slice(0, 250)}`, upstreamRes.status);
+      }
+
+      const providerPayload = await upstreamRes.json();
+      normalized = parseModels(providerPayload)
         .map(normalizeModel)
-        .filter((model): model is LiveModel => Boolean(model))
-        .filter((model) => model.isLive);
+        .filter((item): item is NormalizedModel => Boolean(item))
+        .filter((item) => item.isLive);
 
-      cache = { key: upstreamKey, data: models, expiresAt: Date.now() + CACHE_TTL_MS };
+      cache = {
+        key: upstreamUrl,
+        expiresAt: Date.now() + CACHE_TTL_MS,
+        models: normalized
+      };
     }
 
-    const output = applyFilters(models, req);
-
+    const models = filterModels(normalized, req);
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
-    res.status(200).json({
-      source: 'proxy',
-      count: output.length,
-      models: output
-    });
+    res.status(200).json({ models });
   } catch (error) {
-    res.status(500).json({
-      error: 'Failed to fetch live models',
-      message: error instanceof Error ? error.message : 'Unknown error'
-    });
+    return err(res, error instanceof Error ? error.message : 'upstream error', 500);
   }
 }

@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AgeVerification from './components/AgeVerification';
+import Analytics from './components/Analytics';
 import CookieConsent from './components/CookieConsent';
 import Footer from './components/Footer';
 import Header from './components/Header';
@@ -10,6 +11,7 @@ import { upsertJsonLd } from './lib/seo';
 const Home = lazy(() => import('./pages/Home'));
 const Live = lazy(() => import('./pages/Live'));
 const Category = lazy(() => import('./pages/Category'));
+const Tag = lazy(() => import('./pages/Tag'));
 const ModelPage = lazy(() => import('./pages/Model'));
 const Search = lazy(() => import('./pages/Search'));
 const Privacy = lazy(() => import('./pages/Privacy'));
@@ -40,7 +42,8 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/live" element={<Live />} />
             <Route path="/cam/:category" element={<Category />} />
-            <Route path="/model/:name" element={<ModelPage />} />
+            <Route path="/tag/:tag" element={<Tag />} />
+            <Route path="/model/:username" element={<ModelPage />} />
             <Route path="/search" element={<Search />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
@@ -50,6 +53,7 @@ export default function App() {
         </Suspense>
       </main>
       <Footer />
+      <Analytics />
       <AgeVerification />
       <CookieConsent />
     </div>

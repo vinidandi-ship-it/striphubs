@@ -10,6 +10,7 @@ export type Model = {
   viewers: number;
   tags: string[];
   country: string;
+  category: string;
   isLive: boolean;
   clickUrl?: string;
 };

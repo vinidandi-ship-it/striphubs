@@ -21,6 +21,26 @@ const ensureCanonical = (): HTMLLinkElement => {
   return el;
 };
 
+export const generateTitle = (page: string, data?: Record<string, string>): string => {
+  if (page === 'home') return 'Live Cam Models - Free Webcam Shows';
+  if (page === 'live') return 'All Live Cam Models';
+  if (page === 'category') return `Watch Live ${(data?.category || '').toUpperCase()} Cam Models`;
+  if (page === 'model') return `Watch ${data?.username || 'Model'} Live Cam Show`;
+  if (page === 'search') return 'Search Live Cam Models';
+  if (page === 'tag') return `Live Cam Tag: ${data?.tag || ''}`;
+  return SITE_NAME;
+};
+
+export const generateDescription = (page: string, data?: Record<string, string>): string => {
+  if (page === 'home') return 'Discover live cam models with fast filters and real-time listings.';
+  if (page === 'live') return 'Browse all currently online live cam performers.';
+  if (page === 'category') return `Explore live ${data?.category || ''} cam models.`;
+  if (page === 'model') return `Watch ${data?.username || 'this model'} with one-click access.`;
+  if (page === 'search') return 'Search cam models by username, tags, and country.';
+  if (page === 'tag') return `Browse live models for tag ${data?.tag || ''}.`;
+  return 'Live cam directory.';
+};
+
 export const useSEO = (title: string, description: string, path: string) => {
   useEffect(() => {
     document.title = `${title} | ${SITE_NAME}`;

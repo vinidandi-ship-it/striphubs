@@ -1,7 +1,7 @@
 import type { Model } from './models';
 
 type ModelsResponse = {
-  count: number;
+  count?: number;
   models: Model[];
 };
 

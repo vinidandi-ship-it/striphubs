@@ -3,30 +3,26 @@ import { Link } from 'react-router-dom';
 import CategoryCard from '../components/CategoryCard';
 import ModelGrid from '../components/ModelGrid';
 import { api } from '../lib/api';
-import { CATEGORIES, Model, categoryName } from '../lib/models';
-import { useSEO } from '../lib/seo';
+import { Model } from '../lib/models';
+import { deriveCategories } from '../lib/categories';
+import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 
 export default function Home() {
   const [models, setModels] = useState<Model[]>([]);
-  const [categories, setCategories] = useState<{ slug: string; name: string; count: number }[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useSEO('Live Cam Directory', 'Live cam directory with trending models and categories.', '/');
+  useSEO(generateTitle('home'), generateDescription('home'), '/');
 
   useEffect(() => {
+    setLoading(true);
     void api.getModels({ limit: 120, tag: 'girls,couples,trans,men' })
-      .then((data) => {
-        setModels(data.models.slice(0, 24));
-
-        const computed = CATEGORIES.map((slug) => ({ slug, name: categoryName(slug), count: undefined as number | undefined }));
-        setCategories(computed);
-      })
-      .catch((err) => {
-        setError(err instanceof Error ? err.message : 'Failed to load models');
-        setCategories(CATEGORIES.map((slug) => ({ slug, name: categoryName(slug), count: 0 })));
-      });
+      .then((data) => setModels(data.models.slice(0, 24)))
+      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load models'))
+      .finally(() => setLoading(false));
   }, []);
 
+  const categories = useMemo(() => deriveCategories(models).slice(0, 6), [models]);
   const trending = useMemo(() => [...models].sort((a, b) => b.viewers - a.viewers).slice(0, 8), [models]);
 
   return (
@@ -44,7 +40,7 @@ export default function Home() {
       <section>
         <h2 className="mb-4 text-2xl font-bold text-white">Live Models</h2>
         {error ? <p className="mb-3 text-sm text-red-400">{error}</p> : null}
-        <ModelGrid models={models} listName="Home Live Models" />
+        <ModelGrid models={models} loading={loading} listName="Home Live Models" />
       </section>
 
       <section>
@@ -58,7 +54,7 @@ export default function Home() {
 
       <section>
         <h2 className="mb-4 text-2xl font-bold text-white">Trending Models</h2>
-        <ModelGrid models={trending} listName="Trending Models" />
+        <ModelGrid models={trending} loading={loading} listName="Trending Models" />
       </section>
     </div>
   );
