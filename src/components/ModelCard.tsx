@@ -6,13 +6,15 @@ export default function ModelCard({ model }: { model: Model }) {
     <article className="overflow-hidden rounded-2xl border border-border bg-panel shadow-lg">
       <Link to={`/model/${encodeURIComponent(model.username)}`} className="block focus:outline-none focus:ring-2 focus:ring-accent" aria-label={`Open ${model.username} profile`}>
         <div className="relative">
-          <img
-            src={model.thumbnail}
-            alt={`${model.username} live preview`}
-            loading="lazy"
-            decoding="async"
-            className="h-64 w-full object-cover"
-          />
+          <div className="aspect-[3/4] w-full overflow-hidden rounded-t-2xl">
+            <img
+              src={model.thumbnail}
+              alt={`${model.username} live preview`}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover"
+            />
+          </div>
           <span className="absolute left-3 top-3 rounded-full bg-accent px-2 py-1 text-[11px] font-bold text-white">LIVE</span>
         </div>
       </Link>

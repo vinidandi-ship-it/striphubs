@@ -1,39 +1,20 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { apiError, waitForRateLimit } from './shared';
 
-const AFFILIATE_ID = 'd28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881';
 const STATS_ENDPOINT = 'https://api.stripcash.com/external/v1/user/statistics';
-
-let nextAllowedAt = 0;
-let queue: Promise<void> = Promise.resolve();
-
-const waitForRateLimit = (intervalMs = 5000): Promise<void> => {
-  queue = queue.then(async () => {
-    const now = Date.now();
-    const waitMs = Math.max(0, nextAllowedAt - now);
-    if (waitMs > 0) await new Promise((resolve) => setTimeout(resolve, waitMs));
-    nextAllowedAt = Date.now() + intervalMs;
-  });
-  return queue;
-};
-
-const apiError = (res: VercelResponse, message: string, providerStatus = 500) =>
-  res.status(providerStatus >= 400 && providerStatus < 600 ? providerStatus : 500).json({
-    error: true,
-    message,
-    providerStatus
-  });
 
 const extractNumber = (input: unknown, fallback = 0): number => {
   const n = Number(input);
   return Number.isFinite(n) ? n : fallback;
 };
 
+const ALLOWED_PERIODS = new Set(['today', 'week', 'month', 'all']);
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') return apiError(res, 'Method not allowed', 405);
 
-  const period = String(req.query.period || 'today');
-  const allowedPeriods = new Set(['today', 'week', 'month', 'all']);
-  if (!allowedPeriods.has(period)) return apiError(res, 'Invalid period', 400);
+  const period = (req.query.period as string | undefined) || 'today';
+  if (!ALLOWED_PERIODS.has(period)) return apiError(res, 'Invalid period', 400);
 
   try {
     const apiKey = process.env.STRIPCASH_STATS_API_KEY || process.env.STRIPCASH_API_KEY;
@@ -42,7 +23,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     await waitForRateLimit(5000);
 
     const upstream = new URL(STATS_ENDPOINT);
-    upstream.searchParams.set('userId', AFFILIATE_ID);
+    upstream.searchParams.set('period', period);
 
     const response = await fetch(upstream.toString(), {
       headers: {

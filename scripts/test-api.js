@@ -33,7 +33,8 @@ const check = async (name, url, validate) => {
   const modelOk = await check('model', `/api/model?name=${encodeURIComponent(first || 'unknown')}`, (b) => Boolean(b.username || b.error));
   const categoriesOk = await check('categories', '/api/categories', (b) => Array.isArray(b.categories));
   const statsOk = await check('statistics', '/api/statistics?period=today', (b) => typeof b.clicks === 'number' || b.error === true);
+  const healthOk = await check('health', '/api/health', (b) => b?.status === 'ok' && b?.api === true);
 
-  const failed = [modelsOk, modelOk, categoriesOk, statsOk].filter((x) => !x).length;
+  const failed = [modelsOk, modelOk, categoriesOk, statsOk, healthOk].filter((x) => !x).length;
   process.exit(failed ? 1 : 0);
 })();
