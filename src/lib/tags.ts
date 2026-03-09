@@ -1,4 +1,10 @@
 export const tags = [
+  'italian',
+  'colombian',
+  'ukrainian',
+  'japanese',
+  'indian',
+  'arab',
   'tattoo',
   'big-boobs',
   'petite',
