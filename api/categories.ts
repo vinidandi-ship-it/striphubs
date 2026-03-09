@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { AFFILIATE_ID, apiError, deriveCategories, parseProviderModels, waitForRateLimit } from './_shared';
+import { AFFILIATE_ID, apiError, deriveCategories, parseProviderModels, waitForRateLimit } from './shared';
 
 const DEFAULT_ENDPOINT = 'https://go.mavrtracktor.com/api/models';
 
