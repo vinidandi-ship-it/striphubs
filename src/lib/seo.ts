@@ -1,49 +1,46 @@
 import { useEffect } from 'react';
-import { SITE_URL, SITE_NAME } from './constants';
+import { SITE_NAME, SITE_URL } from './models';
 
 const ensureMeta = (name: string): HTMLMetaElement => {
-  let element = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
-  if (!element) {
-    element = document.createElement('meta');
-    element.setAttribute('name', name);
-    document.head.appendChild(element);
+  let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
+  if (!el) {
+    el = document.createElement('meta');
+    el.name = name;
+    document.head.appendChild(el);
   }
-  return element;
+  return el;
 };
 
 const ensureCanonical = (): HTMLLinkElement => {
-  let element = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
-  if (!element) {
-    element = document.createElement('link');
-    element.setAttribute('rel', 'canonical');
-    document.head.appendChild(element);
+  let el = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+  if (!el) {
+    el = document.createElement('link');
+    el.rel = 'canonical';
+    document.head.appendChild(el);
   }
-  return element;
+  return el;
 };
 
-export const injectJsonLd = (id: string, data: Record<string, unknown>): void => {
-  const existing = document.getElementById(id);
-  if (existing) {
-    existing.textContent = JSON.stringify(data);
-    return;
-  }
-
-  const script = document.createElement('script');
-  script.type = 'application/ld+json';
-  script.id = id;
-  script.textContent = JSON.stringify(data);
-  document.head.appendChild(script);
-};
-
-export const removeJsonLd = (id: string): void => {
-  const element = document.getElementById(id);
-  if (element) element.remove();
-};
-
-export const useSEO = (title: string, description: string, canonicalPath: string): void => {
+export const useSEO = (title: string, description: string, path: string) => {
   useEffect(() => {
     document.title = `${title} | ${SITE_NAME}`;
     ensureMeta('description').setAttribute('content', description);
-    ensureCanonical().setAttribute('href', `${SITE_URL}${canonicalPath}`);
-  }, [title, description, canonicalPath]);
+    ensureCanonical().setAttribute('href', `${SITE_URL}${path}`);
+  }, [title, description, path]);
+};
+
+export const upsertJsonLd = (id: string, payload: Record<string, unknown>) => {
+  let node = document.getElementById(id) as HTMLScriptElement | null;
+  if (!node) {
+    node = document.createElement('script');
+    node.id = id;
+    node.type = 'application/ld+json';
+    document.head.appendChild(node);
+  }
+  node.text = JSON.stringify(payload);
+};
+
+export const removeJsonLd = (id: string) => {
+  const node = document.getElementById(id);
+  if (node) node.remove();
 };

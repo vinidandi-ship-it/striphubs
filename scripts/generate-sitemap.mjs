@@ -1,30 +1,29 @@
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const siteUrl = process.env.SITE_URL || 'https://striphubs.vercel.app';
-const today = new Date().toISOString();
+const now = new Date().toISOString();
 const categories = ['milf', 'blonde', 'asian', 'brunette', 'couple', 'trans'];
-const tags = ['new', 'teen', 'big-boobs', 'latina', 'featured', 'top'];
 
-const urls = [
+const routes = [
   '/',
   '/live',
   '/search',
   '/privacy',
   '/terms',
   '/cookies',
-  ...categories.map((item) => `/cam/${item}`),
-  ...tags.map((item) => `/tag/${item}`)
+  ...categories.map((category) => `/cam/${category}`)
 ];
 
-const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
-  .map(
-    (path) =>
-      `  <url>\n    <loc>${siteUrl}${path}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>${path === '/' ? '1.0' : '0.8'}</priority>\n  </url>`
-  )
-  .join('\n')}\n</urlset>\n`;
+const body = routes
+  .map((route) => {
+    const priority = route === '/' ? '1.0' : '0.8';
+    return `  <url>\n    <loc>${siteUrl}${route}</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>hourly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+  })
+  .join('\n');
 
-const publicDir = resolve(process.cwd(), 'public');
-mkdirSync(publicDir, { recursive: true });
-writeFileSync(resolve(publicDir, 'sitemap.xml'), xml);
-console.log('Sitemap generated at public/sitemap.xml');
+const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+
+mkdirSync(resolve(process.cwd(), 'public'), { recursive: true });
+writeFileSync(resolve(process.cwd(), 'public', 'sitemap.xml'), xml);
+console.log('Generated public/sitemap.xml');

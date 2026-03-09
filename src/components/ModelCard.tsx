@@ -1,40 +1,39 @@
 import { Link } from 'react-router-dom';
-import { Model, getModelLink } from '../lib/models';
-import { useI18n } from '../lib/i18n';
+import { Model, watchLiveUrl } from '../lib/models';
 
-type ModelCardProps = {
-  model: Model;
-};
-
-export default function ModelCard({ model }: ModelCardProps) {
-  const { t } = useI18n();
-
+export default function ModelCard({ model }: { model: Model }) {
   return (
-    <article className="card-glow fade-in overflow-hidden rounded-2xl border border-border bg-panel/90">
-      <Link to={`/model/${encodeURIComponent(model.name)}`} className="block">
+    <article className="overflow-hidden rounded-2xl border border-border bg-panel shadow-lg">
+      <Link to={`/model/${encodeURIComponent(model.username)}`} className="block focus:outline-none focus:ring-2 focus:ring-accent" aria-label={`Open ${model.username} profile`}>
         <div className="relative">
           <img
             src={model.thumbnail}
-            alt={model.name}
-            className="h-64 w-full object-cover"
+            alt={`${model.username} live preview`}
             loading="lazy"
             decoding="async"
+            className="h-64 w-full object-cover"
           />
-          <span className="absolute left-3 top-3 rounded-full bg-accent px-2 py-1 text-xs font-bold text-white">{t('modelLive')}</span>
+          <span className="absolute left-3 top-3 rounded-full bg-accent px-2 py-1 text-[11px] font-bold text-white">LIVE</span>
         </div>
       </Link>
       <div className="space-y-3 p-4">
         <div className="flex items-center justify-between gap-3">
-          <h3 className="truncate text-base font-semibold">{model.name}</h3>
-          <span className="text-xs text-zinc-400">{model.viewers.toLocaleString()} {t('modelWatching')}</span>
+          <h3 className="truncate text-base font-semibold text-white">{model.username}</h3>
+          <span className="text-xs text-zinc-400">{model.viewers.toLocaleString()} viewers</span>
+        </div>
+        <div className="flex flex-wrap gap-1">
+          {model.tags.slice(0, 3).map((tag) => (
+            <span key={tag} className="rounded-full bg-zinc-800 px-2 py-1 text-[11px] text-zinc-300">#{tag}</span>
+          ))}
         </div>
         <a
-          href={getModelLink(model.name)}
+          href={model.clickUrl || watchLiveUrl(model.username)}
           target="_blank"
           rel="noopener noreferrer sponsored"
-          className="block rounded-full bg-accent px-3 py-2 text-center text-sm font-bold text-white transition hover:brightness-110"
+          className="block rounded-full bg-accent px-3 py-2 text-center text-sm font-bold text-white"
+          aria-label={`Watch ${model.username} live`}
         >
-          {t('modelWatch')}
+          Watch Live
         </a>
       </div>
     </article>
