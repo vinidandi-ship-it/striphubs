@@ -21,7 +21,7 @@ export default function Home() {
 
   useEffect(() => {
     setLoading(true);
-    void api.getModels({ limit: HOME_LIVE_LIMIT, tag: 'girls,couples,trans,men' })
+    void api.getModels({ limit: HOME_LIVE_LIMIT })
       .then((data) => setModels(data.models))
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load models'))
       .finally(() => setLoading(false));
