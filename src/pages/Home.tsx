@@ -63,8 +63,8 @@ export default function Home() {
     <div className="space-y-12">
       <section className="rounded-3xl border border-border bg-gradient-to-br from-zinc-900 to-zinc-950 p-8">
         <p className="inline-flex rounded-full bg-accent/20 px-3 py-1 text-xs font-semibold text-accent">Live now</p>
-        <h1 className="mt-4 max-w-3xl text-3xl font-extrabold text-white sm:text-5xl">Find live cam models instantly with a custom high-speed directory.</h1>
-        <p className="mt-4 max-w-2xl text-zinc-300">Explore top categories, trending performers, and live viewer activity from one responsive platform.</p>
+        <h1 className="mt-4 max-w-4xl text-3xl font-extrabold text-white sm:text-5xl">All live cams in homepage, gia divise per categoria.</h1>
+        <p className="mt-4 max-w-3xl text-zinc-300">La home mostra subito le cam reali delle categorie principali. Niente pagine vuote, niente soli pulsanti: ogni blocco pesca dal feed live e apre la directory completa della categoria.</p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link to="/live" className="rounded-full bg-accent px-6 py-3 font-semibold text-white">Explore Live</Link>
           <Link to="/cam/milf" className="rounded-full border border-border bg-zinc-900 px-6 py-3 font-semibold text-zinc-200">Browse Categories</Link>
@@ -78,20 +78,6 @@ export default function Home() {
       </section>
 
       <section>
-        <h2 className="mb-4 text-2xl font-bold text-white">Popular Categories</h2>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-          {categories.map((category) => (
-            <CategoryCard key={category.slug} slug={category.slug} name={category.name} count={category.count} />
-          ))}
-        </div>
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-2xl font-bold text-white">Trending Models</h2>
-        <ModelGrid models={trending} loading={loading} listName="Trending Models" />
-      </section>
-
-      <section>
         <h2 className="mb-4 text-2xl font-bold text-white">Tutte le categorie</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {categories.map((category) => (
@@ -102,7 +88,7 @@ export default function Home() {
 
       <section className="space-y-8">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">Cam live per categoria</h2>
+          <h2 className="text-2xl font-bold text-white">All live cams per categoria</h2>
           <Link to="/live" className="text-sm font-semibold text-accent">Apri directory completa</Link>
         </div>
 
@@ -122,6 +108,11 @@ export default function Home() {
             />
           </section>
         ))}
+      </section>
+
+      <section>
+        <h2 className="mb-4 text-2xl font-bold text-white">Trending Models</h2>
+        <ModelGrid models={trending} loading={loading} listName="Trending Models" />
       </section>
 
       <section className="space-y-6">
