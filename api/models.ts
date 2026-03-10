@@ -66,9 +66,8 @@ const buildUpstreamUrl = (req: VercelRequest): string => {
     const category = (req.query.category as string | undefined)?.toLowerCase() ?? '';
     if (hasCategory) {
       url.searchParams.set('tag', CATEGORY_TAG_MAP[category] || 'girls');
-    } else {
-      url.searchParams.set('tag', 'girls,couples,trans,men');
     }
+    // Removed default tag to allow all models
   }
 
   if (hasSearch && !url.searchParams.has('limit')) {
