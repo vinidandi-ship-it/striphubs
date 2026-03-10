@@ -20,13 +20,29 @@ const FEATURED_COMBINATIONS = [
   ['teen', 'petite'],
   ['teen', 'blondes'],
   ['teen', 'college'],
+  ['teen', 'cosplay'],
+  ['teen', 'lingerie'],
   ['asian', 'petite'],
   ['asian', 'lingerie'],
+  ['asian', 'young'],
+  ['asian', 'cosplay'],
   ['latina', 'big-boobs'],
+  ['latina', 'young'],
+  ['latina', 'lingerie'],
   ['blonde', 'young'],
+  ['blonde', 'petite'],
+  ['blonde', 'lingerie'],
   ['brunette', 'cosplay'],
+  ['brunette', 'young'],
+  ['brunette', 'college'],
   ['milf', 'lingerie'],
-  ['milf', 'big-boobs']
+  ['milf', 'big-boobs'],
+  ['milf', 'curvy'],
+  ['ebony', 'big-boobs'],
+  ['ebony', 'young'],
+  ['arab', 'petite'],
+  ['indian', 'young'],
+  ['japanese', 'cosplay']
 ] as const;
 const TAG_BLOCKLIST = ['cam2cam', 'privates', 'publics', 'recordable', 'priced', 'best', 'new', 'girls', 'couples', 'hd'];
 

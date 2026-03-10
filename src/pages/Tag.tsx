@@ -1,12 +1,15 @@
+import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import LoadMoreButton from '../components/LoadMoreButton';
 import ModelGrid from '../components/ModelGrid';
 import { api } from '../lib/api';
+import { categories as categoryList, categoryName } from '../lib/categories';
 import { Model } from '../lib/models';
+import { featuredCategoryTagCombos } from '../lib/programmaticSeo';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
-import { seoTextForTag } from '../lib/seoText';
+import { seoFaqForTag, seoTextForTag } from '../lib/seoText';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
 export default function Tag() {
@@ -19,6 +22,10 @@ export default function Tag() {
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const relatedCategories = categoryList.filter((category) =>
+    featuredCategoryTagCombos.some((entry) => entry.category === category && entry.tag === tag)
+  );
+  const faq = seoFaqForTag(tag);
 
   useSEO(generateTitle('tag', { tag }), generateDescription('tag', { tag }), `/tag/${tag}`);
 
@@ -61,9 +68,36 @@ export default function Tag() {
       <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Tag', to: '/live' }, { label: tag }]} />
       <h1 className="text-3xl font-bold text-white">#{tag}</h1>
       <p className="text-sm text-zinc-400">{seoTextForTag(tag)}</p>
+      {relatedCategories.length ? (
+        <section className="rounded-2xl border border-border bg-panel p-4">
+          <h2 className="text-lg font-semibold text-white">Landing correlate per {tag}</h2>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {relatedCategories.map((category) => (
+              <Link
+                key={category}
+                to={`/cam/${category}/${tag}`}
+                className="rounded-full border border-border bg-zinc-900 px-3 py-2 text-sm text-zinc-300 transition-colors hover:border-accent hover:text-white"
+              >
+                {categoryName(category)} + {tag}
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
       {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`Tag ${tag} Models`} />
+      <section className="rounded-2xl border border-border bg-panel p-4 sm:p-5">
+        <h2 className="text-lg font-semibold text-white">FAQ #{tag}</h2>
+        <div className="mt-3 space-y-3 text-sm text-zinc-300">
+          {faq.map((item) => (
+            <div key={item.question}>
+              <p className="font-semibold text-white">{item.question}</p>
+              <p className="mt-1 text-zinc-400">{item.answer}</p>
+            </div>
+          ))}
+        </div>
+      </section>
       {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
       {hasMore ? <LoadMoreButton onClick={loadMore} loading={loadingMore} /> : null}
     </div>

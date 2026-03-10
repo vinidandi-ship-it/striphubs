@@ -9,3 +9,25 @@ export const seoTextForCombination = (category: string, tag: string) =>
 
 export const seoTextForCountry = (country: string) =>
   `Guarda ${country.toLowerCase()} cam live online ora con modelle attive, profili aggiornati e link rapidi verso categorie e tag più cercati.`;
+
+export const seoFaqForTag = (tag: string) => [
+  {
+    question: `Cosa trovi nella pagina ${tag}?`,
+    answer: `Una selezione aggiornata di modelle live con tag ${tag}, ordinata per popolarita e disponibilita attiva.`
+  },
+  {
+    question: `Le modelle ${tag} sono online in tempo reale?`,
+    answer: `Si, la pagina mostra performer recuperate dal feed live e aggiornate di continuo durante la navigazione.`
+  }
+];
+
+export const seoFaqForCombination = (category: string, tag: string) => [
+  {
+    question: `Che tipo di dirette trovi in ${category} + ${tag}?`,
+    answer: `La pagina combina la categoria ${category} con il tag ${tag} per offrire landing piu specifiche e adatte alla ricerca long-tail.`
+  },
+  {
+    question: `Perche esiste una landing ${category} ${tag}?`,
+    answer: `Serve a raccogliere modelle live pertinenti, migliorare il linking interno e intercettare ricerche piu precise.`
+  }
+];
