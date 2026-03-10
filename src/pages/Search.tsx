@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import LoadMoreButton from '../components/LoadMoreButton';
@@ -7,6 +7,7 @@ import SearchBar from '../components/SearchBar';
 import { api } from '../lib/api';
 import { Model } from '../lib/models';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
+import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
 export default function Search() {
   const PAGE_SIZE = 300;
@@ -19,6 +20,7 @@ export default function Search() {
   const [error, setError] = useState('');
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   useSEO(generateTitle('search'), generateDescription('search'), '/search');
 
@@ -49,6 +51,13 @@ export default function Search() {
       .finally(() => setLoadingMore(false));
   };
 
+  useInfiniteLoad({
+    targetRef: sentinelRef,
+    enabled: hasMore && !loading,
+    loading: loadingMore,
+    onLoadMore: loadMore
+  });
+
   return (
     <div className="space-y-6">
       <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Search' }]} />
@@ -57,6 +66,7 @@ export default function Search() {
       <p className="text-sm text-zinc-400">{models.length} risultati caricati per "{query || 'all'}"{hasMore ? ' con altri disponibili' : ''}</p>
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       <ModelGrid models={models} loading={loading} listName="Search Results" />
+      {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
       {hasMore ? <LoadMoreButton onClick={loadMore} loading={loadingMore} /> : null}
     </div>
   );

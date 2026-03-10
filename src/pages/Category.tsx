@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import LoadMoreButton from '../components/LoadMoreButton';
@@ -10,6 +10,7 @@ import { Model } from '../lib/models';
 import { categoryName, categories as categoryList } from '../lib/categories';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 import { seoTextForCategory } from '../lib/seoText';
+import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
 export default function Category() {
   const PAGE_SIZE = 240;
@@ -21,6 +22,7 @@ export default function Category() {
   const [error, setError] = useState('');
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   useSEO(
     generateTitle('category', { category }),
@@ -57,6 +59,13 @@ export default function Category() {
       .finally(() => setLoadingMore(false));
   };
 
+  useInfiniteLoad({
+    targetRef: sentinelRef,
+    enabled: hasMore && !loading,
+    loading: loadingMore,
+    onLoadMore: loadMore
+  });
+
   // Prepara le categorie per la sidebar
   const sidebarCategories = categoryList.map(slug => {
     const catData = categories.find(c => c.slug === slug);
@@ -92,6 +101,7 @@ export default function Category() {
         {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName={`${categoryName(category)} Models`} />
+        {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
         {hasMore ? <LoadMoreButton onClick={loadMore} loading={loadingMore} /> : null}
       </div>
     </div>

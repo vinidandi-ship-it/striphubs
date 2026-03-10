@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import LoadMoreButton from '../components/LoadMoreButton';
@@ -7,6 +7,7 @@ import { api } from '../lib/api';
 import { Model } from '../lib/models';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 import { seoTextForTag } from '../lib/seoText';
+import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
 export default function Tag() {
   const PAGE_SIZE = 180;
@@ -17,6 +18,7 @@ export default function Tag() {
   const [error, setError] = useState('');
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   useSEO(generateTitle('tag', { tag }), generateDescription('tag', { tag }), `/tag/${tag}`);
 
@@ -47,6 +49,13 @@ export default function Tag() {
       .finally(() => setLoadingMore(false));
   };
 
+  useInfiniteLoad({
+    targetRef: sentinelRef,
+    enabled: hasMore && !loading,
+    loading: loadingMore,
+    onLoadMore: loadMore
+  });
+
   return (
     <div className="space-y-6">
       <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Tag', to: '/live' }, { label: tag }]} />
@@ -55,6 +64,7 @@ export default function Tag() {
       {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`Tag ${tag} Models`} />
+      {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
       {hasMore ? <LoadMoreButton onClick={loadMore} loading={loadingMore} /> : null}
     </div>
   );

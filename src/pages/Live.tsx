@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Breadcrumbs from '../components/Breadcrumbs';
 import LoadMoreButton from '../components/LoadMoreButton';
 import ModelGrid from '../components/ModelGrid';
@@ -8,6 +8,7 @@ import { countries } from '../lib/countries';
 import { Model } from '../lib/models';
 import { categoryName, categories as categoryList } from '../lib/categories';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
+import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
 export default function Live() {
   const PAGE_SIZE = 300;
@@ -18,6 +19,7 @@ export default function Live() {
   const [error, setError] = useState('');
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   useSEO(generateTitle('live'), generateDescription('live'), '/live');
 
@@ -60,6 +62,13 @@ export default function Live() {
       .finally(() => setLoadingMore(false));
   };
 
+  useInfiniteLoad({
+    targetRef: sentinelRef,
+    enabled: hasMore && !loading,
+    loading: loadingMore,
+    onLoadMore: loadMore
+  });
+
   // Prepara le categorie per la sidebar
   const sidebarCategories = categoryList.map(slug => {
     const catData = categories.find(c => c.slug === slug);
@@ -92,6 +101,7 @@ export default function Live() {
         {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName="All Live Cams" />
+        {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
         {hasMore ? <LoadMoreButton onClick={loadMore} loading={loadingMore} /> : null}
       </div>
     </div>

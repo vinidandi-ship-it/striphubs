@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import LoadMoreButton from '../components/LoadMoreButton';
@@ -9,6 +9,7 @@ import { featuredCategoryTagCombos, priorityTagSlugs } from '../lib/programmatic
 import type { Model } from '../lib/models';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 import { seoTextForCountry } from '../lib/seoText';
+import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
 export default function Country() {
   const PAGE_SIZE = 180;
@@ -20,6 +21,7 @@ export default function Country() {
   const [error, setError] = useState('');
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   useSEO(
     generateTitle('country', { country: country?.name || countrySlug }),
@@ -55,6 +57,13 @@ export default function Country() {
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load more country models'))
       .finally(() => setLoadingMore(false));
   };
+
+  useInfiniteLoad({
+    targetRef: sentinelRef,
+    enabled: hasMore && !loading,
+    loading: loadingMore,
+    onLoadMore: loadMore
+  });
 
   const relatedCombos = useMemo(
     () => featuredCategoryTagCombos.filter((entry) => models.some((model) => model.category === entry.category)).slice(0, 6),
@@ -114,6 +123,7 @@ export default function Country() {
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`${country.name} Live Models`} />
+      {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
       {hasMore ? <LoadMoreButton onClick={loadMore} loading={loadingMore} /> : null}
     </div>
   );
