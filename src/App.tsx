@@ -23,6 +23,8 @@ const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const Cookies = lazy(() => import('./pages/Cookies'));
 const Combination = lazy(() => import('./pages/Combination'));
+const Blog = lazy(() => import('./pages/Blog'));
+const GuidaCamGratis = lazy(() => import('./pages/blog/GuidaCamGratis'));
 
 function AppContent() {
   const location = useLocation();
@@ -128,6 +130,18 @@ function AppContent() {
             <Route path="/fr/cookies" element={<Cookies />} />
             <Route path="/es/cookies" element={<Cookies />} />
             <Route path="/pt/cookies" element={<Cookies />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/en/blog" element={<Blog />} />
+            <Route path="/de/blog" element={<Blog />} />
+            <Route path="/fr/blog" element={<Blog />} />
+            <Route path="/es/blog" element={<Blog />} />
+            <Route path="/pt/blog" element={<Blog />} />
+            <Route path="/blog/guida-cam-gratis" element={<GuidaCamGratis />} />
+            <Route path="/en/blog/guida-cam-gratis" element={<GuidaCamGratis />} />
+            <Route path="/de/blog/guida-cam-gratis" element={<GuidaCamGratis />} />
+            <Route path="/fr/blog/guida-cam-gratis" element={<GuidaCamGratis />} />
+            <Route path="/es/blog/guida-cam-gratis" element={<GuidaCamGratis />} />
+            <Route path="/pt/blog/guida-cam-gratis" element={<GuidaCamGratis />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>

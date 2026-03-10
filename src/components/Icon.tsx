@@ -9,7 +9,8 @@ type IconName =
   | 'filter' | 'grid' | 'list' | 'verified' | 'hd' | 'lock' | 'unlock'
   | 'info' | 'warning' | 'success' | 'error' | 'chat'
   | 'milf' | 'teen' | 'asian' | 'crown' | 'sparkle' | 'lotus' | 'globe'
-  | 'categories' | 'quickLinks' | 'allLive' | 'spotlight' | 'explore' | 'trend';
+  | 'categories' | 'quickLinks' | 'allLive' | 'spotlight' | 'explore' | 'trend'
+  | 'blog';
 
 interface IconProps {
   name: IconName;
@@ -318,6 +319,12 @@ const icons: Record<IconName, JSX.Element> = {
     <>
       <path d="M23 6l-9.5 9.5-5-5L1 18"/>
       <path d="M17 6h6v6"/>
+    </>
+  ),
+  blog: (
+    <>
+      <path d="M12 20h9"/>
+      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
     </>
   ),
 };

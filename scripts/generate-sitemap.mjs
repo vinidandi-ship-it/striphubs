@@ -64,6 +64,8 @@ const baseRoutes = [
   '/privacy',
   '/terms',
   '/cookies',
+  '/blog',
+  '/blog/guida-cam-gratis',
   ...categories.map((category) => `/cam/${category}`),
   ...tags.map((tag) => `/tag/${tag}`),
   ...countries.map((country) => `/country/${country}`),
@@ -95,12 +97,16 @@ const getPriority = (route) => {
   if (route.startsWith('/tag/')) return '0.7';
   if (route.startsWith('/country/')) return '0.7';
   if (route === '/search') return '0.6';
+  if (route.startsWith('/blog/')) return '0.8';
+  if (route === '/blog') return '0.7';
   return '0.5';
 };
 
 const getChangefreq = (route) => {
   if (route === '/' || route === '/live') return 'hourly';
   if (route.startsWith('/cam/') || route.startsWith('/tag/') || route.startsWith('/country/')) return 'daily';
+  if (route.startsWith('/blog/')) return 'monthly';
+  if (route === '/blog') return 'weekly';
   return 'weekly';
 };
 
