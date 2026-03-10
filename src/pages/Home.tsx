@@ -51,9 +51,9 @@ export default function Home() {
   const [hasMore, setHasMore] = useState(false);
   const [error, setError] = useState('');
   const sentinelRef = useRef<HTMLDivElement>(null);
-  const { t, locale } = useI18n();
+  const { t, language } = useI18n();
 
-  useSEO(generateTitle('home'), generateDescription('home'), '/', locale);
+  useSEO(generateTitle('home'), generateDescription('home'), '/', language);
 
   useEffect(() => {
     setLoading(true);
@@ -211,10 +211,10 @@ export default function Home() {
             {t('home.heroDescription')}
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <Link to={buildLocalizedPath('/live', locale)} className="rounded-full bg-accent px-6 py-3 text-center text-base font-semibold text-white transition-all hover:scale-105 hover:bg-accent/80 sm:px-8 sm:py-4 sm:text-lg">
+            <Link to={buildLocalizedPath('/live', language)} className="rounded-full bg-accent px-6 py-3 text-center text-base font-semibold text-white transition-all hover:scale-105 hover:bg-accent/80 sm:px-8 sm:py-4 sm:text-lg">
               🎥 {t('home.watchLiveCta')}
             </Link>
-            <Link to={buildLocalizedPath('/cam/teen', locale)} className="rounded-full border border-border bg-zinc-900 px-6 py-3 text-center text-base font-semibold text-zinc-200 transition-all hover:bg-zinc-800 sm:px-8 sm:py-4 sm:text-lg">
+            <Link to={buildLocalizedPath('/cam/teen', language)} className="rounded-full border border-border bg-zinc-900 px-6 py-3 text-center text-base font-semibold text-zinc-200 transition-all hover:bg-zinc-800 sm:px-8 sm:py-4 sm:text-lg">
               📂 {t('home.youngCamsCta')}
             </Link>
           </div>
@@ -229,7 +229,7 @@ export default function Home() {
               <h2 className="text-2xl font-bold text-white">🎯 {t('home.spotlightTitle')}</h2>
               <p className="text-sm text-zinc-400">{t('home.spotlightSubtitle')}</p>
             </div>
-            <Link to={buildLocalizedPath('/cam/teen', locale)} className="text-sm font-semibold text-accent hover:text-accent/80">
+            <Link to={buildLocalizedPath('/cam/teen', language)} className="text-sm font-semibold text-accent hover:text-accent/80">
               {t('home.discoverTeen')} →
             </Link>
           </div>
@@ -244,7 +244,7 @@ export default function Home() {
       <section>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-white">📺 {t('home.allLiveCams')}</h2>
-          <Link to={buildLocalizedPath('/live', locale)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
+          <Link to={buildLocalizedPath('/live', language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
         </div>
         {error ? <p className="mb-3 text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={prioritizedModels} loading={loading} listName="Home Live Models" />
@@ -264,13 +264,13 @@ export default function Home() {
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-white">🌍 {t('home.camsByCountry')}</h2>
-          <Link to={buildLocalizedPath('/live', locale)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
+          <Link to={buildLocalizedPath('/live', language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {featuredCountries.map((country) => (
             <Link
               key={country.slug}
-              to={buildLocalizedPath(`/country/${country.slug}`, locale)}
+              to={buildLocalizedPath(`/country/${country.slug}`, language)}
               className="rounded-2xl border border-border bg-panel p-5 transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg hover:shadow-accent/20"
             >
               <div className="flex items-center justify-between gap-3">
@@ -286,7 +286,7 @@ export default function Home() {
       <section className="space-y-8">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-white">🌟 {t('home.categoriesForYou')}</h2>
-          <Link to={buildLocalizedPath('/live', locale)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
+          <Link to={buildLocalizedPath('/live', language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
         </div>
 
         {topCategories.slice(0, 6).map((category) => (
@@ -295,7 +295,7 @@ export default function Home() {
               <div>
                 <h3 className="text-xl font-bold text-white">{category.name} <span className="text-sm font-normal text-zinc-400">• {category.count} live</span></h3>
               </div>
-              <Link to={buildLocalizedPath(`/cam/${category.slug}`, locale)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
+              <Link to={buildLocalizedPath(`/cam/${category.slug}`, language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
             </div>
             <ModelGrid
               models={categoryModels[category.slug] || []}
@@ -309,13 +309,13 @@ export default function Home() {
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-white">🔗 {t('home.seoLanding')}</h2>
-          <Link to={buildLocalizedPath('/search', locale)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.explore')} →</Link>
+          <Link to={buildLocalizedPath('/search', language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.explore')} →</Link>
         </div>
         <div className="flex flex-wrap gap-2">
           {priorityTagSlugs.map((tag) => (
             <Link
               key={tag}
-              to={buildLocalizedPath(`/tag/${tag}`, locale)}
+              to={buildLocalizedPath(`/tag/${tag}`, language)}
               className="rounded-full border border-border bg-zinc-900 px-3 py-2 text-sm text-zinc-300 transition-colors hover:border-accent hover:text-white"
             >
               {tag}
@@ -326,7 +326,7 @@ export default function Home() {
           {featuredCategoryTagCombos.map((entry) => (
             <Link
               key={`${entry.category}-${entry.tag}`}
-              to={buildLocalizedPath(`/cam/${entry.category}/${entry.tag}`, locale)}
+              to={buildLocalizedPath(`/cam/${entry.category}/${entry.tag}`, language)}
               className="rounded-full border border-border bg-zinc-900 px-3 py-2 text-sm text-zinc-300 transition-colors hover:border-accent hover:text-white"
             >
               {entry.category} + {entry.tag}
@@ -337,7 +337,7 @@ export default function Home() {
           {trendingSeoTags.map((tag) => (
             <Link
               key={tag}
-              to={buildLocalizedPath(`/tag/${tag}`, locale)}
+              to={buildLocalizedPath(`/tag/${tag}`, language)}
               className="rounded-full border border-border bg-panel px-3 py-2 text-sm text-zinc-300 transition-colors hover:border-accent hover:text-white"
             >
               {t('home.trend')}: {tag}
