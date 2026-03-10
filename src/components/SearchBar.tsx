@@ -24,7 +24,8 @@ export default function SearchBar({ initialValue = '', compact = false }: { init
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t('common.searchPlaceholder')}
-          className="h-11 w-full min-w-0 rounded-xl border border-border-color bg-bg-input px-4 pl-10 text-sm text-white outline-none focus:ring-2 focus:ring-accent-secondary placeholder:text-text-muted"
+          className="h-11 w-full min-w-0 rounded-xl border border-border-color bg-[#0d0d12] px-4 pl-10 text-sm text-[#ffffff] outline-none focus:ring-2 focus:ring-accent-secondary placeholder:text-[#6b6b7b] color-scheme-dark"
+          style={{ colorScheme: 'dark' }}
         />
         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">
           <Icon name="search" size={18} />
