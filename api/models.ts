@@ -47,6 +47,32 @@ const filterModels = (models: NormalizedModel[], req: VercelRequest): Normalized
   return out.sort((a, b) => b.viewers - a.viewers).slice(offset, offset + limit);
 };
 
+const countFilteredModels = (models: NormalizedModel[], req: VercelRequest): number => {
+  const search = (req.query.search as string | undefined)?.toLowerCase() ?? '';
+  const category = (req.query.category as string | undefined)?.toLowerCase() ?? '';
+  const tag = (req.query.tag as string | undefined)?.toLowerCase() ?? '';
+  const country = (req.query.country as string | undefined)?.toLowerCase() ?? '';
+
+  let out = models;
+
+  if (category) out = out.filter((model) => model.category === category);
+  if (tag) {
+    const required = tag.split(',').map((value) => value.trim()).filter(Boolean);
+    out = out.filter((model) => required.some((needle) => model.tags.some((t) => t.includes(needle))));
+  }
+  if (country) out = out.filter((model) => model.country.toLowerCase() === country);
+
+  if (search) {
+    out = out.filter((model) =>
+      model.username.toLowerCase().includes(search) ||
+      model.country.toLowerCase().includes(search) ||
+      model.tags.some((t) => t.includes(search))
+    );
+  }
+
+  return out.length;
+};
+
 const buildUpstreamUrl = (req: VercelRequest): string => {
   const endpoint = process.env.STRIPCHAT_API_ENDPOINT || DEFAULT_ENDPOINT;
   const url = new URL(endpoint);
@@ -76,7 +102,6 @@ const buildUpstreamUrl = (req: VercelRequest): string => {
     url.searchParams.set('limit', '1000');
   }
 
-  if (!url.searchParams.has('strict')) url.searchParams.set('strict', '1');
   if (!url.searchParams.has('fields')) url.searchParams.set('fields', 'tags');
   return url.toString();
 };
@@ -121,8 +146,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const models = filterModels(normalized, req);
+    const total = countFilteredModels(normalized, req);
+    const offset = Math.max(Number(req.query.offset) || 0, 0);
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
-    res.status(200).json({ models });
+    res.status(200).json({
+      models,
+      total,
+      offset,
+      hasMore: offset + models.length < total
+    });
   } catch (error) {
     return apiError(res, error instanceof Error ? error.message : 'upstream error', 500);
   }

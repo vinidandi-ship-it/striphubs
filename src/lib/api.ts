@@ -1,8 +1,10 @@
 import type { Model } from './models';
 
 type ModelsResponse = {
-  count?: number;
   models: Model[];
+  total?: number;
+  offset?: number;
+  hasMore?: boolean;
 };
 
 type CategoryResponse = {
@@ -78,6 +80,7 @@ export const api = {
     country?: string;
     search?: string;
     limit?: number;
+    offset?: number;
     modelsList?: string;
     strict?: 0 | 1;
   }) => {
@@ -87,6 +90,7 @@ export const api = {
     if (params?.country) query.set('country', params.country);
     if (params?.search) query.set('search', params.search);
     if (params?.limit) query.set('limit', String(params.limit));
+    if (typeof params?.offset === 'number') query.set('offset', String(params.offset));
     if (params?.modelsList) query.set('modelsList', params.modelsList);
     if (typeof params?.strict === 'number') query.set('strict', String(params.strict));
 

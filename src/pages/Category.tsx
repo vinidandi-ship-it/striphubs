@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
+import LoadMoreButton from '../components/LoadMoreButton';
 import ModelGrid from '../components/ModelGrid';
 import Sidebar from '../components/Sidebar';
 import { api } from '../lib/api';
@@ -11,11 +12,15 @@ import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 import { seoTextForCategory } from '../lib/seoText';
 
 export default function Category() {
+  const PAGE_SIZE = 240;
   const { category = 'milf' } = useParams();
   const [models, setModels] = useState<Model[]>([]);
   const [categories, setCategories] = useState<{ slug: string; name: string; count: number }[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState('');
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
 
   useSEO(
     generateTitle('category', { category }),
@@ -25,15 +30,32 @@ export default function Category() {
 
   useEffect(() => {
     setLoading(true);
+    setOffset(0);
+    setHasMore(false);
     void Promise.all([
-      api.getModels({ category, limit: 300 }),
+      api.getModels({ category, limit: PAGE_SIZE, offset: 0 }),
       api.getCategories()
     ]).then(([modelsData, categoriesData]) => {
       setModels(modelsData.models);
+      setOffset(modelsData.models.length);
+      setHasMore(Boolean(modelsData.hasMore));
       setCategories(categoriesData.categories);
     }).catch((err) => setError(err instanceof Error ? err.message : 'Failed to load data'))
     .finally(() => setLoading(false));
   }, [category]);
+
+  const loadMore = () => {
+    if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    void api.getModels({ category, limit: PAGE_SIZE, offset })
+      .then((data) => {
+        setModels((current) => [...current, ...data.models]);
+        setOffset((current) => current + data.models.length);
+        setHasMore(Boolean(data.hasMore));
+      })
+      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load more data'))
+      .finally(() => setLoadingMore(false));
+  };
 
   // Prepara le categorie per la sidebar
   const sidebarCategories = categoryList.map(slug => {
@@ -67,8 +89,10 @@ export default function Category() {
           <h1 className="text-2xl font-bold text-white sm:text-3xl">{categoryName(category)} Live Cams</h1>
           <p className="mt-1 text-sm text-zinc-400">{seoTextForCategory(category)}</p>
         </div>
+        {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName={`${categoryName(category)} Models`} />
+        {hasMore ? <LoadMoreButton onClick={loadMore} loading={loadingMore} /> : null}
       </div>
     </div>
   );

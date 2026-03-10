@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
+import LoadMoreButton from '../components/LoadMoreButton';
 import ModelGrid from '../components/ModelGrid';
 import { api } from '../lib/api';
 import { findCountryBySlug } from '../lib/countries';
@@ -10,11 +11,15 @@ import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 import { seoTextForCountry } from '../lib/seoText';
 
 export default function Country() {
+  const PAGE_SIZE = 180;
   const { countrySlug = 'italian' } = useParams();
   const country = findCountryBySlug(countrySlug);
   const [models, setModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState('');
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
 
   useSEO(
     generateTitle('country', { country: country?.name || countrySlug }),
@@ -26,11 +31,30 @@ export default function Country() {
     if (!country) return;
 
     setLoading(true);
-    void api.getModels({ country: country.code, limit: 96 })
-      .then((data) => setModels(data.models))
+    setOffset(0);
+    setHasMore(false);
+    void api.getModels({ country: country.code, limit: PAGE_SIZE, offset: 0 })
+      .then((data) => {
+        setModels(data.models);
+        setOffset(data.models.length);
+        setHasMore(Boolean(data.hasMore));
+      })
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load country'))
       .finally(() => setLoading(false));
   }, [country]);
+
+  const loadMore = () => {
+    if (!country || loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    void api.getModels({ country: country.code, limit: PAGE_SIZE, offset })
+      .then((data) => {
+        setModels((current) => [...current, ...data.models]);
+        setOffset((current) => current + data.models.length);
+        setHasMore(Boolean(data.hasMore));
+      })
+      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load more country models'))
+      .finally(() => setLoadingMore(false));
+  };
 
   const relatedCombos = useMemo(
     () => featuredCategoryTagCombos.filter((entry) => models.some((model) => model.category === entry.category)).slice(0, 6),
@@ -88,7 +112,9 @@ export default function Country() {
       ) : null}
 
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
+      {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`${country.name} Live Models`} />
+      {hasMore ? <LoadMoreButton onClick={loadMore} loading={loadingMore} /> : null}
     </div>
   );
 }
