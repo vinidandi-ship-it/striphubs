@@ -54,6 +54,7 @@ const buildUpstreamUrl = (req: VercelRequest): string => {
   url.searchParams.set('userId', AFFILIATE_ID);
   const hasSearch = Boolean((req.query.search as string | undefined)?.trim());
   const hasCategory = Boolean((req.query.category as string | undefined)?.trim());
+  const hasCountry = Boolean((req.query.country as string | undefined)?.trim());
 
   const pass = ['limit', 'offset', 'tag', 'modelsList', 'excludeModelsList', 'strict'];
   for (const key of pass) {
@@ -70,10 +71,9 @@ const buildUpstreamUrl = (req: VercelRequest): string => {
     if (hasCategory) {
       url.searchParams.set('tag', CATEGORY_TAG_MAP[category] || 'girls');
     }
-    // Removed default tag to allow all models
   }
 
-  if (hasSearch && !url.searchParams.has('limit')) {
+  if ((hasSearch || hasCountry) && !url.searchParams.has('limit')) {
     url.searchParams.set('limit', '1000');
   }
 
