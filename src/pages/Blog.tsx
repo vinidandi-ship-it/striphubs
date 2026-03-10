@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../i18n';
 import { buildLocalizedPath } from '../i18n/routing';
@@ -12,7 +13,7 @@ interface BlogPost {
   readTime: string;
 }
 
-const blogPosts: BlogPost[] = [
+const allBlogPosts: BlogPost[] = [
   {
     slug: 'guida-cam-gratis',
     title: 'Guida Completa alle Cam Live Gratis',
@@ -45,6 +46,14 @@ const blogPosts: BlogPost[] = [
 
 export default function Blog() {
   const { t, language } = useI18n();
+  const [visibleCount, setVisibleCount] = useState(6);
+  
+  const blogPosts = allBlogPosts.slice(0, visibleCount);
+  const hasMore = visibleCount < allBlogPosts.length;
+
+  const loadMore = () => {
+    setVisibleCount((current) => Math.min(current + 3, allBlogPosts.length));
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
@@ -85,6 +94,18 @@ export default function Blog() {
           </Link>
         ))}
       </div>
+      
+      {hasMore && (
+        <div className="text-center mt-8">
+          <button
+            onClick={loadMore}
+            className="inline-flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-accent/80 transition-colors"
+          >
+            <Icon name="arrowDown" size={16} />
+            Carica Altri Articoli
+          </button>
+        </div>
+      )}
     </div>
   );
 }
