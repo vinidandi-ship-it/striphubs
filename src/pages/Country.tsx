@@ -22,6 +22,7 @@ export default function Country() {
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const [includeOffline, setIncludeOffline] = useState(true);
 
   useSEO(
     generateTitle('country', { country: country?.name || countrySlug }),
@@ -35,7 +36,10 @@ export default function Country() {
     setLoading(true);
     setOffset(0);
     setHasMore(false);
-    void api.getModels({ country: country.code, limit: PAGE_SIZE, offset: 0 })
+    setModels([]);
+    setLoadingMore(false);
+    setError('');
+    void api.getModels({ country: country.code, limit: PAGE_SIZE, offset: 0, liveOnly: !includeOffline })
       .then((data) => {
         setModels(data.models);
         setOffset(data.models.length);
@@ -43,12 +47,12 @@ export default function Country() {
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load country'))
       .finally(() => setLoading(false));
-  }, [country]);
+  }, [country, includeOffline]);
 
   const loadMore = () => {
     if (!country || loadingMore || !hasMore) return;
     setLoadingMore(true);
-    void api.getModels({ country: country.code, limit: PAGE_SIZE, offset })
+    void api.getModels({ country: country.code, limit: PAGE_SIZE, offset, liveOnly: !includeOffline })
       .then((data) => {
         setModels((current) => [...current, ...data.models]);
         setOffset((current) => current + data.models.length);
@@ -84,8 +88,19 @@ export default function Country() {
       <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Paesi', to: '/live' }, { label: country.name }]} />
 
       <header className="space-y-3">
-        <h1 className="text-2xl font-bold text-white sm:text-3xl">{country.name} Cam Live</h1>
-        <p className="max-w-3xl text-sm text-zinc-400">{seoTextForCountry(country.name)}</p>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-white sm:text-3xl">{country.name} Cam Live</h1>
+            <p className="max-w-3xl text-sm text-zinc-400">{seoTextForCountry(country.name)}</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIncludeOffline((current) => !current)}
+            className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${includeOffline ? 'border-accent bg-accent/10 text-accent' : 'border-border text-zinc-300 hover:border-accent hover:text-white'}`}
+          >
+            {includeOffline ? 'Mostra solo live' : 'Includi anche offline'}
+          </button>
+        </div>
       </header>
 
       <section className="rounded-2xl border border-border bg-panel p-4 sm:p-5">

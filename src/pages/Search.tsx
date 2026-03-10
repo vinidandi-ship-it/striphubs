@@ -30,7 +30,7 @@ export default function Search() {
     setHasMore(false);
     setError('');
     void Promise.allSettled([
-      api.getModels({ search: query, limit: PAGE_SIZE, offset: 0 }),
+      api.getModels({ search: query, limit: PAGE_SIZE, offset: 0, liveOnly: false }),
       query.trim() ? api.getModel(query.trim()) : Promise.reject(new Error('empty query'))
     ]).then(([searchResult, exactResult]) => {
       const searchModels = searchResult.status === 'fulfilled' ? searchResult.value.models : [];
@@ -51,7 +51,7 @@ export default function Search() {
   const loadMore = () => {
     if (loadingMore || !hasMore) return;
     setLoadingMore(true);
-    void api.getModels({ search: query, limit: PAGE_SIZE, offset })
+    void api.getModels({ search: query, limit: PAGE_SIZE, offset, liveOnly: false })
       .then((data) => {
         setModels((current) => [...current, ...data.models]);
         setOffset((current) => current + data.models.length);

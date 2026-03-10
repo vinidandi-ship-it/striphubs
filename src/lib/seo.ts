@@ -35,7 +35,7 @@ const ensureCanonical = (): HTMLLinkElement => {
 };
 
 export const generateTitle = (page: PageType, data?: Record<string, string>): string => {
-  if (page === 'home') return 'Live Cam Gratis con Modelle Online e Dirette 24/7';
+  if (page === 'home') return 'Live Cam Giovani e Link Stripchat';
   if (page === 'live') return 'Cam Live Gratis Online Ora';
   if (page === 'category') {
     const label = categoryName(data?.category || '');
@@ -58,7 +58,7 @@ export const generateTitle = (page: PageType, data?: Record<string, string>): st
 
 export const generateDescription = (page: PageType, data?: Record<string, string>): string => {
   if (page === 'home') {
-    return 'Scopri live cam gratuite con modelle online 24/7, categorie popolari, profili aggiornati in tempo reale e accesso rapido alle dirette più viste.';
+    return 'StripHubs è la directory italiana delle live cam gratis con centinaia di modelle online, filtri per teen, milf e paesi e link immediati alle dirette Stripchat.';
   }
   if (page === 'live') return 'Guarda tutte le modelle live online adesso con elenco aggiornato, filtri rapidi e accesso diretto alle camere più viste.';
   if (page === 'category') return `Guarda ${data?.category || ''} cam live gratis con modelle online, profili aggiornati e accesso immediato alle dirette attive.`;

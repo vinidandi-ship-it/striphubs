@@ -17,9 +17,13 @@ export default function ModelCard({ model }: { model: Model }) {
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <span className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-red-500 px-2 py-1 text-[10px] font-bold text-white sm:left-3 sm:top-3 sm:text-[11px]">
-            <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-            LIVE
+          <span
+            className={`absolute left-2 top-2 flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold sm:left-3 sm:top-3 sm:text-[11px] ${
+              model.isLive ? 'bg-red-500 text-white' : 'bg-zinc-800/80 text-zinc-200'
+            }`}
+          >
+            {model.isLive ? <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span> : null}
+            {model.isLive ? 'LIVE' : 'OFFLINE'}
           </span>
           <div className="absolute bottom-2 left-2 right-2 transition-opacity group-hover:opacity-100 sm:bottom-3 sm:left-3 sm:right-3 sm:opacity-0">
             <span className="rounded-full bg-black/50 px-2 py-1 text-[10px] text-white sm:text-xs">

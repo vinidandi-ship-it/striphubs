@@ -23,6 +23,7 @@ export default function Category() {
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const [includeOffline, setIncludeOffline] = useState(true);
 
   useSEO(
     generateTitle('category', { category }),
@@ -34,8 +35,11 @@ export default function Category() {
     setLoading(true);
     setOffset(0);
     setHasMore(false);
+    setModels([]);
+    setLoadingMore(false);
+    setError('');
     void Promise.all([
-      api.getModels({ category, limit: PAGE_SIZE, offset: 0 }),
+      api.getModels({ category, limit: PAGE_SIZE, offset: 0, liveOnly: !includeOffline }),
       api.getCategories()
     ]).then(([modelsData, categoriesData]) => {
       setModels(modelsData.models);
@@ -44,12 +48,12 @@ export default function Category() {
       setCategories(categoriesData.categories);
     }).catch((err) => setError(err instanceof Error ? err.message : 'Failed to load data'))
     .finally(() => setLoading(false));
-  }, [category]);
+  }, [category, includeOffline]);
 
   const loadMore = () => {
     if (loadingMore || !hasMore) return;
     setLoadingMore(true);
-    void api.getModels({ category, limit: PAGE_SIZE, offset })
+    void api.getModels({ category, limit: PAGE_SIZE, offset, liveOnly: !includeOffline })
       .then((data) => {
         setModels((current) => [...current, ...data.models]);
         setOffset((current) => current + data.models.length);
@@ -94,9 +98,20 @@ export default function Category() {
       {/* Main Content */}
       <div className="flex-1 space-y-6">
         <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Categorie', to: '/live' }, { label: categoryName(category) }]} />
-        <div>
-          <h1 className="text-2xl font-bold text-white sm:text-3xl">{categoryName(category)} Live Cams</h1>
-          <p className="mt-1 text-sm text-zinc-400">{seoTextForCategory(category)}</p>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-white sm:text-3xl">{categoryName(category)} Live Cams</h1>
+            <p className="mt-1 text-sm text-zinc-400">{seoTextForCategory(category)}</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIncludeOffline((current) => !current)}
+            className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
+              includeOffline ? 'border-accent bg-accent/10 text-accent' : 'border-border text-zinc-300 hover:border-accent hover:text-white'
+            }`}
+          >
+            {includeOffline ? 'Mostra solo live' : 'Includi anche offline'}
+          </button>
         </div>
         {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
         {error ? <p className="text-sm text-red-400">{error}</p> : null}

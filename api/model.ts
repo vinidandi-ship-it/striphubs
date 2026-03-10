@@ -49,14 +49,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const model = models.find((item) => item.username.toLowerCase() === name);
     if (!model) return apiError(res, 'Model not found', 404);
 
-    return res.status(200).json({
-      username: model.username,
-      thumbnail: model.thumbnail,
-      viewers: model.viewers,
-      tags: model.tags,
-      country: model.country,
-      clickUrl: model.clickUrl
-    });
+    return res.status(200).json(model);
   } catch (error) {
     return apiError(res, error instanceof Error ? error.message : 'upstream error', 500);
   }

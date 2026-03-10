@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CategoryCard from '../components/CategoryCard';
+import InfiniteLoader from '../components/InfiniteLoader';
+import ModelCard from '../components/ModelCard';
 import ModelGrid from '../components/ModelGrid';
 import { api } from '../lib/api';
 import { countries, findCountryBySlug } from '../lib/countries';
@@ -10,13 +12,15 @@ import { extractSeoTags, featuredTagGroups } from '../lib/tags';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 import { featuredCategoryTagCombos, featuredCountryRoutes, priorityTagSlugs } from '../lib/programmaticSeo';
 
-const HOME_LIVE_LIMIT = 120;
+const HOME_PAGE_SIZE = 180;
 const CATEGORY_PREVIEW_LIMIT = 8;
 const HOME_CATEGORY_PRIORITY = ['teen', 'asian', 'latina', 'blonde', 'brunette'] as const;
 const YOUNG_MODEL_PATTERNS = [
   /(girls\/teens|teen|young|18\+|19|20|21|22|petite|college|student)/i,
   /(blonde|brunette|asian|latina)/i
 ];
+const YOUNG_SPOTLIGHT_THRESHOLD = 60;
+const YOUNG_SPOTLIGHT_SIZE = 6;
 
 const getHomeCategoryRank = (slug: string) => {
   const index = HOME_CATEGORY_PRIORITY.indexOf(slug as (typeof HOME_CATEGORY_PRIORITY)[number]);
@@ -41,14 +45,25 @@ const getYoungModelScore = (model: Model) => {
 export default function Home() {
   const [models, setModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
   const [error, setError] = useState('');
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   useSEO(generateTitle('home'), generateDescription('home'), '/');
 
   useEffect(() => {
     setLoading(true);
-    void api.getModels({ limit: HOME_LIVE_LIMIT })
-      .then((data) => setModels(data.models))
+    setOffset(0);
+    setHasMore(false);
+    setError('');
+    void api.getModels({ limit: HOME_PAGE_SIZE, offset: 0 })
+      .then((data) => {
+        setModels(data.models);
+        setOffset(data.models.length);
+        setHasMore(Boolean(data.hasMore));
+      })
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load models'))
       .finally(() => setLoading(false));
   }, []);
@@ -61,6 +76,11 @@ export default function Home() {
         return b.viewers - a.viewers;
       }),
     [models]
+  );
+
+  const youngSpotlight = useMemo(
+    () => prioritizedModels.filter((model) => getYoungModelScore(model) >= YOUNG_SPOTLIGHT_THRESHOLD).slice(0, YOUNG_SPOTLIGHT_SIZE),
+    [prioritizedModels]
   );
 
   const categories = useMemo(() => {
@@ -132,9 +152,40 @@ export default function Home() {
           ...country,
           count: models.filter((model) => model.country === country.code).length
         }))
-        .filter((country) => country.count > 0),
+      .filter((country) => country.count > 0),
     [models]
   );
+
+  const loadMore = () => {
+    if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    void api.getModels({ limit: HOME_PAGE_SIZE, offset })
+      .then((data) => {
+        setModels((current) => {
+          const seen = new Set(current.map((item) => item.username.toLowerCase()));
+          const merged = [...current];
+          data.models.forEach((item) => {
+            const name = item.username.toLowerCase();
+            if (!seen.has(name)) {
+              seen.add(name);
+              merged.push(item);
+            }
+          });
+          return merged;
+        });
+        setOffset((current) => current + data.models.length);
+        setHasMore(Boolean(data.hasMore));
+      })
+      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load more models'))
+      .finally(() => setLoadingMore(false));
+  };
+
+  useInfiniteLoad({
+    targetRef: sentinelRef,
+    enabled: hasMore && !loading,
+    loading: loadingMore,
+    onLoadMore: loadMore
+  });
 
   return (
     <div className="space-y-8">
@@ -165,6 +216,26 @@ export default function Home() {
         </div>
       </section>
 
+      {youngSpotlight.length ? (
+        <section className="space-y-3 rounded-3xl border border-border bg-panel p-5">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Spotlight</p>
+              <h2 className="text-2xl font-bold text-white">🎯 Cam Giovani in primo piano</h2>
+              <p className="text-sm text-zinc-400">Le modelle più giovani e richieste online ora.</p>
+            </div>
+            <Link to="/cam/teen" className="text-sm font-semibold text-accent hover:text-accent/80">
+              Scopri le teen →
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+            {youngSpotlight.map((model) => (
+              <ModelCard key={model.username} model={model} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
       <section>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-white">📺 Tutte le Camere Live</h2>
@@ -172,6 +243,8 @@ export default function Home() {
         </div>
         {error ? <p className="mb-3 text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={prioritizedModels} loading={loading} listName="Home Live Models" />
+        {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
+        <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
       </section>
 
       <section>

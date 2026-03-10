@@ -59,3 +59,18 @@ a {
   content-visibility: auto;
   contain-intrinsic-size: 420px;
 }
+
+button,
+a,
+[role='button'] {
+  touch-action: manipulation;
+}
+
+@media (max-width: 640px) {
+  body {
+    background:
+      radial-gradient(circle at 10% 0%, rgba(168, 85, 247, 0.25), transparent 45%),
+      radial-gradient(circle at 90% 10%, rgba(236, 72, 153, 0.2), transparent 35%),
+      #0f0f1a;
+  }
+}
