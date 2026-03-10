@@ -1,7 +1,24 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const siteUrl = process.env.VITE_SITE_URL || process.env.SITE_URL || 'https://striphubs.com';
+// Load environment variables from .env file
+const envPath = resolve(process.cwd(), '.env');
+let siteUrl = 'https://striphubs.vercel.app'; // Default fallback
+
+try {
+  const envContent = readFileSync(envPath, 'utf-8');
+  const envLines = envContent.split('\n');
+  for (const line of envLines) {
+    const [key, value] = line.split('=');
+    if (key && value && key.trim() === 'VITE_SITE_URL') {
+      siteUrl = value.trim().replace(/^"|"$/g, '');
+      break;
+    }
+  }
+} catch (error) {
+  console.log('Could not read .env file, using default URL');
+}
+
 const now = new Date().toISOString();
 
 const languages = ['it', 'en', 'de', 'fr', 'es', 'pt'];
