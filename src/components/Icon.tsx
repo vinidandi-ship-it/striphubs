@@ -7,7 +7,8 @@ type IconName =
   | 'arrowRight' | 'arrowLeft' | 'arrowUp' | 'arrowDown'
   | 'play' | 'pause' | 'share' | 'gift' | 'coins' | 'eye'
   | 'filter' | 'grid' | 'list' | 'verified' | 'hd' | 'lock' | 'unlock'
-  | 'info' | 'warning' | 'success' | 'error' | 'chat';
+  | 'info' | 'warning' | 'success' | 'error' | 'chat'
+  | 'milf' | 'teen' | 'asian' | 'crown' | 'sparkle' | 'lotus';
 
 interface IconProps {
   name: IconName;
@@ -233,6 +234,44 @@ const icons: Record<IconName, JSX.Element> = {
   chat: (
     <>
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </>
+  ),
+  // Category-specific icons
+  milf: (
+    <>
+      <path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2Z"/>
+      <circle cx="12" cy="14" r="2" fill="currentColor" stroke="none"/>
+    </>
+  ),
+  teen: (
+    <>
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      <circle cx="12" cy="10" r="3" fill="currentColor" stroke="none"/>
+    </>
+  ),
+  asian: (
+    <>
+      <circle cx="12" cy="12" r="9" strokeDasharray="4 2"/>
+      <circle cx="12" cy="12" r="5" strokeDasharray="3 1"/>
+      <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/>
+    </>
+  ),
+  crown: (
+    <>
+      <path d="M2 20l2-8 4 4 4-6 4 6 4-4 2 8H2z"/>
+      <circle cx="12" cy="8" r="2" fill="currentColor" stroke="none"/>
+    </>
+  ),
+  sparkle: (
+    <>
+      <path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6l2.1 2.1M5.6 18.4l2.1-2.1m8.6-8.6l2.1-2.1"/>
+    </>
+  ),
+  lotus: (
+    <>
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.8-.1 2.6-.3C9.1 20.5 5 16.1 5 11c0-4.4 3.1-8.1 7.4-9.5C12.3 2 12.2 2 12 2z"/>
+      <path d="M12 2c5.5 0 10 4.5 10 10s-4.5 10-10 10c-.9 0-1.8-.1-2.6-.3C14.9 20.5 19 16.1 19 11c0-4.4-3.1-8.1-7.4-9.5C11.7 2 11.8 2 12 2z" fill="none"/>
+      <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
     </>
   ),
 };

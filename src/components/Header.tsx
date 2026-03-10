@@ -14,9 +14,9 @@ export default function Header() {
     { to: '/', label: t('nav.home'), icon: 'home' as const },
     { to: '/live', label: 'Live', icon: 'live' as const },
     { to: '/free-cams', label: 'Free Cams', icon: 'camera' as const },
-    { to: '/cam/milf', label: 'MILF', icon: 'heart' as const },
-    { to: '/cam/teen', label: 'Teen', icon: 'user' as const },
-    { to: '/cam/asian', label: 'Asian', icon: 'search' as const }
+    { to: '/cam/milf', label: 'MILF', icon: 'crown' as const },
+    { to: '/cam/teen', label: 'Teen', icon: 'sparkle' as const },
+    { to: '/cam/asian', label: 'Asian', icon: 'lotus' as const }
   ];
 
   const countryItems = [
