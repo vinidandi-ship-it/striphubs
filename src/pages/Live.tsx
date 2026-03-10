@@ -74,14 +74,14 @@ export default function Live() {
   });
 
   return (
-    <div className="flex gap-8">
+    <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
       {/* Sidebar */}
       <Sidebar categories={sidebarCategories} countries={sidebarCountries} />
       
       {/* Main Content */}
       <div className="flex-1 space-y-6">
         <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Live' }]} />
-        <h1 className="text-3xl font-bold text-white">📺 Tutte le Camere Live</h1>
+        <h1 className="text-2xl font-bold text-white sm:text-3xl">📺 Tutte le Camere Live</h1>
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName="All Live Cams" />
       </div>

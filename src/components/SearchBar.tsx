@@ -13,18 +13,18 @@ export default function SearchBar({ initialValue = '', compact = false }: { init
   };
 
   return (
-    <form onSubmit={submit} className={`flex items-center gap-2 ${compact ? 'w-full' : 'w-full'}`}>
+    <form onSubmit={submit} className={`flex w-full items-center gap-2 ${compact ? '' : ''}`}>
       <div className="relative flex-1">
         <input
           aria-label="Search models"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="🔍 Cerca modelle, tag, paesi..."
-          className="h-11 w-full rounded-xl border border-border bg-zinc-900/80 px-4 pl-10 text-sm text-white outline-none focus:ring-2 focus:ring-accent placeholder:text-zinc-500"
+          className="h-11 w-full min-w-0 rounded-xl border border-border bg-zinc-900/80 px-4 pl-10 text-sm text-white outline-none focus:ring-2 focus:ring-accent placeholder:text-zinc-500"
         />
         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">🔍</span>
       </div>
-      <button className="h-11 rounded-xl bg-gradient-to-r from-accent to-pink-500 px-5 text-sm font-semibold text-white hover:shadow-lg hover:shadow-accent/30 transition-all" type="submit">
+      <button className="h-11 shrink-0 rounded-xl bg-gradient-to-r from-accent to-pink-500 px-4 text-sm font-semibold text-white transition-all hover:shadow-lg hover:shadow-accent/30 sm:px-5" type="submit">
         Cerca
       </button>
     </form>

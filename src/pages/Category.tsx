@@ -81,7 +81,7 @@ export default function Category() {
   });
 
   return (
-    <div className="flex gap-8">
+    <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
       {/* Sidebar */}
       <Sidebar categories={sidebarCategories} countries={sidebarCountries} />
       
@@ -89,8 +89,8 @@ export default function Category() {
       <div className="flex-1 space-y-6">
         <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Categorie', to: '/live' }, { label: categoryName(category) }]} />
         <div>
-          <h1 className="text-3xl font-bold text-white">{categoryName(category)} Live Cams</h1>
-          <p className="text-sm text-zinc-400 mt-1">{seoTextForCategory(category)}</p>
+          <h1 className="text-2xl font-bold text-white sm:text-3xl">{categoryName(category)} Live Cams</h1>
+          <p className="mt-1 text-sm text-zinc-400">{seoTextForCategory(category)}</p>
         </div>
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName={`${categoryName(category)} Models`} />

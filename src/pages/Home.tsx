@@ -10,6 +10,31 @@ import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 
 const HOME_LIVE_LIMIT = 300;
 const CATEGORY_PREVIEW_LIMIT = 8;
+const HOME_CATEGORY_PRIORITY = ['teen', 'asian', 'latina', 'blonde', 'brunette'] as const;
+const YOUNG_MODEL_PATTERNS = [
+  /(girls\/teens|teen|young|18\+|19|20|21|22|petite|college|student)/i,
+  /(blonde|brunette|asian|latina)/i
+];
+
+const getHomeCategoryRank = (slug: string) => {
+  const index = HOME_CATEGORY_PRIORITY.indexOf(slug as (typeof HOME_CATEGORY_PRIORITY)[number]);
+  return index === -1 ? HOME_CATEGORY_PRIORITY.length : index;
+};
+
+const getYoungModelScore = (model: Model) => {
+  const joined = `${model.category} ${model.tags.join(' ')}`.toLowerCase();
+  let score = 0;
+
+  YOUNG_MODEL_PATTERNS.forEach((pattern, index) => {
+    if (pattern.test(joined)) {
+      score += index === 0 ? 100 : 25;
+    }
+  });
+
+  if (model.category === 'teen') score += 150;
+  if (joined.includes('petite')) score += 40;
+  return score;
+};
 
 export default function Home() {
   const [models, setModels] = useState<Model[]>([]);
@@ -26,6 +51,16 @@ export default function Home() {
       .finally(() => setLoading(false));
   }, []);
 
+  const prioritizedModels = useMemo(
+    () =>
+      [...models].sort((a, b) => {
+        const scoreDiff = getYoungModelScore(b) - getYoungModelScore(a);
+        if (scoreDiff !== 0) return scoreDiff;
+        return b.viewers - a.viewers;
+      }),
+    [models]
+  );
+
   const categories = useMemo(() => {
     const fromHomeFeed = categorizeModels(models);
     return categoryList.map((slug) => {
@@ -36,6 +71,10 @@ export default function Home() {
         name: existing?.name ?? slug.charAt(0).toUpperCase() + slug.slice(1),
         count: Math.max(existing?.count ?? 0, previewCount)
       };
+    }).sort((a, b) => {
+      const rankDiff = getHomeCategoryRank(a.slug) - getHomeCategoryRank(b.slug);
+      if (rankDiff !== 0) return rankDiff;
+      return b.count - a.count;
     });
   }, [models]);
   const categoryModels = useMemo(
@@ -43,10 +82,10 @@ export default function Home() {
       Object.fromEntries(
         categoryList.map((category) => [
           category,
-          models.filter((model) => model.category === category).slice(0, CATEGORY_PREVIEW_LIMIT)
+          prioritizedModels.filter((model) => model.category === category).slice(0, CATEGORY_PREVIEW_LIMIT)
         ])
       ) as Record<string, Model[]>,
-    [models]
+    [prioritizedModels]
   );
   const topCategories = useMemo(
     () => categories.filter((category) => (categoryModels[category.slug]?.length ?? 0) > 0),
@@ -70,28 +109,28 @@ export default function Home() {
 
   return (
     <div className="space-y-8">
-      <section className="rounded-3xl border border-border bg-gradient-to-br from-purple-900/50 via-zinc-900 to-zinc-950 p-8 md:p-12 relative overflow-hidden">
+      <section className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-purple-900/50 via-zinc-900 to-zinc-950 p-5 sm:p-8 md:p-12">
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-10 left-10 w-32 h-32 bg-accent/30 rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 right-10 w-40 h-40 bg-pink-500/30 rounded-full blur-3xl"></div>
         </div>
         <div className="relative">
-          <p className="inline-flex rounded-full bg-accent/20 px-4 py-2 text-sm font-semibold text-accent">
+          <p className="inline-flex rounded-full bg-accent/20 px-3 py-2 text-xs font-semibold text-accent sm:px-4 sm:text-sm">
             🔴 Live Now - {models.length} camere attive
           </p>
-          <h1 className="mt-4 max-w-4xl text-3xl font-extrabold text-white sm:text-5xl leading-tight">
+          <h1 className="mt-4 max-w-4xl text-2xl font-extrabold leading-tight text-white sm:text-5xl">
             Scopri le modelle più hot in tempo reale
           </h1>
-          <p className="mt-4 max-w-3xl text-zinc-300 text-lg">
+          <p className="mt-4 max-w-3xl text-base text-zinc-300 sm:text-lg">
             Cam show gratuiti 24/7. Milfs, teen, trans, couples - tutte le categorie in un unico posto. 
             Sfoglia le dirette live e trova la tua modella preferita.
           </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link to="/live" className="rounded-full bg-accent hover:bg-accent/80 px-8 py-4 font-semibold text-white text-lg transition-all transform hover:scale-105">
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Link to="/live" className="rounded-full bg-accent px-6 py-3 text-center text-base font-semibold text-white transition-all hover:scale-105 hover:bg-accent/80 sm:px-8 sm:py-4 sm:text-lg">
               🎥 Guarda le Live
             </Link>
-            <Link to="/cam/milf" className="rounded-full border border-border bg-zinc-900 hover:bg-zinc-800 px-8 py-4 font-semibold text-zinc-200 text-lg transition-all">
-              📂 Categorie
+            <Link to="/cam/teen" className="rounded-full border border-border bg-zinc-900 px-6 py-3 text-center text-base font-semibold text-zinc-200 transition-all hover:bg-zinc-800 sm:px-8 sm:py-4 sm:text-lg">
+              📂 Cam Giovani
             </Link>
           </div>
         </div>
@@ -103,7 +142,7 @@ export default function Home() {
           <Link to="/live" className="text-sm font-semibold text-accent hover:text-accent/80">Vedi tutte →</Link>
         </div>
         {error ? <p className="mb-3 text-sm text-red-400">{error}</p> : null}
-        <ModelGrid models={models} loading={loading} listName="Home Live Models" />
+        <ModelGrid models={prioritizedModels} loading={loading} listName="Home Live Models" />
       </section>
 
       <section>

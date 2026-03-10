@@ -25,36 +25,38 @@ const ensureCanonical = (): HTMLLinkElement => {
 };
 
 export const generateTitle = (page: PageType, data?: Record<string, string>): string => {
-  if (page === 'home') return 'Live Cam Models – Free Webcam Shows';
-  if (page === 'live') return 'Live Cam Directory – StripHubs';
+  if (page === 'home') return 'Live Cam Gratis con Modelle Online e Dirette 24/7';
+  if (page === 'live') return 'Cam Live Gratis Online Ora';
   if (page === 'category') {
     const label = categoryName(data?.category || '');
-    return `Live ${label} Cam Models – Free Webcam Shows`;
+    return `${label} Cam Live Gratis Online`;
   }
   if (page === 'tag') {
     const tag = data?.tag || '';
-    return `${tag.charAt(0).toUpperCase() + tag.slice(1)} Cam Girls – Live Webcam Shows`;
+    return `${tag.charAt(0).toUpperCase() + tag.slice(1)} Cam Live e Modelle Online`;
   }
   if (page === 'combination') {
     const cat = categoryName(data?.category || '');
     const tag = data?.tag || '';
-    return `${cat} ${tag} Cam Models – Live Webcam Shows`;
+    return `${cat} ${tag} Cam Live Gratis`;
   }
-  if (page === 'model') return `Watch ${data?.username || 'Model'} Live Cam Show`;
-  if (page === 'search') return 'Search Live Cam Models – StripHubs';
+  if (page === 'model') return `${data?.username || 'Model'} Live Cam e Profilo`;
+  if (page === 'search') return 'Cerca Modelle Live, Tag e Cam Online';
   return SITE_NAME;
 };
 
 export const generateDescription = (page: PageType, data?: Record<string, string>): string => {
-  if (page === 'home') return 'Discover live cam models with fast filters and real-time listings.';
-  if (page === 'live') return 'Browse all currently online live cam performers.';
-  if (page === 'category') return `Watch live ${data?.category || ''} cam models streaming now.`;
-  if (page === 'tag') return `Explore live models with the ${data?.tag || ''} tag.`;
+  if (page === 'home') {
+    return 'Scopri live cam gratuite con modelle online 24/7, categorie popolari, profili aggiornati in tempo reale e accesso rapido alle dirette più viste.';
+  }
+  if (page === 'live') return 'Guarda tutte le modelle live online adesso con elenco aggiornato, filtri rapidi e accesso diretto alle camere più viste.';
+  if (page === 'category') return `Guarda ${data?.category || ''} cam live gratis con modelle online, profili aggiornati e accesso immediato alle dirette attive.`;
+  if (page === 'tag') return `Esplora modelle live con tag ${data?.tag || ''}, camere online adesso e nuove dirette aggiornate in tempo reale.`;
   if (page === 'combination')
-    return `Discover live ${data?.category || ''} cam models featuring ${data?.tag || ''}.`;
-  if (page === 'model') return `Watch ${data?.username || 'this model'} live with one click.`;
-  if (page === 'search') return 'Search cam models by username, tags, and country.';
-  return 'Live cam directory.';
+    return `Scopri ${data?.category || ''} cam live con tag ${data?.tag || ''}, modelle online e accesso veloce alle dirette attive.`;
+  if (page === 'model') return `Guarda ${data?.username || 'questa modella'} live, apri il profilo e accedi subito alla sua cam online.`;
+  if (page === 'search') return 'Cerca modelle live per username, tag, categoria e paese con risultati aggiornati in tempo reale.';
+  return 'Directory di live cam gratuite con modelle online 24/7.';
 };
 
 export const useSEO = (title: string, description: string, path: string) => {
