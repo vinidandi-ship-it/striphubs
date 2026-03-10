@@ -22,7 +22,12 @@ export const countries = [
   { slug: 'indian', name: 'Indiane', nameKey: 'indian', code: 'IN', tags: ['indian', 'india'] },
   { slug: 'chinese', name: 'Cinesi', nameKey: 'chinese', code: 'CN', tags: ['chinese', 'china'] },
   { slug: 'japanese', name: 'Giapponesi', nameKey: 'japanese', code: 'JP', tags: ['japanese', 'japan'] },
-  { slug: 'korean', name: 'Coreane', nameKey: 'korean', code: 'KR', tags: ['korean', 'korea'] }
+  { slug: 'korean', name: 'Coreane', nameKey: 'korean', code: 'KR', tags: ['korean', 'korea'] },
+  { slug: 'colombian', name: 'Colombiane', nameKey: 'colombian', code: 'CO', tags: ['colombian', 'colombia'] },
+  { slug: 'mexican', name: 'Messicane', nameKey: 'mexican', code: 'MX', tags: ['mexican', 'mexico'] },
+  { slug: 'philippine', name: 'Filippine', nameKey: 'philippine', code: 'PH', tags: ['philippine', 'philippines'] },
+  { slug: 'thai', name: 'Thailandesi', nameKey: 'thai', code: 'TH', tags: ['thai', 'thailand'] },
+  { slug: 'vietnamese', name: 'Vietnamite', nameKey: 'vietnamese', code: 'VN', tags: ['vietnamese', 'vietnam'] }
 ] as const;
 
 export type CountrySlug = (typeof countries)[number]['slug'];

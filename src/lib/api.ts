@@ -11,17 +11,29 @@ type CategoryResponse = {
   categories: { slug: string; name: string; count: number }[];
 };
 
-// Mock data for local development - increased to 200 models for better testing
-const mockModels: Model[] = Array.from({ length: 200 }, (_, i) => ({
-  username: `model${i + 1}`,
-  thumbnail: `https://picsum.photos/seed/model${i + 1}/640/800`,
-  viewers: Math.floor(Math.random() * 500) + 10,
-  tags: ['girl', 'live', 'cam', ['curvy', 'petite', 'blonde'][Math.floor(Math.random() * 3)]],
-  country: ['US', 'GB', 'DE', 'IT', 'ES', 'FR'][Math.floor(Math.random() * 6)],
-  category: ['milf', 'teen', 'blonde', 'brunette', 'asian'][Math.floor(Math.random() * 5)],
-  isLive: true,
-  clickUrl: `https://stripchat.com/model${i + 1}?userId=affiliate`
-}));
+// Mock data for local development - increased to 200 models with better distribution
+const mockModels: Model[] = Array.from({ length: 200 }, (_, i) => {
+  // Give higher probability to Italian models (30%)
+  const countryRandom = Math.random();
+  let country: string;
+  if (countryRandom < 0.3) country = 'IT'; // 30% Italian
+  else if (countryRandom < 0.5) country = 'US'; // 20% American
+  else if (countryRandom < 0.65) country = 'GB'; // 15% British
+  else if (countryRandom < 0.8) country = 'DE'; // 15% German
+  else if (countryRandom < 0.9) country = 'ES'; // 10% Spanish
+  else country = 'FR'; // 10% French
+
+  return {
+    username: `model${i + 1}`,
+    thumbnail: `https://picsum.photos/seed/model${i + 1}/640/800`,
+    viewers: Math.floor(Math.random() * 500) + 10,
+    tags: ['girl', 'live', 'cam', ['curvy', 'petite', 'blonde'][Math.floor(Math.random() * 3)]],
+    country: country,
+    category: ['milf', 'teen', 'blonde', 'brunette', 'asian'][Math.floor(Math.random() * 5)],
+    isLive: true,
+    clickUrl: `https://stripchat.com/model${i + 1}?userId=affiliate`
+  };
+});
 
 const mockCategories = [
   { slug: 'milf', name: 'MILF', count: 5 },
