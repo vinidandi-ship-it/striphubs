@@ -25,6 +25,9 @@ const Cookies = lazy(() => import('./pages/Cookies'));
 const Combination = lazy(() => import('./pages/Combination'));
 const Blog = lazy(() => import('./pages/Blog'));
 const GuidaCamGratis = lazy(() => import('./pages/blog/GuidaCamGratis'));
+const MiglioriModelleItaliane = lazy(() => import('./pages/blog/MiglioriModelleItaliane'));
+const SicurezzaCam = lazy(() => import('./pages/blog/SicurezzaCam'));
+const TagPopolari = lazy(() => import('./pages/blog/TagPopolari'));
 
 function AppContent() {
   const location = useLocation();
@@ -142,6 +145,24 @@ function AppContent() {
             <Route path="/fr/blog/guida-cam-gratis" element={<GuidaCamGratis />} />
             <Route path="/es/blog/guida-cam-gratis" element={<GuidaCamGratis />} />
             <Route path="/pt/blog/guida-cam-gratis" element={<GuidaCamGratis />} />
+            <Route path="/blog/migliori-modelle-italiane" element={<MiglioriModelleItaliane />} />
+            <Route path="/en/blog/migliori-modelle-italiane" element={<MiglioriModelleItaliane />} />
+            <Route path="/de/blog/migliori-modelle-italiane" element={<MiglioriModelleItaliane />} />
+            <Route path="/fr/blog/migliori-modelle-italiane" element={<MiglioriModelleItaliane />} />
+            <Route path="/es/blog/migliori-modelle-italiane" element={<MiglioriModelleItaliane />} />
+            <Route path="/pt/blog/migliori-modelle-italiane" element={<MiglioriModelleItaliane />} />
+            <Route path="/blog/sicurezza-cam" element={<SicurezzaCam />} />
+            <Route path="/en/blog/sicurezza-cam" element={<SicurezzaCam />} />
+            <Route path="/de/blog/sicurezza-cam" element={<SicurezzaCam />} />
+            <Route path="/fr/blog/sicurezza-cam" element={<SicurezzaCam />} />
+            <Route path="/es/blog/sicurezza-cam" element={<SicurezzaCam />} />
+            <Route path="/pt/blog/sicurezza-cam" element={<SicurezzaCam />} />
+            <Route path="/blog/tag-popolari" element={<TagPopolari />} />
+            <Route path="/en/blog/tag-popolari" element={<TagPopolari />} />
+            <Route path="/de/blog/tag-popolari" element={<TagPopolari />} />
+            <Route path="/fr/blog/tag-popolari" element={<TagPopolari />} />
+            <Route path="/es/blog/tag-popolari" element={<TagPopolari />} />
+            <Route path="/pt/blog/tag-popolari" element={<TagPopolari />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
