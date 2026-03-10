@@ -21,7 +21,16 @@ export const translations = {
       categoriesTitle: 'Esplora per Categoria',
       categoriesSubtitle: 'Trova la categoria perfetta per te',
       countriesTitle: 'Esplora per Paese',
-      countriesSubtitle: 'Modelle da tutto il mondo'
+      countriesSubtitle: 'Modelle da tutto il mondo',
+      allLiveCams: 'Tutte le Cam Live',
+      seeAll: 'Vedi tutto',
+      popularCategories: 'Categorie Popolari',
+      camsByCountry: 'Cam per Paese',
+      categoriesForYou: 'Categorie per Te',
+      seoLanding: 'Pagine Popolari',
+      explore: 'Esplora',
+      trend: 'Trend',
+      bestSite: 'Il miglior sito di live cam gratis - Aggiornato 24/7'
     },
     header: {
       liveNow: 'Live Ora',
@@ -67,6 +76,9 @@ export const translations = {
     footer: {
       description: 'StripHubs - La migliore directory di live cam gratis',
       disclaimer: 'Solo per adulti 18+'
+    },
+    country: {
+      liveCam: 'Cam live'
     }
   },
   en: {
@@ -91,7 +103,16 @@ export const translations = {
       categoriesTitle: 'Explore by Category',
       categoriesSubtitle: 'Find the perfect category for you',
       countriesTitle: 'Explore by Country',
-      countriesSubtitle: 'Models from around the world'
+      countriesSubtitle: 'Models from around the world',
+      allLiveCams: 'All Live Cams',
+      seeAll: 'See all',
+      popularCategories: 'Popular Categories',
+      camsByCountry: 'Cams by Country',
+      categoriesForYou: 'Categories for You',
+      seoLanding: 'Popular Pages',
+      explore: 'Explore',
+      trend: 'Trending',
+      bestSite: 'The best free live cam site - Updated 24/7'
     },
     header: {
       liveNow: 'Live Now',
@@ -137,6 +158,9 @@ export const translations = {
     footer: {
       description: 'StripHubs - The best free live cam directory',
       disclaimer: 'Adults only 18+'
+    },
+    country: {
+      liveCam: 'Live cam'
     }
   },
   de: {
@@ -161,7 +185,16 @@ export const translations = {
       categoriesTitle: 'Nach Kategorie erkunden',
       categoriesSubtitle: 'Finde die perfekte Kategorie für dich',
       countriesTitle: 'Nach Land erkunden',
-      countriesSubtitle: 'Models aus der ganzen Welt'
+      countriesSubtitle: 'Models aus der ganzen Welt',
+      allLiveCams: 'Alle Live Cams',
+      seeAll: 'Alle anzeigen',
+      popularCategories: 'Beliebte Kategorien',
+      camsByCountry: 'Cams nach Land',
+      categoriesForYou: 'Kategorien für dich',
+      seoLanding: 'Beliebte Seiten',
+      explore: 'Erkunden',
+      trend: 'Trend',
+      bestSite: 'Die beste kostenlose Live Cam Seite - 24/7 aktualisiert'
     },
     header: {
       liveNow: 'Live Jetzt',
@@ -207,6 +240,9 @@ export const translations = {
     footer: {
       description: 'StripHubs - Das beste kostenlose Live Cam Verzeichnis',
       disclaimer: 'Nur für Erwachsene 18+'
+    },
+    country: {
+      liveCam: 'Live cam'
     }
   },
   fr: {
@@ -231,7 +267,16 @@ export const translations = {
       categoriesTitle: 'Explorer par Catégorie',
       categoriesSubtitle: 'Trouvez la catégorie parfaite pour vous',
       countriesTitle: 'Explorer par Pays',
-      countriesSubtitle: 'Models du monde entier'
+      countriesSubtitle: 'Models du monde entier',
+      allLiveCams: 'Toutes les Cams Live',
+      seeAll: 'Voir tout',
+      popularCategories: 'Catégories Populaires',
+      camsByCountry: 'Cams par Pays',
+      categoriesForYou: 'Catégories pour Vous',
+      seoLanding: 'Pages Populaires',
+      explore: 'Explorer',
+      trend: 'Tendance',
+      bestSite: 'Le meilleur site de cams live gratuites - Mis à jour 24/7'
     },
     header: {
       liveNow: 'Live Maintenant',
@@ -277,6 +322,9 @@ export const translations = {
     footer: {
       description: 'StripHubs - Le meilleur annuaire de cams live gratuites',
       disclaimer: 'Adultes seulement 18+'
+    },
+    country: {
+      liveCam: 'Cam live'
     }
   },
   es: {
@@ -301,7 +349,16 @@ export const translations = {
       categoriesTitle: 'Explorar por Categoría',
       categoriesSubtitle: 'Encuentra la categoría perfecta para ti',
       countriesTitle: 'Explorar por País',
-      countriesSubtitle: 'Models de todo el mundo'
+      countriesSubtitle: 'Models de todo el mundo',
+      allLiveCams: 'Todas las Cams Live',
+      seeAll: 'Ver todo',
+      popularCategories: 'Categorías Populares',
+      camsByCountry: 'Cams por País',
+      categoriesForYou: 'Categorías para Ti',
+      seoLanding: 'Páginas Populares',
+      explore: 'Explorar',
+      trend: 'Tendencia',
+      bestSite: 'El mejor sitio de cams live gratis - Actualizado 24/7'
     },
     header: {
       liveNow: 'Live Ahora',
@@ -347,6 +404,9 @@ export const translations = {
     footer: {
       description: 'StripHubs - El mejor directorio de cams live gratis',
       disclaimer: 'Solo adultos 18+'
+    },
+    country: {
+      liveCam: 'Cam live'
     }
   },
   pt: {
@@ -371,7 +431,16 @@ export const translations = {
       categoriesTitle: 'Explorar por Categoria',
       categoriesSubtitle: 'Encontre a categoria perfeita para você',
       countriesTitle: 'Explorar por País',
-      countriesSubtitle: 'Models de todo o mundo'
+      countriesSubtitle: 'Models de todo o mundo',
+      allLiveCams: 'Todas as Cams Live',
+      seeAll: 'Ver tudo',
+      popularCategories: 'Categorias Populares',
+      camsByCountry: 'Cams por País',
+      categoriesForYou: 'Categorias para Você',
+      seoLanding: 'Páginas Populares',
+      explore: 'Explorar',
+      trend: 'Tendência',
+      bestSite: 'O melhor site de cams live grátis - Atualizado 24/7'
     },
     header: {
       liveNow: 'Live Agora',
@@ -417,6 +486,9 @@ export const translations = {
     footer: {
       description: 'StripHubs - O melhor diretório de cams live grátis',
       disclaimer: 'Somente adultos 18+'
+    },
+    country: {
+      liveCam: 'Cam live'
     }
   }
 } as const;

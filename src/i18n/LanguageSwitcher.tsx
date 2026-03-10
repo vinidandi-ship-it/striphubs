@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SupportedLocale } from './types';
 import { useI18n } from './index';
 
@@ -10,6 +11,7 @@ export function LanguageSwitcher({ compact = false }: LanguageSwitcherProps) {
   const { locale, setLocale, supportedLocales, localeFlag, localeName } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -30,10 +32,10 @@ export function LanguageSwitcher({ compact = false }: LanguageSwitcherProps) {
     const pathWithoutLocale = currentPath.replace(/^\/(it|en|de|fr|es|pt)(\/|$)/, '/');
     
     if (newLocale === 'it') {
-      window.history.replaceState(null, '', pathWithoutLocale || '/');
+      navigate(pathWithoutLocale || '/', { replace: true });
     } else {
       const cleanPath = pathWithoutLocale === '/' ? '' : pathWithoutLocale;
-      window.history.replaceState(null, '', `/${newLocale}${cleanPath}`);
+      navigate(`/${newLocale}${cleanPath}`, { replace: true });
     }
   };
 
