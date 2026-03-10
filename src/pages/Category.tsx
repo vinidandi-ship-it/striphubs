@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
+import FAQSection from '../components/FAQSection';
 import InfiniteLoader from '../components/InfiniteLoader';
+import InternalLinks from '../components/InternalLinks';
 import ModelGrid from '../components/ModelGrid';
 import Sidebar from '../components/Sidebar';
+import { useI18n, Language } from '../i18n';
 import { api } from '../lib/api';
 import { countries } from '../lib/countries';
-import { categoryName, categories as categoryList } from '../lib/categories';
-import { generateDescription, generateTitle, useSEO } from '../lib/seo';
+import { categoryName, categories as categoryList, CategorySlug } from '../lib/categories';
+import { generateCategoryMeta } from '../lib/metaTags';
+import { useSEO } from '../lib/seo';
 import { seoTextForCategory } from '../lib/seoText';
 import { useModels } from '../lib/useModels';
 import { PAGE_SIZES } from '../lib/constants';
 
 export default function Category() {
   const { category = 'milf' } = useParams();
+  const { language } = useI18n();
   const [categories, setCategories] = useState<{ slug: string; name: string; count: number }[]>([]);
 
   const {
@@ -31,11 +36,8 @@ export default function Category() {
     initialIncludeOffline: false
   });
 
-  useSEO(
-    generateTitle('category', { category }),
-    generateDescription('category', { category }),
-    `/cam/${category}`
-  );
+  const meta = generateCategoryMeta(category as CategorySlug, language, models.length || 150);
+  useSEO(meta.title, meta.description, `/cam/${category}`, language);
 
   useEffect(() => {
     api.getCategories().then((data) => setCategories(data.categories));
@@ -82,6 +84,10 @@ export default function Category() {
         <ModelGrid models={models} loading={loading} listName={`${categoryName(category)} Models`} />
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
         <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
+        
+        <FAQSection category={category as CategorySlug} language={language} />
+        
+        <InternalLinks currentCategory={category as CategorySlug} language={language} />
       </div>
     </div>
   );
