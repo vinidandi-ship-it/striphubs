@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://striphubs.vercel.app/sitemap.xml
+Sitemap: https://striphubs.com/sitemap.xml

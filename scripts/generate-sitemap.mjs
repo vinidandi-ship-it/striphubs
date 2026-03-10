@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const siteUrl = process.env.SITE_URL || 'https://striphubs.vercel.app';
+const siteUrl = process.env.SITE_URL || 'https://striphubs.com';
 const now = new Date().toISOString();
 const categories = ['milf', 'blonde', 'asian', 'brunette', 'couple', 'trans'];
 

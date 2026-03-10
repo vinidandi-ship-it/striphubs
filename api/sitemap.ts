@@ -11,7 +11,7 @@ import {
   waitForRateLimit
 } from './shared.js';
 
-const SITE_URL = process.env.VITE_SITE_URL || 'https://striphubs.vercel.app';
+const SITE_URL = process.env.VITE_SITE_URL || 'https://striphubs.com';
 const MODELS_ENDPOINT = process.env.STRIPCHAT_API_ENDPOINT || 'https://go.mavrtracktor.com/api/models';
 const MAX_MODEL_ROUTES = 200;
 
