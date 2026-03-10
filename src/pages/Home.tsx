@@ -159,7 +159,7 @@ export default function Home() {
     [models, t]
   );
 
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
     if (loadingMore || !hasMore) return;
     setLoadingMore(true);
     void api.getModels({ limit: PAGE_SIZES.HOME, offset })
@@ -181,7 +181,7 @@ export default function Home() {
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load more models'))
       .finally(() => setLoadingMore(false));
-  };
+  }, [loadingMore, hasMore, offset]);
 
   useInfiniteLoad({
     targetRef: sentinelRef,
