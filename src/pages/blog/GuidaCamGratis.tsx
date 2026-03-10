@@ -63,6 +63,26 @@ export default function GuidaCamGratis() {
             title="Guida Completa alle Cam Live Gratis - StripHubs" 
           />
         </div>
+
+        <div className="mt-8 pt-6 border-t border-border">
+          <h3 className="text-lg font-bold text-white mb-4">Articoli Correlati</h3>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Link
+              to={buildLocalizedPath('/blog/migliori-modelle-italiane', language)}
+              className="block p-4 bg-bg-card border border-border rounded-xl hover:border-accent transition-colors"
+            >
+              <h4 className="font-semibold text-white mb-1">Migliori Modelle Italiane</h4>
+              <p className="text-sm text-zinc-400">Scopri le modelle italiane più popolari.</p>
+            </Link>
+            <Link
+              to={buildLocalizedPath('/blog/sicurezza-cam', language)}
+              className="block p-4 bg-bg-card border border-border rounded-xl hover:border-accent transition-colors"
+            >
+              <h4 className="font-semibold text-white mb-1">Sicurezza e Privacy</h4>
+              <p className="text-sm text-zinc-400">Proteggi la tua privacy online.</p>
+            </Link>
+          </div>
+        </div>
       </div>
     </article>
   );
