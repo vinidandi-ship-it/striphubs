@@ -5,3 +5,4 @@ Disallow: /admin/
 
 Sitemap: https://striphubs.com/sitemap.xml
 Sitemap: https://striphubs.com/sitemap-index.xml
+Sitemap: https://striphubs.com/video-sitemap.xml

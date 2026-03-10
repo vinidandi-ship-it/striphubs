@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run generate:sitemap && vite build",
+    "build": "npm run generate:sitemap && npm run generate:video-sitemap && vite build",
     "preview": "vite preview",
-    "generate:sitemap": "node scripts/generate-sitemap.mjs"
+    "generate:sitemap": "node scripts/generate-sitemap.mjs",
+    "generate:video-sitemap": "node scripts/generate-video-sitemap.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
