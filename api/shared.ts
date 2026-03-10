@@ -125,6 +125,22 @@ export const parseProviderModels = (payload: unknown): Record<string, unknown>[]
   return [];
 };
 
+export const extractProviderTotal = (payload: unknown): number | null => {
+  if (!payload || typeof payload !== 'object') return null;
+  const raw = payload as Record<string, unknown>;
+
+  const direct = Number(raw.total ?? raw.totalCount ?? raw.count);
+  if (Number.isFinite(direct) && direct > 0) return direct;
+
+  if (raw.data && typeof raw.data === 'object') {
+    const nested = raw.data as Record<string, unknown>;
+    const value = Number(nested.total ?? nested.totalCount ?? nested.count);
+    if (Number.isFinite(value) && value > 0) return value;
+  }
+
+  return null;
+};
+
 const buildClickUrl = (username: string): string =>
   `https://stripchat.com/${encodeURIComponent(username)}?userId=${AFFILIATE_ID}`;
 
