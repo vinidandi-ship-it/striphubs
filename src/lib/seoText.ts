@@ -31,3 +31,14 @@ export const seoFaqForCombination = (category: string, tag: string) => [
     answer: `Serve a raccogliere modelle live pertinenti, migliorare il linking interno e intercettare ricerche piu precise.`
   }
 ];
+
+export const seoFaqForCategory = (category: string) => [
+  {
+    question: `Cosa trovi nella categoria ${category}?`,
+    answer: `Una selezione di modelle live legate alla categoria ${category}, aggiornata in tempo reale e ordinata per disponibilita e interesse.`
+  },
+  {
+    question: `La categoria ${category} viene aggiornata spesso?`,
+    answer: `Si, la pagina viene alimentata dal feed live e continua a caricare nuove modelle mentre scorri.`
+  }
+];

@@ -105,3 +105,27 @@ export const removeJsonLd = (id: string) => {
   const node = document.getElementById(id);
   if (node) node.remove();
 };
+
+export const useFaqJsonLd = (
+  id: string,
+  items: Array<{ question: string; answer: string }>
+) => {
+  useEffect(() => {
+    if (!items.length) return;
+
+    upsertJsonLd(id, {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: items.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer
+        }
+      }))
+    });
+
+    return () => removeJsonLd(id);
+  }, [id, items]);
+};

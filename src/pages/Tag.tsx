@@ -8,7 +8,7 @@ import { api } from '../lib/api';
 import { categories as categoryList, categoryName } from '../lib/categories';
 import { Model } from '../lib/models';
 import { featuredCategoryTagCombos } from '../lib/programmaticSeo';
-import { generateDescription, generateTitle, useSEO } from '../lib/seo';
+import { generateDescription, generateTitle, useFaqJsonLd, useSEO } from '../lib/seo';
 import { seoFaqForTag, seoTextForTag } from '../lib/seoText';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
@@ -28,6 +28,7 @@ export default function Tag() {
   const faq = seoFaqForTag(tag);
 
   useSEO(generateTitle('tag', { tag }), generateDescription('tag', { tag }), `/tag/${tag}`);
+  useFaqJsonLd('faq-tag-jsonld', faq);
 
   useEffect(() => {
     setLoading(true);

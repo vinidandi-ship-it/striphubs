@@ -7,7 +7,7 @@ import { api } from '../lib/api';
 import { Model } from '../lib/models';
 import { categoryName } from '../lib/categories';
 import { featuredCategoryTagCombos } from '../lib/programmaticSeo';
-import { generateDescription, generateTitle, useSEO } from '../lib/seo';
+import { generateDescription, generateTitle, useFaqJsonLd, useSEO } from '../lib/seo';
 import { seoFaqForCombination, seoTextForCombination } from '../lib/seoText';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
@@ -31,6 +31,7 @@ export default function CombinationPage() {
     generateDescription('combination', { category, tag }),
     `/cam/${category}/${tag}`
   );
+  useFaqJsonLd('faq-combination-jsonld', faq);
 
   useEffect(() => {
     setLoading(true);
