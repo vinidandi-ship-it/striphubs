@@ -51,7 +51,7 @@ const removeAlternateLinks = () => {
 };
 
 export const generateTitle = (page: PageType, data?: Record<string, string>): string => {
-  if (page === 'home') return 'Live Cam Giovani e Link Stripchat';
+  if (page === 'home') return 'Free Cams - Live Cam Giovani e Link Stripchat';
   if (page === 'live') return 'Cam Live Gratis Online Ora';
   if (page === 'category') {
     const label = categoryName(data?.category || '');

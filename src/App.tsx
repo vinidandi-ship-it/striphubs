@@ -13,6 +13,7 @@ import { upsertJsonLd } from './lib/seo';
 
 const Home = lazy(() => import('./pages/Home'));
 const Live = lazy(() => import('./pages/Live'));
+const FreeCams = lazy(() => import('./pages/FreeCams'));
 const Category = lazy(() => import('./pages/Category'));
 const Country = lazy(() => import('./pages/Country'));
 const Tag = lazy(() => import('./pages/Tag'));
@@ -67,6 +68,12 @@ function AppContent() {
             <Route path="/fr/live" element={<Live />} />
             <Route path="/es/live" element={<Live />} />
             <Route path="/pt/live" element={<Live />} />
+            <Route path="/free-cams" element={<FreeCams />} />
+            <Route path="/en/free-cams" element={<FreeCams />} />
+            <Route path="/de/free-cams" element={<FreeCams />} />
+            <Route path="/fr/free-cams" element={<FreeCams />} />
+            <Route path="/es/free-cams" element={<FreeCams />} />
+            <Route path="/pt/free-cams" element={<FreeCams />} />
             <Route path="/country/:countrySlug" element={<Country />} />
             <Route path="/en/country/:countrySlug" element={<Country />} />
             <Route path="/de/country/:countrySlug" element={<Country />} />

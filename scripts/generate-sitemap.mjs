@@ -42,6 +42,7 @@ const combinations = [
 const baseRoutes = [
   '/',
   '/live',
+  '/free-cams',
   '/search',
   '/privacy',
   '/terms',
