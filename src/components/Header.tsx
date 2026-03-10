@@ -32,11 +32,11 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-border-color bg-bg-primary/95 backdrop-blur-xl shadow-lg">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
-        <Link to={getLocalizedTo('/')} className="flex min-w-0 items-center gap-2 text-lg font-extrabold text-white transition-transform hover:scale-105 sm:text-xl">
-          <div className="w-10 h-10 rounded-xl sh-gradient-primary flex items-center justify-center shadow-lg">
+        <Link to={getLocalizedTo('/')} className="flex min-w-0 items-center gap-2 pl-2 text-lg font-extrabold text-white transition-transform hover:scale-105 sm:text-xl">
+          <div className="w-10 h-10 rounded-xl sh-gradient-primary flex items-center justify-center shadow-lg shrink-0">
             <span className="text-white text-sm font-bold">SH</span>
           </div>
-          <span className="truncate">Strip<span className="text-accent-primary">Hubs</span></span>
+          <span className="hidden sm:inline truncate">Strip<span className="text-accent-primary">Hubs</span></span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-1">
