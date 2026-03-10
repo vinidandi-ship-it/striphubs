@@ -14,4 +14,4 @@ export type Model = {
 };
 
 export const watchLiveUrl = (username: string): string =>
-  `https://stripchat.com/${encodeURIComponent(username)}?userId=${AFFILIATE_ID}`;
+  `https://go.mavrtracktor.com?userId=${AFFILIATE_ID}&model=${encodeURIComponent(username)}`;

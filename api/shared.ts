@@ -159,7 +159,7 @@ export const extractProviderTotal = (payload: unknown): number | null => {
 };
 
 const buildClickUrl = (username: string): string =>
-  `https://stripchat.com/${encodeURIComponent(username)}?userId=${AFFILIATE_ID}`;
+  `https://go.mavrtracktor.com?userId=${AFFILIATE_ID}&model=${encodeURIComponent(username)}`;
 
 export const detectCategoryFromTags = (tags: string[], country?: string): string => {
   const joined = tags.join(' ');
