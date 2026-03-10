@@ -21,10 +21,15 @@ export default function Header() {
 
   const countryItems = [
     { to: '/country/italian', label: t('countries.italian'), flag: '🇮🇹' },
+    { to: '/country/ukrainian', label: t('countries.ukrainian'), flag: '🇺🇦' },
     { to: '/country/american', label: t('countries.american'), flag: '🇺🇸' },
     { to: '/country/british', label: t('countries.british'), flag: '🇬🇧' },
     { to: '/country/german', label: t('countries.german'), flag: '🇩🇪' },
-    { to: '/country/spanish', label: t('countries.spanish'), flag: '🇪🇸' }
+    { to: '/country/french', label: t('countries.french'), flag: '🇫🇷' },
+    { to: '/country/spanish', label: t('countries.spanish'), flag: '🇪🇸' },
+    { to: '/country/russian', label: t('countries.russian'), flag: '🇷🇺' },
+    { to: '/country/brazilian', label: t('countries.brazilian'), flag: '🇧🇷' },
+    { to: '/country/colombian', label: t('countries.colombian'), flag: '🇨🇴' }
   ];
 
   const countriesButton = {
