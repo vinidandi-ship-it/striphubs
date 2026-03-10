@@ -39,9 +39,9 @@ export const CATEGORY_DEFINITIONS = [
   { slug: 'finland', name: 'Finland', match: /fi|finland|finlandia/i, tag: 'finland' },
   { slug: 'portugal', name: 'Portugal', match: /pt|portugal/i, tag: 'portugal' },
   { slug: 'greece', name: 'Greece', match: /gr|greece|grecia/i, tag: 'greece' },
-  { slug: 'turkey', name: 'Turkey', match: /tr|turkey|turquia|i, tag: 'turkey' },
-  { slug: 'india', name: 'India', match: /in|india|i, tag: 'india' },
-  { slug: 'china', name: 'China', match: /cn|china|china/i, tag: 'china' },
+  { slug: 'turkey', name: 'Turkey', match: /tr|turkey|turquia/i, tag: 'turkey' },
+  { slug: 'india', name: 'India', match: /in|india/i, tag: 'india' },
+  { slug: 'china', name: 'China', match: /cn|china|chinese/i, tag: 'china' },
   { slug: 'japan', name: 'Japan', match: /jp|japan|japon/i, tag: 'japan' },
   { slug: 'korea', name: 'Korea', match: /kr|korea|corea/i, tag: 'korea' }
 ] as const;
