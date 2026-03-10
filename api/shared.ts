@@ -3,20 +3,20 @@ import type { VercelResponse } from '@vercel/node';
 export const AFFILIATE_ID = 'd28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881';
 
 export const CATEGORY_DEFINITIONS = [
-  { slug: 'milf', name: 'MILF', match: /(milf|milfs|mature)/i, tag: 'girls/milfs' },
-  { slug: 'teen', name: 'Teen', match: /teen/i, tag: 'girls/teens' },
-  { slug: 'ebony', name: 'Ebony', match: /(ebony|black)/i, tag: 'girls/ebony' },
-  { slug: 'asian', name: 'Asian', match: /asian/i, tag: 'girls/asian' },
-  { slug: 'latina', name: 'Latina', match: /(latina|latin)/i, tag: 'girls/latin' },
-  { slug: 'blonde', name: 'Blonde', match: /blonde/i, tag: 'girls/blondes' },
-  { slug: 'brunette', name: 'Brunette', match: /brunette/i, tag: 'girls/brunettes' },
-  { slug: 'bbw', name: 'BBW', match: /bbw/i, tag: 'girls/bbw' },
-  { slug: 'couple', name: 'Couple', match: /(couple|couples)/i, tag: 'couples' },
-  { slug: 'gay', name: 'Gay', match: /gay/i, tag: 'gay' },
-  { slug: 'lesbian', name: 'Lesbian', match: /lesbian/i, tag: 'girls/lesbian' },
-  { slug: 'men', name: 'Men', match: /men|male/i, tag: 'men' },
-  { slug: 'trans', name: 'Trans', match: /trans/i, tag: 'trans' },
-  { slug: 'vr', name: 'VR', match: /vr/i, tag: 'vr' }
+  { slug: 'milf', name: 'MILF', match: /(girls\/milfs|milf|milfs|mature)/i, tag: 'girls/milfs' },
+  { slug: 'teen', name: 'Teen', match: /(girls\/teens|teen)/i, tag: 'girls/teens' },
+  { slug: 'ebony', name: 'Ebony', match: /(girls\/ebony|ebony|black)/i, tag: 'girls/ebony' },
+  { slug: 'asian', name: 'Asian', match: /(girls\/asian|asian)/i, tag: 'girls/asian' },
+  { slug: 'latina', name: 'Latina', match: /(girls\/latin|latina|latin)/i, tag: 'girls/latin' },
+  { slug: 'blonde', name: 'Blonde', match: /(girls\/blondes|blonde)/i, tag: 'girls/blondes' },
+  { slug: 'brunette', name: 'Brunette', match: /(girls\/brunettes|brunette)/i, tag: 'girls/brunettes' },
+  { slug: 'bbw', name: 'BBW', match: /(girls\/bbw|bbw)/i, tag: 'girls/bbw' },
+  { slug: 'couple', name: 'Couple', match: /(couples|couple|couples)/i, tag: 'couples' },
+  { slug: 'gay', name: 'Gay', match: /(gay)/i, tag: 'gay' },
+  { slug: 'lesbian', name: 'Lesbian', match: /(girls\/lesbian|lesbian)/i, tag: 'girls/lesbian' },
+  { slug: 'men', name: 'Men', match: /(men|male)/i, tag: 'men' },
+  { slug: 'trans', name: 'Trans', match: /(trans)/i, tag: 'trans' },
+  { slug: 'vr', name: 'VR', match: /(vr)/i, tag: 'vr' }
 ] as const;
 
 export const STATIC_TAGS = [
