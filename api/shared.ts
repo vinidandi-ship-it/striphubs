@@ -20,31 +20,36 @@ export const CATEGORY_DEFINITIONS = [
   { slug: 'lesbian', name: 'Lesbian', match: /(girls\/lesbian|lesbian)/i, tag: 'girls/lesbian' },
   { slug: 'men', name: 'Men', match: /(men|male)/i, tag: 'men' },
   { slug: 'trans', name: 'Trans', match: /(trans)/i, tag: 'trans' },
-  { slug: 'vr', name: 'VR', match: /(vr)/i, tag: 'vr' },
-  // Paesi
-  { slug: 'italy', name: 'Italy', match: /it|italy|italia/i, tag: 'italy' },
-  { slug: 'germany', name: 'Germany', match: /de|germany|germania/i, tag: 'germany' },
-  { slug: 'france', name: 'France', match: /fr|france|francia/i, tag: 'france' },
-  { slug: 'spain', name: 'Spain', match: /es|spain|espana|spagna/i, tag: 'spain' },
-  { slug: 'uk', name: 'United Kingdom', match: /gb|uk|united kingdom|england|gb/i, tag: 'uk' },
-  { slug: 'usa', name: 'USA', match: /us|usa|united states|america/i, tag: 'usa' },
-  { slug: 'canada', name: 'Canada', match: /ca|canada/i, tag: 'canada' },
-  { slug: 'australia', name: 'Australia', match: /au|australia/i, tag: 'australia' },
-  { slug: 'russia', name: 'Russia', match: /ru|russia|rusia/i, tag: 'russia' },
-  { slug: 'poland', name: 'Poland', match: /pl|poland|polonia/i, tag: 'poland' },
-  { slug: 'netherlands', name: 'Netherlands', match: /nl|netherlands|holand|holland/i, tag: 'netherlands' },
-  { slug: 'sweden', name: 'Sweden', match: /se|sweden|suecia/i, tag: 'sweden' },
-  { slug: 'norway', name: 'Norway', match: /no|norway|noruega/i, tag: 'norway' },
-  { slug: 'denmark', name: 'Denmark', match: /dk|denmark|dinamarca/i, tag: 'denmark' },
-  { slug: 'finland', name: 'Finland', match: /fi|finland|finlandia/i, tag: 'finland' },
-  { slug: 'portugal', name: 'Portugal', match: /pt|portugal/i, tag: 'portugal' },
-  { slug: 'greece', name: 'Greece', match: /gr|greece|grecia/i, tag: 'greece' },
-  { slug: 'turkey', name: 'Turkey', match: /tr|turkey|turquia/i, tag: 'turkey' },
-  { slug: 'india', name: 'India', match: /in|india/i, tag: 'india' },
-  { slug: 'china', name: 'China', match: /cn|china|chinese/i, tag: 'china' },
-  { slug: 'japan', name: 'Japan', match: /jp|japan|japon/i, tag: 'japan' },
-  { slug: 'korea', name: 'Korea', match: /kr|korea|corea/i, tag: 'korea' }
+  { slug: 'vr', name: 'VR', match: /(vr)/i, tag: 'vr' }
 ] as const;
+
+const COUNTRY_HINTS: Array<{ match: RegExp; code: string }> = [
+  { match: /(girls\/american|couples\/american|american|usa|united-states|united states)/i, code: 'US' },
+  { match: /(girls\/british|couples\/british|british|united kingdom|uk|england)/i, code: 'GB' },
+  { match: /(girls\/italian|couples\/italian|italian|italy|italia)/i, code: 'IT' },
+  { match: /(girls\/german|couples\/german|german|germany|germania)/i, code: 'DE' },
+  { match: /(girls\/french|couples\/french|french|france|francia)/i, code: 'FR' },
+  { match: /(girls\/spanish|couples\/spanish|spanish|spain|spagna|espana)/i, code: 'ES' },
+  { match: /(girls\/canadian|couples\/canadian|canadian|canada)/i, code: 'CA' },
+  { match: /(girls\/australian|couples\/australian|australian|australia)/i, code: 'AU' },
+  { match: /(girls\/russian|couples\/russian|russian|russia)/i, code: 'RU' },
+  { match: /(girls\/polish|couples\/polish|polish|poland|polonia)/i, code: 'PL' },
+  { match: /(girls\/dutch|couples\/dutch|dutch|netherlands|holland)/i, code: 'NL' },
+  { match: /(girls\/swedish|couples\/swedish|swedish|sweden)/i, code: 'SE' },
+  { match: /(girls\/norwegian|couples\/norwegian|norwegian|norway)/i, code: 'NO' },
+  { match: /(girls\/danish|couples\/danish|danish|denmark)/i, code: 'DK' },
+  { match: /(girls\/finnish|couples\/finnish|finnish|finland)/i, code: 'FI' },
+  { match: /(girls\/portuguese|couples\/portuguese|portuguese|portugal)/i, code: 'PT' },
+  { match: /(girls\/greek|couples\/greek|greek|greece|grecia)/i, code: 'GR' },
+  { match: /(girls\/turkish|couples\/turkish|turkish|turkey|turquia)/i, code: 'TR' },
+  { match: /(girls\/indian|couples\/indian|indian|india|hindi)/i, code: 'IN' },
+  { match: /(girls\/chinese|couples\/chinese|chinese|china)/i, code: 'CN' },
+  { match: /(girls\/japanese|couples\/japanese|japanese|japan|japon)/i, code: 'JP' },
+  { match: /(girls\/korean|couples\/korean|korean|korea|corea)/i, code: 'KR' },
+  { match: /(girls\/ukrainian|couples\/ukrainian|ukrainian|ukraine)/i, code: 'UA' },
+  { match: /(girls\/colombian|couples\/colombian|colombian|colombia)/i, code: 'CO' },
+  { match: /(girls\/brazilian|couples\/brazilian|brazilian|brazil)/i, code: 'BR' }
+];
 
 export const STATIC_TAGS = [
   'tattoo',
@@ -96,6 +101,18 @@ export const apiError = (res: VercelResponse, message: string, providerStatus = 
 
 export const toString = (value: unknown): string => (typeof value === 'string' ? value.trim() : '');
 
+const normalizeCountryCode = (value: string): string => {
+  const upper = value.toUpperCase();
+  if (/^[A-Z]{2}$/.test(upper)) return upper;
+
+  const compact = value.toLowerCase();
+  for (const hint of COUNTRY_HINTS) {
+    if (hint.match.test(compact)) return hint.code;
+  }
+
+  return '';
+};
+
 export const toNumber = (value: unknown): number => {
   const n = Number(value ?? 0);
   return Number.isFinite(n) ? n : 0;
@@ -145,11 +162,19 @@ const buildClickUrl = (username: string): string =>
   `https://stripchat.com/${encodeURIComponent(username)}?userId=${AFFILIATE_ID}`;
 
 export const detectCategoryFromTags = (tags: string[], country?: string): string => {
-  const joined = tags.join(' ') + ' ' + (country || '');
+  const joined = tags.join(' ');
   for (const category of CATEGORY_DEFINITIONS) {
     if (category.match.test(joined)) return category.slug;
   }
   return 'general';
+};
+
+const detectCountryFromTags = (tags: string[]): string => {
+  const joined = tags.join(' ');
+  for (const hint of COUNTRY_HINTS) {
+    if (hint.match.test(joined)) return hint.code;
+  }
+  return '';
 };
 
 export const createNormalizedModel = (model: Record<string, unknown>): NormalizedModel | null => {
@@ -157,8 +182,8 @@ export const createNormalizedModel = (model: Record<string, unknown>): Normalize
   if (!username) return null;
 
   const tags = normalizeTags(model.tags);
-  const countryRaw = toString(model.modelsCountry || model.country || model.country_code) || 'N/A';
-  const country = countryRaw.toUpperCase();
+  const rawCountry = toString(model.modelsCountry || model.country || model.country_code || model.countryCode);
+  const country = normalizeCountryCode(rawCountry) || detectCountryFromTags(tags) || 'N/A';
   const category = detectCategoryFromTags(tags, country);
   const isLive =
     ['public', 'groupShow', 'p2p', 'private'].includes(toString(model.status)) ||
