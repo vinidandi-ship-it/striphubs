@@ -20,7 +20,30 @@ export const CATEGORY_DEFINITIONS = [
   { slug: 'lesbian', name: 'Lesbian', match: /(girls\/lesbian|lesbian)/i, tag: 'girls/lesbian' },
   { slug: 'men', name: 'Men', match: /(men|male)/i, tag: 'men' },
   { slug: 'trans', name: 'Trans', match: /(trans)/i, tag: 'trans' },
-  { slug: 'vr', name: 'VR', match: /(vr)/i, tag: 'vr' }
+  { slug: 'vr', name: 'VR', match: /(vr)/i, tag: 'vr' },
+  // Paesi
+  { slug: 'italy', name: 'Italy', match: /it|italy|italia/i, tag: 'italy' },
+  { slug: 'germany', name: 'Germany', match: /de|germany|germania/i, tag: 'germany' },
+  { slug: 'france', name: 'France', match: /fr|france|francia/i, tag: 'france' },
+  { slug: 'spain', name: 'Spain', match: /es|spain|espana|spagna/i, tag: 'spain' },
+  { slug: 'uk', name: 'United Kingdom', match: /gb|uk|united kingdom|england|gb/i, tag: 'uk' },
+  { slug: 'usa', name: 'USA', match: /us|usa|united states|america/i, tag: 'usa' },
+  { slug: 'canada', name: 'Canada', match: /ca|canada/i, tag: 'canada' },
+  { slug: 'australia', name: 'Australia', match: /au|australia/i, tag: 'australia' },
+  { slug: 'russia', name: 'Russia', match: /ru|russia|rusia/i, tag: 'russia' },
+  { slug: 'poland', name: 'Poland', match: /pl|poland|polonia/i, tag: 'poland' },
+  { slug: 'netherlands', name: 'Netherlands', match: /nl|netherlands|holand|holland/i, tag: 'netherlands' },
+  { slug: 'sweden', name: 'Sweden', match: /se|sweden|suecia/i, tag: 'sweden' },
+  { slug: 'norway', name: 'Norway', match: /no|norway|noruega/i, tag: 'norway' },
+  { slug: 'denmark', name: 'Denmark', match: /dk|denmark|dinamarca/i, tag: 'denmark' },
+  { slug: 'finland', name: 'Finland', match: /fi|finland|finlandia/i, tag: 'finland' },
+  { slug: 'portugal', name: 'Portugal', match: /pt|portugal/i, tag: 'portugal' },
+  { slug: 'greece', name: 'Greece', match: /gr|greece|grecia/i, tag: 'greece' },
+  { slug: 'turkey', name: 'Turkey', match: /tr|turkey|turquia|i, tag: 'turkey' },
+  { slug: 'india', name: 'India', match: /in|india|i, tag: 'india' },
+  { slug: 'china', name: 'China', match: /cn|china|china/i, tag: 'china' },
+  { slug: 'japan', name: 'Japan', match: /jp|japan|japon/i, tag: 'japan' },
+  { slug: 'korea', name: 'Korea', match: /kr|korea|corea/i, tag: 'korea' }
 ] as const;
 
 export const STATIC_TAGS = [
@@ -105,8 +128,8 @@ export const parseProviderModels = (payload: unknown): Record<string, unknown>[]
 const buildClickUrl = (username: string): string =>
   `https://stripchat.com/${encodeURIComponent(username)}?userId=${AFFILIATE_ID}`;
 
-export const detectCategoryFromTags = (tags: string[]): string => {
-  const joined = tags.join(' ');
+export const detectCategoryFromTags = (tags: string[], country?: string): string => {
+  const joined = tags.join(' ') + ' ' + (country || '');
   for (const category of CATEGORY_DEFINITIONS) {
     if (category.match.test(joined)) return category.slug;
   }
@@ -118,7 +141,9 @@ export const createNormalizedModel = (model: Record<string, unknown>): Normalize
   if (!username) return null;
 
   const tags = normalizeTags(model.tags);
-  const category = detectCategoryFromTags(tags);
+  const countryRaw = toString(model.modelsCountry || model.country || model.country_code) || 'N/A';
+  const country = countryRaw.toUpperCase();
+  const category = detectCategoryFromTags(tags, country);
   const isLive =
     ['public', 'groupShow', 'p2p', 'private'].includes(toString(model.status)) ||
     Boolean(model.isLive ?? model.is_live ?? true);
@@ -133,7 +158,7 @@ export const createNormalizedModel = (model: Record<string, unknown>): Normalize
       `https://picsum.photos/seed/${encodeURIComponent(username)}/640/800`,
     viewers: toNumber(model.viewersCount ?? model.viewers ?? model.users_count),
     tags,
-    country: (toString(model.modelsCountry || model.country || model.country_code) || 'N/A').toUpperCase(),
+    country,
     category,
     isLive,
     clickUrl: buildClickUrl(username)
@@ -144,7 +169,9 @@ export const deriveCategoriesFromModels = (models: NormalizedModel[]) =>
   CATEGORY_DEFINITIONS.map((category) => ({
     slug: category.slug,
     name: category.name,
-    count: models.reduce((acc, model) => (model.tags.some((tag) => category.match.test(tag)) ? acc + 1 : acc), 0)
+    count: models.reduce((acc, model) => (
+      model.tags.some((tag) => category.match.test(tag)) || category.match.test(model.country) ? acc + 1 : acc
+    ), 0)
   }));
 
 export const sanitizeTagForRoute = (raw: string): string => {
