@@ -34,28 +34,20 @@ const mockCategories = [
 const request = async <T>(path: string): Promise<T> => {
   const isDev = import.meta.env.DEV;
 
-  console.log('API Request:', path, 'DEV:', isDev);
-
   if (isDev) {
-    // Mock API responses for local development
     if (path.startsWith('/api/models')) {
-      console.log('Returning mock models');
       const url = new URL(path, window.location.origin);
       const limit = Number(url.searchParams.get('limit')) || 48;
       return Promise.resolve({ models: mockModels.slice(0, limit) } as T);
     }
     if (path.startsWith('/api/categories')) {
-      console.log('Returning mock categories');
       return Promise.resolve({ categories: mockCategories } as T);
     }
     if (path.startsWith('/api/model')) {
-      console.log('Returning mock model');
       const url = new URL(path, window.location.origin);
       const name = url.searchParams.get('name') || 'model1';
       return Promise.resolve(mockModels[0] as T);
     }
-    // Default mock response
-    console.log('Returning default mock');
     return Promise.resolve({ models: mockModels } as T);
   }
 

@@ -11,16 +11,15 @@ import { categorizeModels, categories as categoryList } from '../lib/categories'
 import { extractSeoTags, featuredTagGroups } from '../lib/tags';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 import { featuredCategoryTagCombos, featuredCountryRoutes, priorityTagSlugs } from '../lib/programmaticSeo';
-
-const HOME_PAGE_SIZE = 180;
-const CATEGORY_PREVIEW_LIMIT = 8;
-const HOME_CATEGORY_PRIORITY = ['teen', 'asian', 'latina', 'blonde', 'brunette'] as const;
-const YOUNG_MODEL_PATTERNS = [
-  /(girls\/teens|teen|young|18\+|19|20|21|22|petite|college|student)/i,
-  /(blonde|brunette|asian|latina)/i
-];
-const YOUNG_SPOTLIGHT_THRESHOLD = 60;
-const YOUNG_SPOTLIGHT_SIZE = 6;
+import { useInfiniteLoad } from '../lib/useInfiniteLoad';
+import {
+  PAGE_SIZES,
+  CATEGORY_PREVIEW_LIMIT,
+  HOME_CATEGORY_PRIORITY,
+  YOUNG_MODEL_PATTERNS,
+  YOUNG_SPOTLIGHT_THRESHOLD,
+  YOUNG_SPOTLIGHT_SIZE
+} from '../lib/constants';
 
 const getHomeCategoryRank = (slug: string) => {
   const index = HOME_CATEGORY_PRIORITY.indexOf(slug as (typeof HOME_CATEGORY_PRIORITY)[number]);
@@ -58,7 +57,7 @@ export default function Home() {
     setOffset(0);
     setHasMore(false);
     setError('');
-    void api.getModels({ limit: HOME_PAGE_SIZE, offset: 0 })
+    void api.getModels({ limit: PAGE_SIZES.HOME, offset: 0 })
       .then((data) => {
         setModels(data.models);
         setOffset(data.models.length);
@@ -147,19 +146,19 @@ export default function Home() {
       featuredCountryRoutes
         .map((route) => route.replace('/country/', ''))
         .map((slug) => findCountryBySlug(slug))
-        .filter(Boolean)
+        .filter((c): c is NonNullable<typeof c> => Boolean(c))
         .map((country) => ({
           ...country,
           count: models.filter((model) => model.country === country.code).length
         }))
-      .filter((country) => country.count > 0),
+        .filter((country) => country.count > 0),
     [models]
   );
 
   const loadMore = () => {
     if (loadingMore || !hasMore) return;
     setLoadingMore(true);
-    void api.getModels({ limit: HOME_PAGE_SIZE, offset })
+    void api.getModels({ limit: PAGE_SIZES.HOME, offset })
       .then((data) => {
         setModels((current) => {
           const seen = new Set(current.map((item) => item.username.toLowerCase()));

@@ -1,73 +1,39 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import InfiniteLoader from '../components/InfiniteLoader';
 import ModelGrid from '../components/ModelGrid';
-import { api } from '../lib/api';
 import { findCountryBySlug } from '../lib/countries';
 import { featuredCategoryTagCombos, priorityTagSlugs } from '../lib/programmaticSeo';
-import type { Model } from '../lib/models';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 import { seoTextForCountry } from '../lib/seoText';
-import { useInfiniteLoad } from '../lib/useInfiniteLoad';
+import { useModels } from '../lib/useModels';
+import { PAGE_SIZES } from '../lib/constants';
 
 export default function Country() {
-  const PAGE_SIZE = 96;
   const { countrySlug = 'italian' } = useParams();
   const country = findCountryBySlug(countrySlug);
-  const [models, setModels] = useState<Model[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [error, setError] = useState('');
-  const [offset, setOffset] = useState(0);
-  const [hasMore, setHasMore] = useState(false);
-  const sentinelRef = useRef<HTMLDivElement>(null);
-  const [includeOffline, setIncludeOffline] = useState(true);
+
+  const {
+    models,
+    loading,
+    loadingMore,
+    error,
+    hasMore,
+    includeOffline,
+    toggleIncludeOffline,
+    sentinelRef
+  } = useModels({
+    country: country?.code,
+    pageSize: PAGE_SIZES.COUNTRY,
+    initialIncludeOffline: false
+  });
 
   useSEO(
     generateTitle('country', { country: country?.name || countrySlug }),
     generateDescription('country', { country: country?.name || countrySlug }),
     `/country/${countrySlug}`
   );
-
-  useEffect(() => {
-    if (!country) return;
-
-    setLoading(true);
-    setOffset(0);
-    setHasMore(false);
-    setModels([]);
-    setLoadingMore(false);
-    setError('');
-    void api.getModels({ country: country.code, limit: PAGE_SIZE, offset: 0, liveOnly: !includeOffline })
-      .then((data) => {
-        setModels(data.models);
-        setOffset(data.models.length);
-        setHasMore(Boolean(data.hasMore));
-      })
-      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load country'))
-      .finally(() => setLoading(false));
-  }, [country, includeOffline]);
-
-  const loadMore = () => {
-    if (!country || loadingMore || !hasMore) return;
-    setLoadingMore(true);
-    void api.getModels({ country: country.code, limit: PAGE_SIZE, offset, liveOnly: !includeOffline })
-      .then((data) => {
-        setModels((current) => [...current, ...data.models]);
-        setOffset((current) => current + data.models.length);
-        setHasMore(Boolean(data.hasMore));
-      })
-      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load more country models'))
-      .finally(() => setLoadingMore(false));
-  };
-
-  useInfiniteLoad({
-    targetRef: sentinelRef,
-    enabled: hasMore && !loading,
-    loading: loadingMore,
-    onLoadMore: loadMore
-  });
 
   const relatedCombos = useMemo(
     () => featuredCategoryTagCombos.filter((entry) => models.some((model) => model.category === entry.category)).slice(0, 6),
@@ -95,7 +61,7 @@ export default function Country() {
           </div>
           <button
             type="button"
-            onClick={() => setIncludeOffline((current) => !current)}
+            onClick={toggleIncludeOffline}
             className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${includeOffline ? 'border-accent bg-accent/10 text-accent' : 'border-border text-zinc-300 hover:border-accent hover:text-white'}`}
           >
             {includeOffline ? 'Mostra solo live' : 'Includi anche offline'}

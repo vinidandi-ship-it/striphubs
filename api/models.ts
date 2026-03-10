@@ -110,9 +110,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       const providerPayload = await upstreamRes.json();
       providerTotal = extractProviderTotal(providerPayload);
-    normalized = parseProviderModels(providerPayload)
-      .map(createNormalizedModel)
-      .filter((item): item is NormalizedModel => Boolean(item));
+      normalized = parseProviderModels(providerPayload)
+        .map(createNormalizedModel)
+        .filter((item): item is NormalizedModel => Boolean(item));
 
       cache = {
         key: upstreamUrl,

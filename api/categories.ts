@@ -40,7 +40,8 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
     const providerPayload = await upstreamRes.json();
     const models = parseProviderModels(providerPayload)
       .map(createNormalizedModel)
-      .filter((item): item is NormalizedModel => Boolean(item) && item.isLive);
+      .filter((item): item is NormalizedModel => item !== null && item !== undefined)
+      .filter((item) => item.isLive);
 
     const categories = deriveCategoriesFromModels(models);
     return res.status(200).json({ categories });

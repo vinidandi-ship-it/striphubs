@@ -1,108 +1,53 @@
-import { useEffect, useRef, useState } from 'react';
 import Breadcrumbs from '../components/Breadcrumbs';
 import InfiniteLoader from '../components/InfiniteLoader';
 import ModelGrid from '../components/ModelGrid';
 import Sidebar from '../components/Sidebar';
-import { api } from '../lib/api';
 import { countries } from '../lib/countries';
-import { Model } from '../lib/models';
 import { categoryName, categories as categoryList } from '../lib/categories';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
-import { useInfiniteLoad } from '../lib/useInfiniteLoad';
+import { useModels } from '../lib/useModels';
+import { PAGE_SIZES } from '../lib/constants';
 
 export default function Live() {
-  const PAGE_SIZE = 120;
-  const [models, setModels] = useState<Model[]>([]);
-  const [categories, setCategories] = useState<{ slug: string; name: string; count: number }[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [error, setError] = useState('');
-  const [offset, setOffset] = useState(0);
-  const [hasMore, setHasMore] = useState(false);
-  const sentinelRef = useRef<HTMLDivElement>(null);
-  const [includeOffline, setIncludeOffline] = useState(false);
+  const {
+    models,
+    loading,
+    loadingMore,
+    error,
+    hasMore,
+    includeOffline,
+    toggleIncludeOffline,
+    sentinelRef
+  } = useModels({
+    pageSize: PAGE_SIZES.LIVE,
+    initialIncludeOffline: false
+  });
 
   useSEO(generateTitle('live'), generateDescription('live'), '/live');
 
-  useEffect(() => {
-    setLoading(true);
-    setOffset(0);
-    setHasMore(false);
-    void Promise.all([
-      api.getModels({ limit: PAGE_SIZE, offset: 0, liveOnly: !includeOffline }),
-      api.getCategories()
-    ]).then(([modelsData, categoriesData]) => {
-      setModels(modelsData.models);
-      setOffset(modelsData.models.length);
-      setHasMore(Boolean(modelsData.hasMore));
-      setCategories(categoriesData.categories);
-    }).catch((err) => setError(err instanceof Error ? err.message : 'Failed to load live models'))
-    .finally(() => setLoading(false));
-  }, [includeOffline]);
+  const sidebarCategories = categoryList.map((slug) => ({
+    slug,
+    name: categoryName(slug),
+    count: models.filter((model) => model.category === slug).length
+  }));
 
-  const loadMore = () => {
-    if (loadingMore || !hasMore) return;
-    setLoadingMore(true);
-    void api.getModels({ limit: PAGE_SIZE, offset, liveOnly: !includeOffline })
-      .then((data) => {
-        setModels((current) => {
-          const seen = new Set(current.map((item) => item.username.toLowerCase()));
-          const merged = [...current];
-          data.models.forEach((item) => {
-            if (!seen.has(item.username.toLowerCase())) {
-              seen.add(item.username.toLowerCase());
-              merged.push(item);
-            }
-          });
-          return merged;
-        });
-        setOffset((current) => current + data.models.length);
-        setHasMore(Boolean(data.hasMore));
-      })
-      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load more models'))
-      .finally(() => setLoadingMore(false));
-  };
-
-  useInfiniteLoad({
-    targetRef: sentinelRef,
-    enabled: hasMore && !loading,
-    loading: loadingMore,
-    onLoadMore: loadMore
-  });
-
-  // Prepara le categorie per la sidebar
-  const sidebarCategories = categoryList.map(slug => {
-    const catData = categories.find(c => c.slug === slug);
-    return {
-      slug,
-      name: categoryName(slug),
-      count: catData?.count || 0
-    };
-  });
-
-  // Prepara i paesi per la sidebar
-  const sidebarCountries = countries.map(country => {
-    const count = models.filter((model) => model.country === country.code).length;
-    return {
-      slug: country.slug,
-      name: country.name,
-      count
-    };
-  });
+  const sidebarCountries = countries.map((country) => ({
+    slug: country.slug,
+    name: country.name,
+    count: models.filter((model) => model.country === country.code).length
+  }));
 
   return (
     <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
-      {/* Sidebar */}
       <Sidebar categories={sidebarCategories} countries={sidebarCountries} />
-      
-      {/* Main Content */}
+
       <div className="flex-1 space-y-6">
         <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Live' }]} />
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-2xl font-bold text-white sm:text-3xl">📺 Tutte le Camere Live</h1>
           <button
             type="button"
-            onClick={() => setIncludeOffline((current) => !current)}
+            onClick={toggleIncludeOffline}
             className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${includeOffline ? 'border-accent bg-accent/10 text-accent' : 'border-border text-zinc-300 hover:border-accent hover:text-white'}`}
           >
             {includeOffline ? 'Mostra solo live' : 'Includi anche offline'}
