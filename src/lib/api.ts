@@ -42,6 +42,7 @@ const request = async <T>(path: string): Promise<T> => {
       const slicedModels = mockModels.slice(offset, offset + limit);
       return Promise.resolve({ 
         models: slicedModels,
+        total: mockModels.length,
         hasMore: offset + limit < mockModels.length
       } as T);
     }

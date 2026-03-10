@@ -12,6 +12,7 @@ import { PAGE_SIZES } from '../lib/constants';
 export default function FreeCams() {
   const {
     models,
+    total,
     loading,
     loadingMore,
     error,
@@ -57,7 +58,7 @@ export default function FreeCams() {
             {includeOffline ? 'Mostra solo live' : 'Includi anche offline'}
           </button>
         </div>
-        {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle gratis caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
+        {!loading ? <p className="text-sm text-zinc-400">{total} cam gratis attive{hasMore ? ' - altre disponibili' : ''}</p> : null}
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName="Free Cams" />
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}

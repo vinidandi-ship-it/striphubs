@@ -14,6 +14,7 @@ type UseModelsParams = {
 
 type UseModelsReturn = {
   models: Model[];
+  total: number;
   loading: boolean;
   loadingMore: boolean;
   error: string;
@@ -33,6 +34,7 @@ export function useModels({
   initialIncludeOffline = false
 }: UseModelsParams): UseModelsReturn {
   const [models, setModels] = useState<Model[]>([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState('');
@@ -68,6 +70,7 @@ export function useModels({
 
       if (reset) {
         setModels(data.models);
+        setTotal(data.total || data.models.length);
       } else {
         setModels((current) => {
           const seen = new Set(current.map((item) => item.username.toLowerCase()));
@@ -124,6 +127,7 @@ export function useModels({
 
   return {
     models,
+    total,
     loading,
     loadingMore,
     error,

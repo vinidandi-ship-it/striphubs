@@ -12,6 +12,7 @@ import { PAGE_SIZES } from '../lib/constants';
 export default function Live() {
   const {
     models,
+    total,
     loading,
     loadingMore,
     error,
@@ -56,7 +57,7 @@ export default function Live() {
             {includeOffline ? 'Mostra solo live' : 'Includi anche offline'}
           </button>
         </div>
-        {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
+        {!loading ? <p className="text-sm text-zinc-400">{total} cam attive{hasMore ? ' - altre disponibili' : ''}</p> : null}
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName="All Live Cams" />
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}

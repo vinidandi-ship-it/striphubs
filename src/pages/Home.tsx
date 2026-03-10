@@ -46,6 +46,7 @@ const getYoungModelScore = (model: Model) => {
 
 export default function Home() {
   const [models, setModels] = useState<Model[]>([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [offset, setOffset] = useState(0);
@@ -64,6 +65,7 @@ export default function Home() {
     void api.getModels({ limit: PAGE_SIZES.HOME, offset: 0 })
       .then((data) => {
         setModels(data.models);
+        setTotal(data.total || data.models.length);
         setOffset(data.models.length);
         setHasMore(Boolean(data.hasMore));
       })
@@ -200,7 +202,7 @@ export default function Home() {
         </div>
         <div className="relative">
           <p className="inline-flex rounded-full bg-accent/20 px-3 py-2 text-xs font-semibold text-accent sm:px-4 sm:text-sm items-center gap-2">
-             <Icon name="live" size={12} /> {t('header.liveNow')} - {models.length} {t('header.activeCams')}
+             <Icon name="live" size={12} /> {t('header.liveNow')} - {total} {t('header.activeCams')}
            </p>
           <h1 className="mt-4 max-w-4xl text-2xl font-extrabold leading-tight text-white sm:text-5xl">
             {t('home.heroTitle')}
