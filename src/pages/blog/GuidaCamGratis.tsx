@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useI18n } from '../../i18n';
 import { buildLocalizedPath } from '../../i18n/routing';
+import ShareButtons from '../../components/ShareButtons';
 
 export default function GuidaCamGratis() {
   const { t, language } = useI18n();
@@ -54,6 +55,13 @@ export default function GuidaCamGratis() {
           >
             Guarda le Cam Live
           </Link>
+        </div>
+
+        <div className="mt-8 pt-6 border-t border-border">
+          <ShareButtons 
+            url={`https://striphubs.com/blog/guida-cam-gratis`} 
+            title="Guida Completa alle Cam Live Gratis - StripHubs" 
+          />
         </div>
       </div>
     </article>
