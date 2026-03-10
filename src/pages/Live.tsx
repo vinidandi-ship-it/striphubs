@@ -43,8 +43,8 @@ export default function Live() {
 
   useEffect(() => {
     setLoading(true);
-    void Promise.all([
-      api.getModels({ limit: 96 }),
+      void Promise.all([
+      api.getModels({ limit: 300 }),
       api.getCategories()
     ]).then(([modelsData, categoriesData]) => {
       setModels(modelsData.models);

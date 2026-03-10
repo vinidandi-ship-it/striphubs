@@ -51,7 +51,7 @@ export default function Category() {
   useEffect(() => {
     setLoading(true);
     void Promise.all([
-      api.getModels({ category, limit: 96 }),
+      api.getModels({ category, limit: 300 }),
       api.getCategories()
     ]).then(([modelsData, categoriesData]) => {
       setModels(modelsData.models);

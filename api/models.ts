@@ -24,7 +24,7 @@ const filterModels = (models: NormalizedModel[], req: VercelRequest): Normalized
   const category = (req.query.category as string | undefined)?.toLowerCase() ?? '';
   const tag = (req.query.tag as string | undefined)?.toLowerCase() ?? '';
   const country = (req.query.country as string | undefined)?.toLowerCase() ?? '';
-  const limit = Math.min(Math.max(Number(req.query.limit) || 48, 1), 1000);
+  const limit = Math.min(Math.max(Number(req.query.limit) || 200, 1), 1000);
   const offset = Math.max(Number(req.query.offset) || 0, 0);
 
   let out = models;

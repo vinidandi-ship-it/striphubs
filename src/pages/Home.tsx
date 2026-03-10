@@ -8,7 +8,7 @@ import { categorizeModels, categories as categoryList } from '../lib/categories'
 import { featuredTagGroups } from '../lib/tags';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 
-const HOME_LIVE_LIMIT = 180;
+const HOME_LIVE_LIMIT = 300;
 const CATEGORY_PREVIEW_LIMIT = 8;
 
 export default function Home() {
