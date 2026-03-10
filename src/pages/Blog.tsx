@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useI18n } from '../i18n';
 import { buildLocalizedPath } from '../i18n/routing';
 import Icon from '../components/Icon';
+import BlogSearch from '../components/BlogSearch';
 
 interface BlogPost {
   slug: string;
@@ -52,9 +53,12 @@ export default function Blog() {
           <Icon name="blog" size={32} className="inline-block mr-2" />
           Guida e Consigli
         </h1>
-        <p className="text-lg text-zinc-400 max-w-2xl mx-auto">
+        <p className="text-lg text-zinc-400 max-w-2xl mx-auto mb-8">
           Scopri le migliori guide, consigli e notizie sul mondo delle cam live gratis.
         </p>
+        <div className="max-w-md mx-auto">
+          <BlogSearch />
+        </div>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
