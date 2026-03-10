@@ -18,7 +18,7 @@ import { PAGE_SIZES } from '../lib/constants';
 
 export default function Category() {
   const { category = 'milf' } = useParams();
-  const { language } = useI18n();
+  const { language, t } = useI18n();
   const [categories, setCategories] = useState<{ slug: string; name: string; count: number }[]>([]);
 
   const {
@@ -63,7 +63,7 @@ export default function Category() {
       <Sidebar categories={sidebarCategories} countries={sidebarCountries} />
 
       <div className="flex-1 space-y-6">
-        <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Categorie', to: '/live' }, { label: categoryName(category) }]} />
+        <Breadcrumbs items={[{ label: t('common.home'), to: '/' }, { label: t('common.categories'), to: '/live' }, { label: categoryName(category) }]} />
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-white sm:text-3xl">{categoryName(category)} Live Cams</h1>
@@ -76,10 +76,10 @@ export default function Category() {
               includeOffline ? 'border-accent bg-accent/10 text-accent' : 'border-border text-zinc-300 hover:border-accent hover:text-white'
             }`}
           >
-            {includeOffline ? 'Mostra solo live' : 'Includi anche offline'}
+            {includeOffline ? t('common.showOnlyLive') : t('common.includeOffline')}
           </button>
         </div>
-        {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
+        {!loading ? <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')}{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName={`${categoryName(category)} Models`} />
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}

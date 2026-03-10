@@ -45,15 +45,15 @@ export default function Country() {
   if (!country) {
     return (
       <div className="space-y-6">
-        <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Paesi', to: '/live' }, { label: countrySlug }]} />
-        <div className="rounded-2xl border border-border bg-panel p-6 text-zinc-300">Paese non disponibile.</div>
+        <Breadcrumbs items={[{ label: t('common.home'), to: '/' }, { label: t('common.countries'), to: '/live' }, { label: countrySlug }]} />
+        <div className="rounded-2xl border border-border bg-panel p-6 text-zinc-300">{t('common.notFound')}</div>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Paesi', to: '/live' }, { label: country.name }]} />
+      <Breadcrumbs items={[{ label: t('common.home'), to: '/' }, { label: t('common.countries'), to: '/live' }, { label: country.name }]} />
 
       <header className="space-y-3">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">

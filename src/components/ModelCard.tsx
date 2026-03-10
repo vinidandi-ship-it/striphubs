@@ -2,7 +2,45 @@ import { Link } from 'react-router-dom';
 import { Model, watchLiveUrl } from '../lib/models';
 import Icon from './Icon';
 
+const COUNTRY_FLAGS: Record<string, string> = {
+  IT: '🇮🇹',
+  US: '🇺🇸',
+  GB: '🇬🇧',
+  DE: '🇩🇪',
+  FR: '🇫🇷',
+  ES: '🇪🇸',
+  PT: '🇵🇹',
+  RU: '🇷🇺',
+  UA: '🇺🇦',
+  BR: '🇧🇷',
+  CO: '🇨🇴',
+  CA: '🇨🇦',
+  AU: '🇦🇺',
+  PL: '🇵🇱',
+  NL: '🇳🇱',
+  SE: '🇸🇪',
+  NO: '🇳🇴',
+  DK: '🇩🇰',
+  FI: '🇫🇮',
+  GR: '🇬🇷',
+  TR: '🇹🇷',
+  IN: '🇮🇳',
+  CN: '🇨🇳',
+  JP: '🇯🇵',
+  KR: '🇰🇷',
+  MX: '🇲🇽',
+  PH: '🇵🇭',
+  TH: '🇹🇭',
+  VN: '🇻🇳'
+};
+
+const getCountryFlag = (code: string): string => {
+  return COUNTRY_FLAGS[code.toUpperCase()] || '';
+};
+
 export default function ModelCard({ model }: { model: Model }) {
+  const countryFlag = getCountryFlag(model.country);
+  
   return (
     <article className="content-visibility-card group relative overflow-hidden sh-card transition-all hover:-translate-y-1">
       <Link to={`/model/${encodeURIComponent(model.username)}`} className="block focus:outline-none focus:ring-2 focus:ring-accent-primary" aria-label={`Open ${model.username} profile`}>
@@ -26,6 +64,14 @@ export default function ModelCard({ model }: { model: Model }) {
             {model.isLive ? <Icon name="live" size={10} /> : null}
             {model.isLive ? 'LIVE' : 'OFFLINE'}
           </span>
+          {countryFlag && (
+            <span
+              className="absolute right-2 top-2 flex items-center justify-center rounded-full bg-black/60 px-1.5 py-0.5 text-sm backdrop-blur-sm sm:right-3 sm:top-3 sm:text-base"
+              title={model.country}
+            >
+              {countryFlag}
+            </span>
+          )}
           <div className="absolute bottom-2 left-2 right-2 transition-opacity group-hover:opacity-100 sm:bottom-3 sm:left-3 sm:right-3 sm:opacity-0">
             <span className="rounded-full bg-black/50 px-2 py-1 text-[10px] text-white sm:text-xs">
               {model.viewers.toLocaleString()} spettatori
@@ -35,7 +81,10 @@ export default function ModelCard({ model }: { model: Model }) {
       </Link>
       <div className="space-y-2 p-3 sm:space-y-3 sm:p-4">
         <div className="flex items-start justify-between gap-2 sm:gap-3">
-          <h3 className="truncate text-sm font-semibold text-white transition-colors group-hover:text-accent-primary sm:text-base">{model.username}</h3>
+          <h3 className="truncate text-sm font-semibold text-white transition-colors group-hover:text-accent-primary sm:text-base">
+            {countryFlag && <span className="mr-1">{countryFlag}</span>}
+            {model.username}
+          </h3>
           <span className="flex shrink-0 items-center gap-1 text-[11px] text-text-secondary sm:text-xs">
             <Icon name="eye" size={12} />
             {model.viewers.toLocaleString()}
@@ -43,7 +92,7 @@ export default function ModelCard({ model }: { model: Model }) {
         </div>
         {model.country && model.country !== 'N/A' && (
           <p className="flex items-center gap-1 text-[11px] text-text-muted sm:text-xs">
-            <Icon name="search" size={12} /> {model.country}
+            {countryFlag ? <span>{countryFlag}</span> : <Icon name="search" size={12} />} {model.country}
           </p>
         )}
         <div className="flex flex-wrap gap-1">
