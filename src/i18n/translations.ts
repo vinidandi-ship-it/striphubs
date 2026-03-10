@@ -74,7 +74,12 @@ export const translations = {
       german: 'Tedesche',
       french: 'Francesi',
       spanish: 'Spagnole',
-      portuguese: 'Portoghesi'
+      portuguese: 'Portoghesi',
+      ukrainian: 'Ucraine',
+      russian: 'Russe',
+      brazilian: 'Brasiliane',
+      colombian: 'Colombiane',
+      canadian: 'Canadesi'
     },
     cta: {
       watchLive: 'Guarda Live',
@@ -195,7 +200,12 @@ export const translations = {
       german: 'German',
       french: 'French',
       spanish: 'Spanish',
-      portuguese: 'Portuguese'
+      portuguese: 'Portuguese',
+      ukrainian: 'Ukrainian',
+      russian: 'Russian',
+      brazilian: 'Brazilian',
+      colombian: 'Colombian',
+      canadian: 'Canadian'
     },
     cta: {
       watchLive: 'Watch Live',
@@ -316,7 +326,12 @@ export const translations = {
       german: 'Deutsche',
       french: 'Französinnen',
       spanish: 'Spanierinnen',
-      portuguese: 'Portugiesinnen'
+      portuguese: 'Portugiesinnen',
+      ukrainian: 'Ukrainerinnen',
+      russian: 'Russinnen',
+      brazilian: 'Brasilianerinnen',
+      colombian: 'Kolumbianerinnen',
+      canadian: 'Kanadierinnen'
     },
     cta: {
       watchLive: 'Live Anschauen',
@@ -437,7 +452,12 @@ export const translations = {
       german: 'Allemandes',
       french: 'Françaises',
       spanish: 'Espagnoles',
-      portuguese: 'Portugaises'
+      portuguese: 'Portugaises',
+      ukrainian: 'Ukrainiennes',
+      russian: 'Russes',
+      brazilian: 'Brésiliennes',
+      colombian: 'Colombiennes',
+      canadian: 'Canadiennes'
     },
     cta: {
       watchLive: 'Voir en Live',
@@ -558,7 +578,12 @@ export const translations = {
       german: 'Alemanas',
       french: 'Francesas',
       spanish: 'Españolas',
-      portuguese: 'Portuguesas'
+      portuguese: 'Portuguesas',
+      ukrainian: 'Ucranianas',
+      russian: 'Rusas',
+      brazilian: 'Brasileñas',
+      colombian: 'Colombianas',
+      canadian: 'Canadienses'
     },
     cta: {
       watchLive: 'Ver Live',
@@ -679,7 +704,12 @@ export const translations = {
       german: 'Alemãs',
       french: 'Francesas',
       spanish: 'Espanholas',
-      portuguese: 'Portuguesas'
+      portuguese: 'Portuguesas',
+      ukrainian: 'Ucranianas',
+      russian: 'Russas',
+      brazilian: 'Brasileiras',
+      colombian: 'Colombianas',
+      canadian: 'Canadianas'
     },
     cta: {
       watchLive: 'Ver Live',
