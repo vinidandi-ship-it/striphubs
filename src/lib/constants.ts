@@ -15,3 +15,16 @@ export const YOUNG_MODEL_PATTERNS = [
   /(girls\/teens|teen|young|18\+|19|20|21|22|petite|college|student)/i,
   /(blonde|brunette|asian|latina)/i
 ] as const;
+
+// Theme Colors
+export const THEME_COLORS = {
+  primary: '#ff006e',
+  secondary: '#00d4ff',
+  gold: '#ffb800',
+  bgPrimary: '#0a0a0f',
+  bgSecondary: '#12121a',
+  bgCard: '#151520',
+  textPrimary: '#ffffff',
+  textSecondary: '#b8b8c8',
+  border: '#2a2a3a'
+} as const;

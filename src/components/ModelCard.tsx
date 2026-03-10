@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Model, watchLiveUrl } from '../lib/models';
+import Icon from './Icon';
 
 export default function ModelCard({ model }: { model: Model }) {
   return (
-    <article className="content-visibility-card group relative overflow-hidden rounded-2xl border border-border bg-panel shadow-lg transition-all hover:shadow-2xl hover:shadow-accent/10 hover:-translate-y-1">
-      <Link to={`/model/${encodeURIComponent(model.username)}`} className="block focus:outline-none focus:ring-2 focus:ring-accent" aria-label={`Open ${model.username} profile`}>
+    <article className="content-visibility-card group relative overflow-hidden sh-card transition-all hover:-translate-y-1">
+      <Link to={`/model/${encodeURIComponent(model.username)}`} className="block focus:outline-none focus:ring-2 focus:ring-accent-primary" aria-label={`Open ${model.username} profile`}>
         <div className="relative">
           <div className="aspect-[3/4] w-full overflow-hidden rounded-t-2xl">
             <img
@@ -18,11 +19,11 @@ export default function ModelCard({ model }: { model: Model }) {
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <span
-            className={`absolute left-2 top-2 flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold sm:left-3 sm:top-3 sm:text-[11px] ${
-              model.isLive ? 'bg-red-500 text-white' : 'bg-zinc-800/80 text-zinc-200'
+            className={`absolute left-2 top-2 flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-bold sm:left-3 sm:top-3 sm:text-[11px] sh-badge ${
+              model.isLive ? 'sh-badge-live' : 'bg-bg-tertiary text-text-secondary'
             }`}
           >
-            {model.isLive ? <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span> : null}
+            {model.isLive ? <Icon name="live" size={10} /> : null}
             {model.isLive ? 'LIVE' : 'OFFLINE'}
           </span>
           <div className="absolute bottom-2 left-2 right-2 transition-opacity group-hover:opacity-100 sm:bottom-3 sm:left-3 sm:right-3 sm:opacity-0">
@@ -34,20 +35,20 @@ export default function ModelCard({ model }: { model: Model }) {
       </Link>
       <div className="space-y-2 p-3 sm:space-y-3 sm:p-4">
         <div className="flex items-start justify-between gap-2 sm:gap-3">
-          <h3 className="truncate text-sm font-semibold text-white transition-colors group-hover:text-accent sm:text-base">{model.username}</h3>
-          <span className="flex shrink-0 items-center gap-1 text-[11px] text-zinc-400 sm:text-xs">
-            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd"/></svg>
+          <h3 className="truncate text-sm font-semibold text-white transition-colors group-hover:text-accent-primary sm:text-base">{model.username}</h3>
+          <span className="flex shrink-0 items-center gap-1 text-[11px] text-text-secondary sm:text-xs">
+            <Icon name="eye" size={12} />
             {model.viewers.toLocaleString()}
           </span>
         </div>
         {model.country && model.country !== 'N/A' && (
-          <p className="flex items-center gap-1 text-[11px] text-zinc-500 sm:text-xs">
-            <span>📍</span> {model.country}
+          <p className="flex items-center gap-1 text-[11px] text-text-muted sm:text-xs">
+            <Icon name="search" size={12} /> {model.country}
           </p>
         )}
         <div className="flex flex-wrap gap-1">
           {model.tags.slice(0, 2).map((tag) => (
-            <span key={tag} className="rounded-full bg-zinc-800/50 px-2 py-1 text-[10px] text-zinc-400">
+            <span key={tag} className="sh-badge sh-badge-category">
               #{tag.replace('girls/', '').replace('couples/', '')}
             </span>
           ))}
@@ -56,9 +57,10 @@ export default function ModelCard({ model }: { model: Model }) {
           href={model.clickUrl || watchLiveUrl(model.username)}
           target="_blank"
           rel="noopener noreferrer sponsored"
-          className="block w-full rounded-full bg-gradient-to-r from-accent to-pink-500 px-3 py-2 text-center text-xs font-bold text-white transition-all hover:shadow-lg hover:shadow-accent/30 sm:px-4 sm:py-2.5 sm:text-sm"
+          className="block w-full sh-btn sh-btn-primary text-center text-xs sm:text-sm"
           aria-label={`Guarda ${model.username} live`}
         >
+          <Icon name="play" size={14} />
           Guarda Live
         </a>
       </div>
