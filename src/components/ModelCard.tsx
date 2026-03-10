@@ -3,7 +3,7 @@ import { Model, watchLiveUrl } from '../lib/models';
 
 export default function ModelCard({ model }: { model: Model }) {
   return (
-    <article className="group relative overflow-hidden rounded-2xl border border-border bg-panel shadow-lg transition-all hover:shadow-2xl hover:shadow-accent/10 hover:-translate-y-1">
+    <article className="content-visibility-card group relative overflow-hidden rounded-2xl border border-border bg-panel shadow-lg transition-all hover:shadow-2xl hover:shadow-accent/10 hover:-translate-y-1">
       <Link to={`/model/${encodeURIComponent(model.username)}`} className="block focus:outline-none focus:ring-2 focus:ring-accent" aria-label={`Open ${model.username} profile`}>
         <div className="relative">
           <div className="aspect-[3/4] w-full overflow-hidden rounded-t-2xl">
