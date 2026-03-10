@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useI18n } from '../i18n';
 import { getBlogPostBySlug, getRelatedPosts, BlogPost } from '../lib/blogContent';
-import { upsertJsonLd, updateMetaTags } from '../lib/seo';
+import { upsertJsonLd, useSEO } from '../lib/seo';
 import Breadcrumbs from '../components/Breadcrumbs';
 import FAQSection from '../components/FAQSection';
 import RelatedPosts from '../components/RelatedPosts';
@@ -13,19 +13,19 @@ export default function BlogPostPage() {
   const { language, t } = useI18n();
   const post = slug ? getBlogPostBySlug(slug) : undefined;
 
+  const title = post ? post.title[language] : '';
+  const description = post ? post.description[language] : '';
+  const url = post ? `${SITE_URL}/blog/${post.slug}` : '';
+
+  useSEO(
+    title ? `${title} | ${SITE_NAME}` : 'Blog',
+    description || '',
+    `/blog/${slug || ''}`,
+    language
+  );
+
   useEffect(() => {
     if (post) {
-      const title = post.title[language];
-      const description = post.description[language];
-      const url = `${SITE_URL}/blog/${post.slug}`;
-
-      updateMetaTags({
-        title: `${title} | ${SITE_NAME}`,
-        description,
-        url,
-        image: `${SITE_URL}/icon-512.png`
-      });
-
       upsertJsonLd('article-jsonld', {
         '@context': 'https://schema.org',
         '@type': 'Article',
@@ -51,7 +51,7 @@ export default function BlogPostPage() {
         }
       });
     }
-  }, [post, language]);
+  }, [post, title, description, url]);
 
   if (!post) {
     return (
@@ -66,7 +66,6 @@ export default function BlogPostPage() {
 
   const relatedPosts = getRelatedPosts(post, 5);
   const h1 = post.h1[language];
-  const description = post.description[language];
 
   return (
     <div className="space-y-8">

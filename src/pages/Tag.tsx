@@ -2,19 +2,24 @@ import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
+import FAQSection from '../components/FAQSection';
 import InfiniteLoader from '../components/InfiniteLoader';
+import InternalLinks from '../components/InternalLinks';
 import ModelGrid from '../components/ModelGrid';
+import { useI18n } from '../i18n';
 import { api } from '../lib/api';
 import { categories as categoryList, categoryName } from '../lib/categories';
 import { Model } from '../lib/models';
 import { featuredCategoryTagCombos } from '../lib/programmaticSeo';
-import { generateDescription, generateTitle, useFaqJsonLd, useSEO } from '../lib/seo';
-import { seoFaqForTag, seoTextForTag } from '../lib/seoText';
+import { generateTagMeta } from '../lib/metaTags';
+import { useSEO } from '../lib/seo';
+import { seoTextForTag } from '../lib/seoText';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
 export default function Tag() {
   const PAGE_SIZE = 96;
   const { tag = 'girls' } = useParams();
+  const { language } = useI18n();
   const [models, setModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -25,10 +30,9 @@ export default function Tag() {
   const relatedCategories = categoryList.filter((category) =>
     featuredCategoryTagCombos.some((entry) => entry.category === category && entry.tag === tag)
   );
-  const faq = seoFaqForTag(tag);
 
-  useSEO(generateTitle('tag', { tag }), generateDescription('tag', { tag }), `/tag/${tag}`);
-  useFaqJsonLd('faq-tag-jsonld', faq);
+  const meta = generateTagMeta(tag, language, models.length || 80);
+  useSEO(meta.title, meta.description, `/tag/${tag}`, language);
 
   useEffect(() => {
     setLoading(true);
@@ -88,17 +92,11 @@ export default function Tag() {
       {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`Tag ${tag} Models`} />
-      <section className="rounded-2xl border border-border bg-panel p-4 sm:p-5">
-        <h2 className="text-lg font-semibold text-white">FAQ #{tag}</h2>
-        <div className="mt-3 space-y-3 text-sm text-zinc-300">
-          {faq.map((item) => (
-            <div key={item.question}>
-              <p className="font-semibold text-white">{item.question}</p>
-              <p className="mt-1 text-zinc-400">{item.answer}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      
+      <FAQSection tag={tag} language={language} />
+      
+      <InternalLinks currentTag={tag} language={language} />
+      
       {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
       <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
     </div>

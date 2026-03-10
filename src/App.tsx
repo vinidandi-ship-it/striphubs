@@ -24,6 +24,7 @@ const Terms = lazy(() => import('./pages/Terms'));
 const Cookies = lazy(() => import('./pages/Cookies'));
 const Combination = lazy(() => import('./pages/Combination'));
 const Blog = lazy(() => import('./pages/Blog'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
 const GuidaCamGratis = lazy(() => import('./pages/blog/GuidaCamGratis'));
 const MiglioriModelleItaliane = lazy(() => import('./pages/blog/MiglioriModelleItaliane'));
 const SicurezzaCam = lazy(() => import('./pages/blog/SicurezzaCam'));
@@ -163,6 +164,12 @@ function AppContent() {
             <Route path="/fr/blog/tag-popolari" element={<TagPopolari />} />
             <Route path="/es/blog/tag-popolari" element={<TagPopolari />} />
             <Route path="/pt/blog/tag-popolari" element={<TagPopolari />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/en/blog/:slug" element={<BlogPost />} />
+            <Route path="/de/blog/:slug" element={<BlogPost />} />
+            <Route path="/fr/blog/:slug" element={<BlogPost />} />
+            <Route path="/es/blog/:slug" element={<BlogPost />} />
+            <Route path="/pt/blog/:slug" element={<BlogPost />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>

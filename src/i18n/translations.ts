@@ -86,6 +86,36 @@ export const translations = {
     },
     country: {
       liveCam: 'Cam live'
+    },
+    faq: {
+      title: 'Domande Frequenti',
+      whatAre: 'Cosa sono',
+      howToFind: 'Come trovare',
+      areFree: 'Sono gratuite',
+      howMany: 'Quante ce ne sono',
+      canInteract: 'Posso interagire',
+      isSafe: 'È sicuro',
+      needRegister: 'Devo registrarmi',
+      languages: 'Quali lingue'
+    },
+    blog: {
+      title: 'Blog',
+      readMore: 'Leggi di più',
+      published: 'Pubblicato',
+      updated: 'Aggiornato',
+      relatedPosts: 'Articoli Correlati',
+      categories: 'Categorie',
+      notFound: 'Articolo non trovato',
+      backToHome: 'Torna alla Home',
+      bestCategoryIntro: 'Scopri le migliori {category} cam online. Guide complete, consigli e trucchi per trovare le modelle perfette.',
+      completeGuideIntro: 'Benvenuto nella guida completa alle live cam. Tutto quello che devi sapere per iniziare.',
+      statisticsIntro: 'Analisi completa del mercato delle live cam con dati aggiornati.',
+      securityIntro: 'Tutto sulla sicurezza e privacy nelle live cam.'
+    },
+    internalLinks: {
+      relatedCategories: 'Categorie Correlate',
+      relatedCountries: 'Cam per Paese',
+      popularTags: 'Tag Popolari'
     }
   },
   en: {
@@ -175,6 +205,36 @@ export const translations = {
     },
     country: {
       liveCam: 'Live cam'
+    },
+    faq: {
+      title: 'Frequently Asked Questions',
+      whatAre: 'What are',
+      howToFind: 'How to find',
+      areFree: 'Are they free',
+      howMany: 'How many are there',
+      canInteract: 'Can I interact',
+      isSafe: 'Is it safe',
+      needRegister: 'Do I need to register',
+      languages: 'What languages'
+    },
+    blog: {
+      title: 'Blog',
+      readMore: 'Read more',
+      published: 'Published',
+      updated: 'Updated',
+      relatedPosts: 'Related Articles',
+      categories: 'Categories',
+      notFound: 'Article not found',
+      backToHome: 'Back to Home',
+      bestCategoryIntro: 'Discover the best {category} cams online. Complete guides, tips and tricks to find the perfect models.',
+      completeGuideIntro: 'Welcome to the complete guide to live cams. Everything you need to know to get started.',
+      statisticsIntro: 'Complete analysis of the live cam market with updated data.',
+      securityIntro: 'Everything about security and privacy in live cams.'
+    },
+    internalLinks: {
+      relatedCategories: 'Related Categories',
+      relatedCountries: 'Cams by Country',
+      popularTags: 'Popular Tags'
     }
   },
   de: {
@@ -264,6 +324,36 @@ export const translations = {
     },
     country: {
       liveCam: 'Live cam'
+    },
+    faq: {
+      title: 'Häufig Gestellte Fragen',
+      whatAre: 'Was sind',
+      howToFind: 'Wie finde ich',
+      areFree: 'Sind sie kostenlos',
+      howMany: 'Wie viele gibt es',
+      canInteract: 'Kann ich interagieren',
+      isSafe: 'Ist es sicher',
+      needRegister: 'Muss ich mich registrieren',
+      languages: 'Welche Sprachen'
+    },
+    blog: {
+      title: 'Blog',
+      readMore: 'Mehr lesen',
+      published: 'Veröffentlicht',
+      updated: 'Aktualisiert',
+      relatedPosts: 'Verwandte Artikel',
+      categories: 'Kategorien',
+      notFound: 'Artikel nicht gefunden',
+      backToHome: 'Zurück zur Startseite',
+      bestCategoryIntro: 'Entdecken Sie die besten {category} Cams online. Vollständige Anleitungen, Tipps und Tricks.',
+      completeGuideIntro: 'Willkommen zum vollständigen Leitfaden für Live Cams. Alles was Sie wissen müssen.',
+      statisticsIntro: 'Vollständige Analyse des Live Cam Marktes mit aktuellen Daten.',
+      securityIntro: 'Alles über Sicherheit und Datenschutz bei Live Cams.'
+    },
+    internalLinks: {
+      relatedCategories: 'Verwandte Kategorien',
+      relatedCountries: 'Cams nach Land',
+      popularTags: 'Beliebte Tags'
     }
   },
   fr: {
@@ -353,6 +443,36 @@ export const translations = {
     },
     country: {
       liveCam: 'Cam live'
+    },
+    faq: {
+      title: 'Questions Fréquemment Posées',
+      whatAre: 'Que sont',
+      howToFind: 'Comment trouver',
+      areFree: 'Sont-elles gratuites',
+      howMany: 'Combien y en a-t-il',
+      canInteract: 'Puis-je interagir',
+      isSafe: 'Est-ce sûr',
+      needRegister: 'Dois-je m\'inscrire',
+      languages: 'Quelles langues'
+    },
+    blog: {
+      title: 'Blog',
+      readMore: 'Lire plus',
+      published: 'Publié',
+      updated: 'Mis à jour',
+      relatedPosts: 'Articles Connexes',
+      categories: 'Catégories',
+      notFound: 'Article non trouvé',
+      backToHome: 'Retour à l\'accueil',
+      bestCategoryIntro: 'Découvrez les meilleures cams {category} en ligne. Guides complets, conseils et astuces.',
+      completeGuideIntro: 'Bienvenue dans le guide complet des cams live. Tout ce que vous devez savoir.',
+      statisticsIntro: 'Analyse complète du marché des cams live avec des données à jour.',
+      securityIntro: 'Tout sur la sécurité et la confidentialité dans les cams live.'
+    },
+    internalLinks: {
+      relatedCategories: 'Catégories Connexes',
+      relatedCountries: 'Cams par Pays',
+      popularTags: 'Tags Populaires'
     }
   },
   es: {
@@ -442,6 +562,36 @@ export const translations = {
     },
     country: {
       liveCam: 'Cam live'
+    },
+    faq: {
+      title: 'Preguntas Frecuentes',
+      whatAre: 'Qué son',
+      howToFind: 'Cómo encontrar',
+      areFree: 'Son gratis',
+      howMany: 'Cuántas hay',
+      canInteract: 'Puedo interactuar',
+      isSafe: 'Es seguro',
+      needRegister: 'Necesito registrarme',
+      languages: 'Qué idiomas'
+    },
+    blog: {
+      title: 'Blog',
+      readMore: 'Leer más',
+      published: 'Publicado',
+      updated: 'Actualizado',
+      relatedPosts: 'Artículos Relacionados',
+      categories: 'Categorías',
+      notFound: 'Artículo no encontrado',
+      backToHome: 'Volver al inicio',
+      bestCategoryIntro: 'Descubre las mejores cams {category} en línea. Guías completas, consejos y trucos.',
+      completeGuideIntro: 'Bienvenido a la guía completa de cams live. Todo lo que necesitas saber.',
+      statisticsIntro: 'Análisis completo del mercado de cams live con datos actualizados.',
+      securityIntro: 'Todo sobre seguridad y privacidad en cams live.'
+    },
+    internalLinks: {
+      relatedCategories: 'Categorías Relacionadas',
+      relatedCountries: 'Cams por País',
+      popularTags: 'Tags Populares'
     }
   },
   pt: {
@@ -531,6 +681,36 @@ export const translations = {
     },
     country: {
       liveCam: 'Cam live'
+    },
+    faq: {
+      title: 'Perguntas Frequentes',
+      whatAre: 'O que são',
+      howToFind: 'Como encontrar',
+      areFree: 'São grátis',
+      howMany: 'Quantas há',
+      canInteract: 'Posso interagir',
+      isSafe: 'É seguro',
+      needRegister: 'Preciso me registrar',
+      languages: 'Quais idiomas'
+    },
+    blog: {
+      title: 'Blog',
+      readMore: 'Ler mais',
+      published: 'Publicado',
+      updated: 'Atualizado',
+      relatedPosts: 'Artigos Relacionados',
+      categories: 'Categorias',
+      notFound: 'Artigo não encontrado',
+      backToHome: 'Voltar ao início',
+      bestCategoryIntro: 'Descubra as melhores cams {category} online. Guias completos, dicas e truques.',
+      completeGuideIntro: 'Bem-vindo ao guia completo de cams live. Tudo que você precisa saber.',
+      statisticsIntro: 'Análise completa do mercado de cams live com dados atualizados.',
+      securityIntro: 'Tudo sobre segurança e privacidade em cams live.'
+    },
+    internalLinks: {
+      relatedCategories: 'Categorias Relacionadas',
+      relatedCountries: 'Cams por País',
+      popularTags: 'Tags Populares'
     }
   }
 } as const;

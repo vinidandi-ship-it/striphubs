@@ -1,13 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
+import InternalLinks from '../components/InternalLinks';
 import ModelGrid from '../components/ModelGrid';
+import { useI18n } from '../i18n';
 import { api } from '../lib/api';
 import { Model as LiveModel } from '../lib/models';
-import { generateDescription, generateTitle, useSEO } from '../lib/seo';
+import { generateModelMeta } from '../lib/metaTags';
+import { useSEO } from '../lib/seo';
 
 export default function ModelPage() {
   const { username = '' } = useParams();
+  const { language } = useI18n();
   const decodedName = decodeURIComponent(username);
 
   const [model, setModel] = useState<LiveModel | null>(null);
@@ -15,11 +19,8 @@ export default function ModelPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useSEO(
-    generateTitle('model', { username: decodedName }),
-    generateDescription('model', { username: decodedName }),
-    `/model/${encodeURIComponent(decodedName)}`
-  );
+  const meta = generateModelMeta(decodedName, language);
+  useSEO(meta.title, meta.description, `/model/${encodeURIComponent(decodedName)}`, language);
 
   useEffect(() => {
     setLoading(true);
@@ -71,6 +72,8 @@ export default function ModelPage() {
         <h2 className="mb-4 text-2xl font-bold text-white">Related Models</h2>
         <ModelGrid models={related} loading={loading} listName="Related Models" />
       </section>
+      
+      <InternalLinks language={language} />
     </div>
   );
 }

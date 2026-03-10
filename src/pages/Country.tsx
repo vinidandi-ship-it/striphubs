@@ -1,17 +1,22 @@
 import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
+import FAQSection from '../components/FAQSection';
 import InfiniteLoader from '../components/InfiniteLoader';
+import InternalLinks from '../components/InternalLinks';
 import ModelGrid from '../components/ModelGrid';
-import { findCountryBySlug } from '../lib/countries';
+import { useI18n } from '../i18n';
+import { findCountryBySlug, CountrySlug } from '../lib/countries';
 import { featuredCategoryTagCombos, priorityTagSlugs } from '../lib/programmaticSeo';
-import { generateDescription, generateTitle, useSEO } from '../lib/seo';
+import { generateCountryMeta } from '../lib/metaTags';
+import { useSEO } from '../lib/seo';
 import { seoTextForCountry } from '../lib/seoText';
 import { useModels } from '../lib/useModels';
 import { PAGE_SIZES } from '../lib/constants';
 
 export default function Country() {
   const { countrySlug = 'italian' } = useParams();
+  const { language, t } = useI18n();
   const country = findCountryBySlug(countrySlug);
 
   const {
@@ -29,11 +34,8 @@ export default function Country() {
     initialIncludeOffline: false
   });
 
-  useSEO(
-    generateTitle('country', { country: country?.name || countrySlug }),
-    generateDescription('country', { country: country?.name || countrySlug }),
-    `/country/${countrySlug}`
-  );
+  const meta = generateCountryMeta(countrySlug as CountrySlug, language, t, models.length || 100);
+  useSEO(meta.title, meta.description, `/country/${countrySlug}`, language);
 
   const relatedCombos = useMemo(
     () => featuredCategoryTagCombos.filter((entry) => models.some((model) => model.category === entry.category)).slice(0, 6),
@@ -106,6 +108,10 @@ export default function Country() {
       <ModelGrid models={models} loading={loading} listName={`${country.name} Live Models`} />
       {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
       <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
+      
+      <FAQSection country={countrySlug as CountrySlug} language={language} />
+      
+      <InternalLinks currentCountry={countrySlug as CountrySlug} language={language} />
     </div>
   );
 }
