@@ -24,6 +24,28 @@ import {
   YOUNG_SPOTLIGHT_SIZE
 } from '../lib/constants';
 
+// Blog posts for the home page section
+const recentBlogPosts = [
+  {
+    slug: 'guida-cam-gratis',
+    title: 'Guida Completa alle Cam Live Gratis',
+    excerpt: 'Scopri come accedere a migliaia di cam live gratuite senza registrazione.',
+    category: 'Guide'
+  },
+  {
+    slug: 'migliori-modelle-italiane',
+    title: 'Migliori Modelle Italiane',
+    excerpt: 'Una selezione delle modelle italiane più popolari.',
+    category: 'Liste'
+  },
+  {
+    slug: 'sicurezza-cam',
+    title: 'Sicurezza e Privacy',
+    excerpt: 'Come proteggere la tua privacy online.',
+    category: 'Guide'
+  }
+];
+
 const getHomeCategoryRank = (slug: string) => {
   const index = HOME_CATEGORY_PRIORITY.indexOf(slug as (typeof HOME_CATEGORY_PRIORITY)[number]);
   return index === -1 ? HOME_CATEGORY_PRIORITY.length : index;
@@ -342,6 +364,32 @@ export default function Home() {
             />
           </section>
         ))}
+      </section>
+
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+            <Icon name="blog" size={24} /> Articoli Recenti
+          </h2>
+          <Link to={buildLocalizedPath('/blog', language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {recentBlogPosts.map((post) => (
+            <Link
+              key={post.slug}
+              to={buildLocalizedPath(`/blog/${post.slug}`, language)}
+              className="rounded-2xl border border-border bg-panel p-5 transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg hover:shadow-accent/20"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xs font-semibold text-accent bg-accent/10 px-2 py-1 rounded-full">
+                  {post.category}
+                </span>
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">{post.title}</h3>
+              <p className="text-sm text-zinc-400">{post.excerpt}</p>
+            </Link>
+          ))}
+        </div>
       </section>
 
       <section className="space-y-4">
