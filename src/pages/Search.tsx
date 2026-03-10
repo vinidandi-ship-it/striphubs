@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
-import LoadMoreButton from '../components/LoadMoreButton';
+import InfiniteLoader from '../components/InfiniteLoader';
 import ModelGrid from '../components/ModelGrid';
 import SearchBar from '../components/SearchBar';
 import { api } from '../lib/api';
@@ -67,7 +67,7 @@ export default function Search() {
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       <ModelGrid models={models} loading={loading} listName="Search Results" />
       {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
-      {hasMore ? <LoadMoreButton onClick={loadMore} loading={loadingMore} /> : null}
+      <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
     </div>
   );
 }

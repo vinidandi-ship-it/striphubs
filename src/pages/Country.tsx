@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
-import LoadMoreButton from '../components/LoadMoreButton';
+import InfiniteLoader from '../components/InfiniteLoader';
 import ModelGrid from '../components/ModelGrid';
 import { api } from '../lib/api';
 import { findCountryBySlug } from '../lib/countries';
@@ -124,7 +124,7 @@ export default function Country() {
       {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`${country.name} Live Models`} />
       {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
-      {hasMore ? <LoadMoreButton onClick={loadMore} loading={loadingMore} /> : null}
+      <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
     </div>
   );
 }

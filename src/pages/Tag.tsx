@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
-import LoadMoreButton from '../components/LoadMoreButton';
+import InfiniteLoader from '../components/InfiniteLoader';
 import ModelGrid from '../components/ModelGrid';
 import { api } from '../lib/api';
 import { categories as categoryList, categoryName } from '../lib/categories';
@@ -100,7 +100,7 @@ export default function Tag() {
         </div>
       </section>
       {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
-      {hasMore ? <LoadMoreButton onClick={loadMore} loading={loadingMore} /> : null}
+      <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
     </div>
   );
 }

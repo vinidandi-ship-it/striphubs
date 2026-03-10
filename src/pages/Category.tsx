@@ -1,7 +1,7 @@
 import { Link, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
-import LoadMoreButton from '../components/LoadMoreButton';
+import InfiniteLoader from '../components/InfiniteLoader';
 import ModelGrid from '../components/ModelGrid';
 import Sidebar from '../components/Sidebar';
 import { api } from '../lib/api';
@@ -133,7 +133,7 @@ export default function Category() {
           </div>
         </section>
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
-        {hasMore ? <LoadMoreButton onClick={loadMore} loading={loadingMore} /> : null}
+        <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
       </div>
     </div>
   );

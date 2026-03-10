@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Breadcrumbs from '../components/Breadcrumbs';
-import LoadMoreButton from '../components/LoadMoreButton';
+import InfiniteLoader from '../components/InfiniteLoader';
 import ModelGrid from '../components/ModelGrid';
 import Sidebar from '../components/Sidebar';
 import { api } from '../lib/api';
@@ -102,7 +102,7 @@ export default function Live() {
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName="All Live Cams" />
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
-        {hasMore ? <LoadMoreButton onClick={loadMore} loading={loadingMore} /> : null}
+        <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
       </div>
     </div>
   );
