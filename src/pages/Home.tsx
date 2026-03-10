@@ -57,6 +57,31 @@ export default function Home() {
 
   useSEO(generateTitle('home'), generateDescription('home'), '/', language);
 
+  // Add structured data for home page
+  useEffect(() => {
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'StripHubs',
+      url: 'https://striphubs.com',
+      description: 'La migliore directory italiana di live cam gratis',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: 'https://striphubs.com/search?q={search_term_string}',
+        'query-input': 'required name=search_term_string'
+      }
+    };
+    
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(structuredData);
+    document.head.appendChild(script);
+    
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
   useEffect(() => {
     setLoading(true);
     setOffset(0);

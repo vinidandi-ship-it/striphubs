@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
 
-Sitemap: https://striphubs.vercel.app/sitemap.xml
+Sitemap: https://striphubs.com/sitemap.xml
+Sitemap: https://striphubs.com/sitemap-index.xml

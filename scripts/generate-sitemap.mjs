@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 
 // Load environment variables from .env file
 const envPath = resolve(process.cwd(), '.env');
-let siteUrl = 'https://striphubs.vercel.app'; // Default fallback
+let siteUrl = 'https://striphubs.com'; // Default fallback
 
 try {
   const envContent = readFileSync(envPath, 'utf-8');
@@ -134,5 +134,17 @@ ${body}
 
 mkdirSync(resolve(process.cwd(), 'public'), { recursive: true });
 writeFileSync(resolve(process.cwd(), 'public', 'sitemap.xml'), xml);
+
+// Also generate a sitemap index for Google Search Console
+const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>${siteUrl}/sitemap.xml</loc>
+    <lastmod>${now}</lastmod>
+  </sitemap>
+</sitemapindex>`;
+
+writeFileSync(resolve(process.cwd(), 'public', 'sitemap-index.xml'), sitemapIndex);
 console.log('Generated public/sitemap.xml with multilingual support');
+console.log('Generated public/sitemap-index.xml');
 console.log(`Total URLs: ${baseRoutes.length * languages.length}`);
