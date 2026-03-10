@@ -40,7 +40,7 @@ export default function ModelGrid({ models, listName, loading = false }: { model
   useInfiniteLoad({
     targetRef: sentinelRef,
     enabled: canRenderMore && !loading,
-    loading: false,
+    loading: false, // Questo parametro nell'hook è per il caricamento dati, non per il rendering locale
     onLoadMore: () => {
       setVisibleCount((current) => Math.min(current + RENDER_BATCH_SIZE, models.length));
     }

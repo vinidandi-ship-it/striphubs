@@ -52,7 +52,17 @@ const request = async <T>(path: string): Promise<T> => {
   }
 
   // Production: call real API
-  const response = await fetch(path, {
+  const baseUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_STRIPCHAT_API_ENDPOINT || '';
+  let url = path;
+  if (baseUrl) {
+    // If baseUrl ends with '/api/models' and path starts with '/api/models', strip the path prefix
+    if (path.startsWith('/api/models') && baseUrl.endsWith('/api/models')) {
+      url = baseUrl + path.replace('/api/models', '');
+    } else {
+      url = `${baseUrl}${path}`;
+    }
+  }
+  const response = await fetch(url, {
     method: 'GET',
     headers: { Accept: 'application/json' }
   });
