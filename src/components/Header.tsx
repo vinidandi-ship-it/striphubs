@@ -7,7 +7,7 @@ import SearchBar from './SearchBar';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { t, locale } = useI18n();
+  const { t, language } = useI18n();
 
   const mainItems = [
     { to: '/', label: t('nav.home'), icon: '🏠' },
@@ -25,7 +25,7 @@ export default function Header() {
     { to: '/country/spanish', label: t('countries.spanish'), flag: '🇪🇸' }
   ];
 
-  const getLocalizedTo = (to: string) => buildLocalizedPath(to, locale);
+  const getLocalizedTo = (to: string) => buildLocalizedPath(to, language);
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-bg/95 backdrop-blur-xl shadow-lg">
