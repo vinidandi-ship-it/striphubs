@@ -2,13 +2,20 @@ import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    <footer className="mt-12 border-t border-border bg-black/50">
-      <div className="mx-auto flex w-full max-w-7xl flex-col justify-between gap-4 px-4 py-8 text-sm text-zinc-400 sm:flex-row sm:items-center sm:px-6 lg:px-8">
-        <p>© {new Date().getFullYear()} StripHubs. Adults only (18+).</p>
-        <div className="flex gap-4">
-          <Link to="/privacy" className="hover:text-white">Privacy</Link>
-          <Link to="/terms" className="hover:text-white">Terms</Link>
-          <Link to="/cookies" className="hover:text-white">Cookies</Link>
+    <footer className="mt-12 border-t border-border bg-gradient-to-b from-transparent to-black/50">
+      <div className="mx-auto flex w-full max-w-7xl flex-col justify-between gap-6 px-4 py-8 text-sm text-zinc-400 sm:flex-row sm:items-center sm:px-6 lg:px-8">
+        <div>
+          <p className="text-lg font-bold text-white mb-2">Strip<span className="text-accent">Hubs</span></p>
+          <p>© {new Date().getFullYear()} StripHubs. Tutti i diritti riservati.</p>
+          <p className="text-xs text-zinc-500 mt-1">Adulti only (18+). Contenuti per adulti.</p>
+        </div>
+        <div className="flex flex-col gap-2 text-right">
+          <div className="flex gap-4 justify-end">
+            <Link to="/privacy" className="hover:text-accent transition-colors">Privacy</Link>
+            <Link to="/terms" className="hover:text-accent transition-colors">Termini</Link>
+            <Link to="/cookies" className="hover:text-accent transition-colors">Cookies</Link>
+          </div>
+          <p className="text-xs text-zinc-500">StripHubs non è affiliato a Stripchat</p>
         </div>
       </div>
     </footer>

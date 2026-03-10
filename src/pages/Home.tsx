@@ -69,28 +69,45 @@ export default function Home() {
   );
 
   return (
-    <div className="space-y-12">
-      <section className="rounded-3xl border border-border bg-gradient-to-br from-zinc-900 to-zinc-950 p-8">
-        <p className="inline-flex rounded-full bg-accent/20 px-3 py-1 text-xs font-semibold text-accent">Live now</p>
-        <h1 className="mt-4 max-w-4xl text-3xl font-extrabold text-white sm:text-5xl">All live cams in home, come una vera directory.</h1>
-        <p className="mt-4 max-w-3xl text-zinc-300">Prima vedi subito la griglia completa delle live, poi sotto trovi tutte le categorie con le rispettive anteprime reali gia filtrate.</p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link to="/live" className="rounded-full bg-accent px-6 py-3 font-semibold text-white">Explore Live</Link>
-          <Link to="/cam/milf" className="rounded-full border border-border bg-zinc-900 px-6 py-3 font-semibold text-zinc-200">Browse Categories</Link>
+    <div className="space-y-8">
+      <section className="rounded-3xl border border-border bg-gradient-to-br from-purple-900/50 via-zinc-900 to-zinc-950 p-8 md:p-12 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-accent/30 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-pink-500/30 rounded-full blur-3xl"></div>
+        </div>
+        <div className="relative">
+          <p className="inline-flex rounded-full bg-accent/20 px-4 py-2 text-sm font-semibold text-accent">
+            🔴 Live Now - {models.length} camere attive
+          </p>
+          <h1 className="mt-4 max-w-4xl text-3xl font-extrabold text-white sm:text-5xl leading-tight">
+            Scopri le modelle più hot in tempo reale
+          </h1>
+          <p className="mt-4 max-w-3xl text-zinc-300 text-lg">
+            Cam show gratuiti 24/7. Milfs, teen, trans, couples - tutte le categorie in un unico posto. 
+            Sfoglia le dirette live e trova la tua modella preferita.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link to="/live" className="rounded-full bg-accent hover:bg-accent/80 px-8 py-4 font-semibold text-white text-lg transition-all transform hover:scale-105">
+              🎥 Guarda le Live
+            </Link>
+            <Link to="/cam/milf" className="rounded-full border border-border bg-zinc-900 hover:bg-zinc-800 px-8 py-4 font-semibold text-zinc-200 text-lg transition-all">
+              📂 Categorie
+            </Link>
+          </div>
         </div>
       </section>
 
       <section>
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">All Live Cams</h2>
-          <Link to="/live" className="text-sm font-semibold text-accent">Apri solo la directory live</Link>
+          <h2 className="text-2xl font-bold text-white">📺 Tutte le Camere Live</h2>
+          <Link to="/live" className="text-sm font-semibold text-accent hover:text-accent/80">Vedi tutte →</Link>
         </div>
         {error ? <p className="mb-3 text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName="Home Live Models" />
       </section>
 
       <section>
-        <h2 className="mb-4 text-2xl font-bold text-white">Tutte le categorie</h2>
+        <h2 className="mb-4 text-2xl font-bold text-white">📂 Categorie Popolari</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {categories.map((category) => (
             <CategoryCard key={category.slug} slug={category.slug} name={category.name} count={category.count} />
@@ -100,18 +117,17 @@ export default function Home() {
 
       <section className="space-y-8">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">All live cams per categoria</h2>
-          <Link to="/live" className="text-sm font-semibold text-accent">Apri directory completa</Link>
+          <h2 className="text-2xl font-bold text-white">🌟 Categorie per Te</h2>
+          <Link to="/live" className="text-sm font-semibold text-accent hover:text-accent/80">Tutte le categorie →</Link>
         </div>
 
-        {topCategories.map((category) => (
+        {topCategories.slice(0, 6).map((category) => (
           <section key={category.slug} className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-bold text-white">{category.name}</h3>
-                <p className="text-sm text-zinc-400">Preview reali della categoria {category.slug} direttamente dal feed live.</p>
+                <h3 className="text-xl font-bold text-white">{category.name} <span className="text-sm font-normal text-zinc-400">• {category.count} live</span></h3>
               </div>
-              <Link to={`/cam/${category.slug}`} className="text-sm font-semibold text-accent">Vedi tutte</Link>
+              <Link to={`/cam/${category.slug}`} className="text-sm font-semibold text-accent hover:text-accent/80">Vedi tutte →</Link>
             </div>
             <ModelGrid
               models={categoryModels[category.slug] || []}
@@ -122,36 +138,9 @@ export default function Home() {
         ))}
       </section>
 
-      <section className="space-y-8">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">Live cams per tag forti</h2>
-          <Link to="/live" className="text-sm font-semibold text-accent">Apri tutte le live</Link>
-        </div>
-
-        {tagSections.map((section) => (
-          <section key={section.group} className="space-y-6">
-            <div>
-              <h3 className="text-xl font-bold capitalize text-white">{section.group}</h3>
-              <p className="text-sm text-zinc-400">Blocchi ricavati dal feed live reale, come nelle directory piu dense.</p>
-            </div>
-            {section.items.map((entry) => (
-              <section key={entry.tag} className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="text-lg font-bold text-white">{entry.tag}</h4>
-                    <p className="text-sm text-zinc-400">Preview reali del feed live per il tag {entry.tag}.</p>
-                  </div>
-                  <Link to={`/tag/${entry.tag}`} className="text-sm font-semibold text-accent">Vedi tutte</Link>
-                </div>
-                <ModelGrid
-                  models={entry.models}
-                  loading={loading}
-                  listName={`${entry.tag} home preview`}
-                />
-              </section>
-            ))}
-          </section>
-        ))}
+      {/* Tag sections removed for cleaner homepage */}
+      <section className="py-8 text-center text-zinc-400">
+        <p>StripHubs - Il miglior sito di cam live gratuito</p>
       </section>
     </div>
   );
