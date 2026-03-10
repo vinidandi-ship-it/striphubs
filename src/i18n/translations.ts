@@ -1,5 +1,12 @@
 export const translations = {
   it: {
+    common: {
+      search: 'Cerca',
+      searchPlaceholder: 'Cerca modelle, tag, paesi...',
+      loading: 'Caricamento...',
+      loadMore: 'Carica altre',
+      error: 'Errore'
+    },
     nav: {
       home: 'Home',
       live: 'Live',
@@ -82,6 +89,13 @@ export const translations = {
     }
   },
   en: {
+    common: {
+      search: 'Search',
+      searchPlaceholder: 'Search models, tags, countries...',
+      loading: 'Loading...',
+      loadMore: 'Load more',
+      error: 'Error'
+    },
     nav: {
       home: 'Home',
       live: 'Live',
@@ -164,6 +178,13 @@ export const translations = {
     }
   },
   de: {
+    common: {
+      search: 'Suchen',
+      searchPlaceholder: 'Suche Models, Tags, Länder...',
+      loading: 'Laden...',
+      loadMore: 'Mehr laden',
+      error: 'Fehler'
+    },
     nav: {
       home: 'Startseite',
       live: 'Live',
@@ -246,6 +267,13 @@ export const translations = {
     }
   },
   fr: {
+    common: {
+      search: 'Rechercher',
+      searchPlaceholder: 'Rechercher modèles, tags, pays...',
+      loading: 'Chargement...',
+      loadMore: 'Charger plus',
+      error: 'Erreur'
+    },
     nav: {
       home: 'Accueil',
       live: 'Live',
@@ -328,6 +356,13 @@ export const translations = {
     }
   },
   es: {
+    common: {
+      search: 'Buscar',
+      searchPlaceholder: 'Buscar modelos, etiquetas, países...',
+      loading: 'Cargando...',
+      loadMore: 'Cargar más',
+      error: 'Error'
+    },
     nav: {
       home: 'Inicio',
       live: 'Live',
@@ -410,6 +445,13 @@ export const translations = {
     }
   },
   pt: {
+    common: {
+      search: 'Pesquisar',
+      searchPlaceholder: 'Pesquisar modelos, tags, países...',
+      loading: 'Carregando...',
+      loadMore: 'Carregar mais',
+      error: 'Erro'
+    },
     nav: {
       home: 'Início',
       live: 'Live',
