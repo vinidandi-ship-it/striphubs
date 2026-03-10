@@ -2,6 +2,7 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import InfiniteLoader from '../components/InfiniteLoader';
 import ModelGrid from '../components/ModelGrid';
 import Sidebar from '../components/Sidebar';
+import Icon from '../components/Icon';
 import { countries } from '../lib/countries';
 import { categoryName, categories as categoryList } from '../lib/categories';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
@@ -45,7 +46,9 @@ export default function FreeCams() {
       <div className="flex-1 space-y-6">
         <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Free Cams' }]} />
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h1 className="text-2xl font-bold text-white sm:text-3xl">🎥 Free Cams - Camere Live Gratis</h1>
+          <h1 className="text-2xl font-bold text-white sm:text-3xl flex items-center gap-2">
+            <Icon name="camera" size={28} /> Free Cams - Camere Live Gratis
+          </h1>
           <button
             type="button"
             onClick={toggleIncludeOffline}

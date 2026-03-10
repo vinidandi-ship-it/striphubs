@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useI18n } from '../i18n';
 import { buildLocalizedPath } from '../i18n/routing';
+import Icon from './Icon';
 
 interface Category {
   slug: string;
@@ -22,9 +23,9 @@ export default function Sidebar({ categories, countries }: SidebarProps) {
     <aside className="w-full flex-shrink-0 lg:w-64">
       <div className="space-y-4 lg:sticky lg:top-24 lg:space-y-6">
         <div className="bg-panel rounded-xl border border-border p-4">
-          <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-3">
-            📂 {t('nav.categories')}
-          </h3>
+          <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+             <Icon name="categories" size={16} /> {t('nav.categories')}
+           </h3>
           <nav className="flex gap-2 overflow-x-auto pb-1 lg:block lg:space-y-1 lg:overflow-visible lg:pb-0">
             {categories.map((category) => (
               <Link
@@ -46,9 +47,9 @@ export default function Sidebar({ categories, countries }: SidebarProps) {
         </div>
 
         <div className="bg-panel rounded-xl border border-border p-4">
-          <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-3">
-            🌍 {t('nav.countries')}
-          </h3>
+          <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+             <Icon name="globe" size={16} /> {t('nav.countries')}
+           </h3>
           <nav className="flex gap-2 overflow-x-auto pb-1 lg:max-h-64 lg:block lg:space-y-1 lg:overflow-y-auto lg:overflow-x-hidden lg:pb-0">
             {countries.map((country) => (
               <Link
@@ -70,9 +71,9 @@ export default function Sidebar({ categories, countries }: SidebarProps) {
         </div>
 
         <div className="bg-panel rounded-xl border border-border p-4">
-          <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-3">
-            🔗 {t('nav.quickLinks')}
-          </h3>
+          <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+             <Icon name="quickLinks" size={16} /> {t('nav.quickLinks')}
+           </h3>
           <nav className="flex gap-2 overflow-x-auto pb-1 lg:block lg:space-y-1 lg:overflow-visible lg:pb-0">
             <Link
               to={buildLocalizedPath('/live', locale)}
@@ -82,17 +83,17 @@ export default function Sidebar({ categories, countries }: SidebarProps) {
                   : 'text-zinc-300 hover:bg-zinc-800/50 hover:text-white'
               }`}
             >
-              📺 {t('nav.allLive')}
-            </Link>
-            <Link
-              to={buildLocalizedPath('/', locale)}
-              className={`flex min-w-fit items-center rounded-lg px-3 py-2 text-sm transition-colors lg:min-w-0 ${
-                currentPath === '/' || currentPath === `/${locale}`
-                  ? 'bg-accent/20 text-accent'
-                  : 'text-zinc-300 hover:bg-zinc-800/50 hover:text-white'
-              }`}
-            >
-              🏠 {t('nav.home')}
+               <Icon name="allLive" size={16} /> {t('nav.allLive')}
+             </Link>
+             <Link
+               to={buildLocalizedPath('/', locale)}
+               className={`flex min-w-fit items-center rounded-lg px-3 py-2 text-sm transition-colors lg:min-w-0 ${
+                 currentPath === '/' || currentPath === `/${locale}`
+                   ? 'bg-accent/20 text-accent'
+                   : 'text-zinc-300 hover:bg-zinc-800/50 hover:text-white'
+               }`}
+             >
+               <Icon name="home" size={16} /> {t('nav.home')}
             </Link>
           </nav>
         </div>

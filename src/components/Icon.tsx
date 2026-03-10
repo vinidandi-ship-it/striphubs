@@ -8,7 +8,8 @@ type IconName =
   | 'play' | 'pause' | 'share' | 'gift' | 'coins' | 'eye'
   | 'filter' | 'grid' | 'list' | 'verified' | 'hd' | 'lock' | 'unlock'
   | 'info' | 'warning' | 'success' | 'error' | 'chat'
-  | 'milf' | 'teen' | 'asian' | 'crown' | 'sparkle' | 'lotus' | 'globe';
+  | 'milf' | 'teen' | 'asian' | 'crown' | 'sparkle' | 'lotus' | 'globe'
+  | 'categories' | 'quickLinks' | 'allLive' | 'spotlight' | 'explore' | 'trend';
 
 interface IconProps {
   name: IconName;
@@ -278,6 +279,45 @@ const icons: Record<IconName, JSX.Element> = {
       <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2"/>
       <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" strokeWidth="2"/>
       <path d="M2 12h20M12 2c3 4 3 16 0 20M12 2c-3 4-3 16 0 20" fill="none" stroke="currentColor" strokeWidth="2"/>
+    </>
+  ),
+  categories: (
+    <>
+      <rect x="3" y="3" width="7" height="7" rx="1"/>
+      <rect x="14" y="3" width="7" height="7" rx="1"/>
+      <rect x="3" y="14" width="7" height="7" rx="1"/>
+      <rect x="14" y="14" width="7" height="7" rx="1"/>
+    </>
+  ),
+  quickLinks: (
+    <>
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+    </>
+  ),
+  allLive: (
+    <>
+      <rect x="2" y="7" width="20" height="15" rx="2" ry="2"/>
+      <path d="M17 9l-5 5-5-5"/>
+    </>
+  ),
+  spotlight: (
+    <>
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      <circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/>
+    </>
+  ),
+  explore: (
+    <>
+      <circle cx="11" cy="11" r="8"/>
+      <path d="m21 21-4.35-4.35"/>
+      <path d="M11 8v6M8 11h6"/>
+    </>
+  ),
+  trend: (
+    <>
+      <path d="M23 6l-9.5 9.5-5-5L1 18"/>
+      <path d="M17 6h6v6"/>
     </>
   ),
 };

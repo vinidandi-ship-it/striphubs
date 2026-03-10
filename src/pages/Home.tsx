@@ -4,6 +4,7 @@ import CategoryCard from '../components/CategoryCard';
 import InfiniteLoader from '../components/InfiniteLoader';
 import ModelCard from '../components/ModelCard';
 import ModelGrid from '../components/ModelGrid';
+import Icon from '../components/Icon';
 import { api } from '../lib/api';
 import { countries, findCountryBySlug } from '../lib/countries';
 import { Model } from '../lib/models';
@@ -198,9 +199,9 @@ export default function Home() {
           <div className="absolute bottom-10 right-10 w-40 h-40 bg-pink-500/30 rounded-full blur-3xl"></div>
         </div>
         <div className="relative">
-          <p className="inline-flex rounded-full bg-accent/20 px-3 py-2 text-xs font-semibold text-accent sm:px-4 sm:text-sm">
-            🔴 {t('header.liveNow')} - {models.length} {t('header.activeCams')}
-          </p>
+          <p className="inline-flex rounded-full bg-accent/20 px-3 py-2 text-xs font-semibold text-accent sm:px-4 sm:text-sm items-center gap-2">
+             <Icon name="live" size={12} /> {t('header.liveNow')} - {models.length} {t('header.activeCams')}
+           </p>
           <h1 className="mt-4 max-w-4xl text-2xl font-extrabold leading-tight text-white sm:text-5xl">
             {t('home.heroTitle')}
           </h1>
@@ -211,12 +212,12 @@ export default function Home() {
             {t('home.heroDescription')}
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <Link to={buildLocalizedPath('/live', language)} className="rounded-full bg-accent px-6 py-3 text-center text-base font-semibold text-white transition-all hover:scale-105 hover:bg-accent/80 sm:px-8 sm:py-4 sm:text-lg">
-              🎥 {t('home.watchLiveCta')}
-            </Link>
-            <Link to={buildLocalizedPath('/cam/teen', language)} className="rounded-full border border-border bg-zinc-900 px-6 py-3 text-center text-base font-semibold text-zinc-200 transition-all hover:bg-zinc-800 sm:px-8 sm:py-4 sm:text-lg">
-              📂 {t('home.youngCamsCta')}
-            </Link>
+            <Link to={buildLocalizedPath('/live', language)} className="rounded-full bg-accent px-6 py-3 text-center text-base font-semibold text-white transition-all hover:scale-105 hover:bg-accent/80 sm:px-8 sm:py-4 sm:text-lg flex items-center justify-center gap-2">
+               <Icon name="camera" size={18} /> {t('home.watchLiveCta')}
+             </Link>
+             <Link to={buildLocalizedPath('/cam/teen', language)} className="rounded-full border border-border bg-zinc-900 px-6 py-3 text-center text-base font-semibold text-zinc-200 transition-all hover:bg-zinc-800 sm:px-8 sm:py-4 sm:text-lg flex items-center justify-center gap-2">
+               <Icon name="categories" size={18} /> {t('home.youngCamsCta')}
+             </Link>
           </div>
         </div>
       </section>
@@ -226,7 +227,9 @@ export default function Home() {
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Spotlight</p>
-              <h2 className="text-2xl font-bold text-white">🎯 {t('home.spotlightTitle')}</h2>
+              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                <Icon name="spotlight" size={24} /> {t('home.spotlightTitle')}
+              </h2>
               <p className="text-sm text-zinc-400">{t('home.spotlightSubtitle')}</p>
             </div>
             <Link to={buildLocalizedPath('/cam/teen', language)} className="text-sm font-semibold text-accent hover:text-accent/80">
@@ -243,7 +246,9 @@ export default function Home() {
 
       <section>
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">📺 {t('home.allLiveCams')}</h2>
+          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+            <Icon name="allLive" size={24} /> {t('home.allLiveCams')}
+          </h2>
           <Link to={buildLocalizedPath('/live', language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
         </div>
         {error ? <p className="mb-3 text-sm text-red-400">{error}</p> : null}
@@ -253,7 +258,9 @@ export default function Home() {
       </section>
 
       <section>
-        <h2 className="mb-4 text-2xl font-bold text-white">📂 {t('home.popularCategories')}</h2>
+        <h2 className="mb-4 text-2xl font-bold text-white flex items-center gap-2">
+          <Icon name="categories" size={24} /> {t('home.popularCategories')}
+        </h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {categories.map((category) => (
             <CategoryCard key={category.slug} slug={category.slug} name={category.name} count={category.count} />
@@ -263,7 +270,9 @@ export default function Home() {
 
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">🌍 {t('home.camsByCountry')}</h2>
+          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+            <Icon name="globe" size={24} /> {t('home.camsByCountry')}
+          </h2>
           <Link to={buildLocalizedPath('/live', language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -285,7 +294,9 @@ export default function Home() {
 
       <section className="space-y-8">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">🌟 {t('home.categoriesForYou')}</h2>
+          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+            <Icon name="spotlight" size={24} /> {t('home.categoriesForYou')}
+          </h2>
           <Link to={buildLocalizedPath('/live', language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
         </div>
 
@@ -308,7 +319,9 @@ export default function Home() {
 
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">🔗 {t('home.seoLanding')}</h2>
+          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+            <Icon name="quickLinks" size={24} /> {t('home.seoLanding')}
+          </h2>
           <Link to={buildLocalizedPath('/search', language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.explore')} →</Link>
         </div>
         <div className="flex flex-wrap gap-2">
