@@ -12,6 +12,8 @@ export const translations = {
       live: 'Live',
       categories: 'Categorie',
       countries: 'Paesi',
+      quickLinks: 'Link Rapidi',
+      allLive: 'Tutte le Live',
       milf: 'MILF',
       teen: 'Teen',
       asian: 'Asiatiche'
@@ -131,6 +133,8 @@ export const translations = {
       live: 'Live',
       categories: 'Categories',
       countries: 'Countries',
+      quickLinks: 'Quick Links',
+      allLive: 'All Live',
       milf: 'MILF',
       teen: 'Teen',
       asian: 'Asian'
@@ -250,6 +254,8 @@ export const translations = {
       live: 'Live',
       categories: 'Kategorien',
       countries: 'Länder',
+      quickLinks: 'Schnelllinks',
+      allLive: 'Alle Live',
       milf: 'MILF',
       teen: 'Teen',
       asian: 'Asiatinnen'
@@ -369,6 +375,8 @@ export const translations = {
       live: 'Live',
       categories: 'Catégories',
       countries: 'Pays',
+      quickLinks: 'Liens Rapides',
+      allLive: 'Tout en Direct',
       milf: 'MILF',
       teen: 'Teen',
       asian: 'Asiatiques'
@@ -488,6 +496,8 @@ export const translations = {
       live: 'Live',
       categories: 'Categorías',
       countries: 'Países',
+      quickLinks: 'Enlaces Rápidos',
+      allLive: 'Todo en Vivo',
       milf: 'MILF',
       teen: 'Teen',
       asian: 'Asiáticas'
@@ -607,6 +617,8 @@ export const translations = {
       live: 'Live',
       categories: 'Categorias',
       countries: 'Países',
+      quickLinks: 'Links Rápidos',
+      allLive: 'Tudo ao Vivo',
       milf: 'MILF',
       teen: 'Teen',
       asian: 'Asiáticas'
