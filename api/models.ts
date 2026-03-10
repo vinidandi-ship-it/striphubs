@@ -23,6 +23,7 @@ const filterModels = (models: NormalizedModel[], req: VercelRequest): Normalized
   const search = (req.query.search as string | undefined)?.toLowerCase() ?? '';
   const category = (req.query.category as string | undefined)?.toLowerCase() ?? '';
   const tag = (req.query.tag as string | undefined)?.toLowerCase() ?? '';
+  const country = (req.query.country as string | undefined)?.toLowerCase() ?? '';
   const limit = Math.min(Math.max(Number(req.query.limit) || 48, 1), 1000);
   const offset = Math.max(Number(req.query.offset) || 0, 0);
 
@@ -33,6 +34,7 @@ const filterModels = (models: NormalizedModel[], req: VercelRequest): Normalized
     const required = tag.split(',').map((value) => value.trim()).filter(Boolean);
     out = out.filter((model) => required.some((needle) => model.tags.some((t) => t.includes(needle))));
   }
+  if (country) out = out.filter((model) => model.country.toLowerCase() === country);
 
   if (search) {
     out = out.filter((model) =>
