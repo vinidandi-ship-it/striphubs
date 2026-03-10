@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const siteUrl = process.env.SITE_URL || 'https://striphubs.com';
+const siteUrl = process.env.VITE_SITE_URL || process.env.SITE_URL || 'https://striphubs.com';
 const now = new Date().toISOString();
 const categories = ['milf', 'blonde', 'asian', 'brunette', 'couple', 'trans'];
 const tags = ['teen', 'young', 'petite', 'blondes', 'brunettes', 'asian', 'latin', 'milf', 'big-boobs', 'lingerie', 'college', 'cosplay'];

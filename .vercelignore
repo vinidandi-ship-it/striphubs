@@ -6,6 +6,7 @@
 !scripts
 !vercel.json
 !package.json
+!package-lock.json
 !postcss.config.js
 !tailwind.config.js
 !tsconfig.json
