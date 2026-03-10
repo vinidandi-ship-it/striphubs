@@ -4,14 +4,19 @@ export const AFFILIATE_ID = 'd28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b2
 
 export const CATEGORY_DEFINITIONS = [
   { slug: 'milf', name: 'MILF', match: /(milf|milfs|mature)/i, tag: 'girls/milfs' },
-  { slug: 'blonde', name: 'Blonde', match: /blonde/i, tag: 'girls/blondes' },
-  { slug: 'asian', name: 'Asian', match: /asian/i, tag: 'girls/asian' },
-  { slug: 'brunette', name: 'Brunette', match: /brunette/i, tag: 'girls/brunettes' },
-  { slug: 'latina', name: 'Latina', match: /(latina|latin)/i, tag: 'girls/latin' },
-  { slug: 'couple', name: 'Couple', match: /(couple|couples)/i, tag: 'couples' },
-  { slug: 'trans', name: 'Trans', match: /trans/i, tag: 'trans' },
   { slug: 'teen', name: 'Teen', match: /teen/i, tag: 'girls/teens' },
-  { slug: 'ebony', name: 'Ebony', match: /(ebony|black)/i, tag: 'girls/ebony' }
+  { slug: 'ebony', name: 'Ebony', match: /(ebony|black)/i, tag: 'girls/ebony' },
+  { slug: 'asian', name: 'Asian', match: /asian/i, tag: 'girls/asian' },
+  { slug: 'latina', name: 'Latina', match: /(latina|latin)/i, tag: 'girls/latin' },
+  { slug: 'blonde', name: 'Blonde', match: /blonde/i, tag: 'girls/blondes' },
+  { slug: 'brunette', name: 'Brunette', match: /brunette/i, tag: 'girls/brunettes' },
+  { slug: 'bbw', name: 'BBW', match: /bbw/i, tag: 'girls/bbw' },
+  { slug: 'couple', name: 'Couple', match: /(couple|couples)/i, tag: 'couples' },
+  { slug: 'gay', name: 'Gay', match: /gay/i, tag: 'gay' },
+  { slug: 'lesbian', name: 'Lesbian', match: /lesbian/i, tag: 'girls/lesbian' },
+  { slug: 'men', name: 'Men', match: /men|male/i, tag: 'men' },
+  { slug: 'trans', name: 'Trans', match: /trans/i, tag: 'trans' },
+  { slug: 'vr', name: 'VR', match: /vr/i, tag: 'vr' }
 ] as const;
 
 export const STATIC_TAGS = [

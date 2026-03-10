@@ -1,11 +1,18 @@
 export const categories = [
   'milf',
-  'blonde',
+  'teen',
+  'ebony',
   'asian',
-  'brunette',
   'latina',
+  'blonde',
+  'brunette',
+  'bbw',
   'couple',
-  'trans'
+  'gay',
+  'lesbian',
+  'men',
+  'trans',
+  'vr'
 ] as const;
 
 export type CategorySlug = (typeof categories)[number];
@@ -21,12 +28,19 @@ export type DerivedCategory = {
 
 const CATEGORY_PATTERNS: Record<CategorySlug, RegExp> = {
   milf: /(milf|milfs|mature)/i,
-  blonde: /blonde/i,
+  teen: /teen/i,
+  ebony: /(ebony|black)/i,
   asian: /asian/i,
-  brunette: /brunette/i,
   latina: /(latina|latin)/i,
+  blonde: /blonde/i,
+  brunette: /brunette/i,
+  bbw: /bbw/i,
   couple: /(couple|couples)/i,
-  trans: /trans/i
+  gay: /gay/i,
+  lesbian: /lesbian/i,
+  men: /men|male/i,
+  trans: /trans/i,
+  vr: /vr/i
 };
 
 export const categorizeModels = (models: Array<{ tags: string[] }>): DerivedCategory[] => {
