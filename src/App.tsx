@@ -11,6 +11,7 @@ import { upsertJsonLd } from './lib/seo';
 const Home = lazy(() => import('./pages/Home'));
 const Live = lazy(() => import('./pages/Live'));
 const Category = lazy(() => import('./pages/Category'));
+const Country = lazy(() => import('./pages/Country'));
 const Tag = lazy(() => import('./pages/Tag'));
 const ModelPage = lazy(() => import('./pages/Model'));
 const Search = lazy(() => import('./pages/Search'));
@@ -42,6 +43,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/live" element={<Live />} />
+            <Route path="/country/:countrySlug" element={<Country />} />
             <Route path="/cam/:category/:tag" element={<Combination />} />
             <Route path="/cam/:category" element={<Category />} />
             <Route path="/tag/:tag" element={<Tag />} />

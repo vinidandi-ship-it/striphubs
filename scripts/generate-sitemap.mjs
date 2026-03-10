@@ -4,6 +4,20 @@ import { resolve } from 'node:path';
 const siteUrl = process.env.SITE_URL || 'https://striphubs.com';
 const now = new Date().toISOString();
 const categories = ['milf', 'blonde', 'asian', 'brunette', 'couple', 'trans'];
+const tags = ['teen', 'young', 'petite', 'blondes', 'brunettes', 'asian', 'latin', 'milf', 'big-boobs', 'lingerie', 'college', 'cosplay'];
+const countries = ['italian', 'american', 'british', 'german', 'spanish', 'french'];
+const combinations = [
+  ['teen', 'petite'],
+  ['teen', 'blondes'],
+  ['teen', 'college'],
+  ['asian', 'petite'],
+  ['asian', 'lingerie'],
+  ['latina', 'big-boobs'],
+  ['blonde', 'young'],
+  ['brunette', 'cosplay'],
+  ['milf', 'lingerie'],
+  ['milf', 'big-boobs']
+];
 
 const routes = [
   '/',
@@ -12,7 +26,10 @@ const routes = [
   '/privacy',
   '/terms',
   '/cookies',
-  ...categories.map((category) => `/cam/${category}`)
+  ...categories.map((category) => `/cam/${category}`),
+  ...tags.map((tag) => `/tag/${tag}`),
+  ...countries.map((country) => `/country/${country}`),
+  ...combinations.map(([category, tag]) => `/cam/${category}/${tag}`)
 ];
 
 const body = routes

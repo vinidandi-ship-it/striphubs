@@ -52,9 +52,9 @@ export default function Sidebar({ categories, countries }: SidebarProps) {
             {countries.map((country) => (
               <Link
                 key={country.slug}
-                to={`/cam/${country.slug}`}
+                to={`/country/${country.slug}`}
                 className={`flex min-w-fit items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm transition-colors lg:min-w-0 ${
-                  currentPath === `/cam/${country.slug}`
+                  currentPath === `/country/${country.slug}`
                     ? 'bg-accent/20 text-accent'
                     : 'text-zinc-300 hover:bg-zinc-800/50 hover:text-white'
                 }`}

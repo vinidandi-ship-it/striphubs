@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { SITE_NAME, SITE_URL } from './models';
 import { categoryName } from './categories';
 
-type PageType = 'home' | 'live' | 'category' | 'tag' | 'combination' | 'model' | 'search';
+type PageType = 'home' | 'live' | 'category' | 'tag' | 'combination' | 'country' | 'model' | 'search';
 
 const ensureMeta = (name: string): HTMLMetaElement => {
   let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
@@ -50,6 +50,7 @@ export const generateTitle = (page: PageType, data?: Record<string, string>): st
     const tag = data?.tag || '';
     return `${cat} ${tag} Cam Live Gratis`;
   }
+  if (page === 'country') return `${data?.country || 'Modelle'} Cam Live Gratis`;
   if (page === 'model') return `${data?.username || 'Model'} Live Cam e Profilo`;
   if (page === 'search') return 'Cerca Modelle Live, Tag e Cam Online';
   return SITE_NAME;
@@ -64,6 +65,7 @@ export const generateDescription = (page: PageType, data?: Record<string, string
   if (page === 'tag') return `Esplora modelle live con tag ${data?.tag || ''}, camere online adesso e nuove dirette aggiornate in tempo reale.`;
   if (page === 'combination')
     return `Scopri ${data?.category || ''} cam live con tag ${data?.tag || ''}, modelle online e accesso veloce alle dirette attive.`;
+  if (page === 'country') return `Guarda ${data?.country || 'modelle'} live online con profili attivi, categorie popolari e accesso rapido alle camere più viste.`;
   if (page === 'model') return `Guarda ${data?.username || 'questa modella'} live, apri il profilo e accedi subito alla sua cam online.`;
   if (page === 'search') return 'Cerca modelle live per username, tag, categoria e paese con risultati aggiornati in tempo reale.';
   return 'Directory di live cam gratuite con modelle online 24/7.';

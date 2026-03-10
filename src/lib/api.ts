@@ -75,6 +75,7 @@ export const api = {
   getModels: (params?: {
     category?: string;
     tag?: string;
+    country?: string;
     search?: string;
     limit?: number;
     modelsList?: string;
@@ -83,6 +84,7 @@ export const api = {
     const query = new URLSearchParams();
     if (params?.category) query.set('category', params.category);
     if (params?.tag) query.set('tag', params.tag);
+    if (params?.country) query.set('country', params.country);
     if (params?.search) query.set('search', params.search);
     if (params?.limit) query.set('limit', String(params.limit));
     if (params?.modelsList) query.set('modelsList', params.modelsList);

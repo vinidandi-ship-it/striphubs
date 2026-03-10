@@ -14,6 +14,20 @@ import {
 const SITE_URL = process.env.VITE_SITE_URL || 'https://striphubs.com';
 const MODELS_ENDPOINT = process.env.STRIPCHAT_API_ENDPOINT || 'https://go.mavrtracktor.com/api/models';
 const MAX_MODEL_ROUTES = 200;
+const COUNTRY_SLUGS = ['italian', 'american', 'british', 'german', 'spanish', 'french'];
+const PRIORITY_TAGS = ['teen', 'young', 'petite', 'blondes', 'brunettes', 'asian', 'latin', 'milf', 'big-boobs', 'lingerie', 'college', 'cosplay'];
+const FEATURED_COMBINATIONS = [
+  ['teen', 'petite'],
+  ['teen', 'blondes'],
+  ['teen', 'college'],
+  ['asian', 'petite'],
+  ['asian', 'lingerie'],
+  ['latina', 'big-boobs'],
+  ['blonde', 'young'],
+  ['brunette', 'cosplay'],
+  ['milf', 'lingerie'],
+  ['milf', 'big-boobs']
+] as const;
 
 export default async function handler(_req: VercelRequest, res: VercelResponse) {
   try {
@@ -67,10 +81,13 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
 
     CATEGORY_DEFINITIONS.forEach((category) => addRoute(`/cam/${category.slug}`));
     STATIC_TAGS.forEach((tag) => addRoute(`/tag/${tag}`));
+    PRIORITY_TAGS.forEach((tag) => addRoute(`/tag/${tag}`));
+    COUNTRY_SLUGS.forEach((country) => addRoute(`/country/${country}`));
     Array.from(tags).forEach((tag) => addRoute(`/tag/${tag}`));
     CATEGORY_DEFINITIONS.forEach((category) =>
       STATIC_TAGS.forEach((tag) => addRoute(`/cam/${category.slug}/${tag}`))
     );
+    FEATURED_COMBINATIONS.forEach(([category, tag]) => addRoute(`/cam/${category}/${tag}`));
     models.slice(0, MAX_MODEL_ROUTES).forEach((model) => addRoute(`/model/${encodeURIComponent(model.username)}`));
 
     const now = new Date().toISOString();

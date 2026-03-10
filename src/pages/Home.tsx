@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import CategoryCard from '../components/CategoryCard';
 import ModelGrid from '../components/ModelGrid';
 import { api } from '../lib/api';
+import { countries, findCountryBySlug } from '../lib/countries';
 import { Model } from '../lib/models';
 import { categorizeModels, categories as categoryList } from '../lib/categories';
 import { featuredTagGroups } from '../lib/tags';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
+import { featuredCategoryTagCombos, featuredCountryRoutes, priorityTagSlugs } from '../lib/programmaticSeo';
 
 const HOME_LIVE_LIMIT = 300;
 const CATEGORY_PREVIEW_LIMIT = 8;
@@ -106,6 +108,19 @@ export default function Home() {
         .filter((section) => section.items.length > 0),
     [models]
   );
+  const featuredCountries = useMemo(
+    () =>
+      featuredCountryRoutes
+        .map((route) => route.replace('/country/', ''))
+        .map((slug) => findCountryBySlug(slug))
+        .filter(Boolean)
+        .map((country) => ({
+          ...country,
+          count: models.filter((model) => model.country === country.code).length
+        }))
+        .filter((country) => country.count > 0),
+    [models]
+  );
 
   return (
     <div className="space-y-8">
@@ -154,6 +169,28 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-white">🌍 Cam Per Paese</h2>
+          <Link to="/live" className="text-sm font-semibold text-accent hover:text-accent/80">Vedi tutti →</Link>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {featuredCountries.map((country) => (
+            <Link
+              key={country.slug}
+              to={`/country/${country.slug}`}
+              className="rounded-2xl border border-border bg-panel p-5 transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg hover:shadow-accent/20"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-lg font-semibold text-zinc-100">{country.name}</p>
+                <span className="rounded-full bg-zinc-800 px-2 py-1 text-xs text-zinc-400">{country.count}</span>
+              </div>
+              <p className="mt-2 text-sm text-zinc-500">Live cam {country.name.toLowerCase()}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <section className="space-y-8">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-white">🌟 Categorie per Te</h2>
@@ -177,7 +214,35 @@ export default function Home() {
         ))}
       </section>
 
-      {/* Tag sections removed for cleaner homepage */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-white">🔗 Landing SEO Da Spingere</h2>
+          <Link to="/search" className="text-sm font-semibold text-accent hover:text-accent/80">Esplora →</Link>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {priorityTagSlugs.map((tag) => (
+            <Link
+              key={tag}
+              to={`/tag/${tag}`}
+              className="rounded-full border border-border bg-zinc-900 px-3 py-2 text-sm text-zinc-300 transition-colors hover:border-accent hover:text-white"
+            >
+              {tag}
+            </Link>
+          ))}
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {featuredCategoryTagCombos.map((entry) => (
+            <Link
+              key={`${entry.category}-${entry.tag}`}
+              to={`/cam/${entry.category}/${entry.tag}`}
+              className="rounded-full border border-border bg-zinc-900 px-3 py-2 text-sm text-zinc-300 transition-colors hover:border-accent hover:text-white"
+            >
+              {entry.category} + {entry.tag}
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <section className="py-8 text-center text-zinc-400">
         <p>StripHubs - Il miglior sito di cam live gratuito</p>
       </section>
