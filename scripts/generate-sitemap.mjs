@@ -26,7 +26,7 @@ const defaultLanguage = 'it';
 
 const categories = ['teen', 'milf', 'asian', 'latina', 'blonde', 'brunette', 'ebony', 'arab', 'indian', 'japanese', 'couple', 'trans'];
 const tags = ['teen', 'young', 'petite', 'blondes', 'brunettes', 'asian', 'latin', 'milf', 'big-boobs', 'lingerie', 'college', 'cosplay', 'curvy'];
-const countries = ['italian', 'american', 'british', 'german', 'spanish', 'french', 'russian', 'brazilian'];
+const countries = ['italian', 'american', 'british', 'german', 'spanish', 'french', 'ukrainian', 'russian', 'brazilian', 'colombian', 'canadian', 'australian', 'polish', 'dutch', 'swedish', 'portuguese', 'greek', 'turkish', 'indian', 'chinese', 'japanese', 'korean', 'mexican', 'philippine', 'thai', 'vietnamese'];
 const combinations = [
   ['teen', 'petite'],
   ['teen', 'blondes'],
