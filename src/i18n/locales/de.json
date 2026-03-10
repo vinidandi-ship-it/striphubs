@@ -1,0 +1,149 @@
+{
+  "common": {
+    "loading": "Wird geladen...",
+    "loadMore": "Weitere Modelle laden",
+    "loadingModels": "Modelle werden geladen",
+    "error": "Fehler beim Laden",
+    "viewers": "Zuschauer",
+    "live": "Live",
+    "offline": "Offline",
+    "modelsLoaded": "Modelle geladen",
+    "moreAvailable": "und weitere verfügbar",
+    "watchLive": "Live ansehen",
+    "search": "Suchen",
+    "searchPlaceholder": "Modelle, Tags, Länder suchen...",
+    "accept": "Akzeptieren",
+    "exit": "Beenden"
+  },
+  "nav": {
+    "home": "Startseite",
+    "countries": "Länder",
+    "categories": "Kategorien",
+    "quickLinks": "Schnelllinks",
+    "allLive": "Alle Live"
+  },
+  "header": {
+    "liveNow": "Jetzt Live",
+    "activeCams": "aktive Cams"
+  },
+  "footer": {
+    "allRightsReserved": "Alle Rechte vorbehalten.",
+    "adultsOnly": "Nur für Erwachsene (18+). Inhalt für Erwachsene.",
+    "notAffiliated": "StripHubs ist nicht mit Stripchat verbunden",
+    "privacy": "Datenschutz",
+    "terms": "AGB",
+    "cookies": "Cookies"
+  },
+  "home": {
+    "heroTitle": "Entdecke die heißesten Models in Echtzeit",
+    "heroSubtitle": "Kostenlose Cam-Shows 24/7. Milfs, Teens, Trans, Paare - alle Kategorien an einem Ort.",
+    "heroDescription": "Durchsuche Live-Streams und finde dein Lieblingsmodel.",
+    "watchLiveCta": "Live ansehen",
+    "youngCamsCta": "Junge Cams",
+    "spotlightTitle": "Junge Cams im Rampenlicht",
+    "spotlightSubtitle": "Die jüngsten und gefragtesten Models jetzt online.",
+    "discoverTeen": "Teens entdecken",
+    "allLiveCams": "Alle Live Cams",
+    "seeAll": "Alle anzeigen",
+    "popularCategories": "Beliebte Kategorien",
+    "camsByCountry": "Cams nach Land",
+    "categoriesForYou": "Kategorien für dich",
+    "seoLanding": "SEO Landing Pages",
+    "explore": "Erkunden",
+    "bestSite": "StripHubs - Die beste kostenlose Live-Cam-Seite",
+    "trend": "Trend"
+  },
+  "category": {
+    "liveCams": "Live Cams",
+    "showOnlyLive": "Nur Live anzeigen",
+    "includeOffline": "Offline einbeziehen"
+  },
+  "country": {
+    "liveCam": "Live Cam"
+  },
+  "model": {
+    "profile": "Profil",
+    "watchingNow": "Zuschauer schauen jetzt zu",
+    "country": "Land",
+    "relatedModels": "Ähnliche Models",
+    "notFound": "Model nicht gefunden"
+  },
+  "search": {
+    "title": "Models suchen",
+    "description": "Alle Models, Tags und Kategorien durchsuchen",
+    "resultsFor": "Ergebnisse für",
+    "noResults": "Keine Ergebnisse gefunden",
+    "tryDifferent": "Versuche eine andere Suche"
+  },
+  "seo": {
+    "homeTitle": "Live Cam Girls und Stripchat Links",
+    "homeDescription": "StripHubs ist das kostenlose Live-Cam-Verzeichnis mit hunderten Models online, Filtern für Teens, Milfs und Länder sowie direkten Links zu Stripchat-Streams.",
+    "liveTitle": "Kostenlose Live Cams jetzt online",
+    "liveDescription": "Schaue alle Live-Models jetzt online mit aktualisierten Listen, schnellen Filtern und direktem Zugang zu den meistgesehenen Cams.",
+    "categoryTitle": "{category} Live Cams kostenlos online",
+    "categoryDescription": "Schaue {category} Live Cams kostenlos mit Online-Models, aktualisierten Profilen und sofortigem Zugang zu aktiven Streams.",
+    "tagTitle": "{tag} Live Cams und Models online",
+    "tagDescription": "Erkunde Live-Models mit {tag} Tag, Cams jetzt online und neue Streams in Echtzeit aktualisiert.",
+    "combinationTitle": "{category} {tag} kostenlose Live Cams",
+    "combinationDescription": "Entdecke {category} Live Cams mit {tag} Tag, Online-Models und schnellem Zugang zu aktiven Streams.",
+    "countryTitle": "{country} kostenlose Live Cams",
+    "countryDescription": "Schaue {country} live online mit aktiven Profilen, beliebten Kategorien und schnellem Zugang zu den meistgesehenen Cams.",
+    "modelTitle": "{username} Live Cam und Profil",
+    "modelDescription": "Schaue {username} live, öffne das Profil und greife jetzt auf ihre Online-Cam zu.",
+    "searchTitle": "Live Models, Tags und Cams online suchen",
+    "searchDescription": "Suche Live-Models nach Benutzername, Tag, Kategorie und Land mit Echtzeit-aktualisierten Ergebnissen."
+  },
+  "ageVerification": {
+    "title": "18+ Altersverifizierung",
+    "description": "Du musst mindestens 18 Jahre alt sein, um fortzufahren.",
+    "confirm": "Ich bin 18+"
+  },
+  "cookieConsent": {
+    "message": "Wir verwenden Cookies für Analysen und Affiliate-Zuordnung.",
+    "policy": "Cookie-Richtlinie"
+  },
+  "categories": {
+    "milf": "MILF",
+    "teen": "Teen",
+    "ebony": "Ebony",
+    "asian": "Asiatinnen",
+    "latina": "Latina",
+    "blonde": "Blondinen",
+    "brunette": "Brünette",
+    "bbw": "BBW",
+    "arab": "Arabische",
+    "indian": "Indische",
+    "brazilian": "Brasilianische",
+    "japanese": "Japanische",
+    "couple": "Paare",
+    "gay": "Gay",
+    "lesbian": "Lesben",
+    "men": "Männer",
+    "trans": "Trans",
+    "vr": "VR"
+  },
+  "countries": {
+    "italian": "Italienische",
+    "german": "Deutsche",
+    "french": "Französische",
+    "spanish": "Spanische",
+    "british": "Britische",
+    "american": "Amerikanische",
+    "canadian": "Kanadische",
+    "australian": "Australische",
+    "russian": "Russische",
+    "polish": "Polnische",
+    "dutch": "Niederländische",
+    "swedish": "Schwedische",
+    "norwegian": "Norwegische",
+    "danish": "Dänische",
+    "finnish": "Finnische",
+    "portuguese": "Portugiesische",
+    "greek": "Griechische",
+    "turkish": "Türkische",
+    "indian": "Indische",
+    "chinese": "Chinesische",
+    "japanese": "Japanische",
+    "korean": "Koreanische"
+  }
+}

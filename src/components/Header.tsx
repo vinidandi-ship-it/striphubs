@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { useI18n } from '../i18n';
+import { LanguageSwitcher } from '../i18n/LanguageSwitcher';
+import { buildLocalizedPath } from '../i18n/routing';
 import SearchBar from './SearchBar';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t, locale } = useI18n();
 
   const mainItems = [
-    { to: '/', label: 'Home', icon: '🏠' },
+    { to: '/', label: t('nav.home'), icon: '🏠' },
     { to: '/live', label: 'Live', icon: '🔴' },
     { to: '/cam/milf', label: 'MILF', icon: '💋' },
     { to: '/cam/teen', label: 'Teen', icon: '👧' },
@@ -14,17 +18,19 @@ export default function Header() {
   ];
 
   const countryItems = [
-    { to: '/country/italian', label: 'Italiane', flag: '🇮🇹' },
-    { to: '/country/american', label: 'Americane', flag: '🇺🇸' },
-    { to: '/country/british', label: 'Britanniche', flag: '🇬🇧' },
-    { to: '/country/german', label: 'Tedesche', flag: '🇩🇪' },
-    { to: '/country/spanish', label: 'Spagnole', flag: '🇪🇸' }
+    { to: '/country/italian', label: t('countries.italian'), flag: '🇮🇹' },
+    { to: '/country/american', label: t('countries.american'), flag: '🇺🇸' },
+    { to: '/country/british', label: t('countries.british'), flag: '🇬🇧' },
+    { to: '/country/german', label: t('countries.german'), flag: '🇩🇪' },
+    { to: '/country/spanish', label: t('countries.spanish'), flag: '🇪🇸' }
   ];
+
+  const getLocalizedTo = (to: string) => buildLocalizedPath(to, locale);
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-bg/95 backdrop-blur-xl shadow-lg">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
-        <Link to="/" className="flex min-w-0 items-center gap-2 text-lg font-extrabold text-white transition-transform hover:scale-105 sm:text-xl">
+        <Link to={getLocalizedTo('/')} className="flex min-w-0 items-center gap-2 text-lg font-extrabold text-white transition-transform hover:scale-105 sm:text-xl">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent to-pink-500 flex items-center justify-center shadow-lg">
             <span className="text-white text-sm font-bold">SH</span>
           </div>
@@ -35,7 +41,7 @@ export default function Header() {
           {mainItems.map((item) => (
             <NavLink
               key={item.to}
-              to={item.to}
+              to={getLocalizedTo(item.to)}
               className={({ isActive }) =>
                 `shrink-0 whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium transition-all ${
                   isActive 
@@ -51,7 +57,7 @@ export default function Header() {
           
           <div className="relative group">
             <button className="shrink-0 whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition-all flex items-center gap-1">
-              🌍 Paesi
+              🌍 {t('nav.countries')}
               <svg className="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
@@ -60,7 +66,7 @@ export default function Header() {
               {countryItems.map((item) => (
                 <Link
                   key={item.to}
-                  to={item.to}
+                  to={getLocalizedTo(item.to)}
                   className="flex items-center gap-2 px-4 py-2 text-sm text-zinc-300 hover:text-white hover:bg-zinc-800/50 first:rounded-t-xl last:rounded-b-xl"
                 >
                   <span>{item.flag}</span>
@@ -75,6 +81,8 @@ export default function Header() {
           <div className="hidden sm:block w-64">
             <SearchBar compact />
           </div>
+          
+          <LanguageSwitcher compact />
           
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -104,7 +112,7 @@ export default function Header() {
             {mainItems.map((item) => (
               <NavLink
                 key={item.to}
-                to={item.to}
+                to={getLocalizedTo(item.to)}
                 onClick={() => setMobileMenuOpen(false)}
                 className={({ isActive }) =>
                   `flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
@@ -120,11 +128,11 @@ export default function Header() {
             ))}
             
             <div className="pt-2 border-t border-border">
-              <p className="px-4 py-2 text-xs font-semibold text-zinc-500 uppercase tracking-wider">Paesi</p>
+              <p className="px-4 py-2 text-xs font-semibold text-zinc-500 uppercase tracking-wider">{t('nav.countries')}</p>
               {countryItems.map((item) => (
                 <Link
                   key={item.to}
-                  to={item.to}
+                  to={getLocalizedTo(item.to)}
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center gap-2 px-4 py-2 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-xl transition-colors"
                 >

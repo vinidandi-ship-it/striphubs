@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { SITE_NAME, SITE_URL } from './models';
 import { categoryName } from './categories';
+import { getAlternateUrls, getCanonicalUrl, type Language, DEFAULT_LANGUAGE } from './i18n';
 
 type PageType = 'home' | 'live' | 'category' | 'tag' | 'combination' | 'country' | 'model' | 'search';
 
@@ -32,6 +33,21 @@ const ensureCanonical = (): HTMLLinkElement => {
     document.head.appendChild(el);
   }
   return el;
+};
+
+const ensureAlternateLink = (hreflang: string): HTMLLinkElement => {
+  let el = document.querySelector(`link[rel="alternate"][hreflang="${hreflang}"]`) as HTMLLinkElement | null;
+  if (!el) {
+    el = document.createElement('link');
+    el.rel = 'alternate';
+    el.hreflang = hreflang;
+    document.head.appendChild(el);
+  }
+  return el;
+};
+
+const removeAlternateLinks = () => {
+  document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove());
 };
 
 export const generateTitle = (page: PageType, data?: Record<string, string>): string => {
@@ -71,11 +87,12 @@ export const generateDescription = (page: PageType, data?: Record<string, string
   return 'Directory di live cam gratuite con modelle online 24/7.';
 };
 
-export const useSEO = (title: string, description: string, path: string) => {
+export const useSEO = (title: string, description: string, path: string, lang?: Language) => {
   useEffect(() => {
     const fullTitle = `${title} | ${SITE_NAME}`;
     const url = `${SITE_URL}${path}`;
     const image = `${SITE_URL}/icon-512.png`;
+    const currentLang = lang || DEFAULT_LANGUAGE;
 
     document.title = fullTitle;
     ensureMeta('description').setAttribute('content', description);
@@ -86,8 +103,18 @@ export const useSEO = (title: string, description: string, path: string) => {
     ensurePropertyMeta('og:description').setAttribute('content', description);
     ensurePropertyMeta('og:url').setAttribute('content', url);
     ensurePropertyMeta('og:image').setAttribute('content', image);
-    ensureCanonical().setAttribute('href', `${SITE_URL}${path}`);
-  }, [title, description, path]);
+    ensurePropertyMeta('og:locale').setAttribute('content', currentLang);
+    
+    const canonicalUrl = getCanonicalUrl(path, SITE_URL, currentLang);
+    ensureCanonical().setAttribute('href', canonicalUrl);
+    
+    removeAlternateLinks();
+    const alternates = getAlternateUrls(path, SITE_URL);
+    alternates.forEach(({ hreflang, href }) => {
+      const link = ensureAlternateLink(hreflang);
+      link.href = href;
+    });
+  }, [title, description, path, lang]);
 };
 
 export const upsertJsonLd = (id: string, payload: Record<string, unknown>) => {

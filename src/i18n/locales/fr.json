@@ -1,0 +1,149 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "loadMore": "Charger plus de modèles",
+    "loadingModels": "Chargement des modèles",
+    "error": "Erreur de chargement",
+    "viewers": "spectateurs",
+    "live": "Live",
+    "offline": "Hors ligne",
+    "modelsLoaded": "modèles chargés",
+    "moreAvailable": "et d'autres disponibles",
+    "watchLive": "Voir en direct",
+    "search": "Rechercher",
+    "searchPlaceholder": "Rechercher modèles, tags, pays...",
+    "accept": "Accepter",
+    "exit": "Quitter"
+  },
+  "nav": {
+    "home": "Accueil",
+    "countries": "Pays",
+    "categories": "Catégories",
+    "quickLinks": "Liens rapides",
+    "allLive": "Tout en direct"
+  },
+  "header": {
+    "liveNow": "En direct",
+    "activeCams": "cams actives"
+  },
+  "footer": {
+    "allRightsReserved": "Tous droits réservés.",
+    "adultsOnly": "Adultes uniquement (18+). Contenu adulte.",
+    "notAffiliated": "StripHubs n'est pas affilié à Stripchat",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "cookies": "Cookies"
+  },
+  "home": {
+    "heroTitle": "Découvrez les modèles les plus chauds en temps réel",
+    "heroSubtitle": "Spectacles cam gratuits 24/7. Milfs, teens, trans, couples - toutes les catégories en un seul endroit.",
+    "heroDescription": "Parcourez les flux en direct et trouvez votre modèle préféré.",
+    "watchLiveCta": "Voir en direct",
+    "youngCamsCta": "Cams jeunes",
+    "spotlightTitle": "Cams jeunes à l'honneur",
+    "spotlightSubtitle": "Les modèles les plus jeunes et demandés en ligne maintenant.",
+    "discoverTeen": "Découvrir les teens",
+    "allLiveCams": "Toutes les Cams Live",
+    "seeAll": "Voir tout",
+    "popularCategories": "Catégories populaires",
+    "camsByCountry": "Cams par pays",
+    "categoriesForYou": "Catégories pour vous",
+    "seoLanding": "Pages SEO",
+    "explore": "Explorer",
+    "bestSite": "StripHubs - Le meilleur site de cams live gratuit",
+    "trend": "tendance"
+  },
+  "category": {
+    "liveCams": "Cams Live",
+    "showOnlyLive": "Afficher uniquement en direct",
+    "includeOffline": "Inclure hors ligne"
+  },
+  "country": {
+    "liveCam": "Cam live"
+  },
+  "model": {
+    "profile": "profil",
+    "watchingNow": "spectateurs regardent maintenant",
+    "country": "Pays",
+    "relatedModels": "Modèles similaires",
+    "notFound": "Modèle non trouvé"
+  },
+  "search": {
+    "title": "Rechercher des modèles",
+    "description": "Rechercher tous les modèles, tags et catégories",
+    "resultsFor": "Résultats pour",
+    "noResults": "Aucun résultat trouvé",
+    "tryDifferent": "Essayez une recherche différente"
+  },
+  "seo": {
+    "homeTitle": "Live Cam Girls et liens Stripchat",
+    "homeDescription": "StripHubs est l'annuaire de cams live gratuit avec des centaines de modèles en ligne, des filtres pour teens, milfs et pays, et des liens directs vers les flux Stripchat.",
+    "liveTitle": "Cams live gratuites en ligne maintenant",
+    "liveDescription": "Regardez tous les modèles live en ligne maintenant avec des listes mises à jour, des filtres rapides et un accès direct aux cams les plus vues.",
+    "categoryTitle": "{category} Cams live gratuites en ligne",
+    "categoryDescription": "Regardez {category} cams live gratuites avec des modèles en ligne, des profils mis à jour et un accès immédiat aux flux actifs.",
+    "tagTitle": "{tag} Cams live et modèles en ligne",
+    "tagDescription": "Explorez les modèles live avec le tag {tag}, les cams en ligne maintenant et les nouveaux flux mis à jour en temps réel.",
+    "combinationTitle": "{category} {tag} Cams live gratuites",
+    "combinationDescription": "Découvrez {category} cams live avec le tag {tag}, des modèles en ligne et un accès rapide aux flux actifs.",
+    "countryTitle": "{country} Cams live gratuites",
+    "countryDescription": "Regardez {country} live en ligne avec des profils actifs, des catégories populaires et un accès rapide aux cams les plus vues.",
+    "modelTitle": "{username} Cam live et profil",
+    "modelDescription": "Regardez {username} en direct, ouvrez le profil et accédez à sa cam en ligne maintenant.",
+    "searchTitle": "Rechercher modèles live, tags et cams en ligne",
+    "searchDescription": "Recherchez des modèles live par nom d'utilisateur, tag, catégorie et pays avec des résultats mis à jour en temps réel."
+  },
+  "ageVerification": {
+    "title": "Vérification d'âge 18+",
+    "description": "Vous devez avoir au moins 18 ans pour continuer.",
+    "confirm": "J'ai 18+ ans"
+  },
+  "cookieConsent": {
+    "message": "Nous utilisons des cookies pour les analyses et l'attribution d'affiliation.",
+    "policy": "Politique de cookies"
+  },
+  "categories": {
+    "milf": "MILF",
+    "teen": "Teen",
+    "ebony": "Ebony",
+    "asian": "Asiatiques",
+    "latina": "Latina",
+    "blonde": "Blondes",
+    "brunette": "Brunettes",
+    "bbw": "BBW",
+    "arab": "Arabes",
+    "indian": "Indiennes",
+    "brazilian": "Brésiliennes",
+    "japanese": "Japonaises",
+    "couple": "Couples",
+    "gay": "Gay",
+    "lesbian": "Lesbiennes",
+    "men": "Hommes",
+    "trans": "Trans",
+    "vr": "VR"
+  },
+  "countries": {
+    "italian": "Italiennes",
+    "german": "Allemandes",
+    "french": "Françaises",
+    "spanish": "Espagnoles",
+    "british": "Britanniques",
+    "american": "Américaines",
+    "canadian": "Canadiennes",
+    "australian": "Australiennes",
+    "russian": "Russes",
+    "polish": "Polonaises",
+    "dutch": "Néerlandaises",
+    "swedish": "Suédoises",
+    "norwegian": "Norvégiennes",
+    "danish": "Danoises",
+    "finnish": "Finlandaises",
+    "portuguese": "Portugaises",
+    "greek": "Grecques",
+    "turkish": "Turques",
+    "indian": "Indiennes",
+    "chinese": "Chinoises",
+    "japanese": "Japonaises",
+    "korean": "Coréennes"
+  }
+}

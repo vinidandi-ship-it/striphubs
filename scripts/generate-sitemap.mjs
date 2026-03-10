@@ -3,6 +3,10 @@ import { resolve } from 'node:path';
 
 const siteUrl = process.env.VITE_SITE_URL || process.env.SITE_URL || 'https://striphubs.com';
 const now = new Date().toISOString();
+
+const languages = ['it', 'en', 'de', 'fr', 'es', 'pt'];
+const defaultLanguage = 'it';
+
 const categories = ['milf', 'blonde', 'asian', 'brunette', 'couple', 'trans'];
 const tags = ['teen', 'young', 'petite', 'blondes', 'brunettes', 'asian', 'latin', 'milf', 'big-boobs', 'lingerie', 'college', 'cosplay'];
 const countries = ['italian', 'american', 'british', 'german', 'spanish', 'french'];
@@ -35,7 +39,7 @@ const combinations = [
   ['japanese', 'cosplay']
 ];
 
-const routes = [
+const baseRoutes = [
   '/',
   '/live',
   '/search',
@@ -48,15 +52,69 @@ const routes = [
   ...combinations.map(([category, tag]) => `/cam/${category}/${tag}`)
 ];
 
-const body = routes
-  .map((route) => {
-    const priority = route === '/' ? '1.0' : '0.8';
-    return `  <url>\n    <loc>${siteUrl}${route}</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>hourly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
-  })
+const getUrlForLanguage = (route, lang) => {
+  if (lang === defaultLanguage) {
+    return `${siteUrl}${route}`;
+  }
+  return `${siteUrl}/${lang}${route}`;
+};
+
+const getHreflangLinks = (route) => {
+  const links = languages.map((lang) => {
+    const url = getUrlForLanguage(route, lang);
+    return `      <xhtml:link rel="alternate" hreflang="${lang}" href="${url}"/>`;
+  });
+  
+  links.push(`      <xhtml:link rel="alternate" hreflang="x-default" href="${getUrlForLanguage(route, defaultLanguage)}"/>`);
+  
+  return links.join('\n');
+};
+
+const getPriority = (route) => {
+  if (route === '/') return '1.0';
+  if (route === '/live') return '0.9';
+  if (route.startsWith('/cam/')) return '0.8';
+  if (route.startsWith('/tag/')) return '0.7';
+  if (route.startsWith('/country/')) return '0.7';
+  if (route === '/search') return '0.6';
+  return '0.5';
+};
+
+const getChangefreq = (route) => {
+  if (route === '/' || route === '/live') return 'hourly';
+  if (route.startsWith('/cam/') || route.startsWith('/tag/') || route.startsWith('/country/')) return 'daily';
+  return 'weekly';
+};
+
+const generateMultilingualUrlEntries = (route) => {
+  return languages.map((lang) => {
+    const url = getUrlForLanguage(route, lang);
+    const hreflangLinks = getHreflangLinks(route);
+    const priority = getPriority(route);
+    const changefreq = getChangefreq(route);
+    
+    return `  <url>
+    <loc>${url}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+${hreflangLinks}
+  </url>`;
+  }).join('\n');
+};
+
+const body = baseRoutes
+  .map((route) => generateMultilingualUrlEntries(route))
   .join('\n');
 
-const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${body}
+</urlset>
+`;
 
 mkdirSync(resolve(process.cwd(), 'public'), { recursive: true });
 writeFileSync(resolve(process.cwd(), 'public', 'sitemap.xml'), xml);
-console.log('Generated public/sitemap.xml');
+console.log('Generated public/sitemap.xml with multilingual support');
+console.log(`Total URLs: ${baseRoutes.length * languages.length}`);

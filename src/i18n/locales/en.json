@@ -1,0 +1,149 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "loadMore": "Load more models",
+    "loadingModels": "Loading models",
+    "error": "Error loading",
+    "viewers": "viewers",
+    "live": "Live",
+    "offline": "Offline",
+    "modelsLoaded": "models loaded",
+    "moreAvailable": "and more available",
+    "watchLive": "Watch Live",
+    "search": "Search",
+    "searchPlaceholder": "Search models, tags, countries...",
+    "accept": "Accept",
+    "exit": "Exit"
+  },
+  "nav": {
+    "home": "Home",
+    "countries": "Countries",
+    "categories": "Categories",
+    "quickLinks": "Quick Links",
+    "allLive": "All Live"
+  },
+  "header": {
+    "liveNow": "Live Now",
+    "activeCams": "active cams"
+  },
+  "footer": {
+    "allRightsReserved": "All rights reserved.",
+    "adultsOnly": "Adults only (18+). Adult content.",
+    "notAffiliated": "StripHubs is not affiliated with Stripchat",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies"
+  },
+  "home": {
+    "heroTitle": "Discover the hottest models in real time",
+    "heroSubtitle": "Free cam shows 24/7. Milfs, teens, trans, couples - all categories in one place.",
+    "heroDescription": "Browse live streams and find your favorite model.",
+    "watchLiveCta": "Watch Live",
+    "youngCamsCta": "Young Cams",
+    "spotlightTitle": "Young Cams in the Spotlight",
+    "spotlightSubtitle": "The youngest and most requested models online now.",
+    "discoverTeen": "Discover teens",
+    "allLiveCams": "All Live Cams",
+    "seeAll": "See all",
+    "popularCategories": "Popular Categories",
+    "camsByCountry": "Cams By Country",
+    "categoriesForYou": "Categories For You",
+    "seoLanding": "SEO Landing Pages",
+    "explore": "Explore",
+    "bestSite": "StripHubs - The best free live cam site",
+    "trend": "trend"
+  },
+  "category": {
+    "liveCams": "Live Cams",
+    "showOnlyLive": "Show only live",
+    "includeOffline": "Include offline"
+  },
+  "country": {
+    "liveCam": "Live cam"
+  },
+  "model": {
+    "profile": "profile",
+    "watchingNow": "viewers watching now",
+    "country": "Country",
+    "relatedModels": "Related Models",
+    "notFound": "Model not found"
+  },
+  "search": {
+    "title": "Search Models",
+    "description": "Search all models, tags and categories",
+    "resultsFor": "Results for",
+    "noResults": "No results found",
+    "tryDifferent": "Try a different search"
+  },
+  "seo": {
+    "homeTitle": "Live Cam Girls and Stripchat Links",
+    "homeDescription": "StripHubs is the free live cam directory with hundreds of models online, filters for teens, milfs and countries, and direct links to Stripchat streams.",
+    "liveTitle": "Free Live Cams Online Now",
+    "liveDescription": "Watch all live models online now with updated listings, quick filters and direct access to the most viewed cams.",
+    "categoryTitle": "{category} Live Cams Free Online",
+    "categoryDescription": "Watch {category} live cams for free with online models, updated profiles and immediate access to active streams.",
+    "tagTitle": "{tag} Live Cams and Models Online",
+    "tagDescription": "Explore live models with {tag} tag, cams online now and new streams updated in real time.",
+    "combinationTitle": "{category} {tag} Free Live Cams",
+    "combinationDescription": "Discover {category} live cams with {tag} tag, online models and quick access to active streams.",
+    "countryTitle": "{country} Free Live Cams",
+    "countryDescription": "Watch {country} live online with active profiles, popular categories and quick access to the most viewed cams.",
+    "modelTitle": "{username} Live Cam and Profile",
+    "modelDescription": "Watch {username} live, open the profile and access their online cam now.",
+    "searchTitle": "Search Live Models, Tags and Cams Online",
+    "searchDescription": "Search live models by username, tag, category and country with real-time updated results."
+  },
+  "ageVerification": {
+    "title": "18+ Age Verification",
+    "description": "You must be at least 18 years old to continue.",
+    "confirm": "I am 18+"
+  },
+  "cookieConsent": {
+    "message": "We use cookies for analytics and affiliate attribution.",
+    "policy": "Cookie Policy"
+  },
+  "categories": {
+    "milf": "MILF",
+    "teen": "Teen",
+    "ebony": "Ebony",
+    "asian": "Asian",
+    "latina": "Latina",
+    "blonde": "Blonde",
+    "brunette": "Brunette",
+    "bbw": "BBW",
+    "arab": "Arab",
+    "indian": "Indian",
+    "brazilian": "Brazilian",
+    "japanese": "Japanese",
+    "couple": "Couple",
+    "gay": "Gay",
+    "lesbian": "Lesbian",
+    "men": "Men",
+    "trans": "Trans",
+    "vr": "VR"
+  },
+  "countries": {
+    "italian": "Italian",
+    "german": "German",
+    "french": "French",
+    "spanish": "Spanish",
+    "british": "British",
+    "american": "American",
+    "canadian": "Canadian",
+    "australian": "Australian",
+    "russian": "Russian",
+    "polish": "Polish",
+    "dutch": "Dutch",
+    "swedish": "Swedish",
+    "norwegian": "Norwegian",
+    "danish": "Danish",
+    "finnish": "Finnish",
+    "portuguese": "Portuguese",
+    "greek": "Greek",
+    "turkish": "Turkish",
+    "indian": "Indian",
+    "chinese": "Chinese",
+    "japanese": "Japanese",
+    "korean": "Korean"
+  }
+}
