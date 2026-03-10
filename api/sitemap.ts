@@ -28,6 +28,7 @@ const FEATURED_COMBINATIONS = [
   ['milf', 'lingerie'],
   ['milf', 'big-boobs']
 ] as const;
+const TAG_BLOCKLIST = ['cam2cam', 'privates', 'publics', 'recordable', 'priced', 'best', 'new', 'girls', 'couples', 'hd'];
 
 export default async function handler(_req: VercelRequest, res: VercelResponse) {
   try {
@@ -64,7 +65,7 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
     for (const model of models) {
       for (const tag of model.tags) {
         const cleaned = sanitizeTagForRoute(tag);
-        if (cleaned) tags.add(cleaned);
+        if (cleaned && !TAG_BLOCKLIST.some((part) => cleaned.includes(part))) tags.add(cleaned);
         if (tags.size >= 40) break;
       }
       if (tags.size >= 40) break;

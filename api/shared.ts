@@ -216,9 +216,19 @@ export const deriveCategoriesFromModels = (models: NormalizedModel[]) =>
   }));
 
 export const sanitizeTagForRoute = (raw: string): string => {
-  return raw
+  const cleaned = raw
     .toLowerCase()
     .replace(/^girls\//, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)+/g, '');
+
+  const aliases: Record<string, string> = {
+    teens: 'teen',
+    blonde: 'blondes',
+    brunette: 'brunettes',
+    tattoos: 'tattoo',
+    piercings: 'piercing'
+  };
+
+  return aliases[cleaned] || cleaned;
 };

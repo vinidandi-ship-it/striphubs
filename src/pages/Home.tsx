@@ -6,7 +6,7 @@ import { api } from '../lib/api';
 import { countries, findCountryBySlug } from '../lib/countries';
 import { Model } from '../lib/models';
 import { categorizeModels, categories as categoryList } from '../lib/categories';
-import { featuredTagGroups } from '../lib/tags';
+import { extractSeoTags, featuredTagGroups } from '../lib/tags';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 import { featuredCategoryTagCombos, featuredCountryRoutes, priorityTagSlugs } from '../lib/programmaticSeo';
 
@@ -108,6 +108,20 @@ export default function Home() {
         .filter((section) => section.items.length > 0),
     [models]
   );
+  const trendingSeoTags = useMemo(() => {
+    const counts = new Map<string, number>();
+
+    models.forEach((model) => {
+      extractSeoTags(model.tags, 5).forEach((tag) => {
+        counts.set(tag, (counts.get(tag) || 0) + 1);
+      });
+    });
+
+    return Array.from(counts.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 12)
+      .map(([tag]) => tag);
+  }, [models]);
   const featuredCountries = useMemo(
     () =>
       featuredCountryRoutes
@@ -238,6 +252,17 @@ export default function Home() {
               className="rounded-full border border-border bg-zinc-900 px-3 py-2 text-sm text-zinc-300 transition-colors hover:border-accent hover:text-white"
             >
               {entry.category} + {entry.tag}
+            </Link>
+          ))}
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {trendingSeoTags.map((tag) => (
+            <Link
+              key={tag}
+              to={`/tag/${tag}`}
+              className="rounded-full border border-border bg-panel px-3 py-2 text-sm text-zinc-300 transition-colors hover:border-accent hover:text-white"
+            >
+              trend: {tag}
             </Link>
           ))}
         </div>
