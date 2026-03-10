@@ -7,9 +7,9 @@ const now = new Date().toISOString();
 const languages = ['it', 'en', 'de', 'fr', 'es', 'pt'];
 const defaultLanguage = 'it';
 
-const categories = ['milf', 'blonde', 'asian', 'brunette', 'couple', 'trans'];
-const tags = ['teen', 'young', 'petite', 'blondes', 'brunettes', 'asian', 'latin', 'milf', 'big-boobs', 'lingerie', 'college', 'cosplay'];
-const countries = ['italian', 'american', 'british', 'german', 'spanish', 'french'];
+const categories = ['teen', 'milf', 'asian', 'latina', 'blonde', 'brunette', 'ebony', 'arab', 'indian', 'japanese', 'couple', 'trans'];
+const tags = ['teen', 'young', 'petite', 'blondes', 'brunettes', 'asian', 'latin', 'milf', 'big-boobs', 'lingerie', 'college', 'cosplay', 'curvy'];
+const countries = ['italian', 'american', 'british', 'german', 'spanish', 'french', 'russian', 'brazilian'];
 const combinations = [
   ['teen', 'petite'],
   ['teen', 'blondes'],

@@ -133,6 +133,31 @@ export const removeJsonLd = (id: string) => {
   if (node) node.remove();
 };
 
+export const upsertVideoJsonLd = (id: string, model: { username: string; thumbnail: string; isLive: boolean }) => {
+  let node = document.getElementById(id) as HTMLScriptElement | null;
+  if (!node) {
+    node = document.createElement('script');
+    node.id = id;
+    node.type = 'application/ld+json';
+    document.head.appendChild(node);
+  }
+  
+  const payload = {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: `${model.username} Live Cam`,
+    description: `Guarda ${model.username} live in diretta streaming.`,
+    thumbnailUrl: model.thumbnail,
+    uploadDate: new Date().toISOString(),
+    expires: model.isLive ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() : undefined,
+    contentUrl: `${SITE_URL}/model/${encodeURIComponent(model.username)}`,
+    embedUrl: `${SITE_URL}/model/${encodeURIComponent(model.username)}`,
+    interactionCount: 1 // Placeholder per visualizzazioni
+  };
+  
+  node.text = JSON.stringify(payload);
+};
+
 export const useFaqJsonLd = (
   id: string,
   items: Array<{ question: string; answer: string }>
