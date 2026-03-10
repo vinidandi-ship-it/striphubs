@@ -1,12 +1,12 @@
-import { Language, SUPPORTED_LANGUAGES } from './index';
+import { SupportedLocale, SUPPORTED_LOCALES } from './types';
 
-export function extractLocaleFromPath(pathname: string): { locale: Language; pathWithoutLocale: string } {
+export function extractLocaleFromPath(pathname: string): { locale: SupportedLocale; pathWithoutLocale: string } {
   const segments = pathname.split('/').filter(Boolean);
   const firstSegment = segments[0];
   
-  if (firstSegment && SUPPORTED_LANGUAGES.includes(firstSegment as Language)) {
+  if (firstSegment && SUPPORTED_LOCALES.includes(firstSegment as SupportedLocale)) {
     return {
-      locale: firstSegment as Language,
+      locale: firstSegment as SupportedLocale,
       pathWithoutLocale: '/' + segments.slice(1).join('/')
     };
   }
@@ -17,16 +17,16 @@ export function extractLocaleFromPath(pathname: string): { locale: Language; pat
   };
 }
 
-export function isValidLocale(locale: string): locale is Language {
-  return SUPPORTED_LANGUAGES.includes(locale as Language);
+export function isValidLocale(locale: string): locale is SupportedLocale {
+  return SUPPORTED_LOCALES.includes(locale as SupportedLocale);
 }
 
-export function addLocaleToPath(path: string, locale: Language): string {
+export function addLocaleToPath(path: string, locale: SupportedLocale): string {
   if (locale === 'it') return path;
   return `/${locale}${path === '/' ? '' : path}`;
 }
 
-export function buildLocalizedPath(path: string, locale: Language): string {
+export function buildLocalizedPath(path: string, locale: SupportedLocale): string {
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
   
   if (locale === 'it') {
@@ -44,7 +44,7 @@ export function getAlternateUrls(path: string, baseUrl: string): Array<{ hreflan
     { hreflang: 'x-default', href: `${baseUrl}${cleanPath}` }
   ];
   
-  for (const locale of SUPPORTED_LANGUAGES) {
+  for (const locale of SUPPORTED_LOCALES) {
     alternates.push({
       hreflang: locale,
       href: locale === 'it' ? `${baseUrl}${cleanPath}` : `${baseUrl}/${locale}${cleanPath}`
