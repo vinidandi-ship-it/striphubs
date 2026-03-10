@@ -73,8 +73,8 @@ const buildUpstreamUrl = (req: VercelRequest): string => {
     }
   }
 
-  if ((hasSearch || hasCountry) && !url.searchParams.has('limit')) {
-    url.searchParams.set('limit', '5000');
+  if (!url.searchParams.has('limit')) {
+    url.searchParams.set('limit', hasCountry ? '500' : '5000');
   }
 
   if (!url.searchParams.has('fields')) url.searchParams.set('fields', 'tags');
@@ -88,12 +88,47 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const apiKey = process.env.STRIPCASH_API_KEY;
     if (!apiKey) return apiError(res, 'Missing STRIPCASH_API_KEY environment variable.', 500);
 
+    const hasCountry = Boolean((req.query.country as string | undefined)?.trim());
     const upstreamUrl = buildUpstreamUrl(req);
 
     let normalized: NormalizedModel[];
     let providerTotal: number | null = null;
+    
     if (cache && cache.key === upstreamUrl && cache.expiresAt > Date.now()) {
       normalized = cache.models;
+    } else if (hasCountry) {
+      await waitForRateLimit(5000);
+      
+      const pages = [0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500];
+      const requests = pages.map(async (offset) => {
+        const url = new URL(upstreamUrl);
+        url.searchParams.set('offset', String(offset));
+        url.searchParams.set('limit', '500');
+        
+        const response = await fetch(url.toString(), {
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${apiKey}`
+          }
+        });
+        
+        if (!response.ok) return [];
+        
+        const data = await response.json();
+        providerTotal = extractProviderTotal(data) || providerTotal;
+        return parseProviderModels(data)
+          .map(createNormalizedModel)
+          .filter((item): item is NormalizedModel => Boolean(item));
+      });
+      
+      const results = await Promise.all(requests);
+      normalized = results.flat();
+      
+      cache = {
+        key: upstreamUrl,
+        expiresAt: Date.now() + CACHE_TTL_MS,
+        models: normalized
+      };
     } else {
       await waitForRateLimit(5000);
       const upstreamRes = await fetch(upstreamUrl, {
