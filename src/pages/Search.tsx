@@ -28,12 +28,22 @@ export default function Search() {
     setLoading(true);
     setOffset(0);
     setHasMore(false);
-    void api.getModels({ search: query, limit: PAGE_SIZE, offset: 0 })
-      .then((data) => {
-        setModels(data.models);
-        setOffset(data.models.length);
-        setHasMore(Boolean(data.hasMore));
-      })
+    setError('');
+    void Promise.allSettled([
+      api.getModels({ search: query, limit: PAGE_SIZE, offset: 0 }),
+      query.trim() ? api.getModel(query.trim()) : Promise.reject(new Error('empty query'))
+    ]).then(([searchResult, exactResult]) => {
+      const searchModels = searchResult.status === 'fulfilled' ? searchResult.value.models : [];
+      const exactModel = exactResult.status === 'fulfilled' ? exactResult.value : null;
+
+      const merged = exactModel
+        ? [exactModel, ...searchModels.filter((item) => item.username.toLowerCase() !== exactModel.username.toLowerCase())]
+        : searchModels;
+
+      setModels(merged);
+      setOffset(searchModels.length);
+      setHasMore(searchResult.status === 'fulfilled' ? Boolean(searchResult.value.hasMore) : false);
+    })
       .catch((err) => setError(err instanceof Error ? err.message : 'Search failed'))
       .finally(() => setLoading(false));
   }, [query]);

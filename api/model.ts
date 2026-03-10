@@ -23,8 +23,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const endpoint = process.env.STRIPCHAT_API_ENDPOINT || DEFAULT_ENDPOINT;
     const url = new URL(endpoint);
     url.searchParams.set('userId', AFFILIATE_ID);
-    url.searchParams.set('limit', '1000');
-    url.searchParams.set('strict', '1');
+    url.searchParams.set('modelsList', name);
+    url.searchParams.set('limit', '50');
     url.searchParams.set('fields', 'tags');
 
     await waitForRateLimit(5000);
