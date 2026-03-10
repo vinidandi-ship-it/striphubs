@@ -9,6 +9,24 @@ export const translations = {
       teen: 'Teen',
       asian: 'Asiatiche'
     },
+    home: {
+      heroTitle: 'Cam Live Gratis - Migliaia di Modelle Online',
+      heroSubtitle: 'La più grande directory italiana di live cam gratis',
+      heroDescription: 'Centinaia di modelle online 24/7. Filtri per teen, milf, paesi. Link diretti a Stripchat. Nessuna registrazione richiesta.',
+      watchLiveCta: '🎥 Guarda Live Ora',
+      youngCamsCta: '📂 Scopri le Teen',
+      spotlightTitle: 'Spotlight Teen & Giovani',
+      spotlightSubtitle: 'Le modelle più hot del momento',
+      discoverTeen: 'Scopri tutte le Teen',
+      categoriesTitle: 'Esplora per Categoria',
+      categoriesSubtitle: 'Trova la categoria perfetta per te',
+      countriesTitle: 'Esplora per Paese',
+      countriesSubtitle: 'Modelle da tutto il mondo'
+    },
+    header: {
+      liveNow: 'Live Ora',
+      activeCams: 'cam attive'
+    },
     meta: {
       homeTitle: 'StripHubs | Cam Live Gratis - Migliaia di Modelle Online',
       homeDesc: 'StripHubs è la directory italiana delle live cam gratis. Centinaia di modelle online 24/7. Filtri per teen, milf, paesi. Link diretti a Stripchat.',
@@ -60,6 +78,24 @@ export const translations = {
       milf: 'MILF',
       teen: 'Teen',
       asian: 'Asian'
+    },
+    home: {
+      heroTitle: 'Free Live Cams - Thousands of Models Online',
+      heroSubtitle: 'The largest free live cam directory',
+      heroDescription: 'Hundreds of models online 24/7. Filter by teen, milf, countries. Direct links to Stripchat. No registration required.',
+      watchLiveCta: '🎥 Watch Live Now',
+      youngCamsCta: '📂 Discover Teens',
+      spotlightTitle: 'Teen & Young Spotlight',
+      spotlightSubtitle: 'The hottest models of the moment',
+      discoverTeen: 'Discover all Teens',
+      categoriesTitle: 'Explore by Category',
+      categoriesSubtitle: 'Find the perfect category for you',
+      countriesTitle: 'Explore by Country',
+      countriesSubtitle: 'Models from around the world'
+    },
+    header: {
+      liveNow: 'Live Now',
+      activeCams: 'active cams'
     },
     meta: {
       homeTitle: 'StripHubs | Free Live Cams - Thousands of Models Online',
@@ -113,6 +149,24 @@ export const translations = {
       teen: 'Teen',
       asian: 'Asiatinnen'
     },
+    home: {
+      heroTitle: 'Kostenlose Live Cams - Tausende Models Online',
+      heroSubtitle: 'Das größte kostenlose Live Cam Verzeichnis',
+      heroDescription: 'Hunderte Models 24/7 online. Filter nach Teen, MILF, Ländern. Direkte Links zu Stripchat. Keine Registrierung erforderlich.',
+      watchLiveCta: '🎥 Jetzt Live Anschauen',
+      youngCamsCta: '📂 Teens Entdecken',
+      spotlightTitle: 'Teen & Jung Spotlight',
+      spotlightSubtitle: 'Die heißesten Models des Moments',
+      discoverTeen: 'Alle Teens entdecken',
+      categoriesTitle: 'Nach Kategorie erkunden',
+      categoriesSubtitle: 'Finde die perfekte Kategorie für dich',
+      countriesTitle: 'Nach Land erkunden',
+      countriesSubtitle: 'Models aus der ganzen Welt'
+    },
+    header: {
+      liveNow: 'Live Jetzt',
+      activeCams: 'aktive Cams'
+    },
     meta: {
       homeTitle: 'StripHubs | Kostenlose Live Cams - Tausende Models Online',
       homeDesc: 'StripHubs ist Ihr kostenloses Live Cam Verzeichnis. Hunderte Models 24/7 online. Filter nach Teen, MILF, Ländern. Direkte Links zu Stripchat.',
@@ -165,8 +219,26 @@ export const translations = {
       teen: 'Teen',
       asian: 'Asiatiques'
     },
+    home: {
+      heroTitle: 'Cams Live Gratuites - Milliers de Models en Ligne',
+      heroSubtitle: 'Le plus grand annuaire de cams live gratuites',
+      heroDescription: 'Centaines de models en ligne 24/7. Filtres par teen, milf, pays. Liens directs vers Stripchat. Aucune inscription requise.',
+      watchLiveCta: '🎥 Voir en Live Maintenant',
+      youngCamsCta: '📂 Découvrir les Teens',
+      spotlightTitle: 'Spotlight Teen & Jeunes',
+      spotlightSubtitle: 'Les models les plus chauds du moment',
+      discoverTeen: 'Découvrir toutes les Teens',
+      categoriesTitle: 'Explorer par Catégorie',
+      categoriesSubtitle: 'Trouvez la catégorie parfaite pour vous',
+      countriesTitle: 'Explorer par Pays',
+      countriesSubtitle: 'Models du monde entier'
+    },
+    header: {
+      liveNow: 'Live Maintenant',
+      activeCams: 'cams actives'
+    },
     meta: {
-      homeTitle: 'StripHubs | Cams Live Gratos - Milliers de Models en Ligne',
+      homeTitle: 'StripHubs | Cams Live Gratuites - Milliers de Models en Ligne',
       homeDesc: 'StripHubs est votre annuaire de cams live gratuites. Centaines de models en ligne 24/7. Filtres par teen, milf, pays. Liens directs vers Stripchat.',
       liveTitle: 'Toutes les Cams Live | StripHubs',
       liveDesc: 'Regardez toutes les cams live gratuitement sur StripHubs. Des milliers de models en ligne maintenant. Aucune inscription requise.',
@@ -216,6 +288,24 @@ export const translations = {
       milf: 'MILF',
       teen: 'Teen',
       asian: 'Asiáticas'
+    },
+    home: {
+      heroTitle: 'Cams Live Gratis - Miles de Models Online',
+      heroSubtitle: 'El mayor directorio de cams live gratis',
+      heroDescription: 'Cientos de models online 24/7. Filtros por teen, milf, países. Enlaces directos a Stripchat. Sin registro requerido.',
+      watchLiveCta: '🎥 Ver Live Ahora',
+      youngCamsCta: '📂 Descubrir Teens',
+      spotlightTitle: 'Spotlight Teen & Jóvenes',
+      spotlightSubtitle: 'Los models más calientes del momento',
+      discoverTeen: 'Descubrir todas las Teens',
+      categoriesTitle: 'Explorar por Categoría',
+      categoriesSubtitle: 'Encuentra la categoría perfecta para ti',
+      countriesTitle: 'Explorar por País',
+      countriesSubtitle: 'Models de todo el mundo'
+    },
+    header: {
+      liveNow: 'Live Ahora',
+      activeCams: 'cams activas'
     },
     meta: {
       homeTitle: 'StripHubs | Cams Live Gratis - Miles de Models Online',
@@ -268,6 +358,24 @@ export const translations = {
       milf: 'MILF',
       teen: 'Teen',
       asian: 'Asiáticas'
+    },
+    home: {
+      heroTitle: 'Cams Live Grátis - Milhares de Models Online',
+      heroSubtitle: 'O maior diretório de cams live grátis',
+      heroDescription: 'Centenas de models online 24/7. Filtros por teen, milf, países. Links diretos para Stripchat. Sem registro necessário.',
+      watchLiveCta: '🎥 Ver Live Agora',
+      youngCamsCta: '📂 Descobrir Teens',
+      spotlightTitle: 'Spotlight Teen & Jovens',
+      spotlightSubtitle: 'Os models mais quentes do momento',
+      discoverTeen: 'Descobrir todas as Teens',
+      categoriesTitle: 'Explorar por Categoria',
+      categoriesSubtitle: 'Encontre a categoria perfeita para você',
+      countriesTitle: 'Explorar por País',
+      countriesSubtitle: 'Models de todo o mundo'
+    },
+    header: {
+      liveNow: 'Live Agora',
+      activeCams: 'cams ativas'
     },
     meta: {
       homeTitle: 'StripHubs | Cams Live Grátis - Milhares de Models Online',
