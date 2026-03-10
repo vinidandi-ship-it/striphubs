@@ -37,8 +37,8 @@ export default function Header() {
             <span className="text-white text-xs md:text-sm font-bold leading-none">SH</span>
           </div>
           <div className="flex flex-col items-center leading-tight">
-            <span className="text-xs md:text-sm text-white/80">Strip</span>
-            <span className="text-sm md:text-base text-accent-primary">Hubs</span>
+            <span className="text-[10px] md:text-xs text-white/80">Strip</span>
+            <span className="text-xs md:text-sm text-accent-primary">Hubs</span>
           </div>
         </Link>
 
