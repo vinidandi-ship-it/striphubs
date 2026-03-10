@@ -1,10 +1,33 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { translations, Language } from './translations';
 
+const LOCALE_FLAGS: Record<Language, string> = {
+  it: '🇮🇹',
+  en: '🇬🇧',
+  de: '🇩🇪',
+  fr: '🇫🇷',
+  es: '🇪🇸',
+  pt: '🇵🇹'
+};
+
+const LOCALE_NAMES: Record<Language, string> = {
+  it: 'Italiano',
+  en: 'English',
+  de: 'Deutsch',
+  fr: 'Français',
+  es: 'Español',
+  pt: 'Português'
+};
+
 type I18nContextType = {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string, params?: Record<string, string>) => string;
+  locale: Language;
+  setLocale: (lang: Language) => void;
+  supportedLocales: Array<{ code: Language; name: string; flag: string }>;
+  localeFlag: string;
+  localeName: string;
 };
 
 const I18nContext = createContext<I18nContextType | null>(null);
@@ -66,8 +89,23 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     return value;
   };
   
+  const supportedLocales = SUPPORTED_LANGUAGES.map(code => ({
+    code,
+    name: LOCALE_NAMES[code],
+    flag: LOCALE_FLAGS[code]
+  }));
+  
   return (
-    <I18nContext.Provider value={{ language, setLanguage, t }}>
+    <I18nContext.Provider value={{ 
+      language, 
+      setLanguage, 
+      t,
+      locale: language,
+      setLocale: setLanguage,
+      supportedLocales,
+      localeFlag: LOCALE_FLAGS[language],
+      localeName: LOCALE_NAMES[language]
+    }}>
       {children}
     </I18nContext.Provider>
   );
