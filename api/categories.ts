@@ -20,7 +20,6 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
     const url = new URL(endpoint);
     url.searchParams.set('userId', AFFILIATE_ID);
     url.searchParams.set('limit', '400');
-    url.searchParams.set('tag', 'girls,couples,trans,men');
     url.searchParams.set('strict', '1');
     url.searchParams.set('fields', 'tags');
 
