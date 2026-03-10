@@ -83,6 +83,7 @@ export const api = {
     offset?: number;
     modelsList?: string;
     strict?: 0 | 1;
+    liveOnly?: boolean;
   }) => {
     const query = new URLSearchParams();
     if (params?.category) query.set('category', params.category);
@@ -93,6 +94,7 @@ export const api = {
     if (typeof params?.offset === 'number') query.set('offset', String(params.offset));
     if (params?.modelsList) query.set('modelsList', params.modelsList);
     if (typeof params?.strict === 'number') query.set('strict', String(params.strict));
+    if (typeof params?.liveOnly === 'boolean') query.set('liveOnly', params.liveOnly ? '1' : '0');
 
     const suffix = query.toString() ? `?${query}` : '';
     return request<ModelsResponse>(`/api/models${suffix}`);

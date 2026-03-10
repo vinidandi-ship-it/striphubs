@@ -110,10 +110,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       const providerPayload = await upstreamRes.json();
       providerTotal = extractProviderTotal(providerPayload);
-      normalized = parseProviderModels(providerPayload)
-        .map(createNormalizedModel)
-        .filter((item): item is NormalizedModel => Boolean(item))
-        .filter((model) => model.isLive);
+    normalized = parseProviderModels(providerPayload)
+      .map(createNormalizedModel)
+      .filter((item): item is NormalizedModel => Boolean(item));
 
       cache = {
         key: upstreamUrl,
@@ -122,7 +121,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       };
     }
 
-    const models = filterModels(normalized, req);
+    const liveOnly = req.query.liveOnly !== '0' && req.query.liveOnly !== 'false';
+    const filtered = liveOnly ? normalized.filter((model) => model.isLive) : normalized;
+    const models = filterModels(filtered, req);
     const limit = Math.min(Math.max(Number(req.query.limit) || 200, 1), 1000);
     const offset = Math.max(Number(req.query.offset) || 0, 0);
     const total = providerTotal ?? offset + models.length + (models.length === limit ? 1 : 0);

@@ -20,6 +20,7 @@ export default function Live() {
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const [includeOffline, setIncludeOffline] = useState(false);
 
   useSEO(generateTitle('live'), generateDescription('live'), '/live');
 
@@ -28,7 +29,7 @@ export default function Live() {
     setOffset(0);
     setHasMore(false);
     void Promise.all([
-      api.getModels({ limit: PAGE_SIZE, offset: 0 }),
+      api.getModels({ limit: PAGE_SIZE, offset: 0, liveOnly: !includeOffline }),
       api.getCategories()
     ]).then(([modelsData, categoriesData]) => {
       setModels(modelsData.models);
@@ -37,12 +38,12 @@ export default function Live() {
       setCategories(categoriesData.categories);
     }).catch((err) => setError(err instanceof Error ? err.message : 'Failed to load live models'))
     .finally(() => setLoading(false));
-  }, []);
+  }, [includeOffline]);
 
   const loadMore = () => {
     if (loadingMore || !hasMore) return;
     setLoadingMore(true);
-    void api.getModels({ limit: PAGE_SIZE, offset })
+    void api.getModels({ limit: PAGE_SIZE, offset, liveOnly: !includeOffline })
       .then((data) => {
         setModels((current) => {
           const seen = new Set(current.map((item) => item.username.toLowerCase()));
@@ -97,7 +98,16 @@ export default function Live() {
       {/* Main Content */}
       <div className="flex-1 space-y-6">
         <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Live' }]} />
-        <h1 className="text-2xl font-bold text-white sm:text-3xl">📺 Tutte le Camere Live</h1>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="text-2xl font-bold text-white sm:text-3xl">📺 Tutte le Camere Live</h1>
+          <button
+            type="button"
+            onClick={() => setIncludeOffline((current) => !current)}
+            className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${includeOffline ? 'border-accent bg-accent/10 text-accent' : 'border-border text-zinc-300 hover:border-accent hover:text-white'}`}
+          >
+            {includeOffline ? 'Mostra solo live' : 'Includi anche offline'}
+          </button>
+        </div>
         {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName="All Live Cams" />
