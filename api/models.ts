@@ -74,7 +74,7 @@ const buildUpstreamUrl = (req: VercelRequest): string => {
   }
 
   if ((hasSearch || hasCountry) && !url.searchParams.has('limit')) {
-    url.searchParams.set('limit', '1000');
+    url.searchParams.set('limit', '5000');
   }
 
   if (!url.searchParams.has('fields')) url.searchParams.set('fields', 'tags');
