@@ -14,6 +14,16 @@ const ensureMeta = (name: string): HTMLMetaElement => {
   return el;
 };
 
+const ensurePropertyMeta = (property: string): HTMLMetaElement => {
+  let el = document.querySelector(`meta[property="${property}"]`) as HTMLMetaElement | null;
+  if (!el) {
+    el = document.createElement('meta');
+    el.setAttribute('property', property);
+    document.head.appendChild(el);
+  }
+  return el;
+};
+
 const ensureCanonical = (): HTMLLinkElement => {
   let el = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
   if (!el) {
@@ -61,8 +71,19 @@ export const generateDescription = (page: PageType, data?: Record<string, string
 
 export const useSEO = (title: string, description: string, path: string) => {
   useEffect(() => {
-    document.title = `${title} | ${SITE_NAME}`;
+    const fullTitle = `${title} | ${SITE_NAME}`;
+    const url = `${SITE_URL}${path}`;
+    const image = `${SITE_URL}/icon-512.png`;
+
+    document.title = fullTitle;
     ensureMeta('description').setAttribute('content', description);
+    ensureMeta('twitter:title').setAttribute('content', fullTitle);
+    ensureMeta('twitter:description').setAttribute('content', description);
+    ensureMeta('twitter:image').setAttribute('content', image);
+    ensurePropertyMeta('og:title').setAttribute('content', fullTitle);
+    ensurePropertyMeta('og:description').setAttribute('content', description);
+    ensurePropertyMeta('og:url').setAttribute('content', url);
+    ensurePropertyMeta('og:image').setAttribute('content', image);
     ensureCanonical().setAttribute('href', `${SITE_URL}${path}`);
   }, [title, description, path]);
 };
