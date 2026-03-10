@@ -1,8 +1,8 @@
 {
   "common": {
     "loading": "Loading...",
-    "loadMore": "Load more models",
-    "loadingModels": "Loading models",
+    "loadMore": "Load more",
+    "loadingModels": "Loading models...",
     "error": "Error loading",
     "viewers": "viewers",
     "live": "Live",
@@ -13,7 +13,8 @@
     "search": "Search",
     "searchPlaceholder": "Search models, tags, countries...",
     "accept": "Accept",
-    "exit": "Exit"
+    "exit": "Exit",
+    "noResults": "No results found"
   },
   "nav": {
     "home": "Home",
@@ -28,7 +29,7 @@
   },
   "footer": {
     "allRightsReserved": "All rights reserved.",
-    "adultsOnly": "Adults only (18+). Adult content.",
+    "adultsOnly": "Adult content 18+.",
     "notAffiliated": "StripHubs is not affiliated with Stripchat",
     "privacy": "Privacy",
     "terms": "Terms",
@@ -36,19 +37,19 @@
   },
   "home": {
     "heroTitle": "Discover the hottest models in real time",
-    "heroSubtitle": "Free cam shows 24/7. Milfs, teens, trans, couples - all categories in one place.",
+    "heroSubtitle": "Free cam shows 24/7. All categories in one place.",
     "heroDescription": "Browse live streams and find your favorite model.",
     "watchLiveCta": "Watch Live",
     "youngCamsCta": "Young Cams",
-    "spotlightTitle": "Young Cams in the Spotlight",
-    "spotlightSubtitle": "The youngest and most requested models online now.",
-    "discoverTeen": "Discover teens",
+    "spotlightTitle": "In the Spotlight",
+    "spotlightSubtitle": "The most requested models online now.",
+    "discoverTeen": "Discover Teens",
     "allLiveCams": "All Live Cams",
     "seeAll": "See all",
     "popularCategories": "Popular Categories",
-    "camsByCountry": "Cams By Country",
+    "camsByCountry": "Cams by Country",
     "categoriesForYou": "Categories For You",
-    "seoLanding": "SEO Landing Pages",
+    "seoLanding": "Advanced Search",
     "explore": "Explore",
     "bestSite": "StripHubs - The best free live cam site",
     "trend": "trend"
@@ -62,7 +63,7 @@
     "liveCam": "Live cam"
   },
   "model": {
-    "profile": "profile",
+    "profile": "Profile",
     "watchingNow": "viewers watching now",
     "country": "Country",
     "relatedModels": "Related Models",
@@ -76,22 +77,22 @@
     "tryDifferent": "Try a different search"
   },
   "seo": {
-    "homeTitle": "Live Cam Girls and Stripchat Links",
-    "homeDescription": "StripHubs is the free live cam directory with hundreds of models online, filters for teens, milfs and countries, and direct links to Stripchat streams.",
+    "homeTitle": "Free Live Cams - StripHubs",
+    "homeDescription": "StripHubs is the free live cam directory with hundreds of models online, filters for teens, milfs and countries.",
     "liveTitle": "Free Live Cams Online Now",
-    "liveDescription": "Watch all live models online now with updated listings, quick filters and direct access to the most viewed cams.",
+    "liveDescription": "Watch all live models online now with updated listings and direct access.",
     "categoryTitle": "{category} Live Cams Free Online",
-    "categoryDescription": "Watch {category} live cams for free with online models, updated profiles and immediate access to active streams.",
+    "categoryDescription": "Watch {category} live cams for free with online models and updated profiles.",
     "tagTitle": "{tag} Live Cams and Models Online",
-    "tagDescription": "Explore live models with {tag} tag, cams online now and new streams updated in real time.",
+    "tagDescription": "Explore live models with {tag} tag, cams online now.",
     "combinationTitle": "{category} {tag} Free Live Cams",
-    "combinationDescription": "Discover {category} live cams with {tag} tag, online models and quick access to active streams.",
+    "combinationDescription": "Discover {category} live cams with {tag} tag, online models and quick access.",
     "countryTitle": "{country} Free Live Cams",
-    "countryDescription": "Watch {country} live online with active profiles, popular categories and quick access to the most viewed cams.",
+    "countryDescription": "Watch {country} live online with active profiles and popular categories.",
     "modelTitle": "{username} Live Cam and Profile",
     "modelDescription": "Watch {username} live, open the profile and access their online cam now.",
     "searchTitle": "Search Live Models, Tags and Cams Online",
-    "searchDescription": "Search live models by username, tag, category and country with real-time updated results."
+    "searchDescription": "Search live models by username, tag, category and country."
   },
   "ageVerification": {
     "title": "18+ Age Verification",

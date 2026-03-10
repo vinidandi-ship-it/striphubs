@@ -1,8 +1,8 @@
 {
   "common": {
     "loading": "Caricamento...",
-    "loadMore": "Carica altre modelle",
-    "loadingModels": "Caricamento modelle",
+    "loadMore": "Carica altre",
+    "loadingModels": "Caricamento modelle...",
     "error": "Errore nel caricamento",
     "viewers": "spettatori",
     "live": "Live",
@@ -13,22 +13,23 @@
     "search": "Cerca",
     "searchPlaceholder": "Cerca modelle, tag, paesi...",
     "accept": "Accetta",
-    "exit": "Esci"
+    "exit": "Esci",
+    "noResults": "Nessun risultato trovato"
   },
   "nav": {
     "home": "Home",
     "countries": "Paesi",
     "categories": "Categorie",
-    "quickLinks": "Rapido",
+    "quickLinks": "Link Rapidi",
     "allLive": "Tutte le Live"
   },
   "header": {
-    "liveNow": "Live Now",
+    "liveNow": "Live Ora",
     "activeCams": "camere attive"
   },
   "footer": {
     "allRightsReserved": "Tutti i diritti riservati.",
-    "adultsOnly": "Adulti only (18+). Contenuti per adulti.",
+    "adultsOnly": "Contenuti per adulti 18+.",
     "notAffiliated": "StripHubs non è affiliato a Stripchat",
     "privacy": "Privacy",
     "terms": "Termini",
@@ -36,19 +37,19 @@
   },
   "home": {
     "heroTitle": "Scopri le modelle più hot in tempo reale",
-    "heroSubtitle": "Cam show gratuiti 24/7. Milfs, teen, trans, couples - tutte le categorie in un unico posto.",
+    "heroSubtitle": "Cam show gratuiti 24/7. Tutte le categorie in un unico posto.",
     "heroDescription": "Sfoglia le dirette live e trova la tua modella preferita.",
-    "watchLiveCta": "Guarda le Live",
+    "watchLiveCta": "Guarda Live",
     "youngCamsCta": "Cam Giovani",
-    "spotlightTitle": "Cam Giovani in primo piano",
-    "spotlightSubtitle": "Le modelle più giovani e richieste online ora.",
-    "discoverTeen": "Scopri le teen",
+    "spotlightTitle": "In Primo Piano",
+    "spotlightSubtitle": "Le modelle più richieste online ora.",
+    "discoverTeen": "Scopri le Teen",
     "allLiveCams": "Tutte le Camere Live",
     "seeAll": "Vedi tutte",
     "popularCategories": "Categorie Popolari",
-    "camsByCountry": "Cam Per Paese",
+    "camsByCountry": "Cam per Paese",
     "categoriesForYou": "Categorie per Te",
-    "seoLanding": "Landing SEO Da Spingere",
+    "seoLanding": "Ricerca Avanzata",
     "explore": "Esplora",
     "bestSite": "StripHubs - Il miglior sito di cam live gratuito",
     "trend": "trend"
@@ -56,13 +57,13 @@
   "category": {
     "liveCams": "Live Cams",
     "showOnlyLive": "Mostra solo live",
-    "includeOffline": "Includi anche offline"
+    "includeOffline": "Includi offline"
   },
   "country": {
     "liveCam": "Live cam"
   },
   "model": {
-    "profile": "profilo",
+    "profile": "Profilo",
     "watchingNow": "spettatori stanno guardando",
     "country": "Paese",
     "relatedModels": "Modelle Simili",
@@ -76,22 +77,22 @@
     "tryDifferent": "Prova una ricerca diversa"
   },
   "seo": {
-    "homeTitle": "Live Cam Giovani e Link Stripchat",
-    "homeDescription": "StripHubs è la directory italiana delle live cam gratis con centinaia di modelle online, filtri per teen, milf e paesi e link immediati alle dirette Stripchat.",
+    "homeTitle": "Live Cam Gratis - StripHubs",
+    "homeDescription": "StripHubs è la directory italiana delle live cam gratis con centinaia di modelle online, filtri per teen, milf e paesi.",
     "liveTitle": "Cam Live Gratis Online Ora",
-    "liveDescription": "Guarda tutte le modelle live online adesso con elenco aggiornato, filtri rapidi e accesso diretto alle camere più viste.",
+    "liveDescription": "Guarda tutte le modelle live online adesso con elenco aggiornato e accesso diretto.",
     "categoryTitle": "{category} Cam Live Gratis Online",
-    "categoryDescription": "Guarda {category} cam live gratis con modelle online, profili aggiornati e accesso immediato alle dirette attive.",
+    "categoryDescription": "Guarda {category} cam live gratis con modelle online e profili aggiornati.",
     "tagTitle": "{tag} Cam Live e Modelle Online",
-    "tagDescription": "Esplora modelle live con tag {tag}, camere online adesso e nuove dirette aggiornate in tempo reale.",
+    "tagDescription": "Esplora modelle live con tag {tag}, camere online adesso.",
     "combinationTitle": "{category} {tag} Cam Live Gratis",
-    "combinationDescription": "Scopri {category} cam live con tag {tag}, modelle online e accesso veloce alle dirette attive.",
+    "combinationDescription": "Scopri {category} cam live con tag {tag}, modelle online e accesso veloce.",
     "countryTitle": "{country} Cam Live Gratis",
-    "countryDescription": "Guarda {country} live online con profili attivi, categorie popolari e accesso rapido alle camere più viste.",
+    "countryDescription": "Guarda {country} live online con profili attivi e categorie popolari.",
     "modelTitle": "{username} Live Cam e Profilo",
-    "modelDescription": "Guarda {username} live, apri il profilo e accedi subito alla sua cam online.",
+    "modelDescription": "Guarda {username} live, apri il profilo e accedi subito.",
     "searchTitle": "Cerca Modelle Live, Tag e Cam Online",
-    "searchDescription": "Cerca modelle live per username, tag, categoria e paese con risultati aggiornati in tempo reale."
+    "searchDescription": "Cerca modelle live per username, tag, categoria e paese."
   },
   "ageVerification": {
     "title": "Verifica Età 18+",

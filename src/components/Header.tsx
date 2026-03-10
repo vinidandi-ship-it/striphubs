@@ -27,18 +27,23 @@ export default function Header() {
     { to: '/country/spanish', label: t('countries.spanish'), flag: '🇪🇸' }
   ];
 
+  const countriesButton = {
+    label: t('nav.countries'),
+    icon: 'globe' as const
+  };
+
   const getLocalizedTo = (to: string) => buildLocalizedPath(to, language);
 
   return (
     <header className="sticky top-0 z-40 border-b border-border-color bg-bg-primary/95 backdrop-blur-xl shadow-lg">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
-        <Link to={getLocalizedTo('/')} className="flex flex-col items-center justify-center gap-1 text-base font-extrabold text-white transition-transform hover:scale-105 sm:text-lg">
-          <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg sh-gradient-primary flex items-center justify-center shadow-md shrink-0">
-            <span className="text-white text-xs md:text-sm font-bold leading-none">SH</span>
+        <Link to={getLocalizedTo('/')} className="flex flex-col items-center justify-center gap-0.5 text-base font-extrabold text-white transition-transform hover:scale-105 sm:text-lg">
+          <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg sh-gradient-primary flex items-center justify-center shadow-md shrink-0">
+            <span className="text-white text-[10px] md:text-xs font-bold leading-none">SH</span>
           </div>
           <div className="flex flex-col items-center leading-tight">
-            <span className="text-[10px] md:text-xs text-white/80">Strip</span>
-            <span className="text-xs md:text-sm text-accent-primary">Hubs</span>
+            <span className="text-[9px] md:text-[10px] text-white/70">Strip</span>
+            <span className="text-[10px] md:text-xs text-accent-primary">Hubs</span>
           </div>
         </Link>
 
@@ -62,8 +67,8 @@ export default function Header() {
           
           <div className="relative group">
             <button className="shrink-0 whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-bg-hover transition-all flex items-center gap-1">
-              <Icon name="search" size={16} />
-              {t('nav.countries')}
+              <Icon name={countriesButton.icon} size={16} />
+              {countriesButton.label}
               <Icon name="arrowDown" size={14} className="transition-transform group-hover:rotate-180" />
             </button>
             <div className="absolute top-full left-0 mt-1 w-48 bg-bg-card border border-border-color rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
@@ -128,7 +133,10 @@ export default function Header() {
             ))}
             
             <div className="pt-2 border-t border-border-color">
-              <p className="px-4 py-2 text-xs font-semibold text-text-muted uppercase tracking-wider">{t('nav.countries')}</p>
+              <p className="px-4 py-2 text-xs font-semibold text-text-muted uppercase tracking-wider flex items-center gap-2">
+                <Icon name="globe" size={14} />
+                {t('nav.countries')}
+              </p>
               {countryItems.map((item) => (
                 <Link
                   key={item.to}
