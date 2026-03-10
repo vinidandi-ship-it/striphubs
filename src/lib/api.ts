@@ -11,8 +11,8 @@ type CategoryResponse = {
   categories: { slug: string; name: string; count: number }[];
 };
 
-// Mock data for local development
-const mockModels: Model[] = Array.from({ length: 24 }, (_, i) => ({
+// Mock data for local development - increased to 200 models for better testing
+const mockModels: Model[] = Array.from({ length: 200 }, (_, i) => ({
   username: `model${i + 1}`,
   thumbnail: `https://picsum.photos/seed/model${i + 1}/640/800`,
   viewers: Math.floor(Math.random() * 500) + 10,
@@ -37,8 +37,13 @@ const request = async <T>(path: string): Promise<T> => {
   if (isDev) {
     if (path.startsWith('/api/models')) {
       const url = new URL(path, window.location.origin);
-      const limit = Number(url.searchParams.get('limit')) || 48;
-      return Promise.resolve({ models: mockModels.slice(0, limit) } as T);
+      const limit = Number(url.searchParams.get('limit')) || 120;
+      const offset = Number(url.searchParams.get('offset')) || 0;
+      const slicedModels = mockModels.slice(offset, offset + limit);
+      return Promise.resolve({ 
+        models: slicedModels,
+        hasMore: offset + limit < mockModels.length
+      } as T);
     }
     if (path.startsWith('/api/categories')) {
       return Promise.resolve({ categories: mockCategories } as T);
