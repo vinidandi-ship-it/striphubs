@@ -12,7 +12,7 @@ import { seoTextForCountry } from '../lib/seoText';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
 export default function Country() {
-  const PAGE_SIZE = 180;
+  const PAGE_SIZE = 96;
   const { countrySlug = 'italian' } = useParams();
   const country = findCountryBySlug(countrySlug);
   const [models, setModels] = useState<Model[]>([]);

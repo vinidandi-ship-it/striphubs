@@ -10,7 +10,7 @@ import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
 export default function Search() {
-  const PAGE_SIZE = 300;
+  const PAGE_SIZE = 120;
   const [params] = useSearchParams();
   const query = params.get('q') || '';
 

@@ -12,7 +12,7 @@ import { seoFaqForCombination, seoTextForCombination } from '../lib/seoText';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
 export default function CombinationPage() {
-  const PAGE_SIZE = 180;
+  const PAGE_SIZE = 96;
   const { category = 'milf', tag = 'tattoo' } = useParams();
   const [models, setModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);

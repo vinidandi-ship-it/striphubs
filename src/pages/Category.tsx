@@ -13,7 +13,7 @@ import { seoTextForCategory } from '../lib/seoText';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
 export default function Category() {
-  const PAGE_SIZE = 240;
+  const PAGE_SIZE = 120;
   const { category = 'milf' } = useParams();
   const [models, setModels] = useState<Model[]>([]);
   const [categories, setCategories] = useState<{ slug: string; name: string; count: number }[]>([]);

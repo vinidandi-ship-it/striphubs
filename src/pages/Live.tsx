@@ -11,7 +11,7 @@ import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
 export default function Live() {
-  const PAGE_SIZE = 300;
+  const PAGE_SIZE = 120;
   const [models, setModels] = useState<Model[]>([]);
   const [categories, setCategories] = useState<{ slug: string; name: string; count: number }[]>([]);
   const [loading, setLoading] = useState(true);

@@ -10,7 +10,7 @@ import { extractSeoTags, featuredTagGroups } from '../lib/tags';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 import { featuredCategoryTagCombos, featuredCountryRoutes, priorityTagSlugs } from '../lib/programmaticSeo';
 
-const HOME_LIVE_LIMIT = 300;
+const HOME_LIVE_LIMIT = 120;
 const CATEGORY_PREVIEW_LIMIT = 8;
 const HOME_CATEGORY_PRIORITY = ['teen', 'asian', 'latina', 'blonde', 'brunette'] as const;
 const YOUNG_MODEL_PATTERNS = [
