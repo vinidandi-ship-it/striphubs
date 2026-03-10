@@ -9,13 +9,56 @@ type CategoryResponse = {
   categories: { slug: string; name: string; count: number }[];
 };
 
+// Mock data for local development
+const mockModels: Model[] = Array.from({ length: 24 }, (_, i) => ({
+  username: `model${i + 1}`,
+  thumbnail: `https://picsum.photos/seed/model${i + 1}/640/800`,
+  viewers: Math.floor(Math.random() * 500) + 10,
+  tags: ['girl', 'live', 'cam', ['curvy', 'petite', 'blonde'][Math.floor(Math.random() * 3)]],
+  country: ['US', 'GB', 'DE', 'IT', 'ES', 'FR'][Math.floor(Math.random() * 6)],
+  category: ['milf', 'teen', 'blonde', 'brunette', 'asian'][Math.floor(Math.random() * 5)],
+  isLive: true,
+  clickUrl: `https://stripchat.com/model${i + 1}?userId=affiliate`
+}));
+
+const mockCategories = [
+  { slug: 'milf', name: 'MILF', count: 5 },
+  { slug: 'teen', name: 'Teen', count: 5 },
+  { slug: 'blonde', name: 'Blonde', count: 4 },
+  { slug: 'brunette', name: 'Brunette', count: 5 },
+  { slug: 'asian', name: 'Asian', count: 5 }
+];
+
 const request = async <T>(path: string): Promise<T> => {
-  // In development, API routes from /api/ don't work with Vite dev server
-  // We need to use a different approach or mock data
   const isDev = import.meta.env.DEV;
-  const url = isDev ? `/api-mock${path}` : path;
-  
-  const response = await fetch(url, {
+
+  console.log('API Request:', path, 'DEV:', isDev);
+
+  if (isDev) {
+    // Mock API responses for local development
+    if (path.startsWith('/api/models')) {
+      console.log('Returning mock models');
+      const url = new URL(path, window.location.origin);
+      const limit = Number(url.searchParams.get('limit')) || 48;
+      return Promise.resolve({ models: mockModels.slice(0, limit) } as T);
+    }
+    if (path.startsWith('/api/categories')) {
+      console.log('Returning mock categories');
+      return Promise.resolve({ categories: mockCategories } as T);
+    }
+    if (path.startsWith('/api/model')) {
+      console.log('Returning mock model');
+      const url = new URL(path, window.location.origin);
+      const name = url.searchParams.get('name') || 'model1';
+      return Promise.resolve(mockModels[0] as T);
+    }
+    // Default mock response
+    console.log('Returning default mock');
+    return Promise.resolve({ models: mockModels } as T);
+  }
+
+  // Production: call real API
+  const response = await fetch(path, {
     method: 'GET',
     headers: { Accept: 'application/json' }
   });
