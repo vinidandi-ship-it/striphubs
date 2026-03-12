@@ -60,6 +60,19 @@ function AppContent() {
         'query-input': 'required name=search_term_string'
       }
     });
+    upsertJsonLd('organization-jsonld', {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: `${SITE_URL}/icon-512.png`,
+      sameAs: [],
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer service',
+        availableLanguage: ['Italian', 'English', 'German', 'French', 'Spanish', 'Portuguese']
+      }
+    });
   }, [language]);
   
   return (

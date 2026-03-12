@@ -6,7 +6,7 @@ import ModelGrid from '../components/ModelGrid';
 import SearchBar from '../components/SearchBar';
 import { api } from '../lib/api';
 import { Model } from '../lib/models';
-import { generateDescription, generateTitle, useSEO } from '../lib/seo';
+import { generateDescription, generateTitle, useAdvancedSEO } from '../lib/seo';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
 export default function Search() {
@@ -22,7 +22,7 @@ export default function Search() {
   const [hasMore, setHasMore] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
-  useSEO(generateTitle('search'), generateDescription('search'), '/search');
+  useAdvancedSEO(generateTitle('search'), generateDescription('search'), '/search', { noindex: true });
 
   useEffect(() => {
     setLoading(true);

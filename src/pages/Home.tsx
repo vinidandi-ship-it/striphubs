@@ -268,6 +268,24 @@ export default function Home() {
                <Icon name="categories" size={18} /> {t('home.youngCamsCta')}
              </Link>
           </div>
+          <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-zinc-400 sm:text-sm">
+            <span className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+              99.9% Uptime
+            </span>
+            <span className="flex items-center gap-1.5">
+              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z"/></svg>
+              100% Gratis
+            </span>
+            <span className="flex items-center gap-1.5">
+              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>
+              SSL Sicuro
+            </span>
+            <span className="flex items-center gap-1.5">
+              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd"/></svg>
+              Nessuna Registrazione
+            </span>
+          </div>
         </div>
       </section>
 
