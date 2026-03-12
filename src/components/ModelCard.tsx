@@ -183,7 +183,7 @@ export default function ModelCard({ model }: { model: Model }) {
         >
           <Icon name="play" size={14} />
           {model.isLive ? (
-            isUrgent ? 'GUARSA ORA!' : 'Guarda ORA'
+            isUrgent ? 'GUARDA ORA!' : 'Guarda ORA'
           ) : 'Vai al Profilo'}
           {model.viewers > 500 && (
             <span className="ml-1 text-[10px] opacity-80">• {model.viewers.toLocaleString()}</span>
