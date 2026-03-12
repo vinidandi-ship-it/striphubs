@@ -6,6 +6,7 @@ export const translations = {
       loading: 'Caricamento...',
       loadMore: 'Carica altre',
       error: 'Errore',
+      accept: 'Accetta',
       home: 'Home',
       live: 'Live',
       categories: 'Categorie',
@@ -107,12 +108,22 @@ export const translations = {
     },
     footer: {
       description: 'StripHubs - La migliore directory di live cam gratis',
-      disclaimer: 'Solo per adulti 18+'
+      disclaimer: 'Solo per adulti 18+',
+      allRightsReserved: 'Tutti i diritti riservati.',
+      adultsOnly: 'Contenuti per adulti 18+.',
+      notAffiliated: 'StripHubs non è affiliato a Stripchat',
+      privacy: 'Privacy',
+      terms: 'Termini',
+      cookies: 'Cookies'
     },
     ageVerification: {
       title: 'Verifica Età 18+',
       description: 'Devi avere almeno 18 anni per continuare.',
       confirm: 'Ho 18+ anni'
+    },
+    cookieConsent: {
+      message: 'Utilizziamo cookie per analitiche e attribuzione affiliate.',
+      policy: 'Cookie Policy'
     },
     country: {
       liveCam: 'Cam live'
@@ -155,6 +166,7 @@ export const translations = {
       loading: 'Loading...',
       loadMore: 'Load more',
       error: 'Error',
+      accept: 'Accept',
       home: 'Home',
       live: 'Live',
       categories: 'Categories',
@@ -256,12 +268,22 @@ export const translations = {
     },
     footer: {
       description: 'StripHubs - The best free live cam directory',
-      disclaimer: 'Adults only 18+'
+      disclaimer: 'Adults only 18+',
+      allRightsReserved: 'All rights reserved.',
+      adultsOnly: 'Adult content 18+.',
+      notAffiliated: 'StripHubs is not affiliated with Stripchat',
+      privacy: 'Privacy',
+      terms: 'Terms',
+      cookies: 'Cookies'
     },
     ageVerification: {
       title: '18+ Age Verification',
       description: 'You must be at least 18 years old to continue.',
       confirm: 'I am 18+'
+    },
+    cookieConsent: {
+      message: 'We use cookies for analytics and affiliate attribution.',
+      policy: 'Cookie Policy'
     },
     country: {
       liveCam: 'Live cam'
@@ -304,6 +326,7 @@ export const translations = {
       loading: 'Laden...',
       loadMore: 'Mehr laden',
       error: 'Fehler',
+      accept: 'Akzeptieren',
       home: 'Startseite',
       live: 'Live',
       categories: 'Kategorien',
@@ -405,12 +428,22 @@ export const translations = {
     },
     footer: {
       description: 'StripHubs - Das beste kostenlose Live Cam Verzeichnis',
-      disclaimer: 'Nur für Erwachsene 18+'
+      disclaimer: 'Nur für Erwachsene 18+',
+      allRightsReserved: 'Alle Rechte vorbehalten.',
+      adultsOnly: 'Nur für Erwachsene (18+). Inhalt für Erwachsene.',
+      notAffiliated: 'StripHubs ist nicht mit Stripchat verbunden',
+      privacy: 'Datenschutz',
+      terms: 'AGB',
+      cookies: 'Cookies'
     },
     ageVerification: {
       title: '18+ Altersverifizierung',
       description: 'Du musst mindestens 18 Jahre alt sein, um fortzufahren.',
       confirm: 'Ich bin 18+'
+    },
+    cookieConsent: {
+      message: 'Wir verwenden Cookies für Analysen und Affiliate-Zuordnung.',
+      policy: 'Cookie-Richtlinie'
     },
     country: {
       liveCam: 'Live cam'
@@ -453,6 +486,7 @@ export const translations = {
       loading: 'Chargement...',
       loadMore: 'Charger plus',
       error: 'Erreur',
+      accept: 'Accepter',
       home: 'Accueil',
       live: 'Live',
       categories: 'Catégories',
@@ -554,12 +588,22 @@ export const translations = {
     },
     footer: {
       description: 'StripHubs - Le meilleur annuaire de cams live gratuites',
-      disclaimer: 'Adultes seulement 18+'
+      disclaimer: 'Adultes seulement 18+',
+      allRightsReserved: 'Tous droits réservés.',
+      adultsOnly: 'Adultes uniquement (18+). Contenu adulte.',
+      notAffiliated: 'StripHubs n\'est pas affilié à Stripchat',
+      privacy: 'Confidentialité',
+      terms: 'Conditions',
+      cookies: 'Cookies'
     },
     ageVerification: {
       title: 'Vérification d\'âge 18+',
       description: 'Vous devez avoir au moins 18 ans pour continuer.',
       confirm: 'J\'ai 18+'
+    },
+    cookieConsent: {
+      message: 'Nous utilisons des cookies pour les analyses et l\'attribution d\'affiliation.',
+      policy: 'Politique de cookies'
     },
     country: {
       liveCam: 'Cam live'
@@ -602,6 +646,7 @@ export const translations = {
       loading: 'Cargando...',
       loadMore: 'Cargar más',
       error: 'Error',
+      accept: 'Aceptar',
       home: 'Inicio',
       live: 'Live',
       categories: 'Categorías',
@@ -703,12 +748,22 @@ export const translations = {
     },
     footer: {
       description: 'StripHubs - El mejor directorio de cams live gratis',
-      disclaimer: 'Solo adultos 18+'
+      disclaimer: 'Solo adultos 18+',
+      allRightsReserved: 'Todos los derechos reservados.',
+      adultsOnly: 'Solo adultos (18+). Contenido para adultos.',
+      notAffiliated: 'StripHubs no está afiliado con Stripchat',
+      privacy: 'Privacidad',
+      terms: 'Términos',
+      cookies: 'Cookies'
     },
     ageVerification: {
       title: 'Verificación de edad 18+',
       description: 'Debes tener al menos 18 años para continuar.',
       confirm: 'Tengo 18+'
+    },
+    cookieConsent: {
+      message: 'Usamos cookies para análisis y atribución de afiliados.',
+      policy: 'Política de cookies'
     },
     country: {
       liveCam: 'Cam live'
@@ -751,6 +806,7 @@ export const translations = {
       loading: 'Carregando...',
       loadMore: 'Carregar mais',
       error: 'Erro',
+      accept: 'Aceitar',
       exit: 'Sair'
     },
     nav: {
@@ -835,12 +891,22 @@ export const translations = {
     },
     footer: {
       description: 'StripHubs - O melhor diretório de cams live grátis',
-      disclaimer: 'Somente adultos 18+'
+      disclaimer: 'Somente adultos 18+',
+      allRightsReserved: 'Todos os direitos reservados.',
+      adultsOnly: 'Somente adultos (18+). Conteúdo adulto.',
+      notAffiliated: 'StripHubs não é afiliado ao Stripchat',
+      privacy: 'Privacidade',
+      terms: 'Termos',
+      cookies: 'Cookies'
     },
     ageVerification: {
       title: 'Verificação de idade 18+',
       description: 'Você deve ter pelo menos 18 anos para continuar.',
       confirm: 'Tenho 18+'
+    },
+    cookieConsent: {
+      message: 'Usamos cookies para análises e atribuição de afiliados.',
+      policy: 'Política de cookies'
     },
     country: {
       liveCam: 'Cam live'
