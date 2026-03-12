@@ -1,6 +1,6 @@
 import type { VercelResponse } from '@vercel/node';
 
-export const AFFILIATE_ID = 'd28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881';
+export const AFFILIATE_ID = process.env.VITE_AFFILIATE_ID || process.env.AFFILIATE_ID || '';
 
 export const CATEGORY_DEFINITIONS = [
   { slug: 'milf', name: 'MILF', match: /(girls\/milfs|milf|milfs|mature)/i, tag: 'girls/milfs' },

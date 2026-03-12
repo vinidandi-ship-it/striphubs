@@ -1,18 +1,14 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import AgeVerification from './components/AgeVerification';
 import Analytics from './components/Analytics';
 import CookieConsent from './components/CookieConsent';
-import ExitIntent from './components/ExitIntent';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import HreflangTags from './components/HreflangTags';
-import NativeAdSlot from './components/NativeAdSlot';
-import PremiumBanner from './components/PremiumBanner';
-import StickyMobileCTA from './components/StickyMobileCTA';
 import { I18nProvider, useI18n } from './i18n';
 import { extractLocaleFromPath } from './i18n/routing';
-import { Model, SITE_NAME, SITE_URL } from './lib/models';
+import { SITE_NAME, SITE_URL } from './lib/models';
 import { upsertJsonLd } from './lib/seo';
 
 const Home = lazy(() => import('./pages/Home'));
@@ -43,8 +39,6 @@ const PremiumSuccess = lazy(() => import('./pages/premium/Success'));
 function AppContent() {
   const location = useLocation();
   const { language, setLanguage } = useI18n();
-  const [lastViewedModel, setLastViewedModel] = useState<Model | null>(null);
-  const [showStickyCTA, setShowStickyCTA] = useState(false);
 
   useEffect(() => {
     const { locale: routeLocale } = extractLocaleFromPath(location.pathname);
@@ -52,35 +46,6 @@ function AppContent() {
       setLanguage(routeLocale);
     }
   }, [location.pathname, language, setLanguage]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 500) {
-        setShowStickyCTA(true);
-      }
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem('sh_last_model');
-      if (stored) {
-        setLastViewedModel(JSON.parse(stored));
-      }
-    } catch {
-      // ignore
-    }
-
-    const handleModelView = (e: CustomEvent<Model>) => {
-      setLastViewedModel(e.detail);
-      localStorage.setItem('sh_last_model', JSON.stringify(e.detail));
-    };
-
-    window.addEventListener('modelView', handleModelView as EventListener);
-    return () => window.removeEventListener('modelView', handleModelView as EventListener);
-  }, []);
 
   useEffect(() => {
     upsertJsonLd('website-jsonld', {
@@ -248,9 +213,6 @@ function AppContent() {
         </Suspense>
       </main>
       <Footer />
-      <StickyMobileCTA model={lastViewedModel} visible={showStickyCTA} />
-      <ExitIntent topModel={lastViewedModel} />
-      <PremiumBanner />
       <HreflangTags />
       <Analytics />
       <AgeVerification />

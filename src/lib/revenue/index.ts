@@ -16,17 +16,19 @@ export const initRevenueStack = (): (() => void) => {
   
   const cleanups: (() => void)[] = [];
   
-  const cleanupPopunder = initPopunder();
-  if (cleanupPopunder) cleanups.push(cleanupPopunder);
+  // DISABLED: No popups, no email capture
+  // const cleanupPopunder = initPopunder();
+  // if (cleanupPopunder) cleanups.push(cleanupPopunder);
   
-  const cleanupExitIntent = initExitIntent();
-  if (cleanupExitIntent) cleanups.push(cleanupExitIntent);
+  // const cleanupExitIntent = initExitIntent();
+  // if (cleanupExitIntent) cleanups.push(cleanupExitIntent);
   
-  const emailCapture = initEmailCapture();
-  if (emailCapture?.cleanup) cleanups.push(emailCapture.cleanup);
+  // const emailCapture = initEmailCapture();
+  // if (emailCapture?.cleanup) cleanups.push(emailCapture.cleanup);
   
-  const premiumUpsell = initPremiumUpsell();
-  if (premiumUpsell?.cleanup) cleanups.push(premiumUpsell.cleanup);
+  // DISABLED: No premium upsell popups
+  // const premiumUpsell = initPremiumUpsell();
+  // if (premiumUpsell?.cleanup) cleanups.push(premiumUpsell.cleanup);
   
   const optimizeInterval = setInterval(() => {
     optimizeWeights();
