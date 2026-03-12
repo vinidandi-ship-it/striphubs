@@ -25,7 +25,7 @@ export const AFFILIATE_PROVIDERS: Record<ProviderId, ProviderConfig> = {
     weight: 40,
     priority: 2,
     affiliateUrl: (username: string, options?: { room?: string }) =>
-      `https://chaturbate.com/in/?track=default&tour=3v9d&campaign=fxmnz&b=2&room=${encodeURIComponent(username)}`
+      `https://chaturbate.com/in/?tour=LQps&campaign=fxmnz&track=default&room=${encodeURIComponent(username)}`
   }
 };
 

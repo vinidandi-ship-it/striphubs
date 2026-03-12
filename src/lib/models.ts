@@ -19,7 +19,7 @@ export type Model = {
 
 export const watchLiveUrl = (username: string, provider: ProviderId = 'stripchat'): string => {
   if (provider === 'chaturbate') {
-    return `https://chaturbate.com/in/?track=default&tour=3v9d&campaign=${CHATURBATE_CAMPAIGN}&b=2&room=${encodeURIComponent(username)}`;
+    return `https://chaturbate.com/in/?tour=LQps&campaign=${CHATURBATE_CAMPAIGN}&track=default&room=${encodeURIComponent(username)}`;
   }
   return `https://go.mavrtracktor.com?userId=${AFFILIATE_ID}&model=${encodeURIComponent(username)}`;
 };
@@ -30,4 +30,4 @@ export const selectProviderByWeight = (): ProviderId => {
 };
 
 export const getChaturbateUrl = (username: string): string =>
-  `https://chaturbate.com/in/?track=default&tour=3v9d&campaign=${CHATURBATE_CAMPAIGN}&b=2&room=${encodeURIComponent(username)}`;
+  `https://chaturbate.com/in/?tour=LQps&campaign=${CHATURBATE_CAMPAIGN}&track=default&room=${encodeURIComponent(username)}`;

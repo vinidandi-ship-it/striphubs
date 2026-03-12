@@ -25,7 +25,7 @@ export const PROVIDERS: Record<ProviderId, ProviderConfig> = {
     name: 'Chaturbate',
     weight: 40,
     buildClickUrl: (username: string) =>
-      `https://chaturbate.com/in/?track=default&tour=3v9d&campaign=${CHATURBATE_CAMPAIGN}&b=2&room=${encodeURIComponent(username)}`
+      `https://chaturbate.com/in/?tour=LQps&campaign=${CHATURBATE_CAMPAIGN}&track=default&room=${encodeURIComponent(username)}`
   }
 };
 
@@ -212,6 +212,8 @@ export const createNormalizedModel = (model: Record<string, unknown>, provider: 
   if (!username) return null;
 
   const tags = normalizeTags(model.tags);
+  const explicitClickUrl =
+    toString(model.clickUrl || model.click_url || model.chat_room_url_revshare || model.chat_room_url || model.affiliate_url || model.url);
   const rawCountry = toString(model.modelsCountry || model.country || model.country_code || model.countryCode || model.location);
   const country = normalizeCountryCode(rawCountry) || detectCountryFromTags(tags) || 'N/A';
   const category = detectCategoryFromTags(tags, country);
@@ -233,7 +235,7 @@ export const createNormalizedModel = (model: Record<string, unknown>, provider: 
     country,
     category,
     isLive,
-    clickUrl: PROVIDERS[provider].buildClickUrl(username),
+    clickUrl: explicitClickUrl || PROVIDERS[provider].buildClickUrl(username),
     provider
   };
 };
