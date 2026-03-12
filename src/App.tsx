@@ -4,7 +4,6 @@ import AgeVerification from './components/AgeVerification';
 import Analytics from './components/Analytics';
 import CookieConsent from './components/CookieConsent';
 import ExitIntent from './components/ExitIntent';
-import FloatingCTA from './components/FloatingCTA';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import HreflangTags from './components/HreflangTags';
@@ -250,7 +249,6 @@ function AppContent() {
       </main>
       <Footer />
       <StickyMobileCTA model={lastViewedModel} visible={showStickyCTA} />
-      <FloatingCTA model={lastViewedModel} />
       <ExitIntent topModel={lastViewedModel} />
       <PremiumBanner />
       <HreflangTags />
