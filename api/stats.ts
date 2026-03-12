@@ -36,8 +36,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const adminKey = req.headers['x-admin-key'] || req.query.adminKey;
-  if (adminKey && adminKey !== process.env.ADMIN_KEY) {
+  const configuredAdminKey = process.env.ADMIN_KEY;
+  const adminKeyRaw = req.headers['x-admin-key'] || req.query.adminKey;
+  const adminKey = Array.isArray(adminKeyRaw) ? String(adminKeyRaw[0] || '') : String(adminKeyRaw || '');
+
+  if (configuredAdminKey && adminKey !== configuredAdminKey) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 

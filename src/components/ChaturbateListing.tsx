@@ -1,4 +1,5 @@
 import { useI18n } from '../i18n';
+import { trackAffiliateClick } from '../lib/affiliateTracking';
 
 interface ChaturbateListingProps {
   gender?: 'f' | 'm' | 't' | 'c' | 'x';
@@ -16,6 +17,9 @@ export default function ChaturbateListing({
   const { language } = useI18n();
   
   const src = `https://chaturbate.com/in/?tour=x1Rd&campaign=fxmnz&track=default&c=${count}&p=${page}&gender=${gender}`;
+  const track = (label: string) => {
+    trackAffiliateClick(label, 'inline_cta', { provider: 'chaturbate' });
+  };
   
   return (
     <div className="w-full rounded-2xl overflow-hidden border border-border bg-panel">
@@ -30,6 +34,7 @@ export default function ChaturbateListing({
             target="_blank"
             rel="noopener noreferrer sponsored"
             className="px-2 py-1 text-xs rounded bg-pink-500/20 text-pink-400 hover:bg-pink-500/30"
+            onClick={() => track('chaturbate-gender-f')}
           >
             F
           </a>
@@ -38,6 +43,7 @@ export default function ChaturbateListing({
             target="_blank"
             rel="noopener noreferrer sponsored"
             className="px-2 py-1 text-xs rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30"
+            onClick={() => track('chaturbate-gender-m')}
           >
             M
           </a>
@@ -46,6 +52,7 @@ export default function ChaturbateListing({
             target="_blank"
             rel="noopener noreferrer sponsored"
             className="px-2 py-1 text-xs rounded bg-purple-500/20 text-purple-400 hover:bg-purple-500/30"
+            onClick={() => track('chaturbate-gender-c')}
           >
             Couples
           </a>
@@ -71,6 +78,7 @@ export function ChaturbateInlineBanner() {
       target="_blank"
       rel="noopener noreferrer sponsored"
       className="block w-full p-4 rounded-xl bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 transition-all"
+      onClick={() => trackAffiliateClick('chaturbate-inline-banner', 'inline_cta', { provider: 'chaturbate' })}
     >
       <div className="flex items-center justify-between">
         <div>

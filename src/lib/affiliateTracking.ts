@@ -52,9 +52,23 @@ export const trackAffiliateClick = (
     });
   }
 
+  const serialized = JSON.stringify(event);
+  let sent = false;
+
   if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
-    const payload = new Blob([JSON.stringify(event)], { type: 'application/json' });
-    navigator.sendBeacon('/api/track-click', payload);
+    const payload = new Blob([serialized], { type: 'application/json' });
+    sent = navigator.sendBeacon('/api/track-click', payload);
+  }
+
+  if (!sent && typeof fetch !== 'undefined') {
+    void fetch('/api/track-click', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: serialized,
+      keepalive: true
+    }).catch(() => {
+      // ignore network errors
+    });
   }
 
   try {

@@ -139,7 +139,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const clickId = first(payload, ['clickId', 'click_id', 'subid', 's1']);
   const username = first(payload, ['username', 'model', 'room']);
   const externalTxnId = first(payload, ['transaction_id', 'transactionId', 'txid']);
-  const timestamp = toNumber(first(payload, ['timestamp', 'ts', 'time'])) || Date.now();
+  const rawTimestamp = toNumber(first(payload, ['timestamp', 'ts', 'time']));
+  const timestamp = rawTimestamp > 0
+    ? (rawTimestamp < 1_000_000_000_000 ? rawTimestamp * 1000 : rawTimestamp)
+    : Date.now();
   const eventId = buildEventId(payload, provider);
   const sourceIp = toString(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '');
 

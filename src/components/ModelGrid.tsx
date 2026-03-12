@@ -5,7 +5,7 @@ import { Model, SITE_URL } from '../lib/models';
 import { removeJsonLd, upsertJsonLd } from '../lib/seo';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 import { isPremiumUser } from '../lib/revenue';
-import { getClickStats } from '../lib/affiliateTracking';
+import { getClickStats, trackAffiliateClick } from '../lib/affiliateTracking';
 import { getAffiliateUrlWithProvider } from '../lib/affiliateProviders';
 import Icon from './Icon';
 
@@ -21,10 +21,17 @@ function InlineCTA({ index }: { index: number }) {
     const history = JSON.parse(localStorage.getItem('sh_click_history') || '[]');
     const lastModel = history[history.length - 1];
     
-    if (lastModel) {
-      const { url } = getAffiliateUrlWithProvider(lastModel.username);
+    if (lastModel?.username) {
+      const { url, provider } = getAffiliateUrlWithProvider(lastModel.username);
+      trackAffiliateClick(lastModel.username, 'inline_cta', {
+        category: lastModel.category,
+        country: lastModel.country,
+        viewers: lastModel.viewers,
+        provider
+      });
       window.open(url, '_blank', 'noopener,noreferrer');
     } else {
+      trackAffiliateClick('homepage', 'inline_cta', { provider: 'stripchat' });
       window.open('https://go.mavrtracktor.com?userId=d28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881', '_blank', 'noopener,noreferrer');
     }
   };

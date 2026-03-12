@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useI18n } from '../i18n';
 import { buildLocalizedPath } from '../i18n/routing';
 import { LanguageSwitcher } from '../i18n/LanguageSwitcher';
-import { getClickStats } from '../lib/affiliateTracking';
+import { getClickStats, trackAffiliateClick } from '../lib/affiliateTracking';
 import { getAffiliateUrlWithProvider } from '../lib/affiliateProviders';
 import { isPremiumUser } from '../lib/revenue';
 import Icon from './Icon';
@@ -12,13 +12,25 @@ export default function Footer() {
   const stats = getClickStats();
   
   const handleFooterCta = () => {
-    const history = JSON.parse(localStorage.getItem('sh_click_history') || '[]');
+    let history: Array<{ username?: string; category?: string; country?: string; viewers?: number }> = [];
+    try {
+      history = JSON.parse(localStorage.getItem('sh_click_history') || '[]');
+    } catch {
+      history = [];
+    }
     const lastModel = history[history.length - 1];
     
-    if (lastModel) {
+    if (lastModel?.username) {
       const { url, provider } = getAffiliateUrlWithProvider(lastModel.username);
+      trackAffiliateClick(lastModel.username, 'footer_cta', {
+        category: lastModel.category,
+        country: lastModel.country,
+        viewers: lastModel.viewers,
+        provider
+      });
       window.open(url, '_blank', 'noopener,noreferrer');
     } else {
+      trackAffiliateClick('homepage', 'footer_cta', { provider: 'stripchat' });
       window.open('https://go.mavrtracktor.com?userId=d28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881', '_blank', 'noopener,noreferrer');
     }
   };
