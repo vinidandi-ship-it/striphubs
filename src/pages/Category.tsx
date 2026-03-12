@@ -11,7 +11,7 @@ import { api } from '../lib/api';
 import { countries } from '../lib/countries';
 import { categoryName, categories as categoryList, CategorySlug } from '../lib/categories';
 import { generateCategoryMeta } from '../lib/metaTags';
-import { useSEO } from '../lib/seo';
+import { useAdvancedSEO } from '../lib/seo';
 import { seoTextForCategory } from '../lib/seoText';
 import { useModels } from '../lib/useModels';
 import { PAGE_SIZES } from '../lib/constants';
@@ -37,7 +37,15 @@ export default function Category() {
   });
 
   const meta = generateCategoryMeta(category as CategorySlug, language, models.length || 150);
-  useSEO(meta.title, meta.description, `/cam/${category}`, language);
+  useAdvancedSEO(
+    meta.title,
+    meta.description,
+    `/cam/${category}`,
+    {
+      lang: language,
+      keywords: meta.keywords
+    }
+  );
 
   useEffect(() => {
     api.getCategories().then((data) => setCategories(data.categories));

@@ -111,17 +111,17 @@ export const generateTitle = (page: PageType, data?: Record<string, string>): st
 
 export const generateDescription = (page: PageType, data?: Record<string, string>): string => {
   if (page === 'home') {
-    return 'StripHubs: directory live cam gratis con migliaia di modelle online 24/7. Teen, milf, asiatiche e altro. Filtra per categoria, paese. Accesso gratuito.';
+    return 'StripHubs: directory live cam gratis con migliaia di modelle online 24/7. Teen, milf, asiatiche, italiane. Chat porno gratis senza registrazione. Streaming HD.';
   }
-  if (page === 'live') return 'Guarda tutte le cam live gratis. Modelle online ora con filtri rapidi per categoria, paese e popolarità. Accesso diretto senza registrazione.';
-  if (page === 'category') return `${data?.category || ''} cam live gratis. Modelle ${data?.category || ''} online 24/7 con accesso immediato. Filtra e guarda gratis.`;
-  if (page === 'tag') return `Modelle live con tag ${data?.tag || ''}. Cam online aggiornate in tempo reale. Guarda gratis senza registrazione.`;
+  if (page === 'live') return 'Guarda tutte le cam live gratis. Migliaia di modelle online con filtri per categoria, paese e popolarità. Chat porno gratis senza registrazione.';
+  if (page === 'category') return `${data?.category || ''} cam live gratis. Modelle ${data?.category || ''} online 24/7. Chat porno gratis, streaming HD, senza registrazione.`;
+  if (page === 'tag') return `Modelle live con tag ${data?.tag || ''}. Webcam gratis online aggiornate in tempo reale. Chat senza registrazione, streaming HD.`;
   if (page === 'combination')
-    return `${data?.category || ''} cam live con tag ${data?.tag || ''}. Modelle online con accesso veloce. Gratis 24/7.`;
-  if (page === 'country') return `Cam ${data?.country || 'modelle'} live gratis. Modelle online con filtri per categoria. Accesso rapido e gratuito.`;
-  if (page === 'model') return `Guarda ${data?.username || 'questa modella'} live in streaming HD. Profilo, foto e accesso diretto alla cam gratis.`;
-  if (page === 'search') return 'Cerca modelle live per username, tag, categoria o paese. Risultati in tempo reale.';
-  return 'StripHubs - Directory live cam gratis con modelle online 24/7. Accesso gratuito.';
+    return `${data?.category || ''} cam live con tag ${data?.tag || ''}. Modelle online 24/7. Chat porno gratis senza registrazione. Streaming HD.`;
+  if (page === 'country') return `Cam ${data?.country || 'modelle'} live gratis. Modelle ${data?.country || ''} online con filtri per categoria. Chat senza registrazione.`;
+  if (page === 'model') return `Guarda ${data?.username || 'questa modella'} live in streaming HD. Chat porno gratis, senza registrazione. Profilo e accesso diretto.`;
+  if (page === 'search') return 'Cerca modelle live per username, tag, categoria o paese. Webcam gratis senza registrazione. Risultati in tempo reale.';
+  return 'StripHubs - Directory live cam gratis con modelle online 24/7. Chat porno senza registrazione. Streaming HD.';
 };
 
 export const useSEO = (title: string, description: string, path: string, lang?: Language) => {
