@@ -1,6 +1,7 @@
 import Breadcrumbs from '../components/Breadcrumbs';
 import FAQSection from '../components/FAQSection';
 import InfiniteLoader from '../components/InfiniteLoader';
+import InternalLinks from '../components/InternalLinks';
 import ModelGrid from '../components/ModelGrid';
 import Sidebar from '../components/Sidebar';
 import Icon from '../components/Icon';
@@ -28,7 +29,15 @@ export default function Live() {
     initialIncludeOffline: false
   });
 
-  useSEO(generateTitle('live'), generateDescription('live'), '/live');
+  useSEO(
+    generateTitle('live'),
+    generateDescription('live'),
+    '/live',
+    language,
+    {
+      keywords: ['cam live', 'tutte le cam', 'modelle online', 'streaming live', 'cam gratis', 'directory cam']
+    }
+  );
 
   const sidebarCategories = categoryList.map((slug) => ({
     slug,
@@ -65,7 +74,9 @@ export default function Live() {
         <ModelGrid models={models} loading={loading} listName="All Live Cams" />
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
         <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
+        <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
         <FAQSection language={language} />
+        <InternalLinks language={language} />
       </div>
     </div>
   );

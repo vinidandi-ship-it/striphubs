@@ -78,7 +78,15 @@ export default function Home() {
   const sentinelRef = useRef<HTMLDivElement>(null);
   const { t, language } = useI18n();
 
-  useSEO(generateTitle('home'), generateDescription('home'), '/', language);
+  useSEO(
+    generateTitle('home'),
+    generateDescription('home'),
+    '/',
+    language,
+    {
+      keywords: ['live cam gratis', 'cam directory', 'modelle online', 'streaming gratis', 'cam live', 'teen cam', 'milf cam', 'asiatiche cam']
+    }
+  );
 
   // Add structured data for home page
   useEffect(() => {
