@@ -4,55 +4,60 @@ import { useI18n } from '../i18n';
 import { buildLocalizedPath } from '../i18n/routing';
 import Icon from '../components/Icon';
 import BlogSearch from '../components/BlogSearch';
+import { generateBlogPosts, BlogPost as GeneratedBlogPost } from '../lib/blogContent';
 
-interface BlogPost {
-  slug: string;
-  title: string;
-  excerpt: string;
-  category: string;
-  readTime: string;
-}
+// Calculate read time based on content length
+const calculateReadTime = (title: string, description: string): string => {
+  const words = (title + ' ' + description).split(/\s+/).length;
+  const minutes = Math.max(1, Math.ceil(words / 200));
+  return `${minutes} min`;
+};
 
-const allBlogPosts: BlogPost[] = [
-  {
-    slug: 'guida-cam-gratis',
-    title: 'Guida Completa alle Cam Live Gratis',
-    excerpt: 'Scopri come accedere a migliaia di cam live gratuite senza registrazione. Consigli e trucchi per la migliore esperienza.',
-    category: 'Guide',
-    readTime: '5 min'
-  },
-  {
-    slug: 'migliori-modelle-italiane',
-    title: 'Migliori Modelle Italiane su Stripchat',
-    excerpt: 'Una selezione delle modelle italiane più popolari e hot disponibili ora in diretta.',
-    category: 'Liste',
-    readTime: '3 min'
-  },
-  {
-    slug: 'sicurezza-cam',
-    title: 'Sicurezza e Privacy sulle Cam Live',
-    excerpt: 'Come proteggere la tua privacy quando guardi cam live e interagisci con le modelle.',
-    category: 'Guide',
-    readTime: '4 min'
-  },
-  {
-    slug: 'tag-popolari',
-    title: 'I Tag più Popolari su Stripchat',
-    excerpt: 'Esplora i tag più cercati e scopri nuove categorie di modelle.',
-    category: 'Liste',
-    readTime: '2 min'
-  }
-];
+// Map blog post type to display category
+const getTypeLabel = (type: string): string => {
+  const labels: Record<string, string> = {
+    'best-category-cams': 'Liste',
+    'category-vs-category': 'Confronto',
+    'how-to': 'Guide',
+    'top-category-by-country': 'Locali',
+    'complete-guide': 'Guida Completa',
+    'statistics': 'Statistiche',
+    'security': 'Sicurezza',
+    'trends': 'Tendenze',
+    'comparison': 'Confronto',
+    'how-to-list': 'Guide',
+    'best-practices': 'Consigli'
+  };
+  return labels[type] || 'Articolo';
+};
 
 export default function Blog() {
-  const { t, language } = useI18n();
-  const [visibleCount, setVisibleCount] = useState(6);
+  const { t, language, setLanguage } = useI18n();
+  const [visibleCount, setVisibleCount] = useState(12);
+  
+  // Generate blog posts dynamically
+  const allGeneratedPosts = generateBlogPosts();
+  
+  // Map generated posts to display format
+  const allBlogPosts: Array<{
+    slug: string;
+    title: string;
+    excerpt: string;
+    category: string;
+    readTime: string;
+  }> = allGeneratedPosts.map((post) => ({
+    slug: post.slug,
+    title: post.title[language] || post.title.it,
+    excerpt: post.description[language] || post.description.it,
+    category: getTypeLabel(post.type),
+    readTime: calculateReadTime(post.title[language] || post.title.it, post.description[language] || post.description.it)
+  }));
   
   const blogPosts = allBlogPosts.slice(0, visibleCount);
   const hasMore = visibleCount < allBlogPosts.length;
 
   const loadMore = () => {
-    setVisibleCount((current) => Math.min(current + 3, allBlogPosts.length));
+    setVisibleCount((current) => Math.min(current + 6, allBlogPosts.length));
   };
 
   return (
@@ -102,7 +107,7 @@ export default function Blog() {
             className="inline-flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-accent/80 transition-colors"
           >
             <Icon name="arrowDown" size={16} />
-            Carica Altri Articoli
+            Carica Altri Articoli ({allBlogPosts.length - visibleCount})
           </button>
         </div>
       )}
