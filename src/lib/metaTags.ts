@@ -24,12 +24,12 @@ const templates = {
       pt: (cat: string, count: number) => `${count} ${cat} Cams ao Vivo Grátis - Filtrar e Assistir | ${BRAND_NAME}`
     },
     description: {
-      it: (cat: string, count: number) => `Scopri ${count} ${cat} cam live in questo momento. Filtra per età, paese, tag e preferenze. 100% gratis, aggiornato in tempo reale, nessuna registrazione.`,
-      en: (cat: string, count: number) => `Discover ${count} ${cat} cams live right now. Filter by age, country, tags and preferences. 100% free, real-time updates, no registration.`,
-      de: (cat: string, count: number) => `Entdecken Sie ${count} ${cat} Cams live. Filtern Sie nach Alter, Land, Tags und Vorlieben. 100% kostenlos, Echtzeit-Updates, keine Registrierung.`,
-      fr: (cat: string, count: number) => `Découvrez ${count} ${cat} cam en direct maintenant. Filtrez par âge, pays, tags et préférences. 100% gratuit, mises à jour en temps réel, sans inscription.`,
-      es: (cat: string, count: number) => `Descubre ${count} ${cat} cams en vivo ahora. Filtra por edad, país, tags y preferencias. 100% gratis, actualizaciones en tiempo real, sin registro.`,
-      pt: (cat: string, count: number) => `Descubra ${count} ${cat} cams ao vivo agora. Filtre por idade, país, tags e preferências. 100% grátis, atualizações em tempo real, sem registro.`
+      it: (cat: string, count: number) => `Scopri ${count} ${cat} cam live gratis su StripHubs. Modelle ${cat} online 24/7 con streaming HD, chat senza registrazione, filtri per età e paese. Guarda GRATIS ora.`,
+      en: (cat: string, count: number) => `Discover ${count} ${cat} cams live free on StripHubs. ${cat} models online 24/7 with HD streaming, chat no registration, filters by age and country. Watch FREE now.`,
+      de: (cat: string, count: number) => `Entdecken Sie ${count} ${cat} Cams live kostenlos auf StripHubs. ${cat} Models 24/7 online mit HD-Streaming, Chat ohne Registrierung, Filter nach Alter und Land. Jetzt GRATIS ansehen.`,
+      fr: (cat: string, count: number) => `Découvrez ${count} cam ${cat} live gratuit sur StripHubs. Modèles ${cat} en ligne 24/7 avec streaming HD, chat sans inscription, filtres par âge et pays. Regardez GRATUITEMENT maintenant.`,
+      es: (cat: string, count: number) => `Descubre ${count} cams ${cat} en vivo gratis en StripHubs. Modelos ${cat} online 24/7 con streaming HD, chat sin registro, filtros por edad y país. Mira GRATIS ahora.`,
+      pt: (cat: string, count: number) => `Descubra ${count} cams ${cat} ao vivo grátis no StripHubs. Modelos ${cat} online 24/7 com streaming HD, chat sem registro, filtros por idade e país. Assista GRÁTIS agora.`
     }
   },
   country: {
@@ -42,12 +42,12 @@ const templates = {
       pt: (country: string, count: number) => `${count} Cams ${country}as ao Vivo - Live da ${country} | ${BRAND_NAME}`
     },
     description: {
-      it: (country: string, count: number) => `Guarda ${count} cam ${country}e in diretta streaming gratis. Modelle ${country}e online 24/7, filtra per categoria e tag. Nessuna registrazione richiesta.`,
-      en: (country: string, count: number) => `Watch ${count} ${country} cams live streaming free. ${country} models online 24/7, filter by category and tags. No registration required.`,
-      de: (country: string, count: number) => `Schen Sie ${count} ${country}e Cams im Live-Streaming kostenlos. ${country}e Models 24/7 online, filtern nach Kategorie und Tags. Keine Registrierung erforderlich.`,
-      fr: (country: string, count: number) => `Regardez ${count} cam ${country}es en streaming live gratuit. Modèles ${country}es en ligne 24/7, filtrez par catégorie et tags. Sans inscription.`,
-      es: (country: string, count: number) => `Mira ${count} cams ${country}as en streaming en vivo gratis. Modelos ${country}os en línea 24/7, filtra por categoría y tags. Sin registro requerido.`,
-      pt: (country: string, count: number) => `Assista ${count} cams ${country}as em streaming ao vivo grátis. Modelos ${country}os online 24/7, filtre por categoria e tags. Sem registro necessário.`
+      it: (country: string, count: number) => `Guarda ${count} cam ${country}e live gratis su StripHubs. Modelle ${country}e online 24/7, streaming HD senza registrazione. Filtra per categoria e tag. Chat anonima e sicura.`,
+      en: (country: string, count: number) => `Watch ${count} ${country} cams live free on StripHubs. ${country} models online 24/7, HD streaming no registration. Filter by category and tags. Anonymous and secure chat.`,
+      de: (country: string, count: number) => `Schen Sie ${count} ${country}e Cams live kostenlos auf StripHubs. ${country}e Models 24/7 online, HD-Streaming ohne Registrierung. Filtern nach Kategorie und Tags. Anonymer und sicherer Chat.`,
+      fr: (country: string, count: number) => `Regardez ${count} cam ${country}es en direct gratuit sur StripHubs. Modèles ${country}es en ligne 24/7, streaming HD sans inscription. Filtrez par catégorie et tags. Chat anonyme et sécurisé.`,
+      es: (country: string, count: number) => `Mira ${count} cams ${country}as en vivo gratis en StripHubs. Modelos ${country}os online 24/7, streaming HD sin registro. Filtra por categoría y tags. Chat anónimo y seguro.`,
+      pt: (country: string, count: number) => `Assista ${count} cams ${country}as ao vivo grátis no StripHubs. Modelos ${country}os online 24/7, streaming HD sem registro. Filtre por categoria e tags. Chat anônimo e seguro.`
     }
   },
   tag: {
