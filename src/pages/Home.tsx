@@ -248,8 +248,8 @@ export default function Home() {
           <div className="absolute bottom-10 right-10 w-40 h-40 bg-pink-500/30 rounded-full blur-3xl"></div>
         </div>
         <div className="relative">
-          <p className="inline-flex rounded-full bg-accent/20 px-3 py-2 text-xs font-semibold text-accent sm:px-4 sm:text-sm items-center gap-2">
-             <Icon name="live" size={12} /> {t('header.liveNow')} - {total} {t('header.activeCams')}
+           <p className="inline-flex rounded-full bg-accent/20 px-3 py-2 text-xs font-semibold text-accent sm:px-4 sm:text-sm items-center gap-2">
+             <Icon name="live" size={12} /> {t('header.liveNow')} - 20,000+ modelle online ora
            </p>
           <h1 className="mt-4 max-w-4xl text-2xl font-extrabold leading-tight text-white sm:text-5xl">
             {t('home.heroTitle')}

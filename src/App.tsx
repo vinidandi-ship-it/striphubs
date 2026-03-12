@@ -41,6 +41,8 @@ const GuidaCamGratis = lazy(() => import('./pages/blog/GuidaCamGratis'));
 const MiglioriModelleItaliane = lazy(() => import('./pages/blog/MiglioriModelleItaliane'));
 const SicurezzaCam = lazy(() => import('./pages/blog/SicurezzaCam'));
 const TagPopolari = lazy(() => import('./pages/blog/TagPopolari'));
+const PremiumCheckout = lazy(() => import('./pages/premium/Checkout'));
+const PremiumSuccess = lazy(() => import('./pages/premium/Success'));
 
 function AppContent() {
   const location = useLocation();
@@ -248,6 +250,8 @@ function AppContent() {
             <Route path="/fr/country/:countrySlug/tag/:tag" element={<CountryCombination />} />
             <Route path="/es/country/:countrySlug/tag/:tag" element={<CountryCombination />} />
             <Route path="/pt/country/:countrySlug/tag/:tag" element={<CountryCombination />} />
+            <Route path="/premium/checkout" element={<PremiumCheckout />} />
+            <Route path="/premium/success" element={<PremiumSuccess />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
