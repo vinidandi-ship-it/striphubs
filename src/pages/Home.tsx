@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import CategoryCard from '../components/CategoryCard';
+import FAQSection from '../components/FAQSection';
 import InfiniteLoader from '../components/InfiniteLoader';
 import ModelCard from '../components/ModelCard';
 import ModelGrid from '../components/ModelGrid';
@@ -451,6 +452,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <FAQSection language={language} />
 
       <section className="py-8 text-center text-zinc-400">
         <p>{t('home.bestSite')}</p>

@@ -1,4 +1,5 @@
 import Breadcrumbs from '../components/Breadcrumbs';
+import FAQSection from '../components/FAQSection';
 import InfiniteLoader from '../components/InfiniteLoader';
 import ModelGrid from '../components/ModelGrid';
 import Sidebar from '../components/Sidebar';
@@ -8,8 +9,10 @@ import { categoryName, categories as categoryList } from '../lib/categories';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 import { useModels } from '../lib/useModels';
 import { PAGE_SIZES } from '../lib/constants';
+import { useI18n } from '../i18n';
 
 export default function Live() {
+  const { language } = useI18n();
   const {
     models,
     total,
@@ -62,6 +65,7 @@ export default function Live() {
         <ModelGrid models={models} loading={loading} listName="All Live Cams" />
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
         <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
+        <FAQSection language={language} />
       </div>
     </div>
   );

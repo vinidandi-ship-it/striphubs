@@ -88,40 +88,40 @@ export const getRobotsContent = (noindex?: boolean, nofollow?: boolean): string 
 };
 
 export const generateTitle = (page: PageType, data?: Record<string, string>): string => {
-  if (page === 'home') return 'StripHubs - Live Cam Gratis - Migliaia di Modelle Online';
-  if (page === 'live') return 'Tutte le Cam Live Gratis - StripHubs';
+  if (page === 'home') return 'StripHubs - Live Cam Gratis | Directory Modelle Online';
+  if (page === 'live') return 'Cam Live Gratis - Tutte le Modelle Online | StripHubs';
   if (page === 'category') {
     const label = categoryName(data?.category || '');
-    return `${label} Cam Live Gratis - Modelle Online 24/7 - StripHubs`;
+    return `${label} Cam Live Gratis - ${label} Online 24/7`;
   }
   if (page === 'tag') {
     const tag = data?.tag || '';
-    return `${tag.charAt(0).toUpperCase() + tag.slice(1)} Cam Live - Modelle Online - StripHubs`;
+    return `${tag.charAt(0).toUpperCase() + tag.slice(1)} Cam Live - Modelle Online`;
   }
   if (page === 'combination') {
     const cat = categoryName(data?.category || '');
     const tag = data?.tag || '';
-    return `${cat} ${tag} Cam Live Gratis - StripHubs`;
+    return `${cat} ${tag} Cam Live Gratis`;
   }
-  if (page === 'country') return `Cam Live ${data?.country || 'Modelle'} Gratis - StripHubs`;
-  if (page === 'model') return `${data?.username || 'Model'} Live Cam - Profilo e Diretta - StripHubs`;
-  if (page === 'search') return 'Cerca Modelle Live - StripHubs';
+  if (page === 'country') return `Cam ${data?.country || 'Modelle'} Live Gratis - Modelle Online`;
+  if (page === 'model') return `${data?.username || 'Model'} Live Cam - Diretta Streaming`;
+  if (page === 'search') return 'Cerca Modelle Live Cam - Ricerca';
   return SITE_NAME;
 };
 
 export const generateDescription = (page: PageType, data?: Record<string, string>): string => {
   if (page === 'home') {
-    return 'StripHubs - La migliore directory italiana di live cam gratis. Centinaia di modelle online 24/7. Filtri per teen, milf, paesi. Accesso diretto e gratuito.';
+    return 'StripHubs: directory live cam gratis con migliaia di modelle online 24/7. Teen, milf, asiatiche e altro. Filtra per categoria, paese. Accesso gratuito.';
   }
-  if (page === 'live') return 'Guarda tutte le cam live gratis su StripHubs. Modelle online ora, filtri rapidi e accesso diretto alle camere più viste.';
-  if (page === 'category') return `Guarda ${data?.category || ''} cam live gratis su StripHubs. Modelle online 24/7, profili aggiornati e accesso immediato.`;
-  if (page === 'tag') return `Esplora modelle live con tag ${data?.tag || ''} su StripHubs. Camere online ora e dirette aggiornate in tempo reale.`;
+  if (page === 'live') return 'Guarda tutte le cam live gratis. Modelle online ora con filtri rapidi per categoria, paese e popolarità. Accesso diretto senza registrazione.';
+  if (page === 'category') return `${data?.category || ''} cam live gratis. Modelle ${data?.category || ''} online 24/7 con accesso immediato. Filtra e guarda gratis.`;
+  if (page === 'tag') return `Modelle live con tag ${data?.tag || ''}. Cam online aggiornate in tempo reale. Guarda gratis senza registrazione.`;
   if (page === 'combination')
-    return `Scopri ${data?.category || ''} cam live con tag ${data?.tag || ''} su StripHubs. Modelle online e accesso veloce alle dirette.`;
-  if (page === 'country') return `Guarda ${data?.country || 'modelle'} live gratis su StripHubs. Profili attivi, categorie popolari e accesso rapido.`;
-  if (page === 'model') return `Guarda ${data?.username || 'questa modella'} live su StripHubs. Apri il profilo e accedi subito alla sua cam online.`;
-  if (page === 'search') return 'Cerca modelle live su StripHubs per username, tag, categoria e paese.';
-  return 'StripHubs - Directory di live cam gratuite con modelle online 24/7.';
+    return `${data?.category || ''} cam live con tag ${data?.tag || ''}. Modelle online con accesso veloce. Gratis 24/7.`;
+  if (page === 'country') return `Cam ${data?.country || 'modelle'} live gratis. Modelle online con filtri per categoria. Accesso rapido e gratuito.`;
+  if (page === 'model') return `Guarda ${data?.username || 'questa modella'} live in streaming HD. Profilo, foto e accesso diretto alla cam gratis.`;
+  if (page === 'search') return 'Cerca modelle live per username, tag, categoria o paese. Risultati in tempo reale.';
+  return 'StripHubs - Directory live cam gratis con modelle online 24/7. Accesso gratuito.';
 };
 
 export const useSEO = (title: string, description: string, path: string, lang?: Language) => {
