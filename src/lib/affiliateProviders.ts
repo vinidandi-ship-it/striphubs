@@ -13,7 +13,7 @@ export const AFFILIATE_PROVIDERS: Record<ProviderId, ProviderConfig> = {
   stripchat: {
     id: 'stripchat',
     name: 'Stripchat',
-    weight: 60,
+    weight: 85,
     priority: 1,
     affiliateUrl: (username: string) =>
       `https://go.mavrtracktor.com?userId=d28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881&model=${encodeURIComponent(username)}`,
@@ -22,7 +22,7 @@ export const AFFILIATE_PROVIDERS: Record<ProviderId, ProviderConfig> = {
   chaturbate: {
     id: 'chaturbate',
     name: 'Chaturbate',
-    weight: 40,
+    weight: 15,
     priority: 2,
     affiliateUrl: (username: string, options?: { room?: string }) =>
       `https://chaturbate.com/in/?tour=LQps&campaign=fxmnz&track=default&room=${encodeURIComponent(username)}`
@@ -30,8 +30,8 @@ export const AFFILIATE_PROVIDERS: Record<ProviderId, ProviderConfig> = {
 };
 
 export const PROVIDER_WEIGHTS: Array<{ provider: ProviderId; weight: number }> = [
-  { provider: 'stripchat', weight: 60 },
-  { provider: 'chaturbate', weight: 40 }
+  { provider: 'stripchat', weight: 85 },
+  { provider: 'chaturbate', weight: 15 }
 ];
 
 type RotationState = {
@@ -71,13 +71,13 @@ export const selectProviderByRotation = (): ProviderId => {
   
   let selected: ProviderId;
   
-  if (stripchatRatio < 0.55) {
+  if (stripchatRatio < 0.8) {
     selected = 'stripchat';
-  } else if (chaturbateRatio < 0.35) {
+  } else if (chaturbateRatio < 0.1) {
     selected = 'chaturbate';
   } else {
     const random = Math.random() * 100;
-    selected = random < 60 ? 'stripchat' : 'chaturbate';
+    selected = random < 85 ? 'stripchat' : 'chaturbate';
   }
   
   state.impressions[selected]++;

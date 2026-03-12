@@ -16,14 +16,14 @@ export const PROVIDERS: Record<ProviderId, ProviderConfig> = {
   stripchat: {
     id: 'stripchat',
     name: 'Stripchat',
-    weight: 60,
+    weight: 85,
     buildClickUrl: (username: string) =>
       `https://go.mavrtracktor.com?userId=${STRIPCHAT_AFFILIATE_ID}&model=${encodeURIComponent(username)}`
   },
   chaturbate: {
     id: 'chaturbate',
     name: 'Chaturbate',
-    weight: 40,
+    weight: 15,
     buildClickUrl: (username: string) =>
       `https://chaturbate.com/in/?tour=LQps&campaign=${CHATURBATE_CAMPAIGN}&track=default&room=${encodeURIComponent(username)}`
   }
@@ -31,7 +31,7 @@ export const PROVIDERS: Record<ProviderId, ProviderConfig> = {
 
 export const selectProviderByWeight = (): ProviderId => {
   const random = Math.random() * 100;
-  return random < 60 ? 'stripchat' : 'chaturbate';
+  return random < 85 ? 'stripchat' : 'chaturbate';
 };
 
 export const CATEGORY_DEFINITIONS = [

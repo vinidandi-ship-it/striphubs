@@ -216,8 +216,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         note: 'Revenue-based recommendation from approved postbacks.'
       }
     : {
-        stripchat: 60,
-        chaturbate: 40,
+        stripchat: 85,
+        chaturbate: 15,
         note: 'Fallback split used until approved postbacks arrive.'
       };
 

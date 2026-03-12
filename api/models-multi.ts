@@ -11,6 +11,7 @@ import {
 } from './providers.js';
 
 const CACHE_TTL_MS = 60_000;
+const DEFAULT_CHATURBATE_MAX_SHARE = 0.15;
 const STRIPCHAT_ENDPOINT = 'https://go.mavrtracktor.com/api/models';
 const CHATURBATE_ENDPOINT = 'https://chaturbate.com/api/public/affiliates/onlinerooms/?wm=fxmnz&client_ip=request_ip&format=json';
 
@@ -97,6 +98,11 @@ const fetchChaturbateModels = async (params: URLSearchParams): Promise<Normalize
 
 const filterModels = (models: NormalizedModel[], req: VercelRequest): NormalizedModel[] => {
   const search = (req.query.search as string | undefined)?.toLowerCase() ?? '';
+  const modelsList = (req.query.modelsList as string | undefined)
+    ?.split(',')
+    .map((value) => value.trim().toLowerCase())
+    .filter(Boolean) ?? [];
+  const strict = req.query.strict === '1' || req.query.strict === 'true';
   const category = (req.query.category as string | undefined)?.toLowerCase() ?? '';
   const tag = (req.query.tag as string | undefined)?.toLowerCase() ?? '';
   const country = (req.query.country as string | undefined)?.toLowerCase() ?? '';
@@ -120,6 +126,15 @@ const filterModels = (models: NormalizedModel[], req: VercelRequest): Normalized
     );
   }
 
+  if (modelsList.length > 0) {
+    const requested = new Set(modelsList);
+    out = out.filter((model) => {
+      const username = model.username.toLowerCase();
+      if (strict) return requested.has(username);
+      return modelsList.some((needle) => username.includes(needle));
+    });
+  }
+
   return out.sort((a, b) => b.viewers - a.viewers).slice(offset, offset + limit);
 };
 
@@ -141,16 +156,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!params.has('fields')) params.set('fields', 'tags');
 
     const allModels: NormalizedModel[] = [];
+    let stripchatModels: NormalizedModel[] = [];
+    let chaturbateModels: NormalizedModel[] = [];
     
     if (apiKey) {
-      const stripchatModels = await fetchStripchatModels(apiKey, params);
+      stripchatModels = await fetchStripchatModels(apiKey, params);
       allModels.push(...stripchatModels);
     }
     
     if (enableChaturbate) {
       try {
-        const chaturbateModels = await fetchChaturbateModels(params);
-        allModels.push(...chaturbateModels);
+        chaturbateModels = await fetchChaturbateModels(params);
+
+        const hasPrecisionQuery = Boolean(req.query.search || req.query.modelsList);
+        const configuredShare = Number(process.env.CHATURBATE_MAX_SHARE ?? DEFAULT_CHATURBATE_MAX_SHARE);
+        const maxShare = Number.isFinite(configuredShare)
+          ? Math.min(Math.max(configuredShare, 0), 0.5)
+          : DEFAULT_CHATURBATE_MAX_SHARE;
+
+        if (hasPrecisionQuery || stripchatModels.length === 0 || maxShare >= 0.5) {
+          allModels.push(...chaturbateModels);
+        } else {
+          const maxChaturbate = Math.max(1, Math.floor((stripchatModels.length * maxShare) / (1 - maxShare)));
+          allModels.push(...chaturbateModels.slice(0, maxChaturbate));
+        }
       } catch (e) {
         console.error('Chaturbate fetch error:', e);
       }
