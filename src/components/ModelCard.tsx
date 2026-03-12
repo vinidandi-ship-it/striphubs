@@ -75,8 +75,9 @@ const getViewersTrend = (viewers: number, username: string): 'rising' | 'stable'
 
 export default function ModelCard({ model }: { model: Model }) {
   const countryFlag = getCountryFlag(model.country);
-  const { url: rotatedUrl, provider } = getAffiliateUrlWithProvider(model.username);
+  const { url: rotatedUrl, provider: rotatedProvider } = getAffiliateUrlWithProvider(model.username);
   const clickUrl = model.clickUrl || rotatedUrl;
+  const clickProvider = model.provider || rotatedProvider;
   
   const onlineMinutes = model.isLive ? getOnlineMinutes(model.username) : 0;
   const viewersTrend = model.isLive ? getViewersTrend(model.viewers, model.username) : 'stable';
@@ -177,7 +178,7 @@ export default function ModelCard({ model }: { model: Model }) {
             category: model.category,
             country: model.country,
             viewers: model.viewers,
-            provider
+            provider: clickProvider
           })}
         >
           <Icon name="play" size={14} />

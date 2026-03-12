@@ -16,7 +16,7 @@ const request = async <T>(path: string): Promise<T> => {
   const isDev = import.meta.env.DEV;
 
   if (isDev) {
-    if (path.startsWith('/api/models')) {
+    if (path === '/api/models' || path.startsWith('/api/models?') || path === '/api/models-multi' || path.startsWith('/api/models-multi?')) {
       return fetch(path).then(r => r.json()) as Promise<T>;
     }
     if (path.startsWith('/api/categories')) {
@@ -25,7 +25,7 @@ const request = async <T>(path: string): Promise<T> => {
     if (path.startsWith('/api/model')) {
       const url = new URL(path, window.location.origin);
       const name = url.searchParams.get('name') || 'model1';
-      return fetch(`/api/models?limit=1&search=${name}`).then(r => r.json().then(d => d.models?.[0] || { username: name })) as Promise<T>;
+      return fetch(`/api/models-multi?limit=1&search=${name}`).then(r => r.json().then(d => d.models?.[0] || { username: name })) as Promise<T>;
     }
     return fetch(path).then(r => r.json()) as Promise<T>;
   }
@@ -34,8 +34,11 @@ const request = async <T>(path: string): Promise<T> => {
   let url = path;
   
   if (baseUrl) {
-    if (path.startsWith('/api/models') && baseUrl.endsWith('/api/models')) {
+    if ((path === '/api/models' || path.startsWith('/api/models?')) && baseUrl.endsWith('/api/models')) {
       url = baseUrl + path.replace('/api/models', '');
+    } else if ((path === '/api/models-multi' || path.startsWith('/api/models-multi?')) && baseUrl.endsWith('/api/models')) {
+      const modelsMultiBase = `${baseUrl.replace(/\/api\/models$/, '')}/api/models-multi`;
+      url = modelsMultiBase + path.replace('/api/models-multi', '');
     } else {
       url = `${baseUrl}${path}`;
     }
@@ -78,7 +81,10 @@ export const api = {
     if (typeof params?.liveOnly === 'boolean') query.set('liveOnly', params.liveOnly ? '1' : '0');
 
     const suffix = query.toString() ? `?${query}` : '';
-    return request<ModelsResponse>(`/api/models${suffix}`);
+
+    const preferredEndpoint = import.meta.env.VITE_MODELS_ENDPOINT || '/api/models-multi';
+
+    return request<ModelsResponse>(`${preferredEndpoint}${suffix}`).catch(() => request<ModelsResponse>(`/api/models${suffix}`));
   },
 
   getModel: (name: string) => request<Model>(`/api/model?name=${encodeURIComponent(name)}`),

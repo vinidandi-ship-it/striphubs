@@ -68,7 +68,8 @@ export default function ModelPage() {
             onClick={() => trackAffiliateClick(model.username, 'profile', {
               category: model.category,
               country: model.country,
-              viewers: model.viewers
+              viewers: model.viewers,
+              provider: model.provider
             })}
           >
             Watch Live

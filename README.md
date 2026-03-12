@@ -55,20 +55,43 @@ npm run preview
 Affiliate ID used globally:
 `d28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881`
 
-Model outbound links follow:
-`https://stripchat.com/{modelname}?userId=<AFFILIATE_ID>`
+Model outbound links are provider-aware and can resolve to Stripchat or Chaturbate affiliate URLs.
 
 ### Serverless APIs
-- `GET /api/models` live models list (proxy to aggregator API)
+- `GET /api/models` Stripchat-focused models proxy
+- `GET /api/models-multi` merged models feed (Stripchat + Chaturbate)
+- `GET /api/chaturbate` Chaturbate-only models proxy
 - `GET /api/model?name={username}` single model data
 - `GET /api/categories` computed category counts
 - `GET /api/statistics?...` proxy to Stripcash statistics endpoint
+- `POST|GET /api/postback` secure conversion postback receiver
+- `GET /api/stats` click + conversion funnel summary
 
 ### Required Environment Variables
 - `STRIPCASH_API_KEY` (Bearer token for models API)
 - `STRIPCASH_STATS_API_KEY` (optional, dedicated token for statistics API; falls back to `STRIPCASH_API_KEY`)
 - `STRIPCHAT_API_ENDPOINT` (optional override; default `https://go.mavrtracktor.com/api/models`)
+- `ENABLE_CHATURBATE` (optional; set `false` to disable Chaturbate inside `/api/models-multi`)
+- `POSTBACK_TOKEN` (recommended, secures `/api/postback`)
+- `POSTBACK_SECRET` (optional HMAC SHA256 signature secret for `/api/postback`)
+- `ADMIN_KEY` (optional auth key for admin-style stats reads)
+- `VITE_MODELS_ENDPOINT` (optional frontend override; default `/api/models-multi`)
 - `VITE_SITE_URL` (recommended)
+
+### Postback Test Example
+```bash
+curl -X POST "https://YOUR_DOMAIN/api/postback" \
+  -H "Content-Type: application/json" \
+  -H "x-postback-token: YOUR_POSTBACK_TOKEN" \
+  -d '{
+    "provider": "chaturbate",
+    "event_id": "test-evt-001",
+    "status": "approved",
+    "amount": "12.50",
+    "currency": "USD",
+    "click_id": "click-123"
+  }'
+```
 
 ## Vercel Deploy
 1. Push repository to GitHub.
