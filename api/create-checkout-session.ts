@@ -45,7 +45,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Create mock checkout session
     const sessionId = `cs_${Date.now()}_${Math.random().toString(36).substring(7)}`;
-    const session = {
+    const session: {
+      id: string;
+      email: string;
+      plan: 'monthly' | 'yearly';
+      price: number;
+      currency: string;
+      status: 'open' | 'complete' | 'expired';
+      createdAt: number;
+    } = {
       id: sessionId,
       email: body.email,
       plan: body.plan,

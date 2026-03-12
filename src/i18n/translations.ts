@@ -22,7 +22,8 @@ export const translations = {
       blog: 'Blog',
       tag: 'Tag',
       searchResults: 'Risultati Ricerca',
-      notFound: 'Non trovato'
+      notFound: 'Non trovato',
+      exit: 'Esci'
     },
     nav: {
       home: 'Home',
@@ -108,6 +109,11 @@ export const translations = {
       description: 'StripHubs - La migliore directory di live cam gratis',
       disclaimer: 'Solo per adulti 18+'
     },
+    ageVerification: {
+      title: 'Verifica Età 18+',
+      description: 'Devi avere almeno 18 anni per continuare.',
+      confirm: 'Ho 18+ anni'
+    },
     country: {
       liveCam: 'Cam live'
     },
@@ -165,7 +171,8 @@ export const translations = {
       blog: 'Blog',
       tag: 'Tag',
       searchResults: 'Search Results',
-      notFound: 'Not found'
+      notFound: 'Not found',
+      exit: 'Exit'
     },
     nav: {
       home: 'Home',
@@ -251,6 +258,11 @@ export const translations = {
       description: 'StripHubs - The best free live cam directory',
       disclaimer: 'Adults only 18+'
     },
+    ageVerification: {
+      title: '18+ Age Verification',
+      description: 'You must be at least 18 years old to continue.',
+      confirm: 'I am 18+'
+    },
     country: {
       liveCam: 'Live cam'
     },
@@ -308,7 +320,8 @@ export const translations = {
       blog: 'Blog',
       tag: 'Tag',
       searchResults: 'Suchergebnisse',
-      notFound: 'Nicht gefunden'
+      notFound: 'Nicht gefunden',
+      exit: 'Beenden'
     },
     nav: {
       home: 'Startseite',
@@ -394,6 +407,11 @@ export const translations = {
       description: 'StripHubs - Das beste kostenlose Live Cam Verzeichnis',
       disclaimer: 'Nur für Erwachsene 18+'
     },
+    ageVerification: {
+      title: '18+ Altersverifizierung',
+      description: 'Du musst mindestens 18 Jahre alt sein, um fortzufahren.',
+      confirm: 'Ich bin 18+'
+    },
     country: {
       liveCam: 'Live cam'
     },
@@ -451,7 +469,8 @@ export const translations = {
       blog: 'Blog',
       tag: 'Tag',
       searchResults: 'Résultats de Recherche',
-      notFound: 'Non trouvé'
+      notFound: 'Non trouvé',
+      exit: 'Quitter'
     },
     nav: {
       home: 'Accueil',
@@ -537,6 +556,11 @@ export const translations = {
       description: 'StripHubs - Le meilleur annuaire de cams live gratuites',
       disclaimer: 'Adultes seulement 18+'
     },
+    ageVerification: {
+      title: 'Vérification d\'âge 18+',
+      description: 'Vous devez avoir au moins 18 ans pour continuer.',
+      confirm: 'J\'ai 18+'
+    },
     country: {
       liveCam: 'Cam live'
     },
@@ -594,7 +618,8 @@ export const translations = {
       blog: 'Blog',
       tag: 'Etiqueta',
       searchResults: 'Resultados de Búsqueda',
-      notFound: 'No encontrado'
+      notFound: 'No encontrado',
+      exit: 'Salir'
     },
     nav: {
       home: 'Inicio',
@@ -680,6 +705,11 @@ export const translations = {
       description: 'StripHubs - El mejor directorio de cams live gratis',
       disclaimer: 'Solo adultos 18+'
     },
+    ageVerification: {
+      title: 'Verificación de edad 18+',
+      description: 'Debes tener al menos 18 años para continuar.',
+      confirm: 'Tengo 18+'
+    },
     country: {
       liveCam: 'Cam live'
     },
@@ -720,7 +750,8 @@ export const translations = {
       searchPlaceholder: 'Pesquisar modelos, tags, países...',
       loading: 'Carregando...',
       loadMore: 'Carregar mais',
-      error: 'Erro'
+      error: 'Erro',
+      exit: 'Sair'
     },
     nav: {
       home: 'Início',
@@ -805,6 +836,11 @@ export const translations = {
     footer: {
       description: 'StripHubs - O melhor diretório de cams live grátis',
       disclaimer: 'Somente adultos 18+'
+    },
+    ageVerification: {
+      title: 'Verificação de idade 18+',
+      description: 'Você deve ter pelo menos 18 anos para continuar.',
+      confirm: 'Tenho 18+'
     },
     country: {
       liveCam: 'Cam live'

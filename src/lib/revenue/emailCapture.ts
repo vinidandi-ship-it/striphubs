@@ -1,5 +1,5 @@
 const EMAIL_CONFIG = {
-  enabled: true,
+  enabled: false,
   popupDelay: 30000,
   exitIntentEnabled: true,
   scrollThreshold: 50,

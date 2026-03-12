@@ -1,5 +1,5 @@
 const POPUNDER_CONFIG = {
-  enabled: true,
+  enabled: false,
   frequencyCap: 1,
   frequencyCapHours: 24,
   mobileCpm: 2.00,

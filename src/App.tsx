@@ -10,12 +10,9 @@ import Header from './components/Header';
 import HreflangTags from './components/HreflangTags';
 import NativeAdSlot from './components/NativeAdSlot';
 import PremiumBanner from './components/PremiumBanner';
-import RevenueStack from './components/RevenueStack';
-import SmartPopunder from './components/SmartPopunder';
 import StickyMobileCTA from './components/StickyMobileCTA';
 import { I18nProvider, useI18n } from './i18n';
 import { extractLocaleFromPath } from './i18n/routing';
-import { initRevenueStack } from './lib/revenue';
 import { Model, SITE_NAME, SITE_URL } from './lib/models';
 import { upsertJsonLd } from './lib/seo';
 
@@ -101,11 +98,6 @@ function AppContent() {
     });
   }, [language]);
   
-  useEffect(() => {
-    const cleanup = initRevenueStack();
-    return cleanup;
-  }, []);
-
   return (
     <div className="min-h-screen bg-bg text-zinc-100">
       <Header />
@@ -260,13 +252,11 @@ function AppContent() {
       <StickyMobileCTA model={lastViewedModel} visible={showStickyCTA} />
       <FloatingCTA model={lastViewedModel} />
       <ExitIntent topModel={lastViewedModel} />
-      <SmartPopunder />
       <PremiumBanner />
       <HreflangTags />
       <Analytics />
       <AgeVerification />
       <CookieConsent />
-      <RevenueStack />
     </div>
   );
 }

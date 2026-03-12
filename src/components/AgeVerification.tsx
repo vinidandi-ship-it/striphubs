@@ -14,7 +14,7 @@ export default function AgeVerification() {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4" role="dialog" aria-modal="true" aria-label="Age verification">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4" role="dialog" aria-modal="true" aria-label={t('ageVerification.title')}>
       <div className="w-full max-w-md rounded-2xl border border-border bg-panel p-6 text-center shadow-2xl">
         <h2 className="text-2xl font-bold text-white">{t('ageVerification.title')}</h2>
         <p className="mt-3 text-sm text-zinc-300">{t('ageVerification.description')}</p>
