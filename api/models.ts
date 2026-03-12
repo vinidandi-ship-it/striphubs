@@ -11,7 +11,7 @@ import {
 } from './shared.js';
 
 const CACHE_TTL_MS = 60_000;
-const DEFAULT_ENDPOINT = 'https://go.mavrtracktor.com/api/models';
+const DEFAULT_ENDPOINT = process.env.STRIPCHAT_API_ENDPOINT || 'https://go.mavrtracktor.com/api/models';
 
 const CATEGORY_TAG_MAP: Record<string, string> = CATEGORY_DEFINITIONS.reduce<Record<string, string>>((acc, category) => {
   acc[category.slug] = category.tag;

@@ -12,8 +12,10 @@ import {
 
 const CACHE_TTL_MS = 60_000;
 const DEFAULT_CHATURBATE_MAX_SHARE = 0.15;
-const STRIPCHAT_ENDPOINT = 'https://go.mavrtracktor.com/api/models';
-const CHATURBATE_ENDPOINT = 'https://chaturbate.com/api/public/affiliates/onlinerooms/?wm=fxmnz&client_ip=request_ip&format=json';
+const STRIPCHAT_ENDPOINT = process.env.STRIPCHAT_API_ENDPOINT || 'https://go.mavrtracktor.com/api/models';
+const CHATURBATE_BASE = process.env.CHATURBATE_API_URL || 'https://it.chaturbate.com/api/public/affiliates/onlinerooms/';
+const CHATURBATE_AFFILIATE = process.env.CHATURBATE_AFFILIATE || 'fxmnz';
+const CHATURBATE_ENDPOINT = `${CHATURBATE_BASE}?wm=${CHATURBATE_AFFILIATE}&client_ip=request_ip&format=json`;
 
 type CacheEntry = { key: string; expiresAt: number; models: NormalizedModel[]; provider: string };
 

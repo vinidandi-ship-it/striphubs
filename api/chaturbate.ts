@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-const CHATURBATE_AFFILIATE = 'fxmnz';
-const CHATURBATE_API = 'https://chaturbate.com/api/public/affiliates/onlinerooms/';
+const CHATURBATE_AFFILIATE = process.env.CHATURBATE_AFFILIATE || 'fxmnz';
+const CHATURBATE_API = process.env.CHATURBATE_API_URL || 'https://it.chaturbate.com/api/public/affiliates/onlinerooms/';
 
 interface ChaturbateRoom {
   username: string;
