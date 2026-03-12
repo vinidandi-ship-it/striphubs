@@ -117,3 +117,4 @@ SPA routing is handled through `vercel.json` rewrites.
 ## Notes
 - Live models and statistics are fetched server-side to avoid exposing API keys in the browser.
 - This project is intended for adults only (18+).
+
