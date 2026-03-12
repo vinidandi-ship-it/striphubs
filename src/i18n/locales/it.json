@@ -149,7 +149,29 @@
     "colombian": "Colombiane",
     "mexican": "Messicane",
     "philippine": "Filippine",
-    "thai": "Thailandesi",
+    "thai": "Tailandesi",
     "vietnamese": "Vietnamite"
+  },
+  "exitIntent": {
+    "title": "Aspetta! Non perdere questa occasione",
+    "onlineNow": "è online ORA",
+    "modelsOnline": "modelle online",
+    "viewersNow": "spettatori ora",
+    "avgSession": "min media",
+    "clicksToday": "click oggi",
+    "watchFree": "Guarda Gratis Ora",
+    "noRegistration": "Accesso gratuito • Nessuna registrazione richiesta"
+  },
+  "alternative": {
+    "freeForever": "Gratis per sempre",
+    "noRegistration": "Nessuna registrazione",
+    "hdQuality": "Qualità HD",
+    "modelsLiveNow": "modelle live ora"
+  },
+  "comparison": {
+    "vote": "Vota",
+    "voted": "Votato",
+    "totalVotes": "voti totali"
   }
+}
 }

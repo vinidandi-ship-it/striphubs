@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "npm run generate:sitemap && npm run generate:video-sitemap && vite build",
     "preview": "vite preview",
-    "generate:sitemap": "node scripts/generate-sitemap.mjs",
+    "generate:sitemap": "node scripts/generate-massive-sitemap.mjs",
+    "generate:sitemap-basic": "node scripts/generate-sitemap.mjs",
     "generate:video-sitemap": "node scripts/generate-video-sitemap.mjs"
   },
   "dependencies": {

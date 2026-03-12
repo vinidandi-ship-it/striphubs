@@ -2,9 +2,26 @@ import { Link } from 'react-router-dom';
 import { useI18n } from '../i18n';
 import { buildLocalizedPath } from '../i18n/routing';
 import { LanguageSwitcher } from '../i18n/LanguageSwitcher';
+import { getClickStats } from '../lib/affiliateTracking';
+import { getAffiliateUrlWithProvider } from '../lib/affiliateProviders';
+import { isPremiumUser } from '../lib/revenue';
+import Icon from './Icon';
 
 export default function Footer() {
   const { t, locale } = useI18n();
+  const stats = getClickStats();
+  
+  const handleFooterCta = () => {
+    const history = JSON.parse(localStorage.getItem('sh_click_history') || '[]');
+    const lastModel = history[history.length - 1];
+    
+    if (lastModel) {
+      const { url, provider } = getAffiliateUrlWithProvider(lastModel.username);
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } else {
+      window.open('https://go.mavrtracktor.com?userId=d28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881', '_blank', 'noopener,noreferrer');
+    }
+  };
 
   return (
     <footer className="mt-12 border-t border-border bg-gradient-to-b from-transparent to-black/50">
@@ -14,6 +31,23 @@ export default function Footer() {
           <p>© {new Date().getFullYear()} StripHubs. {t('footer.allRightsReserved')}</p>
           <p className="text-xs text-zinc-500 mt-1">{t('footer.adultsOnly')}</p>
         </div>
+        
+        {!isPremiumUser() && stats.todayClicks > 0 && (
+          <div 
+            onClick={handleFooterCta}
+            className="hidden lg:flex items-center gap-3 bg-gradient-to-r from-accent-primary/20 to-accent-secondary/20 border border-accent-primary/30 rounded-xl px-4 py-3 cursor-pointer hover:border-accent-primary transition-colors"
+          >
+            <div className="w-10 h-10 bg-accent-primary/20 rounded-lg flex items-center justify-center">
+              <Icon name="play" size={18} className="text-accent-primary" />
+            </div>
+            <div className="text-left">
+              <p className="text-white font-semibold text-sm">Continua a guardare</p>
+              <p className="text-xs text-zinc-400">{stats.todayClicks} sessioni oggi</p>
+            </div>
+            <Icon name="arrowRight" size={16} className="text-accent-primary ml-2" />
+          </div>
+        )}
+        
         <div className="flex flex-col gap-4 lg:text-right">
           <div className="flex flex-wrap justify-center gap-4 lg:justify-end">
             <Link to={buildLocalizedPath('/privacy', locale)} className="hover:text-accent transition-colors">{t('footer.privacy')}</Link>

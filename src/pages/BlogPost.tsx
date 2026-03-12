@@ -71,8 +71,8 @@ export default function BlogPostPage() {
     <div className="space-y-8">
       <Breadcrumbs
         items={[
-          { label: t('nav.home'), href: '/' },
-          { label: t('nav.blog'), href: '/blog' },
+          { label: t('nav.home'), to: '/' },
+          { label: t('nav.blog'), to: '/blog' },
           { label: h1 }
         ]}
       />
@@ -114,7 +114,7 @@ function BlogContent({ post, language }: { post: BlogPost; language: string }) {
         <p className="lead">
           {t('blog.bestCategoryIntro', { 
             category: post.category,
-            count: Math.floor(Math.random() * 50) + 100 
+            count: String(Math.floor(Math.random() * 50) + 100)
           })}
         </p>
         

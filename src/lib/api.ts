@@ -5,81 +5,42 @@ type ModelsResponse = {
   total?: number;
   offset?: number;
   hasMore?: boolean;
+  providers?: { stripchat: number; chaturbate: number };
 };
 
 type CategoryResponse = {
   categories: { slug: string; name: string; count: number }[];
 };
 
-// Mock data for local development - increased to 200 models with better distribution
-const mockModels: Model[] = Array.from({ length: 200 }, (_, i) => {
-  // Give higher probability to Italian models (30%)
-  const countryRandom = Math.random();
-  let country: string;
-  if (countryRandom < 0.3) country = 'IT'; // 30% Italian
-  else if (countryRandom < 0.5) country = 'US'; // 20% American
-  else if (countryRandom < 0.65) country = 'GB'; // 15% British
-  else if (countryRandom < 0.8) country = 'DE'; // 15% German
-  else if (countryRandom < 0.9) country = 'ES'; // 10% Spanish
-  else country = 'FR'; // 10% French
-
-  return {
-    username: `model${i + 1}`,
-    thumbnail: `https://picsum.photos/seed/model${i + 1}/640/800`,
-    viewers: Math.floor(Math.random() * 500) + 10,
-    tags: ['girl', 'live', 'cam', ['curvy', 'petite', 'blonde'][Math.floor(Math.random() * 3)]],
-    country: country,
-    category: ['milf', 'teen', 'blonde', 'brunette', 'asian'][Math.floor(Math.random() * 5)],
-    isLive: true,
-    clickUrl: `https://stripchat.com/model${i + 1}?userId=affiliate`
-  };
-});
-
-const mockCategories = [
-  { slug: 'milf', name: 'MILF', count: 5 },
-  { slug: 'teen', name: 'Teen', count: 5 },
-  { slug: 'blonde', name: 'Blonde', count: 4 },
-  { slug: 'brunette', name: 'Brunette', count: 5 },
-  { slug: 'asian', name: 'Asian', count: 5 }
-];
-
 const request = async <T>(path: string): Promise<T> => {
   const isDev = import.meta.env.DEV;
 
   if (isDev) {
     if (path.startsWith('/api/models')) {
-      const url = new URL(path, window.location.origin);
-      const limit = Number(url.searchParams.get('limit')) || 120;
-      const offset = Number(url.searchParams.get('offset')) || 0;
-      const slicedModels = mockModels.slice(offset, offset + limit);
-      return Promise.resolve({ 
-        models: slicedModels,
-        total: mockModels.length,
-        hasMore: offset + limit < mockModels.length
-      } as T);
+      return fetch(path).then(r => r.json()) as Promise<T>;
     }
     if (path.startsWith('/api/categories')) {
-      return Promise.resolve({ categories: mockCategories } as T);
+      return fetch('/api/categories').then(r => r.json()) as Promise<T>;
     }
     if (path.startsWith('/api/model')) {
       const url = new URL(path, window.location.origin);
       const name = url.searchParams.get('name') || 'model1';
-      return Promise.resolve(mockModels[0] as T);
+      return fetch(`/api/models?limit=1&search=${name}`).then(r => r.json().then(d => d.models?.[0] || { username: name })) as Promise<T>;
     }
-    return Promise.resolve({ models: mockModels } as T);
+    return fetch(path).then(r => r.json()) as Promise<T>;
   }
 
-  // Production: call real API
-  const baseUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_STRIPCHAT_API_ENDPOINT || '';
+  const baseUrl = import.meta.env.VITE_API_URL || '';
   let url = path;
+  
   if (baseUrl) {
-    // If baseUrl ends with '/api/models' and path starts with '/api/models', strip the path prefix
     if (path.startsWith('/api/models') && baseUrl.endsWith('/api/models')) {
       url = baseUrl + path.replace('/api/models', '');
     } else {
       url = `${baseUrl}${path}`;
     }
   }
+
   const response = await fetch(url, {
     method: 'GET',
     headers: { Accept: 'application/json' }

@@ -1,14 +1,22 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import AgeVerification from './components/AgeVerification';
 import Analytics from './components/Analytics';
 import CookieConsent from './components/CookieConsent';
+import ExitIntent from './components/ExitIntent';
+import FloatingCTA from './components/FloatingCTA';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import HreflangTags from './components/HreflangTags';
+import NativeAdSlot from './components/NativeAdSlot';
+import PremiumBanner from './components/PremiumBanner';
+import RevenueStack from './components/RevenueStack';
+import SmartPopunder from './components/SmartPopunder';
+import StickyMobileCTA from './components/StickyMobileCTA';
 import { I18nProvider, useI18n } from './i18n';
 import { extractLocaleFromPath } from './i18n/routing';
-import { SITE_NAME, SITE_URL } from './lib/models';
+import { initRevenueStack } from './lib/revenue';
+import { Model, SITE_NAME, SITE_URL } from './lib/models';
 import { upsertJsonLd } from './lib/seo';
 
 const Home = lazy(() => import('./pages/Home'));
@@ -16,6 +24,7 @@ const Live = lazy(() => import('./pages/Live'));
 const FreeCams = lazy(() => import('./pages/FreeCams'));
 const Category = lazy(() => import('./pages/Category'));
 const Country = lazy(() => import('./pages/Country'));
+const CountryCombination = lazy(() => import('./pages/CountryCombination'));
 const Tag = lazy(() => import('./pages/Tag'));
 const ModelPage = lazy(() => import('./pages/Model'));
 const Search = lazy(() => import('./pages/Search'));
@@ -23,6 +32,9 @@ const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const Cookies = lazy(() => import('./pages/Cookies'));
 const Combination = lazy(() => import('./pages/Combination'));
+const Alternative = lazy(() => import('./pages/Alternative'));
+const BestOf = lazy(() => import('./pages/BestOf'));
+const Comparison = lazy(() => import('./pages/Comparison'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const GuidaCamGratis = lazy(() => import('./pages/blog/GuidaCamGratis'));
@@ -33,6 +45,8 @@ const TagPopolari = lazy(() => import('./pages/blog/TagPopolari'));
 function AppContent() {
   const location = useLocation();
   const { language, setLanguage } = useI18n();
+  const [lastViewedModel, setLastViewedModel] = useState<Model | null>(null);
+  const [showStickyCTA, setShowStickyCTA] = useState(false);
 
   useEffect(() => {
     const { locale: routeLocale } = extractLocaleFromPath(location.pathname);
@@ -40,6 +54,35 @@ function AppContent() {
       setLanguage(routeLocale);
     }
   }, [location.pathname, language, setLanguage]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 500) {
+        setShowStickyCTA(true);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('sh_last_model');
+      if (stored) {
+        setLastViewedModel(JSON.parse(stored));
+      }
+    } catch {
+      // ignore
+    }
+
+    const handleModelView = (e: CustomEvent<Model>) => {
+      setLastViewedModel(e.detail);
+      localStorage.setItem('sh_last_model', JSON.stringify(e.detail));
+    };
+
+    window.addEventListener('modelView', handleModelView as EventListener);
+    return () => window.removeEventListener('modelView', handleModelView as EventListener);
+  }, []);
 
   useEffect(() => {
     upsertJsonLd('website-jsonld', {
@@ -55,6 +98,11 @@ function AppContent() {
       }
     });
   }, [language]);
+  
+  useEffect(() => {
+    const cleanup = initRevenueStack();
+    return cleanup;
+  }, []);
 
   return (
     <div className="min-h-screen bg-bg text-zinc-100">
@@ -170,15 +218,51 @@ function AppContent() {
             <Route path="/fr/blog/:slug" element={<BlogPost />} />
             <Route path="/es/blog/:slug" element={<BlogPost />} />
             <Route path="/pt/blog/:slug" element={<BlogPost />} />
+            <Route path="/alternative/:name" element={<Alternative />} />
+            <Route path="/en/alternative/:name" element={<Alternative />} />
+            <Route path="/de/alternative/:name" element={<Alternative />} />
+            <Route path="/fr/alternative/:name" element={<Alternative />} />
+            <Route path="/es/alternative/:name" element={<Alternative />} />
+            <Route path="/pt/alternative/:name" element={<Alternative />} />
+            <Route path="/best/:timeframe/:category" element={<BestOf />} />
+            <Route path="/en/best/:timeframe/:category" element={<BestOf />} />
+            <Route path="/de/best/:timeframe/:category" element={<BestOf />} />
+            <Route path="/fr/best/:timeframe/:category" element={<BestOf />} />
+            <Route path="/es/best/:timeframe/:category" element={<BestOf />} />
+            <Route path="/pt/best/:timeframe/:category" element={<BestOf />} />
+            <Route path="/vs/:comparison" element={<Comparison />} />
+            <Route path="/en/vs/:comparison" element={<Comparison />} />
+            <Route path="/de/vs/:comparison" element={<Comparison />} />
+            <Route path="/fr/vs/:comparison" element={<Comparison />} />
+            <Route path="/es/vs/:comparison" element={<Comparison />} />
+            <Route path="/pt/vs/:comparison" element={<Comparison />} />
+            <Route path="/country/:countrySlug/cam/:category" element={<CountryCombination />} />
+            <Route path="/en/country/:countrySlug/cam/:category" element={<CountryCombination />} />
+            <Route path="/de/country/:countrySlug/cam/:category" element={<CountryCombination />} />
+            <Route path="/fr/country/:countrySlug/cam/:category" element={<CountryCombination />} />
+            <Route path="/es/country/:countrySlug/cam/:category" element={<CountryCombination />} />
+            <Route path="/pt/country/:countrySlug/cam/:category" element={<CountryCombination />} />
+            <Route path="/country/:countrySlug/tag/:tag" element={<CountryCombination />} />
+            <Route path="/en/country/:countrySlug/tag/:tag" element={<CountryCombination />} />
+            <Route path="/de/country/:countrySlug/tag/:tag" element={<CountryCombination />} />
+            <Route path="/fr/country/:countrySlug/tag/:tag" element={<CountryCombination />} />
+            <Route path="/es/country/:countrySlug/tag/:tag" element={<CountryCombination />} />
+            <Route path="/pt/country/:countrySlug/tag/:tag" element={<CountryCombination />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
       </main>
       <Footer />
+      <StickyMobileCTA model={lastViewedModel} visible={showStickyCTA} />
+      <FloatingCTA model={lastViewedModel} />
+      <ExitIntent topModel={lastViewedModel} />
+      <SmartPopunder />
+      <PremiumBanner />
       <HreflangTags />
       <Analytics />
       <AgeVerification />
       <CookieConsent />
+      <RevenueStack />
     </div>
   );
 }

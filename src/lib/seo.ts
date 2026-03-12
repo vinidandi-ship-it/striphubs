@@ -1,9 +1,21 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { SITE_NAME, SITE_URL } from './models';
 import { categoryName } from './categories';
-import { getAlternateUrls, getCanonicalUrl, type Language, DEFAULT_LANGUAGE } from './i18n';
+import { getAlternateUrls, getCanonicalUrl, type Language, DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES } from './i18n';
 
 type PageType = 'home' | 'live' | 'category' | 'tag' | 'combination' | 'country' | 'model' | 'search';
+
+interface SEOOptions {
+  image?: string;
+  keywords?: string[];
+  type?: 'website' | 'video.other' | 'profile';
+  author?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  section?: string;
+  noindex?: boolean;
+  nofollow?: boolean;
+}
 
 const ensureMeta = (name: string): HTMLMetaElement => {
   let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
@@ -50,6 +62,31 @@ const removeAlternateLinks = () => {
   document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove());
 };
 
+export const generateDynamicOGImage = (
+  title: string,
+  subtitle?: string,
+  thumbnail?: string
+): string => {
+  if (thumbnail && thumbnail.startsWith('http')) {
+    return thumbnail;
+  }
+  const params = new URLSearchParams({
+    title: title.slice(0, 60),
+    subtitle: subtitle || SITE_NAME
+  });
+  return `${SITE_URL}/api/og?${params.toString()}`;
+};
+
+export const getRobotsContent = (noindex?: boolean, nofollow?: boolean): string => {
+  const directives: string[] = [];
+  directives.push(noindex ? 'noindex' : 'index');
+  directives.push(nofollow ? 'nofollow' : 'follow');
+  directives.push('max-snippet:-1');
+  directives.push('max-image-preview:large');
+  directives.push('max-video-preview:-1');
+  return directives.join(', ');
+};
+
 export const generateTitle = (page: PageType, data?: Record<string, string>): string => {
   if (page === 'home') return 'StripHubs - Live Cam Gratis - Migliaia di Modelle Online';
   if (page === 'live') return 'Tutte le Cam Live Gratis - StripHubs';
@@ -88,22 +125,77 @@ export const generateDescription = (page: PageType, data?: Record<string, string
 };
 
 export const useSEO = (title: string, description: string, path: string, lang?: Language) => {
+  useAdvancedSEO(title, description, path, { lang });
+};
+
+export const useAdvancedSEO = (
+  title: string,
+  description: string,
+  path: string,
+  options?: SEOOptions & { lang?: Language }
+) => {
+  const {
+    lang = DEFAULT_LANGUAGE,
+    image,
+    keywords,
+    type = 'website',
+    author,
+    publishedTime,
+    modifiedTime,
+    section,
+    noindex,
+    nofollow
+  } = options || {};
+
   useEffect(() => {
-    const fullTitle = `${title} | ${SITE_NAME}`;
+    const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
     const url = `${SITE_URL}${path}`;
-    const image = `${SITE_URL}/icon-512.png`;
+    const ogImage = image || `${SITE_URL}/icon-512.png`;
     const currentLang = lang || DEFAULT_LANGUAGE;
 
     document.title = fullTitle;
+    
     ensureMeta('description').setAttribute('content', description);
-    ensureMeta('twitter:title').setAttribute('content', fullTitle);
-    ensureMeta('twitter:description').setAttribute('content', description);
-    ensureMeta('twitter:image').setAttribute('content', image);
-    ensurePropertyMeta('og:title').setAttribute('content', fullTitle);
-    ensurePropertyMeta('og:description').setAttribute('content', description);
+    ensureMeta('robots').setAttribute('content', getRobotsContent(noindex, nofollow));
+    ensureMeta('googlebot').setAttribute('content', getRobotsContent(noindex, nofollow));
+    
+    if (keywords && keywords.length > 0) {
+      ensureMeta('keywords').setAttribute('content', keywords.join(', '));
+    }
+    
+    if (author) {
+      ensureMeta('author').setAttribute('content', author);
+    }
+
+    ensureMeta('twitter:card').setAttribute('content', 'summary_large_image');
+    ensureMeta('twitter:site').setAttribute('content', '@striphubs');
+    ensureMeta('twitter:title').setAttribute('content', fullTitle.slice(0, 70));
+    ensureMeta('twitter:description').setAttribute('content', description.slice(0, 200));
+    ensureMeta('twitter:image').setAttribute('content', ogImage);
+    
+    ensurePropertyMeta('og:title').setAttribute('content', fullTitle.slice(0, 60));
+    ensurePropertyMeta('og:description').setAttribute('content', description.slice(0, 160));
     ensurePropertyMeta('og:url').setAttribute('content', url);
-    ensurePropertyMeta('og:image').setAttribute('content', image);
+    ensurePropertyMeta('og:image').setAttribute('content', ogImage);
+    ensurePropertyMeta('og:image:width').setAttribute('content', '1200');
+    ensurePropertyMeta('og:image:height').setAttribute('content', '630');
+    ensurePropertyMeta('og:type').setAttribute('content', type);
+    ensurePropertyMeta('og:site_name').setAttribute('content', SITE_NAME);
     ensurePropertyMeta('og:locale').setAttribute('content', currentLang);
+    
+    SUPPORTED_LANGUAGES.filter(l => l !== currentLang).forEach(l => {
+      ensurePropertyMeta(`og:locale:alternate`).setAttribute('content', l);
+    });
+    
+    if (publishedTime) {
+      ensurePropertyMeta('article:published_time').setAttribute('content', publishedTime);
+    }
+    if (modifiedTime) {
+      ensurePropertyMeta('article:modified_time').setAttribute('content', modifiedTime);
+    }
+    if (section) {
+      ensurePropertyMeta('article:section').setAttribute('content', section);
+    }
     
     const canonicalUrl = getCanonicalUrl(path, SITE_URL, currentLang);
     ensureCanonical().setAttribute('href', canonicalUrl);
@@ -114,7 +206,128 @@ export const useSEO = (title: string, description: string, path: string, lang?: 
       const link = ensureAlternateLink(hreflang);
       link.href = href;
     });
-  }, [title, description, path, lang]);
+    
+    const prevLink = document.querySelector('link[rel="prev"]') as HTMLLinkElement;
+    const nextLink = document.querySelector('link[rel="next"]') as HTMLLinkElement;
+    if (prevLink) prevLink.remove();
+    if (nextLink) nextLink.remove();
+    
+  }, [title, description, path, lang, image, keywords, type, author, publishedTime, modifiedTime, section, noindex, nofollow]);
+};
+
+export const usePaginationSEO = (
+  path: string,
+  currentPage: number,
+  totalPages: number
+) => {
+  useEffect(() => {
+    const removeLink = (rel: string) => {
+      const el = document.querySelector(`link[rel="${rel}"]`);
+      if (el) el.remove();
+    };
+    
+    const addLink = (rel: string, href: string) => {
+      let el = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement | null;
+      if (!el) {
+        el = document.createElement('link');
+        el.rel = rel;
+        document.head.appendChild(el);
+      }
+      el.href = href;
+    };
+    
+    removeLink('prev');
+    removeLink('next');
+    
+    if (currentPage > 1) {
+      const prevPath = currentPage === 2 ? path : `${path}?page=${currentPage - 1}`;
+      addLink('prev', `${SITE_URL}${prevPath}`);
+    }
+    
+    if (currentPage < totalPages) {
+      addLink('next', `${SITE_URL}${path}?page=${currentPage + 1}`);
+    }
+    
+    return () => {
+      removeLink('prev');
+      removeLink('next');
+    };
+  }, [path, currentPage, totalPages]);
+};
+
+export const useModelSEO = (
+  model: {
+    username: string;
+    thumbnail: string;
+    viewers: number;
+    tags: string[];
+    country: string;
+    category: string;
+    isLive: boolean;
+  },
+  path: string,
+  lang?: Language
+) => {
+  const title = `${model.username} Live Cam - ${categoryName(model.category)} - StripHubs`;
+  const description = `Guarda ${model.username} in diretta streaming HD. ${model.viewers.toLocaleString()} spettatori online. Categoria: ${categoryName(model.category)}. Gratis, senza registrazione.`;
+  
+  useAdvancedSEO(title, description, path, {
+    lang,
+    image: model.thumbnail,
+    keywords: [model.username, model.category, ...model.tags.slice(0, 5), 'live cam', 'streaming'],
+    type: 'video.other',
+    section: model.category
+  });
+};
+
+export const useCategorySEO = (
+  category: string,
+  modelCount: number,
+  path: string,
+  lang?: Language
+) => {
+  const catName = categoryName(category);
+  const title = `${catName} Cam Live Gratis - ${modelCount} Modelle Online - StripHubs`;
+  const description = `Scopri ${modelCount} modelle ${catName} online in diretta streaming. Cam live gratis 24/7, filtra per età, paese e preferenze. Nessuna registrazione.`;
+  
+  useAdvancedSEO(title, description, path, {
+    lang,
+    keywords: [category, catName, 'live cam', 'streaming', 'gratis'],
+    section: category
+  });
+};
+
+export const useTagSEO = (
+  tag: string,
+  modelCount: number,
+  path: string,
+  lang?: Language
+) => {
+  const tagName = tag.charAt(0).toUpperCase() + tag.slice(1);
+  const title = `${tagName} Cam Live Gratis - ${modelCount} Modelle Online - StripHubs`;
+  const description = `Esplora ${modelCount} modelle con tag ${tagName} in diretta streaming. Le cam più hot con ${tagName} sono qui. Gratis, senza registrazione.`;
+  
+  useAdvancedSEO(title, description, path, {
+    lang,
+    keywords: [tag, tagName, 'live cam', 'streaming', 'tag'],
+    section: tag
+  });
+};
+
+export const useCountrySEO = (
+  countryName: string,
+  modelCount: number,
+  path: string,
+  lang?: Language
+) => {
+  const title = `Cam ${countryName} Live Gratis - ${modelCount} Modelle Online - StripHubs`;
+  const description = `Guarda ${modelCount} cam ${countryName.toLowerCase()} in diretta streaming gratis. Modelle online 24/7, filtra per categoria e tag. Nessuna registrazione.`;
+  
+  useAdvancedSEO(title, description, path, {
+    lang,
+    keywords: [countryName, 'live cam', 'streaming', countryName.toLowerCase()],
+    section: countryName
+  });
 };
 
 export const upsertJsonLd = (id: string, payload: Record<string, unknown>) => {

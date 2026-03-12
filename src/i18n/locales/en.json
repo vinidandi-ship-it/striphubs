@@ -151,5 +151,26 @@
     "philippine": "Philippine",
     "thai": "Thai",
     "vietnamese": "Vietnamese"
+  },
+  "exitIntent": {
+    "title": "Wait! Don't miss this opportunity",
+    "onlineNow": "is online NOW",
+    "modelsOnline": "models online",
+    "viewersNow": "viewers now",
+    "avgSession": "min average",
+    "clicksToday": "clicks today",
+    "watchFree": "Watch Free Now",
+    "noRegistration": "Free access • No registration required"
+  },
+  "alternative": {
+    "freeForever": "Free forever",
+    "noRegistration": "No registration",
+    "hdQuality": "HD Quality",
+    "modelsLiveNow": "models live now"
+  },
+  "comparison": {
+    "vote": "Vote",
+    "voted": "Voted",
+    "totalVotes": "total votes"
   }
 }

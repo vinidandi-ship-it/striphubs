@@ -1,11 +1,64 @@
 import { useEffect, useRef, useState } from 'react';
 import ModelCard from './ModelCard';
+import NativeAdSlot from './NativeAdSlot';
 import { Model, SITE_URL } from '../lib/models';
 import { removeJsonLd, upsertJsonLd } from '../lib/seo';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
+import { isPremiumUser } from '../lib/revenue';
+import { getClickStats } from '../lib/affiliateTracking';
+import { getAffiliateUrlWithProvider } from '../lib/affiliateProviders';
+import Icon from './Icon';
 
 const INITIAL_RENDER_COUNT = 120;
 const RENDER_BATCH_SIZE = 120;
+const NATIVE_AD_INTERVAL = 6;
+const CTA_INTERVAL = 12;
+
+function InlineCTA({ index }: { index: number }) {
+  const stats = getClickStats();
+  
+  const handleClick = () => {
+    const history = JSON.parse(localStorage.getItem('sh_click_history') || '[]');
+    const lastModel = history[history.length - 1];
+    
+    if (lastModel) {
+      const { url } = getAffiliateUrlWithProvider(lastModel.username);
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } else {
+      window.open('https://go.mavrtracktor.com?userId=d28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881', '_blank', 'noopener,noreferrer');
+    }
+  };
+  
+  const messages = [
+    { emoji: '🔥', text: 'Più di 10,000 modelle online ora' },
+    { emoji: '👀', text: `${stats.todayClicks} utenti hanno cliccato oggi` },
+    { emoji: '💎', text: 'Accesso gratuito illimitato' },
+    { emoji: '🎭', text: 'Nuove modelle ogni minuto' },
+  ];
+  
+  const message = messages[index % messages.length];
+  
+  return (
+    <div className="col-span-full my-2">
+      <div 
+        onClick={handleClick}
+        className="flex items-center justify-between bg-gradient-to-r from-accent-primary/10 via-accent-primary/20 to-accent-secondary/10 border border-accent-primary/30 rounded-xl px-4 py-3 cursor-pointer hover:border-accent-primary transition-all group"
+      >
+        <div className="flex items-center gap-3">
+          <span className="text-2xl">{message.emoji}</span>
+          <div>
+            <p className="text-white font-medium text-sm">{message.text}</p>
+            <p className="text-xs text-zinc-400">Clicca per continuare</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 bg-accent-primary/20 rounded-lg px-3 py-1.5 group-hover:bg-accent-primary/30 transition-colors">
+          <span className="text-sm font-medium text-white">Scopri</span>
+          <Icon name="arrowRight" size={14} className="text-white group-hover:translate-x-1 transition-transform" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function ModelGrid({ models, listName, loading = false }: { models: Model[]; listName: string; loading?: boolean }) {
   const [visibleCount, setVisibleCount] = useState(INITIAL_RENDER_COUNT);
@@ -59,11 +112,31 @@ export default function ModelGrid({ models, listName, loading = false }: { model
   if (!models.length) {
     return <div className="rounded-2xl border border-border bg-panel p-6 text-zinc-400">No live models found.</div>;
   }
+  
+  const showAds = !isPremiumUser();
+  const showInlineCta = !isPremiumUser();
+  
+  const gridItems: JSX.Element[] = [];
+  let modelIndex = 0;
+  let ctaCount = 0;
+  
+  renderedModels.forEach((model, index) => {
+    gridItems.push(<ModelCard key={model.username} model={model} />);
+    modelIndex++;
+    
+    if (showInlineCta && modelIndex > 0 && modelIndex % CTA_INTERVAL === 0 && index < renderedModels.length - 1) {
+      gridItems.push(<InlineCTA key={`cta-${index}`} index={ctaCount++} />);
+    }
+    
+    if (showAds && modelIndex > 0 && modelIndex % NATIVE_AD_INTERVAL === 0 && index < renderedModels.length - 1) {
+      gridItems.push(<NativeAdSlot key={`native-${index}`} cardIndex={index} />);
+    }
+  });
 
   return (
     <div className="space-y-4">
       <section className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {renderedModels.map((model) => <ModelCard key={model.username} model={model} />)}
+        {gridItems}
       </section>
       {canRenderMore ? (
         <div className="space-y-3">

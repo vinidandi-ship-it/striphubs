@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Model, watchLiveUrl } from '../lib/models';
+import { Model } from '../lib/models';
+import { trackAffiliateClick } from '../lib/affiliateTracking';
+import { getAffiliateUrlWithProvider } from '../lib/affiliateProviders';
 import Icon from './Icon';
 
 const COUNTRY_FLAGS: Record<string, string> = {
@@ -38,8 +40,48 @@ const getCountryFlag = (code: string): string => {
   return COUNTRY_FLAGS[code.toUpperCase()] || '';
 };
 
+const getOnlineMinutes = (username: string): number => {
+  const key = `sh_online_${username}`;
+  try {
+    const stored = sessionStorage.getItem(key);
+    if (stored) {
+      const start = parseInt(stored, 10);
+      return Math.floor((Date.now() - start) / 60000);
+    }
+    sessionStorage.setItem(key, Date.now().toString());
+    return 0;
+  } catch {
+    return Math.floor(Math.random() * 60) + 5;
+  }
+};
+
+const getViewersTrend = (viewers: number, username: string): 'rising' | 'stable' | 'falling' => {
+  const key = `sh_trend_${username}`;
+  try {
+    const stored = localStorage.getItem(key);
+    if (stored) {
+      const prev = parseInt(stored, 10);
+      localStorage.setItem(key, viewers.toString());
+      if (viewers > prev * 1.1) return 'rising';
+      if (viewers < prev * 0.9) return 'falling';
+      return 'stable';
+    }
+    localStorage.setItem(key, viewers.toString());
+    return 'stable';
+  } catch {
+    return viewers > 300 ? 'rising' : viewers > 100 ? 'stable' : 'falling';
+  }
+};
+
 export default function ModelCard({ model }: { model: Model }) {
   const countryFlag = getCountryFlag(model.country);
+  const { url: rotatedUrl, provider } = getAffiliateUrlWithProvider(model.username);
+  const clickUrl = model.clickUrl || rotatedUrl;
+  
+  const onlineMinutes = model.isLive ? getOnlineMinutes(model.username) : 0;
+  const viewersTrend = model.isLive ? getViewersTrend(model.viewers, model.username) : 'stable';
+  const isHot = model.viewers > 500 && viewersTrend === 'rising';
+  const isUrgent = model.isLive && (onlineMinutes < 10 || isHot);
   
   return (
     <article className="content-visibility-card group relative overflow-hidden sh-card transition-all hover:-translate-y-1">
@@ -73,10 +115,29 @@ export default function ModelCard({ model }: { model: Model }) {
             </span>
           )}
           <div className="absolute bottom-2 left-2 right-2 transition-opacity group-hover:opacity-100 sm:bottom-3 sm:left-3 sm:right-3 sm:opacity-0">
-            <span className="rounded-full bg-black/50 px-2 py-1 text-[10px] text-white sm:text-xs">
-              {model.viewers.toLocaleString()} spettatori
-            </span>
+            <div className="flex items-center justify-between gap-2">
+              <span className="rounded-full bg-black/50 px-2 py-1 text-[10px] text-white sm:text-xs flex items-center gap-1">
+                <Icon name="eye" size={10} />
+                {model.viewers.toLocaleString()}
+              </span>
+              {model.isLive && (
+                <span className={`rounded-full px-2 py-1 text-[10px] font-medium flex items-center gap-1 ${
+                  viewersTrend === 'rising' ? 'bg-green-500/30 text-green-400' :
+                  viewersTrend === 'falling' ? 'bg-red-500/30 text-red-400' :
+                  'bg-white/20 text-white'
+                }`}>
+                  {viewersTrend === 'rising' && '↑'}
+                  {viewersTrend === 'falling' && '↓'}
+                  {onlineMinutes}min
+                </span>
+              )}
+            </div>
           </div>
+          {isHot && (
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+              <div className="animate-ping absolute inline-flex h-12 w-12 rounded-full bg-red-500/30 opacity-75"></div>
+            </div>
+          )}
         </div>
       </Link>
       <div className="space-y-2 p-3 sm:space-y-3 sm:p-4">
@@ -103,15 +164,35 @@ export default function ModelCard({ model }: { model: Model }) {
           ))}
         </div>
         <a
-          href={model.clickUrl || watchLiveUrl(model.username)}
+          href={clickUrl}
           target="_blank"
           rel="noopener noreferrer sponsored"
-          className="block w-full sh-btn sh-btn-primary text-center text-xs sm:text-sm"
+          className={`block w-full text-center text-xs sm:text-sm gap-1 ${
+            isUrgent 
+              ? 'bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-bold py-3 animate-pulse sh-btn' 
+              : 'sh-btn sh-btn-primary'
+          }`}
           aria-label={`Guarda ${model.username} live`}
+          onClick={() => trackAffiliateClick(model.username, 'card', {
+            category: model.category,
+            country: model.country,
+            viewers: model.viewers,
+            provider
+          })}
         >
           <Icon name="play" size={14} />
-          Guarda Live
+          {model.isLive ? (
+            isUrgent ? 'GUARSA ORA!' : 'Guarda ORA'
+          ) : 'Vai al Profilo'}
+          {model.viewers > 500 && (
+            <span className="ml-1 text-[10px] opacity-80">• {model.viewers.toLocaleString()}</span>
+          )}
         </a>
+        {isHot && (
+          <p className="text-[10px] text-center text-green-400 font-medium mt-1 animate-pulse">
+            ↑ Viewers in crescita
+          </p>
+        )}
       </div>
     </article>
   );

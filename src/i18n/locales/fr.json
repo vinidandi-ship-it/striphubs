@@ -13,7 +13,8 @@
     "search": "Rechercher",
     "searchPlaceholder": "Rechercher modèles, tags, pays...",
     "accept": "Accepter",
-    "exit": "Quitter"
+    "exit": "Quitter",
+    "noResults": "Aucun résultat trouvé"
   },
   "nav": {
     "home": "Accueil",
@@ -144,6 +145,32 @@
     "indian": "Indiennes",
     "chinese": "Chinoises",
     "japanese": "Japonaises",
-    "korean": "Coréennes"
+    "korean": "Coréennes",
+    "colombian": "Colombiennes",
+    "mexican": "Mexicaines",
+    "philippine": "Philippines",
+    "thai": "Thaïlandaises",
+    "vietnamese": "Vietnamiennes"
+  },
+  "exitIntent": {
+    "title": "Attendez! Ne manquez pas cette occasion",
+    "onlineNow": "est en ligne MAINTENANT",
+    "modelsOnline": "modèles en ligne",
+    "viewersNow": "spectateurs maintenant",
+    "avgSession": "min moyenne",
+    "clicksToday": "clics aujourd'hui",
+    "watchFree": "Regarder Gratuitement",
+    "noRegistration": "Accès gratuit • Aucune inscription requise"
+  },
+  "alternative": {
+    "freeForever": "Gratuit pour toujours",
+    "noRegistration": "Aucune inscription",
+    "hdQuality": "Qualité HD",
+    "modelsLiveNow": "modèles en direct maintenant"
+  },
+  "comparison": {
+    "vote": "Voter",
+    "voted": "Voté",
+    "totalVotes": "votes au total"
   }
 }

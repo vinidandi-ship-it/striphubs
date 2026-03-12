@@ -5,9 +5,10 @@ import InternalLinks from '../components/InternalLinks';
 import ModelGrid from '../components/ModelGrid';
 import { useI18n } from '../i18n';
 import { api } from '../lib/api';
-import { Model as LiveModel } from '../lib/models';
+import { Model as LiveModel, AFFILIATE_ID } from '../lib/models';
 import { generateModelMeta } from '../lib/metaTags';
 import { useSEO } from '../lib/seo';
+import { trackAffiliateClick, getAffiliateUrl } from '../lib/affiliateTracking';
 
 export default function ModelPage() {
   const { username = '' } = useParams();
@@ -30,6 +31,8 @@ export default function ModelPage() {
         if (!selected) throw new Error('Model not found in current live feed');
         setModel(selected);
         setRelated(data.models.filter((item) => item.username.toLowerCase() !== decodedName.toLowerCase()).slice(0, 8));
+        
+        window.dispatchEvent(new CustomEvent('modelView', { detail: selected }));
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load model profile'))
       .finally(() => setLoading(false));
@@ -58,10 +61,15 @@ export default function ModelPage() {
             {model.tags.map((tag) => <span key={tag} className="rounded-full bg-zinc-800 px-3 py-1 text-xs text-zinc-200">#{tag}</span>)}
           </div>
           <a
-            href={model.clickUrl || `https://stripchat.com/${encodeURIComponent(model.username)}?userId=d28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881`}
+            href={model.clickUrl || getAffiliateUrl(model.username)}
             target="_blank"
             rel="noopener noreferrer sponsored"
             className="mt-6 inline-block rounded-full bg-accent px-6 py-3 font-semibold text-white"
+            onClick={() => trackAffiliateClick(model.username, 'profile', {
+              category: model.category,
+              country: model.country,
+              viewers: model.viewers
+            })}
           >
             Watch Live
           </a>

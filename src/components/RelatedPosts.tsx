@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { BlogPost, getRelatedPosts } from '../lib/blogContent';
 import { Language } from '../i18n/translations';
 
+type SupportedLocale = 'it' | 'en' | 'de' | 'fr' | 'es' | 'pt';
+
 type RelatedPostsProps = {
   posts: BlogPost[];
   language: Language;
