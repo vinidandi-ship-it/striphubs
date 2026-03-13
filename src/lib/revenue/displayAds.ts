@@ -2,7 +2,7 @@ const DISPLAY_AD_CONFIG = {
   enabled: true,
   nativeAdsEnabled: true,
   premiumAdsEnabled: true,
-  nativeAdInterval: 6,
+  nativeAdInterval: 3,
   premiumAdThreshold: 3,
   cpmRates: {
     native: { mobile: 0.80, desktop: 1.20 },
