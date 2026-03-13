@@ -135,8 +135,9 @@ export default function Videos() {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {displayVideos.map((video, index) => (
           <>
+            {/* Banner piccolo ogni 6 video */}
             {index > 0 && index % 6 === 0 && (
-              <div className="col-span-full flex justify-center my-4">
+              <div className="col-span-full flex justify-center my-3">
                 <NativeAdSlot cardIndex={index} />
               </div>
             )}
