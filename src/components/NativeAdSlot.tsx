@@ -10,16 +10,17 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
     recordAdImpression('native');
   }, [cardIndex]);
   
-  // Always show ads for debugging
+  // Use iframe approach like before
   return (
     <div 
-      className="native-ad-wrapper col-span-full w-full my-4 bg-green-900 border-2 border-green-500 p-4 text-center"
+      className="native-ad-wrapper col-span-full w-full my-4"
       onClick={() => recordAdClick('native')}
     >
-      <p className="text-green-400 font-bold mb-2">ADVERTISEMENT (Position {cardIndex})</p>
-      <ins 
-        className="eas6a97888e20 w-full block"
-        data-zoneid="5870892"
+      <iframe 
+        src={`https://ads.exoclick.com/ads.php?zoneid=5870892&charset=utf-8`}
+        className="w-full h-[300px] border-0"
+        scrolling="no"
+        title="Advertisement"
       />
     </div>
   );
