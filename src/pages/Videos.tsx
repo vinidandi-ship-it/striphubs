@@ -169,7 +169,7 @@ export default function Videos() {
               </div>
             </Link>
             
-            {index > 0 && index % 10 === 0 && (
+            {index > 0 && index % 6 === 0 && (
               <div className="mt-2">
                 <NativeAdSlot cardIndex={index} />
               </div>
