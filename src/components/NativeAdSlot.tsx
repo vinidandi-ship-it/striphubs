@@ -28,7 +28,7 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
   
   // Use different ad formats based on position
   const getAdFormat = () => {
-    const position = cardIndex % 4;
+    const position = cardIndex % 6;
     
     switch (position) {
       case 0:
@@ -39,6 +39,10 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
         return { id: '5870906', class: 'eas6a97888e6', style: { width: '300px', height: '250px' } };
       case 3:
         return { id: '5870896', class: 'eas6a97888e38', style: { width: '100%', maxWidth: '500px', height: '320px' } };
+      case 4:
+        return { id: '5871370', class: 'eas6a97888e2', style: { width: '728px', height: '90px', maxWidth: '100%' } };
+      case 5:
+        return { id: '5870892', class: 'eas6a97888e20', style: { width: '100%', maxWidth: '600px', height: '280px' } };
       default:
         return { id: '5870892', class: 'eas6a97888e20', style: { width: '100%', maxWidth: '600px', height: '280px' } };
     }
