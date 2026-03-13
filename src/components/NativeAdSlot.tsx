@@ -45,7 +45,7 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
     >
       <div className="relative">
         <ins 
-          className="eas6a97888e2" 
+          className="eas6a97888e20" 
           data-zoneid="5870892"
         />
         <script 
