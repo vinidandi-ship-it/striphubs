@@ -71,8 +71,8 @@ export default function CombinationPage() {
     <div className="space-y-6">
       <Breadcrumbs
         items={[
-          { label: 'Home', to: '/' },
-          { label: 'Live', to: '/live' },
+          { label: t('common.home'), to: '/' },
+          { label: t('common.live'), to: '/live' },
           { label: categoryName(category), to: `/cam/${category}` },
           { label: tag, to: `/tag/${tag}` },
           { label: `${category} + ${tag}` }
