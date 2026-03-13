@@ -38,7 +38,7 @@ export default function ModelPage() {
           // Map API response to our Model type
           const mappedModel: LiveModel = {
             username: apiModel.username,
-            thumbnail: apiModel.snapshotUrl || apiModel.previewUrl || apiModel.avatarUrl || '',
+            thumbnail: apiModel.snapshotUrl || apiModel.previewUrl || apiModel.avatarUrl || apiModel.widgetPreviewUrl || '',
             viewers: apiModel.viewersCount || apiModel.viewers || 0,
             tags: apiModel.defaultTags || apiModel.tags || [],
             country: apiModel.modelsCountry || apiModel.country || '',
@@ -47,6 +47,7 @@ export default function ModelPage() {
             clickUrl: apiModel.stream?.url,
             provider: 'stripchat'
           };
+          console.log('Model loaded:', mappedModel);
           setModel(mappedModel);
           
           // Get related models
@@ -110,7 +111,7 @@ export default function ModelPage() {
       <Breadcrumbs items={breadcrumbs} />
 
       <section className="grid gap-6 rounded-2xl border border-border bg-panel p-5 md:grid-cols-[360px_1fr]">
-        <img src={model.thumbnail} alt={`${model.username} profile`} className="h-[440px] w-full rounded-xl object-cover" loading="lazy" />
+        <img src={model.thumbnail || 'https://via.placeholder.com/360x440?text=No+Image'} alt={`${model.username} profile`} className="h-[440px] w-full rounded-xl object-cover" loading="lazy" />
         <div>
           <h1 className="text-3xl font-bold text-white">{model.username}</h1>
           <p className="mt-2 text-zinc-300">{model.viewers.toLocaleString()} {t('model.watchingNow')}</p>
