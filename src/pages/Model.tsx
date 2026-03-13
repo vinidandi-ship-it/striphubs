@@ -36,7 +36,6 @@ export default function ModelPage() {
         
         if (data.models && data.models.length > 0) {
           const apiModel = data.models[0];
-          console.log('API Model raw:', apiModel);
           
           // Map API response to our Model type - check all possible image fields
           const thumbnail = 
@@ -46,8 +45,6 @@ export default function ModelPage() {
             apiModel.widgetPreviewUrl ||
             apiModel.popularSnapshotUrl ||
             '';
-          
-          console.log('Thumbnail URL:', thumbnail);
           
           const { url: affiliateUrl, provider: affiliateProvider } = getAffiliateUrlWithProvider(apiModel.username);
           
@@ -62,12 +59,17 @@ export default function ModelPage() {
             clickUrl: affiliateUrl,
             provider: affiliateProvider
           };
-          console.log('Mapped Model:', mappedModel);
           setModel(mappedModel);
           
-          // Get related models
-          const relatedData = await api.getModels({ limit: 9 });
-          setRelated(relatedData.models.filter((m) => m.username !== apiModel.username).slice(0, 8));
+          // Get related models in background (don't block)
+          setTimeout(() => {
+            api.getModels({ limit: 9 })
+              .then(relatedData => {
+                setRelated(relatedData.models.filter((m) => m.username !== apiModel.username).slice(0, 8));
+              })
+              .catch(() => {});
+          }, 100);
+          
           window.dispatchEvent(new CustomEvent('modelView', { detail: mappedModel }));
         } else {
           setError(t('model.notFound'));
@@ -130,12 +132,14 @@ export default function ModelPage() {
       <Breadcrumbs items={breadcrumbs} />
 
       <section className="grid gap-6 rounded-2xl border border-border bg-panel p-5 md:grid-cols-[360px_1fr]">
-        <div className="h-[440px] w-full rounded-xl bg-zinc-800 overflow-hidden">
+        <div className="h-[440px] w-full rounded-xl bg-zinc-800 overflow-hidden relative">
+          <div className="absolute inset-0 animate-pulse bg-zinc-700"></div>
           <img 
             src={model.thumbnail} 
             alt={`${model.username} profile`} 
-            className="h-full w-full object-cover" 
+            className="h-full w-full object-cover relative z-10" 
             loading="lazy"
+            onLoad={(e) => e.currentTarget.previousElementSibling?.remove()}
             onError={(e) => {
               e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 440"%3E%3Crect fill="%23222" width="360" height="440"/%3E%3Ctext fill="%23666" x="50%25" y="50%25" text-anchor="middle"%3ENo Image%3C/text%3E%3C/svg%3E';
             }}
