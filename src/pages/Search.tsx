@@ -8,11 +8,13 @@ import { api } from '../lib/api';
 import { Model } from '../lib/models';
 import { generateDescription, generateTitle, useAdvancedSEO } from '../lib/seo';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
+import { useI18n } from '../i18n';
 
 export default function Search() {
   const PAGE_SIZE = 120;
   const [params] = useSearchParams();
   const query = params.get('q') || '';
+  const { t } = useI18n();
 
   const [models, setModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
@@ -70,12 +72,12 @@ export default function Search() {
 
   return (
     <div className="space-y-6">
-      <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Search' }]} />
-      <h1 className="text-3xl font-bold text-white">Search</h1>
+      <Breadcrumbs items={[{ label: t('common.home'), to: '/' }, { label: t('search.searchTitle') }]} />
+      <h1 className="text-3xl font-bold text-white">{t('search.searchTitle')}</h1>
       <SearchBar initialValue={query} />
-      <p className="text-sm text-zinc-400">{models.length} risultati caricati per "{query || 'all'}"{hasMore ? ' con altri disponibili' : ''}</p>
+      <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')} {t('search.resultsFor')} "{query || 'all'}"{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p>
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
-      <ModelGrid models={models} loading={loading} listName="Search Results" />
+      <ModelGrid models={models} loading={loading} listName={t('search.title')} />
       {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
       <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
     </div>

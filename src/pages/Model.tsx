@@ -12,7 +12,7 @@ import { trackAffiliateClick, getAffiliateUrl } from '../lib/affiliateTracking';
 
 export default function ModelPage() {
   const { username = '' } = useParams();
-  const { language } = useI18n();
+  const { language, t } = useI18n();
   const decodedName = decodeURIComponent(username);
 
   const [model, setModel] = useState<LiveModel | null>(null);
@@ -85,8 +85,8 @@ export default function ModelPage() {
         <img src={model.thumbnail} alt={`${model.username} profile`} className="h-[440px] w-full rounded-xl object-cover" loading="lazy" />
         <div>
           <h1 className="text-3xl font-bold text-white">{model.username}</h1>
-          <p className="mt-2 text-zinc-300">{model.viewers.toLocaleString()} viewers watching now</p>
-          <p className="mt-2 text-sm text-zinc-400">Country: {model.country}</p>
+          <p className="mt-2 text-zinc-300">{model.viewers.toLocaleString()} {t('model.watchingNow')}</p>
+          <p className="mt-2 text-sm text-zinc-400">{t('model.country')}: {model.country}</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {model.tags.map((tag) => <span key={tag} className="rounded-full bg-zinc-800 px-3 py-1 text-xs text-zinc-200">#{tag}</span>)}
           </div>
@@ -102,14 +102,14 @@ export default function ModelPage() {
               provider: model.provider
             })}
           >
-            Watch Live
+            {t('cta.watchLive')}
           </a>
         </div>
       </section>
 
       <section>
-        <h2 className="mb-4 text-2xl font-bold text-white">Related Models</h2>
-        <ModelGrid models={related} loading={loading} listName="Related Models" />
+        <h2 className="mb-4 text-2xl font-bold text-white">{t('model.relatedModels')}</h2>
+        <ModelGrid models={related} loading={loading} listName={t('model.relatedModels')} />
       </section>
       
       <InternalLinks language={language} />

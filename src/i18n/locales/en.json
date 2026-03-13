@@ -237,6 +237,46 @@
     "title": "Free Porn Videos",
     "subtitle": "Watch free XXX videos online",
     "videos": "videos",
-    "search": "Search videos, tags, pornstars..."
+    "search": "Search videos, tags, pornstars...",
+    "videoNotFound": "Video not found",
+    "relatedVideos": "Related Videos",
+    "pornstar": "Pornstar",
+    "views": "views"
+  },
+  "model": {
+    "profile": "Profile",
+    "watchingNow": "viewers watching now",
+    "country": "Country",
+    "relatedModels": "Related Models",
+    "notFound": "Model not found"
+  },
+  "search": {
+    "title": "Search Models",
+    "searchTitle": "Search",
+    "description": "Search all models, tags and categories",
+    "resultsFor": "Results for",
+    "noResults": "No results found",
+    "tryDifferent": "Try a different search"
+  },
+  "tag": {
+    "landingCorrelate": "Related landing pages for"
+  },
+  "common": {
+    "backToHome": "Back to Home"
+  },
+  "blog": {
+    "title": "Blog",
+    "searchPlaceholder": "Search articles...",
+    "readMore": "Read more",
+    "published": "Published",
+    "updated": "Updated",
+    "relatedPosts": "Related Articles",
+    "categories": "Categories",
+    "notFound": "Article not found",
+    "backToHome": "Back to Home",
+    "bestCategoryIntro": "Discover the best {category} cams online. Complete guides, tips and tricks to find the perfect models.",
+    "completeGuideIntro": "Welcome to the complete guide to live cams. Everything you need to know to get started.",
+    "statisticsIntro": "Complete analysis of the live cam market with updated data.",
+    "securityIntro": "Everything about security and privacy in live cams."
   }
 }

@@ -70,7 +70,7 @@ export default function BlogSearch() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Cerca articoli..."
+          placeholder={t('blog.searchPlaceholder') || 'Cerca articoli...'}
           className="w-full pl-10 pr-4 py-3 bg-bg-card border border-border rounded-xl text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-accent"
         />
       </div>

@@ -111,9 +111,9 @@ export default function VideoPage() {
   if (!video) {
     return (
       <div className="text-center py-20">
-        <h1 className="text-2xl font-bold text-white mb-4">Video not found</h1>
+        <h1 className="text-2xl font-bold text-white mb-4">{t('videos.videoNotFound')}</h1>
         <Link to={buildLocalizedPath('/videos', language)} className="text-accent hover:underline">
-          Browse all videos →
+          {t('home.seeAll')} →
         </Link>
       </div>
     );
@@ -162,7 +162,7 @@ export default function VideoPage() {
 
           {video.pornstar && (
             <p className="text-zinc-300">
-              <span className="text-zinc-500">Pornstar:</span> {video.pornstar}
+              <span className="text-zinc-500">{t('videos.pornstar')}:</span> {video.pornstar}
             </p>
           )}
 
@@ -186,13 +186,13 @@ export default function VideoPage() {
             rel="noopener noreferrer"
             className="flex-1 bg-accent hover:bg-accent/80 text-white font-semibold py-3 px-6 rounded-full text-center transition"
           >
-            🎯 Go to Stripchat
+            🎯 {t('cta.watchLive')}
           </Link>
           <Link
             to={buildLocalizedPath('/live', language)}
             className="flex-1 border border-border hover:border-accent text-white font-semibold py-3 px-6 rounded-full text-center transition"
           >
-            💄 Watch Live Cams
+            💄 {t('home.allLiveCams')}
           </Link>
         </div>
       </div>
@@ -222,7 +222,7 @@ export default function VideoPage() {
       </div>
 
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-white">Related Videos</h2>
+        <h2 className="text-xl font-bold text-white">{t('videos.relatedVideos')}</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {relatedVideos.map(v => (
             <Link

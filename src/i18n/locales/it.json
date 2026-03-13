@@ -237,7 +237,47 @@
     "title": "Video Porco Gratis",
     "subtitle": "Guarda video XXX online gratis",
     "videos": "video",
-    "search": "Cerca video, tag, pornostar..."
+    "search": "Cerca video, tag, pornostar...",
+    "videoNotFound": "Video non trovato",
+    "relatedVideos": "Video Correlati",
+    "pornstar": "Pornostar",
+    "views": "visualizzazioni"
+  },
+  "model": {
+    "profile": "Profilo",
+    "watchingNow": "spettatori stanno guardando",
+    "country": "Paese",
+    "relatedModels": "Modelle Simili",
+    "notFound": "Modella non trovata"
+  },
+  "search": {
+    "title": "Cerca Modelle",
+    "searchTitle": "Cerca",
+    "description": "Cerca tra tutte le modelle, tag e categorie",
+    "resultsFor": "Risultati per",
+    "noResults": "Nessun risultato trovato",
+    "tryDifferent": "Prova una ricerca diversa"
+  },
+  "tag": {
+    "landingCorrelate": "Landing correlate per"
+  },
+  "common": {
+    "backToHome": "Torna alla Home"
+  },
+  "blog": {
+    "title": "Blog",
+    "searchPlaceholder": "Cerca articoli...",
+    "readMore": "Leggi di più",
+    "published": "Pubblicato",
+    "updated": "Aggiornato",
+    "relatedPosts": "Articoli Correlati",
+    "categories": "Categorie",
+    "notFound": "Articolo non trovato",
+    "backToHome": "Torna alla Home",
+    "bestCategoryIntro": "Scopri le migliori {category} cam online. Guide complete, consigli e trucchi per trovare le modelle perfette.",
+    "completeGuideIntro": "Benvenuto nella guida completa alle live cam. Tutto quello che devi sapere per iniziare.",
+    "statisticsIntro": "Analisi completa del mercato delle live cam con dati aggiornati.",
+    "securityIntro": "Tutto sulla sicurezza e privacy nelle live cam."
   }
 }
 }

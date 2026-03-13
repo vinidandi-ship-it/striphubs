@@ -19,7 +19,7 @@ import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 export default function Tag() {
   const PAGE_SIZE = 96;
   const { tag = 'girls' } = useParams();
-  const { language } = useI18n();
+  const { language, t } = useI18n();
   const [models, setModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -93,12 +93,12 @@ export default function Tag() {
 
   return (
     <div className="space-y-6">
-      <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Tag', to: '/live' }, { label: tag }]} />
+      <Breadcrumbs items={[{ label: t('common.home'), to: '/' }, { label: t('common.tag'), to: '/live' }, { label: tag }]} />
       <h1 className="text-3xl font-bold text-white">#{tag}</h1>
       <p className="text-sm text-zinc-400">{seoTextForTag(tag)}</p>
       {relatedCategories.length ? (
         <section className="rounded-2xl border border-border bg-panel p-4">
-          <h2 className="text-lg font-semibold text-white">Landing correlate per {tag}</h2>
+          <h2 className="text-lg font-semibold text-white">{t('tag.landingCorrelate')} {tag}</h2>
           <div className="mt-3 flex flex-wrap gap-2">
             {relatedCategories.map((category) => (
               <Link
@@ -112,7 +112,7 @@ export default function Tag() {
           </div>
         </section>
       ) : null}
-      {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
+      {!loading ? <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')}{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`Tag ${tag} Models`} />
       

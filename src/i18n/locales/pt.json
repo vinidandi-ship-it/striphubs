@@ -237,6 +237,46 @@
     "title": "Videos Porno Grátis",
     "subtitle": "Assista videos XXX grátis online",
     "videos": "videos",
-    "search": "Pesquisar videos, tags, pornstars..."
+    "search": "Pesquisar videos, tags, pornstars...",
+    "videoNotFound": "Vídeo não encontrado",
+    "relatedVideos": "Vídeos Relacionados",
+    "pornstar": "Pornstar",
+    "views": "visualizações"
+  },
+  "model": {
+    "profile": "Perfil",
+    "watchingNow": "espectadores assistindo agora",
+    "country": "País",
+    "relatedModels": "Modelos Similares",
+    "notFound": "Modelo não encontrado"
+  },
+  "search": {
+    "title": "Pesquisar Modelos",
+    "searchTitle": "Pesquisar",
+    "description": "Pesquisar todos os modelos, tags e categorias",
+    "resultsFor": "Resultados para",
+    "noResults": "Nenhum resultado encontrado",
+    "tryDifferent": "Tente uma pesquisa diferente"
+  },
+  "tag": {
+    "landingCorrelate": "Páginas de destino relacionadas para"
+  },
+  "common": {
+    "backToHome": "Voltar ao início"
+  },
+  "blog": {
+    "title": "Blog",
+    "searchPlaceholder": "Pesquisar artigos...",
+    "readMore": "Ler mais",
+    "published": "Publicado",
+    "updated": "Atualizado",
+    "relatedPosts": "Artigos Relacionados",
+    "categories": "Categorias",
+    "notFound": "Artigo não encontrado",
+    "backToHome": "Voltar ao início",
+    "bestCategoryIntro": "Descubra as melhores cams {category} online. Guias completos, dicas e truques.",
+    "completeGuideIntro": "Bem-vindo ao guia completo de cams live. Tudo que você precisa saber.",
+    "statisticsIntro": "Análise completa do mercado de cams live com dados atualizados.",
+    "securityIntro": "Tudo sobre segurança e privacidade em cams live."
   }
 }
