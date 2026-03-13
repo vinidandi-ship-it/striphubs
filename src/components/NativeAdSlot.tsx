@@ -19,12 +19,16 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
       document.head.appendChild(script);
     }
     
-    // Force ad loading
-    setTimeout(() => {
+    // Forza il caricamento degli ads
+    const tryLoadAds = () => {
       if (typeof window !== 'undefined' && (window as any).AdProvider) {
         (window as any).AdProvider.push({ serve: {} });
+      } else {
+        // Retry after 2 seconds
+        setTimeout(tryLoadAds, 2000);
       }
-    }, 500);
+    };
+    setTimeout(tryLoadAds, 1000);
   }, [cardIndex]);
   
   return (
