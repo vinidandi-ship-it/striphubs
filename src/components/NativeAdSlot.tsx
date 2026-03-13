@@ -11,10 +11,21 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
   useEffect(() => {
     recordAdImpression('native');
     
-    // Trigger AdProvider
-    if (typeof window !== 'undefined') {
-      (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider = (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider || [];
+    // Load ExoClick script
+    const existingScript = document.querySelector('script[src*="ad-provider"]');
+    if (!existingScript) {
+      const script = document.createElement('script');
+      script.src = 'https://a.magsrv.com/ad-provider.js';
+      script.async = true;
+      document.head.appendChild(script);
     }
+    
+    // Trigger AdProvider after a short delay
+    setTimeout(() => {
+      if (typeof window !== 'undefined' && (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider) {
+        (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider?.push({ serve: {} });
+      }
+    }, 500);
   }, [cardIndex]);
   
   return (
@@ -27,7 +38,7 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
       <ins 
         className="eas6a97888e20" 
         data-zoneid="5870892"
-        style={{ display: 'block', minHeight: '100px' }}
+        style={{ display: 'block', minHeight: '150px', width: '100%' }}
       />
     </div>
   );
