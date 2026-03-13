@@ -30,7 +30,7 @@ export function Banner728x90({ className = '' }: { className?: string }) {
       onClick={() => recordAdClick('banner')}
     >
       <ins 
-        className="eas6a97888e38" 
+        className="eas6a97888e2" 
         data-zoneid="5870866"
         style={{
           display: 'block',
@@ -114,7 +114,7 @@ export function NativeAd({ className = '' }: { className?: string }) {
       onClick={() => recordAdClick('native')}
     >
       <ins 
-        className="eas6a97888e38" 
+        className="eas6a97888e20" 
         data-zoneid="5870892"
         style={{
           display: 'block',
