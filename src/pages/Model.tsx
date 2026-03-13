@@ -25,18 +25,39 @@ export default function ModelPage() {
 
   useEffect(() => {
     setLoading(true);
-    void api.getModels({ modelsList: decodedName, strict: 1, limit: 120, tag: 'girls,couples,trans,men' })
-      .then((data) => {
+    setError('');
+    setModel(null);
+    
+    const loadModel = async () => {
+      try {
+        // First try strict mode to find live model
+        const data = await api.getModels({ modelsList: decodedName, strict: 1, limit: 120, tag: 'girls,couples,trans,men' });
         const selected = data.models.find((item) => item.username.toLowerCase() === decodedName.toLowerCase()) || null;
-        if (!selected) throw new Error('Model not found in current live feed');
-        setModel(selected);
-        setRelated(data.models.filter((item) => item.username.toLowerCase() !== decodedName.toLowerCase()).slice(0, 8));
         
-        window.dispatchEvent(new CustomEvent('modelView', { detail: selected }));
-      })
-      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load model profile'))
-      .finally(() => setLoading(false));
-  }, [decodedName]);
+        if (selected) {
+          setModel(selected);
+          setRelated(data.models.filter((item) => item.username.toLowerCase() !== decodedName.toLowerCase()).slice(0, 8));
+          window.dispatchEvent(new CustomEvent('modelView', { detail: selected }));
+        } else {
+          // Try without strict to find offline model
+          const data2 = await api.getModels({ modelsList: decodedName, limit: 1 });
+          if (data2.models.length > 0) {
+            setModel(data2.models[0]);
+            setRelated(data2.models.slice(1, 9));
+            window.dispatchEvent(new CustomEvent('modelView', { detail: data2.models[0] }));
+          } else {
+            setError(t('model.notFound'));
+          }
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load model profile');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadModel();
+  }, [decodedName, t]);
 
   // Add structured data for model profile
   useEffect(() => {
