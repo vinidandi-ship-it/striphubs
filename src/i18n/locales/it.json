@@ -320,7 +320,14 @@
     "unlockFeatures": "Sblocca tutte le funzionalità premium",
     "monthly": "Mensile",
     "annual": "Annuale",
-    "save": "Risparmia 2 mesi"
+    "save": "Risparmia 2 mesi",
+    "emailPlaceholder": "Il tuo indirizzo email",
+    "processing": "Elaborazione...",
+    "activate": "Attiva",
+    "trial": "Prova gratuita 7 giorni. Puoi cancellare in qualsiasi momento.",
+    "error": "Errore durante il checkout",
+    "connectionError": "Errore di connessione. Riprova.",
+    "backToHome": "Torna alla home"
   },
   "internalLinks": {
     "relatedCategories": "Categorie Correlate",

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createCheckoutSession } from '../../lib/revenue/premium';
+import { useI18n } from '../../i18n';
 
 export default function PremiumCheckout() {
   const [email, setEmail] = useState('');
@@ -8,6 +9,7 @@ export default function PremiumCheckout() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { t } = useI18n();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,21 +21,23 @@ export default function PremiumCheckout() {
       if (result.success && result.checkoutUrl) {
         window.location.href = result.checkoutUrl;
       } else {
-        setError(result.error || 'Errore durante il checkout');
+        setError(result.error || t('premium.error'));
       }
     } catch (err) {
-      setError('Errore di connessione. Riprova.');
+      setError(t('premium.connectionError'));
     } finally {
       setLoading(false);
     }
   };
 
+  const features = t('premium.features') as unknown as string[];
+
   return (
     <div className="min-h-screen bg-bg py-12 px-4">
       <div className="max-w-md mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">Diventa VIP</h1>
-          <p className="text-text-secondary">Sblocca tutte le funzionalità premium</p>
+          <h1 className="text-3xl font-bold text-white mb-2">{t('premium.becomeVip')}</h1>
+          <p className="text-text-secondary">{t('premium.unlockFeatures')}</p>
         </div>
 
         <div className="bg-panel rounded-2xl border border-border p-6 mb-6">
@@ -46,7 +50,7 @@ export default function PremiumCheckout() {
                   : 'border-border bg-bg'
               }`}
             >
-              <div className="text-sm text-text-muted">Mensile</div>
+              <div className="text-sm text-text-muted">{t('premium.monthly')}</div>
               <div className="text-xl font-bold text-white">€4.99</div>
             </button>
             <button
@@ -57,21 +61,14 @@ export default function PremiumCheckout() {
                   : 'border-border bg-bg'
               }`}
             >
-              <div className="text-sm text-text-muted">Annuale</div>
+              <div className="text-sm text-text-muted">{t('premium.annual')}</div>
               <div className="text-xl font-bold text-white">€49.90</div>
-              <div className="text-xs text-green-400">Risparmia 2 mesi</div>
+              <div className="text-xs text-green-400">{t('premium.save')}</div>
             </button>
           </div>
 
           <ul className="space-y-2 mb-6">
-            {[
-              'Nessuna pubblicità',
-              'Favoriti illimitati',
-              'Ricerca avanzata',
-              'Modelle esclusive',
-              'Thumbnail HD',
-              'Supporto prioritario'
-            ].map((feature) => (
+            {features.map((feature) => (
               <li key={feature} className="flex items-center gap-2 text-sm text-text-secondary">
                 <span className="text-accent-primary">✓</span> {feature}
               </li>
@@ -91,7 +88,7 @@ export default function PremiumCheckout() {
               onChange={(e) => setEmail(e.target.value)}
               required
               className="w-full rounded-lg border border-border bg-bg px-4 py-3 text-white placeholder-text-muted focus:border-accent-gold focus:outline-none"
-              placeholder="Il tuo indirizzo email"
+              placeholder={t('premium.emailPlaceholder')}
             />
           </div>
 
@@ -106,11 +103,11 @@ export default function PremiumCheckout() {
             disabled={loading}
             className="w-full rounded-lg bg-accent-gold py-3 font-semibold text-black hover:bg-accent-gold/90 transition disabled:opacity-50"
           >
-            {loading ? 'Processing...' : `Attiva ${plan === 'monthly' ? 'Mensile' : 'Annuale'}`}
+            {loading ? t('premium.processing') : `${t('premium.activate')} ${plan === 'monthly' ? t('premium.monthly') : t('premium.annual')}`}
           </button>
 
           <p className="mt-4 text-center text-xs text-text-muted">
-            Prova gratuita 7 giorni. Puoi cancellare in qualsiasi momento.
+            {t('premium.trial')}
           </p>
         </form>
 
@@ -118,7 +115,7 @@ export default function PremiumCheckout() {
           onClick={() => navigate('/')}
           className="mt-6 w-full text-center text-sm text-text-muted hover:text-white transition"
         >
-          ← Torna alla home
+          ← {t('premium.backToHome')}
         </button>
       </div>
     </div>

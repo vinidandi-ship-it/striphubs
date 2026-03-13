@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useI18n } from '../../i18n';
 
 export default function PremiumSuccess() {
   const [countdown, setCountdown] = useState(5);
   const navigate = useNavigate();
+  const { t } = useI18n();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -19,6 +21,8 @@ export default function PremiumSuccess() {
     return () => clearInterval(interval);
   }, [navigate]);
 
+  const features = t('premium.features') as unknown as string[];
+
   return (
     <div className="min-h-screen bg-bg flex items-center justify-center px-4">
       <div className="max-w-md text-center">
@@ -28,32 +32,25 @@ export default function PremiumSuccess() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Benvenuto VIP!</h1>
+          <h1 className="text-3xl font-bold text-white mb-2">{t('premium.welcome')}</h1>
           <p className="text-text-secondary">
-            Il tuo abbonamento è attivo. Goditi tutte le funzionalità premium.
+            {t('premium.subscriptionActive')}
           </p>
         </div>
 
         <div className="bg-panel rounded-2xl border border-border p-6 mb-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Funzionalità sbloccate:</h2>
+          <h2 className="text-lg font-semibold text-white mb-4">{t('premium.featuresTitle')}</h2>
           <ul className="space-y-2 text-left">
-            {[
-              '✅ Nessuna pubblicità',
-              '✅ Favoriti illimitati',
-              '✅ Ricerca avanzata',
-              '✅ Modelle esclusive',
-              '✅ Thumbnail HD',
-              '✅ Supporto prioritario'
-            ].map((feature) => (
+            {features.map((feature) => (
               <li key={feature} className="text-sm text-text-secondary">
-                {feature}
+                ✅ {feature}
               </li>
             ))}
           </ul>
         </div>
 
         <p className="text-sm text-text-muted">
-          Reindirizzamento alla home in {countdown} secondi...
+          {t('premium.redirecting', { countdown })}
         </p>
       </div>
     </div>

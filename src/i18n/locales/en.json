@@ -320,7 +320,14 @@
     "unlockFeatures": "Unlock all premium features",
     "monthly": "Monthly",
     "annual": "Annual",
-    "save": "Save 2 months"
+    "save": "Save 2 months",
+    "emailPlaceholder": "Your email address",
+    "processing": "Processing...",
+    "activate": "Activate",
+    "trial": "Free 7-day trial. You can cancel anytime.",
+    "error": "Error during checkout",
+    "connectionError": "Connection error. Please try again.",
+    "backToHome": "Back to home"
   },
   "internalLinks": {
     "relatedCategories": "Related Categories",

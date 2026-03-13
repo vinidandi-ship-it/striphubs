@@ -310,6 +310,25 @@
     "related2Title": "Sécurité et Confidentialité",
     "related2Desc": "Protégez votre confidentialité en ligne."
   },
+  "premium": {
+    "welcome": "Bienvenue VIP!",
+    "subscriptionActive": "Votre abonnement est actif. Profitez de toutes les fonctionnalités premium.",
+    "featuresTitle": "Fonctionnalités débloquées:",
+    "features": ["Sans publicité", "Favoris illimités", "Recherche avancée", "Modèles exclusifs", "Miniatures HD", "Support prioritaire"],
+    "redirecting": "Redirection vers l'accueil dans {countdown} secondes...",
+    "becomeVip": "Devenir VIP",
+    "unlockFeatures": "Débloquez toutes les fonctionnalités premium",
+    "monthly": "Mensuel",
+    "annual": "Annuel",
+    "save": "Économisez 2 mois",
+    "emailPlaceholder": "Votre adresse email",
+    "processing": "Traitement...",
+    "activate": "Activer",
+    "trial": "Essai gratuit de 7 jours. Vous pouvez annuler à tout moment.",
+    "error": "Erreur lors du paiement",
+    "connectionError": "Erreur de connexion. Veuillez réessayer.",
+    "backToHome": "Retour à l'accueil"
+  },
   "internalLinks": {
     "relatedCategories": "Catégories Connexes",
     "relatedCountries": "Cams par Pays",
