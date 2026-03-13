@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { isPremiumUser } from '../lib/revenue';
 import { crackrevenueBanners, getRandomCrackRevenueBanner, recordCrackRevenueBannerClick, CrackRevenueBanner as BannerType } from '../lib/crackrevenueBanners';
 
 interface UniversalAdsProps {
@@ -11,15 +10,20 @@ export default function UniversalAds({ containerClass = '' }: UniversalAdsProps)
   const [showExoClick728, setShowExoClick728] = useState(false);
 
   useEffect(() => {
-    if (isPremiumUser()) return;
-
-    const random = Math.random();
-    
-    // 50% CrackRevenue, 50% ExoClick
-    if (random < 0.5) {
-      setBanner(getRandomCrackRevenueBanner());
-    } else {
-      setShowExoClick728(true);
+    try {
+      const random = Math.random();
+      
+      // 50% CrackRevenue, 50% ExoClick
+      if (random < 0.5) {
+        const randomBanner = getRandomCrackRevenueBanner();
+        if (randomBanner) {
+          setBanner(randomBanner);
+        }
+      } else {
+        setShowExoClick728(true);
+      }
+    } catch (error) {
+      console.error('UniversalAds error:', error);
     }
   }, []);
 
