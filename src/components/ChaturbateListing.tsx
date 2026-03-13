@@ -1,5 +1,6 @@
 import { useI18n } from '../i18n';
 import { trackAffiliateClick } from '../lib/affiliateTracking';
+import { crackrevenueBanners } from '../lib/crackrevenueBanners';
 
 interface ChaturbateListingProps {
   gender?: 'f' | 'm' | 't' | 'c' | 'x';
@@ -71,7 +72,7 @@ export default function ChaturbateListing({
       {offerType === 'crackrevenue' ? (
         <a href={crackrevenueUrl} target="_blank" rel="noopener noreferrer sponsored" className="block">
           <img 
-            src="https://t.vlmai-3.com/407726/7477" 
+            src={crackrevenueBanners[0]?.image} 
             alt="CrackRevenue Banner" 
             className="w-full h-auto"
             onClick={() => track('crackrevenue-banner', 'crackrevenue')}
