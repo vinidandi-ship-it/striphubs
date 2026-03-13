@@ -35,6 +35,8 @@ const SicurezzaCam = lazy(() => import('./pages/blog/SicurezzaCam'));
 const TagPopolari = lazy(() => import('./pages/blog/TagPopolari'));
 const PremiumCheckout = lazy(() => import('./pages/premium/Checkout'));
 const PremiumSuccess = lazy(() => import('./pages/premium/Success'));
+const Videos = lazy(() => import('./pages/Videos'));
+const VideoPage = lazy(() => import('./pages/VideoPage'));
 
 function AppContent() {
   const location = useLocation();
@@ -221,6 +223,18 @@ function AppContent() {
             <Route path="/pt/country/:countrySlug/tag/:tag" element={<CountryCombination />} />
             <Route path="/premium/checkout" element={<PremiumCheckout />} />
             <Route path="/premium/success" element={<PremiumSuccess />} />
+            <Route path="/videos" element={<Videos />} />
+            <Route path="/en/videos" element={<Videos />} />
+            <Route path="/de/videos" element={<Videos />} />
+            <Route path="/fr/videos" element={<Videos />} />
+            <Route path="/es/videos" element={<Videos />} />
+            <Route path="/pt/videos" element={<Videos />} />
+            <Route path="/video/:id" element={<VideoPage />} />
+            <Route path="/en/video/:id" element={<VideoPage />} />
+            <Route path="/de/video/:id" element={<VideoPage />} />
+            <Route path="/fr/video/:id" element={<VideoPage />} />
+            <Route path="/es/video/:id" element={<VideoPage />} />
+            <Route path="/pt/video/:id" element={<VideoPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
