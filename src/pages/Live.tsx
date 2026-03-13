@@ -14,7 +14,7 @@ import { PAGE_SIZES } from '../lib/constants';
 import { useI18n } from '../i18n';
 
 export default function Live() {
-  const { language } = useI18n();
+  const { language, t } = useI18n();
   const {
     models,
     total,
@@ -80,20 +80,20 @@ export default function Live() {
       <Sidebar categories={sidebarCategories} countries={sidebarCountries} />
 
       <div className="flex-1 space-y-6">
-        <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Live' }]} />
+        <Breadcrumbs items={[{ label: t('common.home'), to: '/' }, { label: t('common.live') }]} />
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-2xl font-bold text-white sm:text-3xl flex items-center gap-2">
-            <Icon name="allLive" size={28} /> Tutte le Camere Live
+            <Icon name="allLive" size={28} /> {t('home.allLiveCams')}
           </h1>
           <button
             type="button"
             onClick={toggleIncludeOffline}
             className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${includeOffline ? 'border-accent bg-accent/10 text-accent' : 'border-border text-zinc-300 hover:border-accent hover:text-white'}`}
           >
-            {includeOffline ? 'Mostra solo live' : 'Includi anche offline'}
+            {includeOffline ? t('common.showOnlyLive') : t('common.includeOffline')}
           </button>
         </div>
-        {!loading ? <p className="text-sm text-zinc-400">{total} cam attive{hasMore ? ' - altre disponibili' : ''}</p> : null}
+        {!loading ? <p className="text-sm text-zinc-400">{total} {t('header.activeCams')}{hasMore ? ` - ${t('common.moreAvailable')}` : ''}</p> : null}
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName="All Live Cams" />
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
