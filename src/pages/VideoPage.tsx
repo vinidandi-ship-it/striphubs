@@ -91,13 +91,13 @@ export default function VideoPage() {
       />
 
       <div className="space-y-4">
-        <div className="aspect-video w-full bg-black rounded-xl overflow-hidden">
+        <div className="aspect-video w-full bg-black rounded-xl overflow-hidden relative">
           <iframe
             src={video.embedUrl}
             frameBorder="0"
             allowFullScreen
             allow="autoplay; fullscreen"
-            className="w-full h-full"
+            className="w-full h-full absolute inset-0"
             title={video.title}
           />
         </div>
@@ -153,6 +153,10 @@ export default function VideoPage() {
           >
             💄 Watch Live Cams
           </Link>
+        </div>
+        
+        <div className="my-4">
+          <NativeAdSlot cardIndex={1} />
         </div>
       </div>
 

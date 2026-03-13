@@ -81,6 +81,8 @@ export default function Videos() {
     );
   }
 
+  const displayVideos = filteredVideos.slice(0, 50);
+
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2">
@@ -88,14 +90,14 @@ export default function Videos() {
           {currentTag ? `${currentTag.charAt(0).toUpperCase() + currentTag.slice(1)} Videos` : 'Top Porn Videos'}
         </h1>
         <p className="text-zinc-400">
-          {filteredVideos.length} {t('videos.videos') || 'videos'} • {t('videos.subtitle') || 'Watch free XXX videos online'}
+          {filteredVideos.length} videos • Watch free XXX videos online
         </p>
       </div>
 
       <div className="relative max-w-md mx-auto">
         <input
           type="text"
-          placeholder={t('videos.search') || 'Search videos, tags, pornstars...'}
+          placeholder="Search videos, tags, pornstars..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full bg-panel border border-border rounded-full px-4 py-3 pl-12 text-white placeholder-zinc-500 focus:outline-none focus:border-accent"
@@ -131,76 +133,73 @@ export default function Videos() {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {filteredVideos.slice(0, 100).map((video, index) => (
-          <Link
-            key={video.id}
-            to={buildLocalizedPath(`/video/${video.id}`, language)}
-            className="group relative overflow-hidden rounded-xl border border-border bg-panel hover:border-accent transition"
-          >
-            <div className="aspect-video relative">
-              <img
-                src={video.thumbnail}
-                alt={video.title}
-                loading="lazy"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute bottom-1 right-1 bg-black/80 px-1.5 py-0.5 text-xs text-white rounded">
-                {formatDuration(video.duration)}
+        {displayVideos.map((video, index) => (
+          <div key={video.id}>
+            <Link
+              to={buildLocalizedPath(`/video/${video.id}`, language)}
+              className="group relative overflow-hidden rounded-xl border border-border bg-panel hover:border-accent transition block"
+            >
+              <div className="aspect-video relative">
+                <img
+                  src={video.thumbnail}
+                  alt={video.title}
+                  loading="lazy"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute bottom-1 right-1 bg-black/80 px-1.5 py-0.5 text-xs text-white rounded">
+                  {formatDuration(video.duration)}
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition">
+                  <div className="absolute bottom-2 left-2 right-2">
+                    <p className="text-white text-xs font-medium line-clamp-2">{video.title}</p>
+                  </div>
+                </div>
+                {index < 3 && (
+                  <div className="absolute top-2 left-2 bg-accent px-2 py-0.5 text-xs font-bold text-white rounded">
+                    TOP {index + 1}
+                  </div>
+                )}
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition">
-                <div className="absolute bottom-2 left-2 right-2">
-                  <p className="text-white text-xs font-medium line-clamp-2">{video.title}</p>
+              <div className="p-2 space-y-1">
+                <p className="text-white text-xs font-medium line-clamp-2">{video.title}</p>
+                <div className="flex items-center justify-between text-[10px] text-zinc-500">
+                  <span>{formatViews(video.views)} views</span>
+                  <span>{(video.rating / 1000).toFixed(1)}★</span>
                 </div>
               </div>
-              {index < 3 && (
-                <div className="absolute top-2 left-2 bg-accent px-2 py-0.5 text-xs font-bold text-white rounded">
-                  TOP {index + 1}
-                </div>
-              )}
-            </div>
-            <div className="p-2 space-y-1">
-              <p className="text-white text-xs font-medium line-clamp-2">{video.title}</p>
-              <div className="flex items-center justify-between text-[10px] text-zinc-500">
-                <span>{formatViews(video.views)} views</span>
-                <span>{(video.rating / 1000).toFixed(1)}★</span>
-              </div>
-            </div>
+            </Link>
             
-            {index > 0 && index % 10 === 0 && (
-              <div className="absolute inset-0 bg-panel z-10">
+            {index > 0 && index % 8 === 0 && (
+              <div className="mt-2">
                 <NativeAdSlot cardIndex={index} />
               </div>
             )}
-          </Link>
+          </div>
         ))}
       </div>
 
-      <div className="text-center py-6 bg-panel border border-border rounded-xl">
-        <h2 className="text-xl font-bold text-white mb-3">Want More Live Content?</h2>
-        <p className="text-zinc-400 mb-4">Watch live cam models directly on our partner sites</p>
-        <div className="flex flex-wrap gap-3 justify-center">
-          <a
-            href={getAffiliateUrlWithProvider('stripchat').url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-accent hover:bg-accent/80 text-white font-semibold py-3 px-6 rounded-full transition"
-          >
-            🎯 Stripchat - Live Cams
-          </a>
-          <a
-            href={getAffiliateUrlWithProvider('chaturbate').url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="border border-border hover:border-accent text-white font-semibold py-3 px-6 rounded-full transition"
-          >
-            💄 Chaturbate - Live Girls
-          </a>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a
+          href={getAffiliateUrlWithProvider('stripchat').url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block bg-accent hover:bg-accent/80 text-white font-semibold py-4 px-6 rounded-xl text-center transition"
+        >
+          🎯 Stripchat - Live Cams
+        </a>
+        <a
+          href={getAffiliateUrlWithProvider('chaturbate').url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block border border-border hover:border-accent text-white font-semibold py-4 px-6 rounded-xl text-center transition"
+        >
+          💄 Chaturbate - Live Girls
+        </a>
       </div>
 
-      {filteredVideos.length > 100 && (
+      {filteredVideos.length > 50 && (
         <p className="text-center text-zinc-500 text-sm">
-          Showing 100 of {filteredVideos.length} videos
+          Showing 50 of {filteredVideos.length} videos
         </p>
       )}
     </div>
