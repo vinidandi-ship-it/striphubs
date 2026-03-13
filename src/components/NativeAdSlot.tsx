@@ -55,4 +55,3 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
     </div>
   );
 }
-}
