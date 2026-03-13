@@ -57,13 +57,17 @@ export function useModels({
       setError('');
     }
 
+    // Progressive loading: load first batch fast, then more
+    const batchSize = reset ? 24 : pageSize;
+    const initialBatchSize = reset ? 24 : pageSize;
+    
     try {
       const data = await api.getModels({
         category,
         country,
         tag,
         search,
-        limit: pageSize,
+        limit: initialBatchSize,
         offset: reset ? 0 : offset,
         liveOnly: !includeOffline
       });
@@ -71,6 +75,26 @@ export function useModels({
       if (reset) {
         setModels(data.models);
         setTotal(data.total || data.models.length);
+        setOffset(data.models.length);
+        setHasMore(Boolean(data.hasMore));
+        
+        // Load remaining in background for initial load
+        if (data.hasMore) {
+          setTimeout(async () => {
+            try {
+              const moreData = await api.getModels({
+                category,
+                country,
+                tag,
+                search,
+                limit: pageSize - 24,
+                offset: 24,
+                liveOnly: !includeOffline
+              });
+              setModels(current => [...current, ...moreData.models]);
+            } catch {}
+          }, 100);
+        }
       } else {
         setModels((current) => {
           const seen = new Set(current.map((item) => item.username.toLowerCase()));
@@ -83,9 +107,9 @@ export function useModels({
           }
           return merged;
         });
+        setOffset((current) => current + data.models.length);
+        setHasMore(Boolean(data.hasMore));
       }
-      setOffset((current) => (reset ? data.models.length : current + data.models.length));
-      setHasMore(Boolean(data.hasMore));
     } catch (err) {
       if (err instanceof Error && err.name === 'AbortError') return;
       setError(err instanceof Error ? err.message : 'Failed to load models');
