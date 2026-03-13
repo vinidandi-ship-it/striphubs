@@ -1,7 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon';
-import NativeAdSlot from '../components/NativeAdSlot';
+import { 
+  MultiformatAd, 
+  Banner728x90, 
+  Banner300x250, 
+  RecommendationWidget,
+  NativeAd,
+  Message300x250,
+  AdBannerRow,
+  AdBannerInline,
+  MultiformatV2
+} from '../components/AllAdSlots';
 import { useI18n } from '../i18n';
 import { useSEO } from '../lib/seo';
 import { buildLocalizedPath } from '../i18n/routing';
@@ -43,8 +53,7 @@ export default function Videos() {
   useSEO(
     currentTag ? `${currentTag} Videos - Top Rated XXX` : 'Porn Videos - Top Rated XXX Videos',
     currentTag ? `Watch the hottest ${currentTag} porn videos online for free.` : 'Watch the hottest porn videos online for free. Top rated XXX content updated daily.',
-    '/videos',
-    { lang: language }
+    '/videos'
   );
 
   useEffect(() => {
@@ -84,7 +93,9 @@ export default function Videos() {
   const displayVideos = filteredVideos.slice(0, 50);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
+      <AdBannerInline className="mb-2" />
+
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold text-white">
           {currentTag ? `${currentTag.charAt(0).toUpperCase() + currentTag.slice(1)} Videos` : 'Top Porn Videos'}
@@ -120,7 +131,7 @@ export default function Videos() {
         {popularTags.map(tag => (
           <Link
             key={tag}
-            to={buildLocalizedPath(`/videos?tag=${tag}`, language)}
+            to={buildLocalizedPath(`/videos/${tag}`, language)}
             className={`px-3 py-1 bg-panel border rounded-full text-sm transition ${
               currentTag === tag 
                 ? 'border-accent text-accent' 
@@ -132,7 +143,9 @@ export default function Videos() {
         ))}
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <RecommendationWidget className="my-2" />
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
         {displayVideos.map((video, index) => (
           <div key={video.id}>
             <Link
@@ -169,16 +182,16 @@ export default function Videos() {
               </div>
             </Link>
             
-            {index > 0 && index % 6 === 0 && (
-              <div className="mt-2">
-                <NativeAdSlot cardIndex={index} />
-              </div>
-            )}
+            {index === 4 && <NativeAd className="mt-1" />}
+            {index === 14 && <MultiformatAd className="mt-1" />}
+            {index === 24 && <NativeAd className="mt-1" />}
+            {index === 34 && <MultiformatV2 className="mt-1" />}
+            {index === 44 && <Message300x250 className="mt-1 flex justify-center" />}
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
         <a
           href={getAffiliateUrlWithProvider('stripchat').url}
           target="_blank"
@@ -196,6 +209,8 @@ export default function Videos() {
           💄 Chaturbate - Live Girls
         </a>
       </div>
+
+      <AdBannerRow className="my-4" />
 
       {filteredVideos.length > 50 && (
         <p className="text-center text-zinc-500 text-sm">

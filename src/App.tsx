@@ -36,6 +36,7 @@ const TagPopolari = lazy(() => import('./pages/blog/TagPopolari'));
 const PremiumCheckout = lazy(() => import('./pages/premium/Checkout'));
 const PremiumSuccess = lazy(() => import('./pages/premium/Success'));
 const Videos = lazy(() => import('./pages/Videos'));
+const VideoTag = lazy(() => import('./pages/VideoTag'));
 const VideoPage = lazy(() => import('./pages/VideoPage'));
 
 function AppContent() {
@@ -229,6 +230,12 @@ function AppContent() {
             <Route path="/fr/videos" element={<Videos />} />
             <Route path="/es/videos" element={<Videos />} />
             <Route path="/pt/videos" element={<Videos />} />
+            <Route path="/videos/:tag" element={<VideoTag />} />
+            <Route path="/en/videos/:tag" element={<VideoTag />} />
+            <Route path="/de/videos/:tag" element={<VideoTag />} />
+            <Route path="/fr/videos/:tag" element={<VideoTag />} />
+            <Route path="/es/videos/:tag" element={<VideoTag />} />
+            <Route path="/pt/videos/:tag" element={<VideoTag />} />
             <Route path="/video/:id" element={<VideoPage />} />
             <Route path="/en/video/:id" element={<VideoPage />} />
             <Route path="/de/video/:id" element={<VideoPage />} />

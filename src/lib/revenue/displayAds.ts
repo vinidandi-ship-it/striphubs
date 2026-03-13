@@ -79,7 +79,7 @@ export const recordAffiliateClick = (converted: boolean): void => {
   saveAdState(state);
 };
 
-export const recordAdImpression = (type: 'native' | 'banner' | 'premium'): void => {
+export const recordAdImpression = (type: 'native' | 'banner' | 'premium' | string): void => {
   const state = getAdState();
   state.impressions[type]++;
   state.lastAdShown = Date.now();
@@ -97,7 +97,7 @@ export const recordAdImpression = (type: 'native' | 'banner' | 'premium'): void 
   }
 };
 
-export const recordAdClick = (type: 'native' | 'banner' | 'premium'): void => {
+export const recordAdClick = (type: 'native' | 'banner' | 'premium' | string): void => {
   const state = getAdState();
   state.clicks[type]++;
   saveAdState(state);

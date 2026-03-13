@@ -16,8 +16,8 @@ export default function VideoAdSlot() {
     }
     
     setTimeout(() => {
-      if (typeof window !== 'undefined' && (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider) {
-        (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider?.push({ serve: {} });
+      if (typeof window !== 'undefined') {
+        (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider?.push({});
       }
     }, 500);
   }, []);
@@ -29,13 +29,13 @@ export default function VideoAdSlot() {
       onClick={() => recordAdClick('native')}
     >
       <ins 
-        className="eas6a97888e20" 
-        data-zoneid="5870892"
+        className="eas6a97888e38" 
+        data-zoneid="5871380"
         style={{
           display: 'block',
           width: '100%',
           maxWidth: '600px',
-          height: '260px',
+          height: '300px',
           margin: '0 auto'
         }}
       />
@@ -63,13 +63,13 @@ export function VideoBannerSlot() {
       onClick={() => recordAdClick('banner')}
     >
       <ins 
-        className="eas6a97888e2" 
-        data-zoneid="5870866"
+        className="eas6a97888e38" 
+        data-zoneid="5871380"
         style={{
           display: 'block',
           width: '100%',
-          maxWidth: '728px',
-          height: '90px',
+          maxWidth: '600px',
+          height: '300px',
           margin: '0 auto'
         }}
       />
