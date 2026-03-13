@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
-import VideoAdSlot, { VideoBannerSlot } from '../components/VideoAdSlot';
 import { 
   Banner728x90,
   Banner300x250,
+  Banner160x600,
   RecommendationWidget,
   NativeAd,
   MultiformatAd,
@@ -43,7 +43,7 @@ function formatViews(views: number): string {
 
 export default function VideoPage() {
   const { id } = useParams();
-  const { language, t } = useI18n();
+  const { language } = useI18n();
   const [video, setVideo] = useState<Video | null>(null);
   const [loading, setLoading] = useState(true);
   const [videos, setVideos] = useState<Video[]>([]);
@@ -62,9 +62,8 @@ export default function VideoPage() {
 
   useSEO(
     video ? `${video.title} - Free XXX Video` : 'Video',
-    video ? `Watch ${video.title} for free. ${formatViews(video.views)} views. ${video.tags.slice(0, 5).join(', ')}` : 'Watch free porn videos',
-    `/video/${id}`,
-    { lang: language }
+    video ? `Watch ${video.title} for free. ${formatViews(video.views)} views.` : 'Watch free porn videos',
+    `/video/${id}`
   );
 
   if (loading) {
@@ -89,28 +88,47 @@ export default function VideoPage() {
   const relatedVideos = videos.filter(v => v.id !== video.id).slice(0, 10);
 
   return (
-    <div className="space-y-6">
-      <Breadcrumbs
-        items={[
-          { label: 'Home', path: '/' },
-          { label: 'Videos', path: '/videos' },
-          { label: video.title.slice(0, 30) + '...' }
-        ]}
-      />
+    <div className="flex gap-6">
+      {/* Sidebar con banner verticali - solo desktop */}
+      <div className="hidden lg:block w-[160px] flex-shrink-0">
+        <div className="sticky top-4 space-y-4">
+          <Banner160x600 className="w-full" />
+        </div>
+      </div>
 
-      <div className="space-y-4">
-        <div className="aspect-video w-full bg-black rounded-xl overflow-hidden relative">
-          <iframe
-            src={video.embedUrl}
-            frameBorder="0"
-            allowFullScreen
-            allow="autoplay; fullscreen"
-            className="w-full h-full absolute inset-0"
-            title={video.title}
-          />
+      {/* Contenuto principale */}
+      <div className="flex-1 space-y-6">
+        <div className="flex items-center gap-2 text-sm text-zinc-400">
+          <Link to={buildLocalizedPath('/', language)} className="hover:text-white">Home</Link>
+          <span>/</span>
+          <Link to={buildLocalizedPath('/videos', language)} className="hover:text-white">Videos</Link>
+          <span>/</span>
+          <span className="text-white truncate max-w-[200px]">{video.title.slice(0, 30)}...</span>
         </div>
 
-        <div className="space-y-2">
+        <Banner728x90 className="hidden md:block" />
+        <Banner300x250 className="md:hidden mx-auto" />
+
+        <div className="space-y-4">
+          <div className="aspect-video w-full bg-black rounded-xl overflow-hidden relative">
+            <iframe
+              src={video.embedUrl}
+              frameBorder="0"
+              allowFullScreen
+              allow="autoplay; fullscreen"
+              className="w-full h-full absolute inset-0"
+              title={video.title}
+            />
+          </div>
+
+          <Breadcrumbs
+            items={[
+              { label: 'Home', path: '/' },
+              { label: 'Videos', path: '/videos' },
+              { label: video.title.slice(0, 30) + '...' }
+            ]}
+          />
+
           <h1 className="text-xl font-bold text-white">{video.title}</h1>
           
           <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-400">
@@ -119,7 +137,7 @@ export default function VideoPage() {
               {formatViews(video.views)} views
             </span>
             <span className="flex items-center gap-1">
-              <Icon name="clock" size={14} />
+              <Icon name="eye" size={14} />
               {formatDuration(video.duration)}
             </span>
             <span className="flex items-center gap-1">
@@ -134,7 +152,7 @@ export default function VideoPage() {
           )}
 
           <div className="flex flex-wrap gap-2">
-            {video.tags.map(tag => (
+            {video.tags.slice(0, 12).map(tag => (
               <Link
                 key={tag}
                 to={buildLocalizedPath(`/videos?tag=${tag}`, language)}
@@ -144,72 +162,69 @@ export default function VideoPage() {
               </Link>
             ))}
           </div>
+
+          <div className="flex gap-3">
+            <Link
+              to={getAffiliateUrlWithProvider('stripchat').url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 bg-accent hover:bg-accent/80 text-white font-semibold py-3 px-6 rounded-full text-center transition"
+            >
+              🎯 Go to Stripchat
+            </Link>
+            <Link
+              to={buildLocalizedPath('/live', language)}
+              className="flex-1 border border-border hover:border-accent text-white font-semibold py-3 px-6 rounded-full text-center transition"
+            >
+              💄 Watch Live Cams
+            </Link>
+          </div>
+
+          <MultiformatAd />
+
+          <RecommendationWidget />
+
+          <NativeAd />
+
+          <MultiformatV2 />
+
+          <InstantMessage />
         </div>
 
-        <div className="flex gap-3">
-          <Link
-            to={getAffiliateUrlWithProvider('stripchat').url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 bg-accent hover:bg-accent/80 text-white font-semibold py-3 px-6 rounded-full text-center transition"
-          >
-            🎯 Go to Stripchat
-          </Link>
-          <Link
-            to={buildLocalizedPath('/live', language)}
-            className="flex-1 border border-border hover:border-accent text-white font-semibold py-3 px-6 rounded-full text-center transition"
-          >
-            💄 Watch Live Cams
-          </Link>
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold text-white">Related Videos</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {relatedVideos.map(v => (
+              <Link
+                key={v.id}
+                to={buildLocalizedPath(`/video/${v.id}`, language)}
+                className="group relative overflow-hidden rounded-xl border border-border bg-panel hover:border-accent transition"
+              >
+                <div className="aspect-video relative">
+                  <img
+                    src={v.thumbnail}
+                    alt={v.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-1 right-1 bg-black/80 px-1.5 py-0.5 text-xs text-white rounded">
+                    {formatDuration(v.duration)}
+                  </div>
+                </div>
+                <div className="p-2">
+                  <p className="text-white text-xs line-clamp-2">{v.title}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
-
-        <Banner300x250 className="my-3" />
-        
-        <VideoBannerSlot />
-        
-        <MultiformatAd className="my-3" />
-        
-        <VideoAdSlot />
-        
-        <NativeAd className="my-3" />
-        
-        <Banner728x90 className="hidden md:block my-3" />
-        <Banner300x250 className="md:hidden my-3" />
       </div>
 
-      <div className="space-y-4">
-        <h2 className="text-xl font-bold text-white">Related Videos</h2>
-        
-        <RecommendationWidget className="my-2" />
-        
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {relatedVideos.map(v => (
-            <Link
-              key={v.id}
-              to={buildLocalizedPath(`/video/${v.id}`, language)}
-              className="group relative overflow-hidden rounded-xl border border-border bg-panel hover:border-accent transition"
-            >
-              <div className="aspect-video relative">
-                <img
-                  src={v.thumbnail}
-                  alt={v.title}
-                  loading="lazy"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute bottom-1 right-1 bg-black/80 px-1.5 py-0.5 text-xs text-white rounded">
-                  {formatDuration(v.duration)}
-                </div>
-              </div>
-              <div className="p-2">
-                <p className="text-white text-xs line-clamp-2">{v.title}</p>
-              </div>
-            </Link>
-          ))}
+      {/* Sidebar destro con banner verticali - solo desktop */}
+      <div className="hidden lg:block w-[160px] flex-shrink-0">
+        <div className="sticky top-4 space-y-4">
+          <Banner160x600 className="w-full" />
         </div>
-        
-        <InstantMessage className="my-3" />
-        
-        <MultiformatV2 className="my-3" />
       </div>
     </div>
   );

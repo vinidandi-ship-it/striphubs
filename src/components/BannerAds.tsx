@@ -35,9 +35,7 @@ export function Banner728x90({ className = '' }: { className?: string }) {
         style={{
           display: 'block',
           width: '728px',
-          height: '90px',
-          maxWidth: '100%',
-          margin: '0 auto'
+          height: '90px'
         }}
       />
     </div>
@@ -65,9 +63,7 @@ export function Banner300x250({ className = '' }: { className?: string }) {
         style={{
           display: 'block',
           width: '300px',
-          height: '250px',
-          maxWidth: '100%',
-          margin: '0 auto'
+          height: '250px'
         }}
       />
     </div>
@@ -211,9 +207,35 @@ export function InstantMessage({ className = '' }: { className?: string }) {
         style={{
           display: 'block',
           width: '300px',
-          height: '250px',
-          maxWidth: '100%',
-          margin: '0 auto'
+          height: '250px'
+        }}
+      />
+    </div>
+  );
+}
+
+// Banner 160x600 Verticale
+export function Banner160x600({ className = '' }: { className?: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  useAdScript();
+  
+  useEffect(() => {
+    recordAdImpression('banner');
+  }, []);
+  
+  return (
+    <div 
+      ref={containerRef}
+      className={`${className} flex justify-center`}
+      onClick={() => recordAdClick('banner')}
+    >
+      <ins 
+        className="eas6a97888e38" 
+        data-zoneid="5871370"
+        style={{
+          display: 'block',
+          width: '160px',
+          height: '600px'
         }}
       />
     </div>
