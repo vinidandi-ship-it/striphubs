@@ -214,30 +214,3 @@ export function InstantMessage({ className = '' }: { className?: string }) {
   );
 }
 
-// Banner 160x600 Verticale
-export function Banner160x600({ className = '' }: { className?: string }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  useAdScript();
-  
-  useEffect(() => {
-    recordAdImpression('banner');
-  }, []);
-  
-  return (
-    <div 
-      ref={containerRef}
-      className={`${className} flex justify-center`}
-      onClick={() => recordAdClick('banner')}
-    >
-      <ins 
-        className="eas6a97888e38" 
-        data-zoneid="5871370"
-        style={{
-          display: 'block',
-          width: '160px',
-          height: '600px'
-        }}
-      />
-    </div>
-  );
-}
