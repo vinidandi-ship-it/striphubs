@@ -7,22 +7,16 @@ interface NativeAdSlotProps {
 
 export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
   useEffect(() => {
-    if (shouldShowNativeAd(cardIndex)) {
-      recordAdImpression('native');
-    }
+    recordAdImpression('native');
   }, [cardIndex]);
   
-  // Debug: render on specific indices
-  if (cardIndex !== 6 && cardIndex !== 12 && cardIndex !== 18 && cardIndex !== 24 && cardIndex !== 30) {
-    return null;
-  }
-  
+  // Always show ads for debugging
   return (
     <div 
-      className="native-ad-wrapper col-span-full w-full my-4 bg-panel border border-accent p-4"
+      className="native-ad-wrapper col-span-full w-full my-4 bg-green-900 border-2 border-green-500 p-4 text-center"
       onClick={() => recordAdClick('native')}
     >
-      <p className="text-xs text-accent mb-2">Advertisement</p>
+      <p className="text-green-400 font-bold mb-2">ADVERTISEMENT (Position {cardIndex})</p>
       <ins 
         className="eas6a97888e20 w-full block"
         data-zoneid="5870892"
