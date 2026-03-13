@@ -14,7 +14,7 @@ import { generateCategoryMeta } from '../lib/metaTags';
 import { useAdvancedSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
 import { seoTextForCategory } from '../lib/seoText';
 import { useModels } from '../lib/useModels';
-import { PAGE_SIZES } from '../lib/constants';
+import UniversalAds from '../components/UniversalAds';
 
 export default function Category() {
   const { category = 'milf' } = useParams();
@@ -113,6 +113,7 @@ export default function Category() {
         {!loading ? <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')}{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName={`${categoryName(category)} Models`} />
+        <UniversalAds containerClass="my-4" />
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
         <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
         

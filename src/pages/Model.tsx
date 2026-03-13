@@ -8,8 +8,7 @@ import { api } from '../lib/api';
 import { Model as LiveModel, AFFILIATE_ID } from '../lib/models';
 import { generateModelMeta } from '../lib/metaTags';
 import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
-import { trackAffiliateClick, getAffiliateUrl } from '../lib/affiliateTracking';
-import { getAffiliateUrlWithProvider } from '../lib/affiliateProviders';
+import UniversalAds from '../components/UniversalAds';
 
 export default function ModelPage() {
   const { username = '' } = useParams();
@@ -168,6 +167,8 @@ export default function ModelPage() {
           </a>
         </div>
       </section>
+
+      <UniversalAds containerClass="my-4" />
 
       <section>
         <h2 className="mb-4 text-2xl font-bold text-white">{t('model.relatedModels')}</h2>

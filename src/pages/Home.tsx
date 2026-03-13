@@ -4,7 +4,8 @@ import CategoryCard from '../components/CategoryCard';
 import FAQSection from '../components/FAQSection';
 import InfiniteLoader from '../components/InfiniteLoader';
 import ModelCard from '../components/ModelCard';
-import ModelGrid from '../components/ModelGrid';
+import UniversalAds from '../components/UniversalAds';
+import CrackRevenueBanner from '../components/CrackRevenueBanner';
 import Icon from '../components/Icon';
 import { api } from '../lib/api';
 import { countries, findCountryBySlug } from '../lib/countries';
@@ -348,9 +349,13 @@ export default function Home() {
         <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
       </section>
 
+      {initialLoadComplete && (
+        <UniversalAds containerClass="my-6" />
+      )}
+
       <section>
         <h2 className="mb-4 text-2xl font-bold text-white flex items-center gap-2">
-          <Icon name="categories" size={24} /> {t('home.popularCategories')}
+          <Icon name="globe" size={24} /> {t('home.camsByCountry')}
         </h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {categories.map((category) => (

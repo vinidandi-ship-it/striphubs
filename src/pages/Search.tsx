@@ -8,7 +8,7 @@ import { api } from '../lib/api';
 import { Model } from '../lib/models';
 import { generateDescription, generateTitle, useAdvancedSEO } from '../lib/seo';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
-import { useI18n } from '../i18n';
+import UniversalAds from '../components/UniversalAds';
 
 export default function Search() {
   const PAGE_SIZE = 120;
@@ -78,6 +78,7 @@ export default function Search() {
       <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')} {t('search.resultsFor')} "{query || 'all'}"{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p>
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       <ModelGrid models={models} loading={loading} listName={t('search.title')} />
+      <UniversalAds containerClass="my-4" />
       {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
       <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
     </div>

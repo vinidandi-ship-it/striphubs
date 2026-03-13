@@ -11,7 +11,7 @@ import { categoryName, categories as categoryList } from '../lib/categories';
 import { generateDescription, generateTitle, useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
 import { useModels } from '../lib/useModels';
 import { PAGE_SIZES } from '../lib/constants';
-import { useI18n } from '../i18n';
+import UniversalAds from '../components/UniversalAds';
 
 export default function Live() {
   const { language, t } = useI18n();
@@ -96,6 +96,7 @@ export default function Live() {
         {!loading ? <p className="text-sm text-zinc-400">{total} {t('header.activeCams')}{hasMore ? ` - ${t('common.moreAvailable')}` : ''}</p> : null}
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName="All Live Cams" />
+        <UniversalAds containerClass="my-4" />
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
         <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
         <InfiniteLoader loading={loadingMore} hasMore={hasMore} />

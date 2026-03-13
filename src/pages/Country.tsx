@@ -12,7 +12,7 @@ import { generateCountryMeta } from '../lib/metaTags';
 import { useSEO } from '../lib/seo';
 import { seoTextForCountry } from '../lib/seoText';
 import { useModels } from '../lib/useModels';
-import { PAGE_SIZES } from '../lib/constants';
+import UniversalAds from '../components/UniversalAds';
 
 export default function Country() {
   const { countrySlug = 'italian' } = useParams();
@@ -106,6 +106,7 @@ export default function Country() {
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       {!loading ? <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')}{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`${country.name} Live Models`} />
+      <UniversalAds containerClass="my-4" />
       {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
       <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
       
