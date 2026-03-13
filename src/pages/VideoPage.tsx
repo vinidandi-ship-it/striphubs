@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import ModelGrid from '../components/ModelGrid';
-import NativeAdSlot from '../components/NativeAdSlot';
+import VideoAdSlot from '../components/VideoAdSlot';
 import { useI18n } from '../i18n';
 import { useSEO } from '../lib/seo';
 import { buildLocalizedPath } from '../i18n/routing';
@@ -155,11 +155,7 @@ export default function VideoPage() {
           </Link>
         </div>
         
-        <div className="my-4">
-          <NativeAdSlot cardIndex={1} />
-          <div className="my-2"></div>
-          <NativeAdSlot cardIndex={2} />
-        </div>
+        <VideoAdSlot position="middle" />
       </div>
 
       <div className="space-y-4">
