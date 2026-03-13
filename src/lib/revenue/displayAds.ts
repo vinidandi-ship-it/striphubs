@@ -10,9 +10,14 @@ const DISPLAY_AD_CONFIG = {
     premium: { mobile: 2.00, desktop: 3.50 }
   },
   networks: {
-    native: 'mgid',
+    native: 'exoclick',
     banner: 'exoclick',
-    premium: 'trafficstars'
+    premium: 'exoclick'
+  },
+  zoneIds: {
+    native: '5870896',
+    banner: '5870866',
+    premium: '5870892'
   }
 };
 
@@ -109,14 +114,15 @@ export const recordAdClick = (type: 'native' | 'banner' | 'premium'): void => {
 
 export const getAdNetworkScript = (type: 'native' | 'banner' | 'premium'): string => {
   const network = DISPLAY_AD_CONFIG.networks[type];
+  const zoneId = DISPLAY_AD_CONFIG.zoneIds[type];
   
   switch (network) {
     case 'mgid':
-      return `<script src="https://a.mgid.com/your-zone-id.js" async></script>`;
+      return `<script src="https://a.mgid.com/${zoneId}.js" async></script>`;
     case 'exoclick':
-      return `<script src="https://a.exoclick.com/your-zone-id.js" async></script>`;
+      return `<script src="https://a.exoclick.com/${zoneId}.js" async></script>`;
     case 'trafficstars':
-      return `<script src="https://a.trafficstars.com/your-zone-id.js" async></script>`;
+      return `<script src="https://a.trafficstars.com/${zoneId}.js" async></script>`;
     default:
       return '';
   }

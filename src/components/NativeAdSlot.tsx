@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { shouldShowNativeAd, recordAdImpression, recordAdClick } from '../lib/revenue/displayAds';
+import { shouldShowNativeAd, recordAdImpression, recordAdClick, getAdNetworkScript } from '../lib/revenue/displayAds';
 
 interface NativeAdSlotProps {
   cardIndex: number;
@@ -7,15 +7,24 @@ interface NativeAdSlotProps {
 
 export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const loadedRef = useRef(false);
   
   useEffect(() => {
-    if (!shouldShowNativeAd(cardIndex)) return;
+    if (!shouldShowNativeAd(cardIndex) || loadedRef.current) return;
     
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && !loadedRef.current) {
+            loadedRef.current = true;
             recordAdImpression('native');
+            
+            const script = getAdNetworkScript('native');
+            const scriptContainer = document.getElementById('native-ad-script');
+            if (scriptContainer) {
+              scriptContainer.innerHTML = script;
+            }
+            
             observer.disconnect();
           }
         });
@@ -39,7 +48,8 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
       onClick={() => recordAdClick('native')}
     >
       <div className="relative">
-        <div className="aspect-[3/4] w-full bg-gradient-to-br from-panel to-bg-tertiary flex items-center justify-center">
+        <div id="native-ad-slot" className="aspect-[3/4] w-full bg-gradient-to-br from-panel to-bg-tertiary flex items-center justify-center">
+          <div id="native-ad-script"></div>
           <div className="text-center p-4">
             <div className="text-xs text-text-muted mb-2 uppercase tracking-wider">Sponsorizzato</div>
             <div className="h-3 bg-text-muted/20 rounded w-32 mx-auto mb-2"></div>
