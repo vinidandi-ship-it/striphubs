@@ -30,24 +30,31 @@ export default function ModelPage() {
     
     const loadModel = async () => {
       try {
-        // First try strict mode to find live model
-        const data = await api.getModels({ modelsList: decodedName, strict: 1, limit: 120, tag: 'girls,couples,trans,men' });
-        const selected = data.models.find((item) => item.username.toLowerCase() === decodedName.toLowerCase()) || null;
+        // Search by username using search parameter
+        const data = await api.getModels({ search: decodedName, limit: 1 });
         
-        if (selected) {
-          setModel(selected);
-          setRelated(data.models.filter((item) => item.username.toLowerCase() !== decodedName.toLowerCase()).slice(0, 8));
-          window.dispatchEvent(new CustomEvent('modelView', { detail: selected }));
+        if (data.models && data.models.length > 0) {
+          const apiModel = data.models[0];
+          // Map API response to our Model type
+          const mappedModel: LiveModel = {
+            username: apiModel.username,
+            thumbnail: apiModel.snapshotUrl || apiModel.previewUrl || apiModel.avatarUrl || '',
+            viewers: apiModel.viewersCount || apiModel.viewers || 0,
+            tags: apiModel.defaultTags || apiModel.tags || [],
+            country: apiModel.modelsCountry || apiModel.country || '',
+            category: apiModel.gender || apiModel.broadcastGender || 'female',
+            isLive: apiModel.strict !== false,
+            clickUrl: apiModel.stream?.url,
+            provider: 'stripchat'
+          };
+          setModel(mappedModel);
+          
+          // Get related models
+          const relatedData = await api.getModels({ limit: 9 });
+          setRelated(relatedData.models.filter((m) => m.username !== apiModel.username).slice(0, 8));
+          window.dispatchEvent(new CustomEvent('modelView', { detail: mappedModel }));
         } else {
-          // Try without strict to find offline model
-          const data2 = await api.getModels({ modelsList: decodedName, limit: 1 });
-          if (data2.models.length > 0) {
-            setModel(data2.models[0]);
-            setRelated(data2.models.slice(1, 9));
-            window.dispatchEvent(new CustomEvent('modelView', { detail: data2.models[0] }));
-          } else {
-            setError(t('model.notFound'));
-          }
+          setError(t('model.notFound'));
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load model profile');

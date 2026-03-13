@@ -15,6 +15,22 @@ export type Model = {
   isLive: boolean;
   clickUrl?: string;
   provider?: ProviderId;
+  avatarUrl?: string;
+  previewUrl?: string;
+  snapshotUrl?: string;
+  viewersCount?: number;
+  modelsCountry?: string;
+  gender?: string;
+  broadcastGender?: string;
+  languages?: string[];
+  favoritedCount?: number;
+  stream?: {
+    url: string;
+    urls?: Record<string, string>;
+  };
+  status?: string;
+  isNew?: boolean;
+  strict?: boolean;
 };
 
 export const watchLiveUrl = (username: string, provider: ProviderId = 'stripchat'): string => {
