@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import Breadcrumbs from '../components/Breadcrumbs';
 import { 
   Banner728x90,
   Banner300x250,
-  Banner160x600,
   RecommendationWidget,
   NativeAd,
   MultiformatAd,
@@ -89,17 +87,11 @@ export default function VideoPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-4">
-      <div className="flex items-center gap-2 text-sm text-zinc-400">
-        <Link to={buildLocalizedPath('/', language)} className="hover:text-white">Home</Link>
-        <span>/</span>
-        <Link to={buildLocalizedPath('/videos', language)} className="hover:text-white">Videos</Link>
-        <span>/</span>
-        <span className="text-white truncate max-w-[200px]">{video.title.slice(0, 30)}...</span>
-      </div>
-
+      {/* Top banner */}
       <Banner728x90 className="hidden md:block mx-auto" />
       <Banner300x250 className="md:hidden mx-auto" />
 
+      {/* Video player */}
       <div className="aspect-video w-full bg-black rounded-xl overflow-hidden relative">
         <iframe
           src={video.embedUrl}
@@ -111,6 +103,12 @@ export default function VideoPage() {
         />
       </div>
 
+      {/* Ad verticale piccolo sotto il video */}
+      <div className="flex justify-center">
+        <Banner300x250 />
+      </div>
+
+      {/* Titolo e info */}
       <h1 className="text-xl font-bold text-white">{video.title}</h1>
       
       <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-400">
@@ -164,13 +162,22 @@ export default function VideoPage() {
 
       <MultiformatAd />
 
+      <Banner728x90 className="hidden md:block mx-auto" />
+      <Banner300x250 className="md:hidden mx-auto" />
+
       <NativeAd />
 
       <RecommendationWidget />
 
+      <Banner728x90 className="hidden md:block mx-auto" />
+      <Banner300x250 className="md:hidden mx-auto" />
+
       <MultiformatV2 />
 
       <InstantMessage />
+
+      <Banner728x90 className="hidden md:block mx-auto" />
+      <Banner300x250 className="md:hidden mx-auto" />
 
       <div className="space-y-4">
         <h2 className="text-xl font-bold text-white">Related Videos</h2>
@@ -198,6 +205,9 @@ export default function VideoPage() {
             </Link>
           ))}
         </div>
+
+        <Banner728x90 className="hidden md:block mx-auto" />
+        <Banner300x250 className="md:hidden mx-auto" />
       </div>
     </div>
   );
