@@ -62,7 +62,7 @@ const ALTERNATIVES: Record<string, { name: string; description: string; tag: str
 
 export default function Alternative() {
   const { name = '' } = useParams<{ name: string }>();
-  const { language } = useI18n();
+  const { language, t } = useI18n();
   const [models, setModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -83,10 +83,10 @@ export default function Alternative() {
   }, [alt.tag]);
 
   const breadcrumbs = useMemo(() => [
-    { label: 'Home', to: '/' },
+    { label: t('common.home'), to: '/' },
     { label: 'Alternative', to: '/alternative' },
     { label: alt.name }
-  ], [alt.name]);
+  ], [alt.name, t]);
 
   return (
     <div className="space-y-8">

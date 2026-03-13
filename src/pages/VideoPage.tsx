@@ -125,8 +125,8 @@ export default function VideoPage() {
     <div className="space-y-6">
       <Breadcrumbs
         items={[
-          { label: 'Home', path: '/' },
-          { label: 'Videos', path: '/videos' },
+          { label: t('common.home'), path: '/' },
+          { label: t('videos.title'), path: '/videos' },
           { label: video.title.slice(0, 30) + '...' }
         ]}
       />

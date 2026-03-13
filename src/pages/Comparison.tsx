@@ -21,7 +21,7 @@ const TAG_MAP: Record<string, string> = {
 
 export default function Comparison() {
   const { comparison = 'milf-vs-teen' } = useParams<{ comparison: string }>();
-  const { language } = useI18n();
+  const { language, t } = useI18n();
   const [models1, setModels1] = useState<Model[]>([]);
   const [models2, setModels2] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
@@ -85,10 +85,10 @@ export default function Comparison() {
   const percent2 = totalVotes > 0 ? 100 - percent1 : 50;
 
   const breadcrumbs = useMemo(() => [
-    { label: 'Home', to: '/' },
+    { label: t('common.home'), to: '/' },
     { label: 'Confronti', to: '/vs' },
     { label: `${cat1} vs ${cat2}` }
-  ], [cat1, cat2]);
+  ], [cat1, cat2, t]);
 
   return (
     <div className="space-y-8">

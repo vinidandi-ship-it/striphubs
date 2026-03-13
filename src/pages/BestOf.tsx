@@ -31,7 +31,7 @@ const CATEGORIES: Record<string, string> = {
 
 export default function BestOf() {
   const { timeframe = 'today', category = 'teen' } = useParams<{ timeframe: string; category: string }>();
-  const { language } = useI18n();
+  const { language, t } = useI18n();
   const [models, setModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -53,10 +53,10 @@ export default function BestOf() {
   }, [cat]);
 
   const breadcrumbs = useMemo(() => [
-    { label: 'Home', to: '/' },
+    { label: t('common.home'), to: '/' },
     { label: 'Best Of', to: '/best/today/teen' },
     { label: `${tf.label} - ${category}` }
-  ], [tf.label, category]);
+  ], [tf.label, category, t]);
 
   return (
     <div className="space-y-8">
