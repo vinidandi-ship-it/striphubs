@@ -68,7 +68,14 @@ function InlineCTA({ index }: { index: number }) {
   );
 }
 
-export default function ModelGrid({ models, listName, loading = false }: { models: Model[]; listName: string; loading?: boolean }) {
+interface ModelGridProps {
+  models: Model[];
+  listName: string;
+  loading?: boolean;
+  showAds?: boolean;
+}
+
+export default function ModelGrid({ models, listName, loading = false, showAds: adsEnabled = true }: ModelGridProps) {
   const [visibleCount, setVisibleCount] = useState(INITIAL_RENDER_COUNT);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -121,8 +128,8 @@ export default function ModelGrid({ models, listName, loading = false }: { model
     return <div className="rounded-2xl border border-border bg-panel p-6 text-zinc-400">No live models found.</div>;
   }
   
-  const showAds = !isPremiumUser();
-  const showInlineCta = !isPremiumUser();
+  const showAds = adsEnabled && !isPremiumUser();
+  const showInlineCta = adsEnabled && !isPremiumUser();
   
   const gridItems: JSX.Element[] = [];
   let modelIndex = 0;
