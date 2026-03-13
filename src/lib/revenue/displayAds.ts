@@ -1,6 +1,6 @@
 const DISPLAY_AD_CONFIG = {
-  enabled: false,
-  nativeAdsEnabled: false,
+  enabled: true,
+  nativeAdsEnabled: true,
   premiumAdsEnabled: false,
   nativeAdInterval: 3,
   premiumAdThreshold: 3,
