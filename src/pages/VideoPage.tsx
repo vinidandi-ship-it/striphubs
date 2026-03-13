@@ -1,14 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { 
-  Banner728x90,
-  Banner300x250,
-  RecommendationWidget,
-  NativeAd,
-  MultiformatAd,
-  MultiformatV2,
-  InstantMessage
-} from '../components/BannerAds';
+import Breadcrumbs from '../components/Breadcrumbs';
+import VideoAdSlot, { VideoBannerSlot } from '../components/VideoAdSlot';
 import { useI18n } from '../i18n';
 import { useSEO } from '../lib/seo';
 import { buildLocalizedPath } from '../i18n/routing';
@@ -41,7 +34,7 @@ function formatViews(views: number): string {
 
 export default function VideoPage() {
   const { id } = useParams();
-  const { language } = useI18n();
+  const { language, t } = useI18n();
   const [video, setVideo] = useState<Video | null>(null);
   const [loading, setLoading] = useState(true);
   const [videos, setVideos] = useState<Video[]>([]);
@@ -60,8 +53,9 @@ export default function VideoPage() {
 
   useSEO(
     video ? `${video.title} - Free XXX Video` : 'Video',
-    video ? `Watch ${video.title} for free. ${formatViews(video.views)} views.` : 'Watch free porn videos',
-    `/video/${id}`
+    video ? `Watch ${video.title} for free. ${formatViews(video.views)} views. ${video.tags.slice(0, 5).join(', ')}` : 'Watch free porn videos',
+    `/video/${id}`,
+    { lang: language }
   );
 
   if (loading) {
@@ -86,98 +80,88 @@ export default function VideoPage() {
   const relatedVideos = videos.filter(v => v.id !== video.id).slice(0, 10);
 
   return (
-    <div className="max-w-4xl mx-auto space-y-4">
-      {/* Top banner */}
-      <Banner728x90 className="hidden md:block mx-auto" />
-      <Banner300x250 className="md:hidden mx-auto" />
+    <div className="space-y-6">
+      <Breadcrumbs
+        items={[
+          { label: 'Home', path: '/' },
+          { label: 'Videos', path: '/videos' },
+          { label: video.title.slice(0, 30) + '...' }
+        ]}
+      />
 
-      {/* Video player */}
-      <div className="aspect-video w-full bg-black rounded-xl overflow-hidden relative">
-        <iframe
-          src={video.embedUrl}
-          frameBorder="0"
-          allowFullScreen
-          allow="autoplay; fullscreen"
-          className="w-full h-full absolute inset-0"
-          title={video.title}
-        />
-      </div>
+      <div className="space-y-4">
+        <div className="aspect-video w-full bg-black rounded-xl overflow-hidden relative">
+          <iframe
+            src={video.embedUrl}
+            frameBorder="0"
+            allowFullScreen
+            allow="autoplay; fullscreen"
+            className="w-full h-full absolute inset-0"
+            title={video.title}
+          />
+        </div>
 
-      {/* Ad verticale piccolo sotto il video */}
-      <div className="flex justify-center">
-        <Banner300x250 />
-      </div>
+        <div className="space-y-2">
+          <h1 className="text-xl font-bold text-white">{video.title}</h1>
+          
+          <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-400">
+            <span className="flex items-center gap-1">
+              <Icon name="eye" size={14} />
+              {formatViews(video.views)} views
+            </span>
+            <span className="flex items-center gap-1">
+              <Icon name="clock" size={14} />
+              {formatDuration(video.duration)}
+            </span>
+            <span className="flex items-center gap-1">
+              ★ {(video.rating / 1000).toFixed(1)}
+            </span>
+          </div>
 
-      {/* Titolo e info */}
-      <h1 className="text-xl font-bold text-white">{video.title}</h1>
-      
-      <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-400">
-        <span className="flex items-center gap-1">
-          <Icon name="eye" size={14} />
-          {formatViews(video.views)} views
-        </span>
-        <span className="flex items-center gap-1">
-          <Icon name="eye" size={14} />
-          {formatDuration(video.duration)}
-        </span>
-        <span className="flex items-center gap-1">
-          ★ {(video.rating / 1000).toFixed(1)}
-        </span>
-      </div>
+          {video.pornstar && (
+            <p className="text-zinc-300">
+              <span className="text-zinc-500">Pornstar:</span> {video.pornstar}
+            </p>
+          )}
 
-      {video.pornstar && (
-        <p className="text-zinc-300">
-          <span className="text-zinc-500">Pornstar:</span> {video.pornstar}
-        </p>
-      )}
+          <div className="flex flex-wrap gap-2">
+            {video.tags.map(tag => (
+              <Link
+                key={tag}
+                to={buildLocalizedPath(`/videos?tag=${tag}`, language)}
+                className="px-2 py-1 bg-panel border border-border rounded text-xs text-zinc-300 hover:border-accent hover:text-accent transition"
+              >
+                #{tag}
+              </Link>
+            ))}
+          </div>
+        </div>
 
-      <div className="flex flex-wrap gap-2">
-        {video.tags.slice(0, 12).map(tag => (
+        <div className="flex gap-3">
           <Link
-            key={tag}
-            to={buildLocalizedPath(`/videos?tag=${tag}`, language)}
-            className="px-2 py-1 bg-panel border border-border rounded text-xs text-zinc-300 hover:border-accent hover:text-accent transition"
+            to={getAffiliateUrlWithProvider('stripchat').url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 bg-accent hover:bg-accent/80 text-white font-semibold py-3 px-6 rounded-full text-center transition"
           >
-            #{tag}
+            🎯 Go to Stripchat
           </Link>
-        ))}
+          <Link
+            to={buildLocalizedPath('/live', language)}
+            className="flex-1 border border-border hover:border-accent text-white font-semibold py-3 px-6 rounded-full text-center transition"
+          >
+            💄 Watch Live Cams
+          </Link>
+        </div>
+
+        <VideoBannerSlot />
+        
+        <VideoAdSlot />
+        
+        <div className="flex justify-center">
+          <VideoBannerSlot />
+        </div>
       </div>
-
-      <div className="flex gap-3">
-        <Link
-          to={getAffiliateUrlWithProvider('stripchat').url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1 bg-accent hover:bg-accent/80 text-white font-semibold py-3 px-6 rounded-full text-center transition"
-        >
-          🎯 Go to Stripchat
-        </Link>
-        <Link
-          to={buildLocalizedPath('/live', language)}
-          className="flex-1 border border-border hover:border-accent text-white font-semibold py-3 px-6 rounded-full text-center transition"
-        >
-          💄 Watch Live Cams
-        </Link>
-      </div>
-
-      <MultiformatAd />
-
-      <Banner728x90 className="hidden md:block mx-auto" />
-      <Banner300x250 className="md:hidden mx-auto" />
-
-      <NativeAd />
-
-      <RecommendationWidget />
-
-      <Banner728x90 className="hidden md:block mx-auto" />
-      <Banner300x250 className="md:hidden mx-auto" />
-
-      <MultiformatV2 />
-
-      <InstantMessage />
-
-      <Banner728x90 className="hidden md:block mx-auto" />
-      <Banner300x250 className="md:hidden mx-auto" />
 
       <div className="space-y-4">
         <h2 className="text-xl font-bold text-white">Related Videos</h2>
@@ -205,9 +189,6 @@ export default function VideoPage() {
             </Link>
           ))}
         </div>
-
-        <Banner728x90 className="hidden md:block mx-auto" />
-        <Banner300x250 className="md:hidden mx-auto" />
       </div>
     </div>
   );
