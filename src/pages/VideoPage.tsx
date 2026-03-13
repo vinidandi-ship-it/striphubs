@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import VideoAdSlot, { VideoBannerSlot } from '../components/VideoAdSlot';
+import NativeAdSlot from '../components/NativeAdSlot';
 import { useI18n } from '../i18n';
 import { useSEO } from '../lib/seo';
 import { buildLocalizedPath } from '../i18n/routing';
@@ -159,12 +160,19 @@ export default function VideoPage() {
         <VideoAdSlot />
         
         <div className="flex justify-center">
+          <NativeAdSlot cardIndex={1} />
+        </div>
+        
+        <div className="flex justify-center">
           <VideoBannerSlot />
         </div>
       </div>
 
       <div className="space-y-4">
         <h2 className="text-xl font-bold text-white">Related Videos</h2>
+        
+        <NativeAdSlot cardIndex={10} />
+        
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {relatedVideos.map(v => (
             <Link
@@ -189,6 +197,8 @@ export default function VideoPage() {
             </Link>
           ))}
         </div>
+        
+        <NativeAdSlot cardIndex={20} />
       </div>
     </div>
   );
