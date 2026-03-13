@@ -58,7 +58,7 @@ export function Banner300x250({ className = '' }: { className?: string }) {
       onClick={() => recordAdClick('banner')}
     >
       <ins 
-        className="eas6a97888e38" 
+        className="eas6a97888e10" 
         data-zoneid="5870904"
         style={{
           display: 'block',
@@ -86,7 +86,7 @@ export function RecommendationWidget({ className = '' }: { className?: string })
       onClick={() => recordAdClick('premium')}
     >
       <ins 
-        className="eas6a97888e38" 
+        className="eas6a97888e20" 
         data-zoneid="5871378"
         style={{
           display: 'block',
