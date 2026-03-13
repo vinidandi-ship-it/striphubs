@@ -1,16 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { shouldShowNativeAd, recordAdImpression, recordAdClick } from '../lib/revenue/displayAds';
 
-interface NativeAdSlotProps {
-  cardIndex: number;
-}
-
-export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
+const useAdScript = (zoneId: string) => {
   useEffect(() => {
-    recordAdImpression('native');
-    
     const existingScript = document.querySelector('script[src*="ad-provider"]');
     if (!existingScript) {
       const script = document.createElement('script');
@@ -19,12 +11,28 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
       document.head.appendChild(script);
     }
     
+    // Trigger ads loading
     setTimeout(() => {
-      if (typeof window !== 'undefined') {
-        (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider?.push({});
+      if (typeof window !== 'undefined' && (window as any).AdProvider) {
+        (window as any).AdProvider.push({ serve: {} });
       }
-    }, 500);
+    }, 1000);
+  }, []);
+};
+
+export default function NativeAdSlot({ cardIndex }: { cardIndex: number }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    if (!shouldShowNativeAd(cardIndex)) return;
+    
+    recordAdImpression('native');
+    useAdScript('5871380');
   }, [cardIndex]);
+  
+  if (!shouldShowNativeAd(cardIndex)) {
+    return null;
+  }
   
   return (
     <div 
