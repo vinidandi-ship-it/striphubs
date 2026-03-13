@@ -1,8 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { recordAdImpression, recordAdClick } from '../lib/revenue/displayAds';
 
-const useAdScript = (zoneId: string) => {
+export default function VideoAdSlot() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
   useEffect(() => {
+    recordAdImpression('native');
+    
     const existingScript = document.querySelector('script[src*="ad-provider"]');
     if (!existingScript) {
       const script = document.createElement('script');
@@ -10,69 +14,10 @@ const useAdScript = (zoneId: string) => {
       script.async = true;
       document.head.appendChild(script);
     }
-  }, []);
-};
-
-export default function VideoAdSlot() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
-    recordAdImpression('native');
-    useAdScript('5871380');
-  }, []);
-  
-  return (
-    <div 
-      ref={containerRef}
-      className="w-full flex justify-center py-3"
-      onClick={() => recordAdClick('native')}
-    >
-      <ins 
-        className="eas6a97888e38" 
-        data-zoneid="5871380"
-        style={{
-          display: 'block',
-          width: '100%',
-          maxWidth: '600px',
-          height: '300px',
-          margin: '0 auto'
-        }}
-      />
-    </div>
-  );
-}
-
-export function VideoBannerSlot() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
-    useAdScript('5871380');
-  }, []);
-  
-  return (
-    <div 
-      ref={containerRef}
-      className="w-full flex justify-center py-2"
-      onClick={() => recordAdClick('banner')}
-    >
-      <ins 
-        className="eas6a97888e38" 
-        data-zoneid="5871380"
-        style={{
-          display: 'block',
-          width: '100%',
-          maxWidth: '600px',
-          height: '300px',
-          margin: '0 auto'
-        }}
-      />
-    </div>
-  );
-}
     
     setTimeout(() => {
-      if (typeof window !== 'undefined') {
-        (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider?.push({});
+      if (typeof window !== 'undefined' && (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider) {
+        (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider?.push({ serve: {} });
       }
     }, 500);
   }, []);
@@ -84,13 +29,13 @@ export function VideoBannerSlot() {
       onClick={() => recordAdClick('native')}
     >
       <ins 
-        className="eas6a97888e38" 
-        data-zoneid="5871380"
+        className="eas6a97888e20" 
+        data-zoneid="5870892"
         style={{
           display: 'block',
           width: '100%',
           maxWidth: '600px',
-          height: '300px',
+          height: '260px',
           margin: '0 auto'
         }}
       />
@@ -118,13 +63,13 @@ export function VideoBannerSlot() {
       onClick={() => recordAdClick('banner')}
     >
       <ins 
-        className="eas6a97888e38" 
-        data-zoneid="5871380"
+        className="eas6a97888e2" 
+        data-zoneid="5870866"
         style={{
           display: 'block',
           width: '100%',
-          maxWidth: '600px',
-          height: '300px',
+          maxWidth: '728px',
+          height: '90px',
           margin: '0 auto'
         }}
       />
