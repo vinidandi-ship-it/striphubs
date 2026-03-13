@@ -140,17 +140,17 @@ export default function Videos() {
         ))}
       </div>
 
-      <RecommendationWidget className="my-3" />
+      <RecommendationWidget className="my-2" />
 
-      <Banner728x90 className="hidden md:block mx-auto my-3" />
-      <Banner300x250 className="md:hidden mx-auto my-3" />
+      <Banner728x90 className="hidden md:block mx-auto my-2" />
+      <Banner300x250 className="md:hidden mx-auto my-2" />
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
         {displayVideos.map((video, index) => (
           <>
             {/* Banner ogni 4 video con formato alternato */}
             {index > 0 && index % 4 === 0 && (
-              <div className="col-span-full flex justify-center my-3">
+              <div className="col-span-full flex justify-center my-2">
                 <NativeAdSlot cardIndex={index} />
               </div>
             )}
@@ -193,12 +193,12 @@ export default function Videos() {
         ))}
       </div>
 
-      <Banner728x90 className="hidden md:block mx-auto my-3" />
-      <Banner300x250 className="md:hidden mx-auto my-3" />
+      <Banner728x90 className="hidden md:block mx-auto my-2" />
+      <Banner300x250 className="md:hidden mx-auto my-2" />
 
-      <MultiformatAd className="my-3" />
+      <MultiformatAd className="my-2" />
       
-      <InstantMessage className="my-3" />
+      <InstantMessage className="my-2" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <a

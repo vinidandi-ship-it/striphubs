@@ -165,7 +165,7 @@ export default function VideoPage() {
       </div>
 
       {/* Banner section */}
-      <div className="space-y-4">
+      <div className="space-y-2">
         <VideoBannerSlot />
         
         <MultiformatAd />
