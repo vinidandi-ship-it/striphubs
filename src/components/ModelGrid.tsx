@@ -131,11 +131,11 @@ export default function ModelGrid({ models, listName, loading = false }: { model
     gridItems.push(<ModelCard key={model.username} model={model} />);
     modelIndex++;
     
-    if (showInlineCta && modelIndex > 0 && modelIndex % CTA_INTERVAL === 0 && index < renderedModels.length - 1) {
-      gridItems.push(<InlineCTA key={`cta-${index}`} index={ctaCount++} />);
+    if (showInlineCta && modelIndex > 0 && modelIndex % CTA_INTERVAL === 0 && ctaCount < 3) {
+      gridItems.push(<InlineCTA key={`cta-${modelIndex}`} index={ctaCount++} />);
     }
     
-    if (showAds && modelIndex > 0 && modelIndex % NATIVE_AD_INTERVAL === 0 && index < renderedModels.length - 1) {
+    if (showAds && modelIndex > 0 && modelIndex % NATIVE_AD_INTERVAL === 0) {
       gridItems.push(<NativeAdSlot key={`native-${modelIndex}`} cardIndex={modelIndex} />);
     }
   });
