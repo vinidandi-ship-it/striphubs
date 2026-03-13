@@ -18,7 +18,7 @@ import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 export default function CombinationPage() {
   const PAGE_SIZE = 96;
   const { category = 'milf', tag = 'tattoo' } = useParams();
-  const { language } = useI18n();
+  const { language, t } = useI18n();
   const [models, setModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -88,7 +88,7 @@ export default function CombinationPage() {
 
       {relatedCombos.length ? (
         <section className="rounded-2xl border border-border bg-panel p-4">
-          <h2 className="text-lg font-semibold text-white">Altre landing correlate</h2>
+          <h2 className="text-lg font-semibold text-white">{t('combinationPage.altreLanding')}</h2>
           <div className="mt-3 flex flex-wrap gap-2">
             {relatedCombos.map((entry) => (
               <Link

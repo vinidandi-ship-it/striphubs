@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useI18n } from '../i18n';
 import { useRevenueDashboard } from '../lib/useRevenue';
 
 export default function RevenueDashboard() {
+  const { t } = useI18n();
   const { metrics, estimates, loading, refresh } = useRevenueDashboard(100000);
   const [activeTab, setActiveTab] = useState<'overview' | 'affiliate' | 'email' | 'ads' | 'premium'>('overview');
 
@@ -21,12 +23,12 @@ export default function RevenueDashboard() {
   return (
     <div className="rounded-2xl border border-border bg-panel p-6">
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-xl font-bold text-white">Revenue Dashboard</h2>
+        <h2 className="text-xl font-bold text-white">{t('revenueDashboard.title')}</h2>
         <button
           onClick={refresh}
           className="rounded-lg bg-accent-primary px-4 py-2 text-sm font-medium text-white hover:bg-accent-primary/90"
         >
-          Refresh
+          {t('revenueDashboard.refresh')}
         </button>
       </div>
 
@@ -41,7 +43,7 @@ export default function RevenueDashboard() {
                 : 'bg-bg-tertiary text-text-secondary hover:bg-bg-tertiary/80'
             }`}
           >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            {t(`revenueDashboard.tabs.${tab}`)}
           </button>
         ))}
       </div>
@@ -49,15 +51,15 @@ export default function RevenueDashboard() {
       {activeTab === 'overview' && (
         <div className="space-y-6">
           <div className="rounded-xl bg-gradient-to-br from-accent-primary/20 to-accent-primary/5 p-6">
-            <div className="text-sm text-text-secondary">Estimated Monthly Revenue</div>
+            <div className="text-sm text-text-secondary">{t('revenueDashboard.overview.estimatedRevenue')}</div>
             <div className="text-4xl font-bold text-white">${estimates.total.toFixed(2)}</div>
-            <div className="mt-2 text-sm text-text-muted">Based on 100K monthly visitors</div>
+            <div className="mt-2 text-sm text-text-muted">{t('revenueDashboard.overview.basedOnVisitors')}</div>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {Object.entries(estimates.breakdown).map(([level, data]) => (
               <div key={level} className="rounded-lg border border-border bg-bg p-4">
-                <div className="text-xs text-text-muted uppercase">Level {data.priority}</div>
+                <div className="text-xs text-text-muted uppercase">{t('revenueDashboard.overview.level')} {data.priority}</div>
                 <div className="mt-1 text-lg font-bold text-white">${data.estimate.toFixed(2)}</div>
                 <div className="mt-2 text-xs text-text-secondary line-clamp-2">{data.source}</div>
               </div>
@@ -65,7 +67,7 @@ export default function RevenueDashboard() {
           </div>
 
           <div className="rounded-lg border border-border bg-bg p-4">
-            <div className="text-sm font-medium text-white mb-2">User Status</div>
+            <div className="text-sm font-medium text-white mb-2">{t('revenueDashboard.overview.userStatus')}</div>
             <div className="flex items-center gap-2">
               <span className={`h-2 w-2 rounded-full ${metrics.userTier === 'premium' ? 'bg-accent-gold' : 'bg-text-muted'}`}></span>
               <span className="text-sm text-text-secondary capitalize">{metrics.userTier}</span>
@@ -78,30 +80,30 @@ export default function RevenueDashboard() {
         <div className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="rounded-lg border border-border bg-bg p-4">
-              <div className="text-sm text-text-muted">Stripchat</div>
+              <div className="text-sm text-text-muted">{t('revenueDashboard.affiliate.stripchat')}</div>
               <div className="text-2xl font-bold text-white">${metrics.affiliate.stripchat.revenue.toFixed(2)}</div>
               <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
-                <div><span className="text-text-muted">Clicks:</span> {metrics.affiliate.stripchat.clicks}</div>
-                <div><span className="text-text-muted">Conv:</span> {metrics.affiliate.stripchat.conversions}</div>
-                <div><span className="text-text-muted">CVR:</span> {metrics.affiliate.stripchat.cvr.toFixed(2)}%</div>
-                <div><span className="text-text-muted">Weight:</span> {metrics.affiliate.recommendedWeight.stripchat}%</div>
+                <div><span className="text-text-muted">{t('revenueDashboard.affiliate.clicks')}:</span> {metrics.affiliate.stripchat.clicks}</div>
+                <div><span className="text-text-muted">{t('revenueDashboard.affiliate.conv')}:</span> {metrics.affiliate.stripchat.conversions}</div>
+                <div><span className="text-text-muted">{t('revenueDashboard.affiliate.cvr')}:</span> {metrics.affiliate.stripchat.cvr.toFixed(2)}%</div>
+                <div><span className="text-text-muted">{t('revenueDashboard.affiliate.weight')}:</span> {metrics.affiliate.recommendedWeight.stripchat}%</div>
               </div>
             </div>
 
             <div className="rounded-lg border border-border bg-bg p-4">
-              <div className="text-sm text-text-muted">Chaturbate</div>
+              <div className="text-sm text-text-muted">{t('revenueDashboard.affiliate.chaturbate')}</div>
               <div className="text-2xl font-bold text-white">${metrics.affiliate.chaturbate.revenue.toFixed(2)}</div>
               <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
-                <div><span className="text-text-muted">Clicks:</span> {metrics.affiliate.chaturbate.clicks}</div>
-                <div><span className="text-text-muted">Conv:</span> {metrics.affiliate.chaturbate.conversions}</div>
-                <div><span className="text-text-muted">CVR:</span> {metrics.affiliate.chaturbate.cvr.toFixed(2)}%</div>
-                <div><span className="text-text-muted">Weight:</span> {metrics.affiliate.recommendedWeight.chaturbate}%</div>
+                <div><span className="text-text-muted">{t('revenueDashboard.affiliate.clicks')}:</span> {metrics.affiliate.chaturbate.clicks}</div>
+                <div><span className="text-text-muted">{t('revenueDashboard.affiliate.conv')}:</span> {metrics.affiliate.chaturbate.conversions}</div>
+                <div><span className="text-text-muted">{t('revenueDashboard.affiliate.cvr')}:</span> {metrics.affiliate.chaturbate.cvr.toFixed(2)}%</div>
+                <div><span className="text-text-muted">{t('revenueDashboard.affiliate.weight')}:</span> {metrics.affiliate.recommendedWeight.chaturbate}%</div>
               </div>
             </div>
           </div>
 
           <div className="rounded-lg border border-border bg-bg p-4">
-            <div className="text-sm font-medium text-white">Total Affiliate Revenue</div>
+            <div className="text-sm font-medium text-white">{t('revenueDashboard.affiliate.totalRevenue')}</div>
             <div className="text-3xl font-bold text-accent-primary">${metrics.affiliate.totalRevenue.toFixed(2)}</div>
           </div>
         </div>
@@ -111,15 +113,15 @@ export default function RevenueDashboard() {
         <div className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="rounded-lg border border-border bg-bg p-4">
-              <div className="text-sm text-text-muted">Subscribers</div>
+              <div className="text-sm text-text-muted">{t('revenueDashboard.email.subscribers')}</div>
               <div className="text-2xl font-bold text-white">{metrics.email.subscribers}</div>
             </div>
             <div className="rounded-lg border border-border bg-bg p-4">
-              <div className="text-sm text-text-muted">Monthly Revenue</div>
+              <div className="text-sm text-text-muted">{t('revenueDashboard.email.monthlyRevenue')}</div>
               <div className="text-2xl font-bold text-accent-primary">${metrics.email.estimatedMonthlyRevenue.toFixed(2)}</div>
             </div>
             <div className="rounded-lg border border-border bg-bg p-4">
-              <div className="text-sm text-text-muted">Avg Conversion</div>
+              <div className="text-sm text-text-muted">{t('revenueDashboard.email.avgConversion')}</div>
               <div className="text-2xl font-bold text-white">{metrics.email.avgConversionRate.toFixed(2)}</div>
             </div>
           </div>
@@ -130,15 +132,15 @@ export default function RevenueDashboard() {
         <div className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="rounded-lg border border-border bg-bg p-4">
-              <div className="text-sm text-text-muted">Native Ads</div>
+              <div className="text-sm text-text-muted">{t('revenueDashboard.ads.nativeAds')}</div>
               <div className="text-2xl font-bold text-white">${metrics.display.nativeAds.toFixed(2)}</div>
             </div>
             <div className="rounded-lg border border-border bg-bg p-4">
-              <div className="text-sm text-text-muted">Premium Ads</div>
+              <div className="text-sm text-text-muted">{t('revenueDashboard.ads.premiumAds')}</div>
               <div className="text-2xl font-bold text-white">${metrics.display.premiumAds.toFixed(2)}</div>
             </div>
             <div className="rounded-lg border border-border bg-bg p-4">
-              <div className="text-sm text-text-muted">Total Ad Revenue</div>
+              <div className="text-sm text-text-muted">{t('revenueDashboard.ads.totalRevenue')}</div>
               <div className="text-2xl font-bold text-accent-primary">${metrics.display.total.toFixed(2)}</div>
             </div>
           </div>
@@ -149,19 +151,19 @@ export default function RevenueDashboard() {
         <div className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-4">
             <div className="rounded-lg border border-border bg-bg p-4">
-              <div className="text-sm text-text-muted">Active Users</div>
+              <div className="text-sm text-text-muted">{t('revenueDashboard.premium.activeUsers')}</div>
               <div className="text-2xl font-bold text-white">{metrics.premium.activeUsers}</div>
             </div>
             <div className="rounded-lg border border-border bg-bg p-4">
-              <div className="text-sm text-text-muted">Total Users</div>
+              <div className="text-sm text-text-muted">{t('revenueDashboard.premium.totalUsers')}</div>
               <div className="text-2xl font-bold text-white">{metrics.premium.users}</div>
             </div>
             <div className="rounded-lg border border-border bg-bg p-4">
-              <div className="text-sm text-text-muted">MRR</div>
+              <div className="text-sm text-text-muted">{t('revenueDashboard.premium.mrr')}</div>
               <div className="text-2xl font-bold text-accent-gold">${metrics.premium.mrr.toFixed(2)}</div>
             </div>
             <div className="rounded-lg border border-border bg-bg p-4">
-              <div className="text-sm text-text-muted">Conv Rate</div>
+              <div className="text-sm text-text-muted">{t('revenueDashboard.premium.convRate')}</div>
               <div className="text-2xl font-bold text-white">{metrics.premium.conversionRate.toFixed(2)}%</div>
             </div>
           </div>

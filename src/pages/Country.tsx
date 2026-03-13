@@ -66,13 +66,13 @@ export default function Country() {
             onClick={toggleIncludeOffline}
             className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${includeOffline ? 'border-accent bg-accent/10 text-accent' : 'border-border text-zinc-300 hover:border-accent hover:text-white'}`}
           >
-            {includeOffline ? 'Mostra solo live' : 'Includi anche offline'}
+            {includeOffline ? t('countryPage.showOnlyLive') : t('countryPage.includeOffline')}
           </button>
         </div>
       </header>
 
       <section className="rounded-2xl border border-border bg-panel p-4 sm:p-5">
-        <h2 className="text-lg font-semibold text-white">Tag popolari per {country.name.toLowerCase()}</h2>
+        <h2 className="text-lg font-semibold text-white">{t('countryPage.tagPopolari', { country: country.name.toLowerCase() })}</h2>
         <div className="mt-3 flex flex-wrap gap-2">
           {priorityTagSlugs.slice(0, 10).map((tag) => (
             <Link
@@ -88,7 +88,7 @@ export default function Country() {
 
       {relatedCombos.length ? (
         <section className="rounded-2xl border border-border bg-panel p-4 sm:p-5">
-          <h2 className="text-lg font-semibold text-white">Combinazioni da spingere</h2>
+          <h2 className="text-lg font-semibold text-white">{t('countryPage.combinazioniDaSpingere')}</h2>
           <div className="mt-3 flex flex-wrap gap-2">
             {relatedCombos.map((entry) => (
               <Link
@@ -104,7 +104,7 @@ export default function Country() {
       ) : null}
 
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
-      {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
+      {!loading ? <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')}{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`${country.name} Live Models`} />
       {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
       <InfiniteLoader loading={loadingMore} hasMore={hasMore} />

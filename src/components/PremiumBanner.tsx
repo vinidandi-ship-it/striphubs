@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useI18n } from '../i18n';
 import { shouldShowPremiumAd, recordAdImpression, recordAdClick } from '../lib/revenue/displayAds';
 
 export default function PremiumBanner() {
+  const { t } = useI18n();
   const [show, setShow] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   
@@ -33,7 +35,7 @@ export default function PremiumBanner() {
       <button
         onClick={handleDismiss}
         className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-bg-tertiary text-text-muted hover:text-white flex items-center justify-center text-sm"
-        aria-label="Chiudi"
+        aria-label={t('premiumBanner.close')}
       >
         ✕
       </button>
@@ -44,9 +46,9 @@ export default function PremiumBanner() {
         </div>
         
         <div className="flex-1 min-w-0">
-          <h4 className="text-sm font-semibold text-white">Rimuovi gli ads</h4>
+          <h4 className="text-sm font-semibold text-white">{t('premiumBanner.title')}</h4>
           <p className="text-xs text-text-secondary mt-0.5">
-            VIP a soli €4.99/mese
+            {t('premiumBanner.subtitle')}
           </p>
         </div>
       </div>
@@ -55,11 +57,11 @@ export default function PremiumBanner() {
         onClick={handleClick}
         className="mt-3 w-full rounded-lg bg-accent-gold py-2 text-sm font-semibold text-black hover:bg-accent-gold/90 transition"
       >
-        Attiva VIP
+        {t('premiumBanner.button')}
       </button>
       
       <p className="mt-2 text-center text-[10px] text-text-muted">
-        Prova gratuita 7 giorni
+        {t('premiumBanner.trial')}
       </p>
     </div>
   );

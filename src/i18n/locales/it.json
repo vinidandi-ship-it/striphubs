@@ -392,10 +392,93 @@
     "categories": "Categorie",
     "notFound": "Articolo non trovato",
     "backToHome": "Torna alla Home",
+    "backToGuides": "Torna alle Guide",
+    "minRead": "min lettura",
+    "listCategory": "Liste",
+    "guideCategory": "Guide",
     "bestCategoryIntro": "Scopri le migliori {category} cam online. Guide complete, consigli e trucchi per trovare le modelle perfette.",
     "completeGuideIntro": "Benvenuto nella guida completa alle live cam. Tutto quello che devi sapere per iniziare.",
     "statisticsIntro": "Analisi completa del mercato delle live cam con dati aggiornati.",
     "securityIntro": "Tutto sulla sicurezza e privacy nelle live cam."
+  },
+  "revenueStack": {
+    "premiumUpsell": {
+      "title": "Diventa VIP",
+      "subtitle": "Rimuovi tutte le pubblicità e sblocca funzionalità esclusive",
+      "features": [
+        "Nessuna pubblicità",
+        "Favoriti illimitati",
+        "Ricerca avanzata",
+        "Modelle esclusive",
+        "Thumbnail HD",
+        "Supporto prioritario"
+      ],
+      "price": "€4.99",
+      "pricePeriod": "/mese",
+      "trial": "7 giorni prova gratuita",
+      "button": "Attiva Ora - Prova Gratuita",
+      "cancelAnytime": "Cancella in qualsiasi momento. Nessun vincolo."
+    },
+    "close": "Chiudi"
+  },
+  "premiumBanner": {
+    "title": "Rimuovi gli ads",
+    "subtitle": "VIP a soli €4.99/mese",
+    "button": "Attiva VIP",
+    "trial": "Prova gratuita 7 giorni",
+    "close": "Chiudi"
+  },
+  "revenueDashboard": {
+    "title": "Dashboard Ricavi",
+    "refresh": "Aggiorna",
+    "tabs": {
+      "overview": "Panoramica",
+      "affiliate": "Affiliazioni",
+      "email": "Email",
+      "ads": "Pubblicità",
+      "premium": "Premium"
+    },
+    "overview": {
+      "estimatedRevenue": "Ricavo Mensile Stimato",
+      "basedOnVisitors": "Basato su 100K visitatori mensili",
+      "userStatus": "Stato Utente",
+      "level": "Livello",
+      "source": "Fonte"
+    },
+    "affiliate": {
+      "stripchat": "Stripchat",
+      "chaturbate": "Chaturbate",
+      "totalRevenue": "Ricavo Totale Affiliazioni",
+      "clicks": "Click",
+      "conv": "Conv",
+      "cvr": "CVR",
+      "weight": "Peso"
+    },
+    "email": {
+      "subscribers": "Iscritti",
+      "monthlyRevenue": "Ricavo Mensile",
+      "avgConversion": "Conv. Media"
+    },
+    "ads": {
+      "nativeAds": "Native Ads",
+      "premiumAds": "Premium Ads",
+      "totalRevenue": "Ricavo Totale Pubblicità"
+    },
+    "premium": {
+      "activeUsers": "Utenti Attivi",
+      "totalUsers": "Utenti Totali",
+      "mrr": "MRR",
+      "convRate": "Tasso Conv."
+    }
+  },
+  "countryPage": {
+    "tagPopolari": "Tag popolari per {country}",
+    "combinazioniDaSpingere": "Combinazioni da spingere",
+    "showOnlyLive": "Mostra solo live",
+    "includeOffline": "Includi anche offline"
+  },
+  "combinationPage": {
+    "altreLanding": "Altre landing correlate"
   }
 }
 }

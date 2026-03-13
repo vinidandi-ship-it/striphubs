@@ -396,5 +396,84 @@
     "completeGuideIntro": "Welcome to the complete guide to live cams. Everything you need to know to get started.",
     "statisticsIntro": "Complete analysis of the live cam market with updated data.",
     "securityIntro": "Everything about security and privacy in live cams."
+  },
+  "revenueStack": {
+    "premiumUpsell": {
+      "title": "Become VIP",
+      "subtitle": "Remove all ads and unlock exclusive features",
+      "features": [
+        "No ads",
+        "Unlimited favorites",
+        "Advanced search",
+        "Exclusive models",
+        "HD thumbnails",
+        "Priority support"
+      ],
+      "price": "$4.99",
+      "pricePeriod": "/month",
+      "trial": "7-day free trial",
+      "button": "Activate Now - Free Trial",
+      "cancelAnytime": "Cancel anytime. No commitment."
+    },
+    "close": "Close"
+  },
+  "premiumBanner": {
+    "title": "Remove ads",
+    "subtitle": "VIP for just $4.99/month",
+    "button": "Activate VIP",
+    "trial": "Free 7-day trial",
+    "close": "Close"
+  },
+  "revenueDashboard": {
+    "title": "Revenue Dashboard",
+    "refresh": "Refresh",
+    "tabs": {
+      "overview": "Overview",
+      "affiliate": "Affiliate",
+      "email": "Email",
+      "ads": "Ads",
+      "premium": "Premium"
+    },
+    "overview": {
+      "estimatedRevenue": "Estimated Monthly Revenue",
+      "basedOnVisitors": "Based on 100K monthly visitors",
+      "userStatus": "User Status",
+      "level": "Level",
+      "source": "Source"
+    },
+    "affiliate": {
+      "stripchat": "Stripchat",
+      "chaturbate": "Chaturbate",
+      "totalRevenue": "Total Affiliate Revenue",
+      "clicks": "Clicks",
+      "conv": "Conv",
+      "cvr": "CVR",
+      "weight": "Weight"
+    },
+    "email": {
+      "subscribers": "Subscribers",
+      "monthlyRevenue": "Monthly Revenue",
+      "avgConversion": "Avg Conversion"
+    },
+    "ads": {
+      "nativeAds": "Native Ads",
+      "premiumAds": "Premium Ads",
+      "totalRevenue": "Total Ad Revenue"
+    },
+    "premium": {
+      "activeUsers": "Active Users",
+      "totalUsers": "Total Users",
+      "mrr": "MRR",
+      "convRate": "Conv Rate"
+    }
+  },
+  "countryPage": {
+    "tagPopolari": "Popular tags for {country}",
+    "combinazioniDaSpingere": "Combinations to push",
+    "showOnlyLive": "Show only live",
+    "includeOffline": "Include offline"
+  },
+  "combinationPage": {
+    "altreLanding": "Other related landing pages"
   }
 }

@@ -396,5 +396,84 @@
     "completeGuideIntro": "Bienvenido a la guía completa de cams live. Todo lo que necesitas saber.",
     "statisticsIntro": "Análisis completo del mercado de cams live con datos actualizados.",
     "securityIntro": "Todo sobre seguridad y privacidad en cams live."
+  },
+  "revenueStack": {
+    "premiumUpsell": {
+      "title": "Conviértete en VIP",
+      "subtitle": "Elimina todos los anuncios y desbloquea funciones exclusivas",
+      "features": [
+        "Sin anuncios",
+        "Favoritos ilimitados",
+        "Búsqueda avanzada",
+        "Modelos exclusivos",
+        "Miniaturas HD",
+        "Soporte prioritario"
+      ],
+      "price": "€4.99",
+      "pricePeriod": "/mes",
+      "trial": "7 días de prueba gratis",
+      "button": "Activar Ahora - Prueba Gratis",
+      "cancelAnytime": "Cancela cuando quieras. Sin compromiso."
+    },
+    "close": "Cerrar"
+  },
+  "premiumBanner": {
+    "title": "Elimina los anuncios",
+    "subtitle": "VIP por solo €4.99/mes",
+    "button": "Activar VIP",
+    "trial": "Prueba gratis 7 días",
+    "close": "Cerrar"
+  },
+  "revenueDashboard": {
+    "title": "Panel de Ingresos",
+    "refresh": "Actualizar",
+    "tabs": {
+      "overview": "Resumen",
+      "affiliate": "Afiliados",
+      "email": "Email",
+      "ads": "Anuncios",
+      "premium": "Premium"
+    },
+    "overview": {
+      "estimatedRevenue": "Ingresos Mensuales Estimados",
+      "basedOnVisitors": "Basado en 100K visitantes mensuales",
+      "userStatus": "Estado del Usuario",
+      "level": "Nivel",
+      "source": "Fuente"
+    },
+    "affiliate": {
+      "stripchat": "Stripchat",
+      "chaturbate": "Chaturbate",
+      "totalRevenue": "Ingresos Totales de Afiliados",
+      "clicks": "Clics",
+      "conv": "Conv",
+      "cvr": "CVR",
+      "weight": "Peso"
+    },
+    "email": {
+      "subscribers": "Suscriptores",
+      "monthlyRevenue": "Ingresos Mensuales",
+      "avgConversion": "Conv. Media"
+    },
+    "ads": {
+      "nativeAds": "Native Ads",
+      "premiumAds": "Premium Ads",
+      "totalRevenue": "Ingresos Totales de Anuncios"
+    },
+    "premium": {
+      "activeUsers": "Usuarios Activos",
+      "totalUsers": "Usuarios Totales",
+      "mrr": "MRR",
+      "convRate": "Tasa Conv."
+    }
+  },
+  "countryPage": {
+    "tagPopolari": "Tags populares para {country}",
+    "combinacionesDaSpingere": "Combinaciones a impulsar",
+    "showOnlyLive": "Mostrar solo en vivo",
+    "includeOffline": "Incluir offline"
+  },
+  "combinationPage": {
+    "altreLanding": "Otras landing relacionadas"
   }
 }
