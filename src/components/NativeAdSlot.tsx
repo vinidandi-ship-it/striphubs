@@ -28,7 +28,7 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
     }, 500);
   }, [cardIndex]);
   
-  // Use the same format as VideoPage
+  // Show only small banners (250px) every 4 videos
   return (
     <div 
       ref={containerRef}
