@@ -61,8 +61,30 @@ export default function Videos() {
     }
   );
 
+  useEffect(() => {
+    fetch('/top-videos.json')
+      .then(res => res.json())
+      .then(data => {
+        setVideos(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const filteredVideos = searchTerm
+    ? videos.filter(v => 
+        v.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        v.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        v.pornstar.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : currentTag
+      ? videos.filter(v => v.tags.includes(currentTag))
+      : videos;
+
   // Add structured data for videos collection
   useEffect(() => {
+    if (!filteredVideos.length) return;
+    
     const videoItems = filteredVideos.slice(0, 20).map((video) => ({
       '@type': 'ListItem',
       position: filteredVideos.indexOf(video) + 1,
@@ -89,26 +111,6 @@ export default function Videos() {
     
     return () => removeJsonLd('videos-schema');
   }, [filteredVideos, currentTag]);
-
-  useEffect(() => {
-    fetch('/top-videos.json')
-      .then(res => res.json())
-      .then(data => {
-        setVideos(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
-
-  const filteredVideos = searchTerm
-    ? videos.filter(v => 
-        v.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        v.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        v.pornstar.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : currentTag
-      ? videos.filter(v => v.tags.includes(currentTag))
-      : videos;
 
   const popularTags = [...new Set(videos.flatMap(v => v.tags))].slice(0, 30);
 
