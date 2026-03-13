@@ -119,14 +119,28 @@ export default function ModelPage() {
   ], [decodedName, t]);
 
   if (error) return <div className="rounded-2xl border border-border bg-panel p-6 text-red-400">{error}</div>;
-  if (!model) return <ModelGrid models={[]} loading={loading} listName="Model Loading" />;
+  if (!model) return (
+    <div className="flex items-center justify-center min-h-[50vh]">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"></div>
+    </div>
+  );
 
   return (
     <div className="space-y-8">
       <Breadcrumbs items={breadcrumbs} />
 
       <section className="grid gap-6 rounded-2xl border border-border bg-panel p-5 md:grid-cols-[360px_1fr]">
-        <img src={model.thumbnail || 'https://via.placeholder.com/360x440?text=No+Image'} alt={`${model.username} profile`} className="h-[440px] w-full rounded-xl object-cover" loading="lazy" />
+        <div className="h-[440px] w-full rounded-xl bg-zinc-800 overflow-hidden">
+          <img 
+            src={model.thumbnail} 
+            alt={`${model.username} profile`} 
+            className="h-full w-full object-cover" 
+            loading="lazy"
+            onError={(e) => {
+              e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 440"%3E%3Crect fill="%23222" width="360" height="440"/%3E%3Ctext fill="%23666" x="50%25" y="50%25" text-anchor="middle"%3ENo Image%3C/text%3E%3C/svg%3E';
+            }}
+          />
+        </div>
         <div>
           <h1 className="text-3xl font-bold text-white">{model.username}</h1>
           <p className="mt-2 text-zinc-300">{model.viewers.toLocaleString()} {t('model.watchingNow')}</p>

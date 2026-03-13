@@ -72,6 +72,7 @@ export default function Home() {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [error, setError] = useState('');
@@ -113,20 +114,34 @@ export default function Home() {
     };
   }, []);
 
+  // Progressive loading: first small batch, then load more
   useEffect(() => {
     setLoading(true);
-    setOffset(0);
-    setHasMore(false);
     setError('');
-    void api.getModels({ limit: PAGE_SIZES.HOME, offset: 0 })
+    
+    // First: load just 24 models for fast initial render
+    api.getModels({ limit: 24, offset: 0 })
       .then((data) => {
         setModels(data.models);
         setTotal(data.total || data.models.length);
         setOffset(data.models.length);
         setHasMore(Boolean(data.hasMore));
+        setLoading(false);
+        setInitialLoadComplete(true);
+        
+        // Then: load remaining in background
+        return api.getModels({ limit: PAGE_SIZES.HOME - 24, offset: 24 });
       })
-      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load models'))
-      .finally(() => setLoading(false));
+      .then((data) => {
+        if (data.models.length > 0) {
+          setModels(prev => [...prev, ...data.models]);
+          setOffset(prev => prev + data.models.length);
+        }
+      })
+      .catch((err) => {
+        setError(err instanceof Error ? err.message : 'Failed to load models');
+        setLoading(false);
+      });
   }, []);
 
   const prioritizedModels = useMemo(

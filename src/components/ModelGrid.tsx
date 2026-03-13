@@ -119,7 +119,7 @@ export default function ModelGrid({ models, listName, loading = false, showAds: 
   if (loading) {
     return (
       <section className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {Array.from({ length: 8 }).map((_, i) => (
+        {Array.from({ length: 24 }).map((_, i) => (
           <div key={i} className="h-72 animate-pulse rounded-2xl border border-border bg-panel sm:h-96" />
         ))}
       </section>

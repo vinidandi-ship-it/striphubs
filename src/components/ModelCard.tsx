@@ -88,7 +88,7 @@ export default function ModelCard({ model }: { model: Model }) {
     <article className="content-visibility-card group relative overflow-hidden sh-card transition-all hover:-translate-y-1">
       <Link to={`/model/${encodeURIComponent(model.username)}`} className="block focus:outline-none focus:ring-2 focus:ring-accent-primary" aria-label={`Open ${model.username} profile`}>
         <div className="relative">
-          <div className="aspect-[3/4] w-full overflow-hidden rounded-t-2xl">
+          <div className="aspect-[3/4] w-full overflow-hidden rounded-t-2xl bg-zinc-800">
             <img
               src={model.thumbnail}
               alt={`${model.username} live preview`}
@@ -96,6 +96,10 @@ export default function ModelCard({ model }: { model: Model }) {
               height="400"
               loading="lazy"
               decoding="async"
+              onLoad={(e) => e.currentTarget.parentElement?.classList.remove('bg-zinc-800')}
+              onError={(e) => {
+                e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400"%3E%3Crect fill="%23222" width="300" height="400"/%3E%3Ctext fill="%23666" x="50%25" y="50%25" text-anchor="middle"%3ENo Image%3C/text%3E%3C/svg%3E';
+              }}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
