@@ -32,7 +32,6 @@ export default function SearchBar({ initialValue = '', compact = false }: { init
         </span>
       </div>
       <button className="h-11 shrink-0 sh-btn sh-btn-primary px-3 sm:px-5 flex items-center gap-2" type="submit">
-        <Icon name="search" size={16} />
         <span className="text-sm">{t('common.search')}</span>
       </button>
     </form>
