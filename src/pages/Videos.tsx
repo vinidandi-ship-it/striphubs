@@ -89,7 +89,7 @@ export default function Videos() {
     );
   }
 
-  const displayVideos = filteredVideos.slice(0, 50);
+  const displayVideos = filteredVideos.slice(0, 150); // Aumentato da 50 a 150
 
   return (
     <div className="space-y-6">

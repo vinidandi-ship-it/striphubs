@@ -55,7 +55,7 @@ export default function VideoPage() {
     ]).then(([videosData, modelsData]) => {
       const found = videosData.find((v: Video) => v.id === id);
       setVideo(found || null);
-      setVideos(videosData.slice(0, 20));
+      setVideos(videosData.slice(0, 100)); // Aumentato da 20 a 100
       setLoading(false);
     });
   }, [id]);
@@ -86,7 +86,7 @@ export default function VideoPage() {
     );
   }
 
-  const relatedVideos = videos.filter(v => v.id !== video.id).slice(0, 10);
+  const relatedVideos = videos.filter(v => v.id !== video.id).slice(0, 30); // Aumentato da 10 a 30
 
   return (
     <div className="space-y-6">
