@@ -18,18 +18,14 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
       script.async = true;
       document.head.appendChild(script);
     }
-    
-    // Forza il caricamento degli ads
-    const tryLoadAds = () => {
-      if (typeof window !== 'undefined' && (window as any).AdProvider) {
-        (window as any).AdProvider.push({ serve: {} });
-      } else {
-        // Retry after 2 seconds
-        setTimeout(tryLoadAds, 2000);
-      }
-    };
-    setTimeout(tryLoadAds, 1000);
   }, [cardIndex]);
+  
+  // Show banner every 3 videos (instead of every 6)
+  const shouldShow = cardIndex % 3 === 0 && cardIndex > 0;
+  
+  if (!shouldShow) {
+    return null;
+  }
   
   return (
     <div 
