@@ -10,13 +10,6 @@ const useAdScript = (zoneId: string) => {
       script.async = true;
       document.head.appendChild(script);
     }
-    
-    // Trigger ads loading
-    setTimeout(() => {
-      if (typeof window !== 'undefined' && (window as any).AdProvider) {
-        (window as any).AdProvider.push({ serve: {} });
-      }
-    }, 1000);
   }, []);
 };
 
