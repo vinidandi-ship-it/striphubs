@@ -103,7 +103,7 @@ export default function CombinationPage() {
         </section>
       ) : null}
 
-      {!loading ? <p className="text-sm text-zinc-400">{models.length} modelle caricate{hasMore ? ' e altre disponibili' : ''}</p> : null}
+      {!loading ? <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')}{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`${categoryName(category)} ${tag} Models`} />
       
