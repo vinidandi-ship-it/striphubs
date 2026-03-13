@@ -134,47 +134,48 @@ export default function Videos() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {displayVideos.map((video, index) => (
-          <div key={video.id}>
-            <Link
-              to={buildLocalizedPath(`/video/${video.id}`, language)}
-              className="group relative overflow-hidden rounded-xl border border-border bg-panel hover:border-accent transition block"
-            >
-              <div className="aspect-video relative">
-                <img
-                  src={video.thumbnail}
-                  alt={video.title}
-                  loading="lazy"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute bottom-1 right-1 bg-black/80 px-1.5 py-0.5 text-xs text-white rounded">
-                  {formatDuration(video.duration)}
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition">
-                  <div className="absolute bottom-2 left-2 right-2">
-                    <p className="text-white text-xs font-medium line-clamp-2">{video.title}</p>
-                  </div>
-                </div>
-                {index < 3 && (
-                  <div className="absolute top-2 left-2 bg-accent px-2 py-0.5 text-xs font-bold text-white rounded">
-                    TOP {index + 1}
-                  </div>
-                )}
-              </div>
-              <div className="p-2 space-y-1">
-                <p className="text-white text-xs font-medium line-clamp-2">{video.title}</p>
-                <div className="flex items-center justify-between text-[10px] text-zinc-500">
-                  <span>{formatViews(video.views)} views</span>
-                  <span>{(video.rating / 1000).toFixed(1)}★</span>
-                </div>
-              </div>
-            </Link>
-            
+          <>
             {index > 0 && index % 6 === 0 && (
-              <div className="mt-2">
+              <div className="col-span-full flex justify-center my-4">
                 <NativeAdSlot cardIndex={index} />
               </div>
             )}
-          </div>
+            <div key={video.id}>
+              <Link
+                to={buildLocalizedPath(`/video/${video.id}`, language)}
+                className="group relative overflow-hidden rounded-xl border border-border bg-panel hover:border-accent transition block"
+              >
+                <div className="aspect-video relative">
+                  <img
+                    src={video.thumbnail}
+                    alt={video.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-1 right-1 bg-black/80 px-1.5 py-0.5 text-xs text-white rounded">
+                    {formatDuration(video.duration)}
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition">
+                    <div className="absolute bottom-2 left-2 right-2">
+                      <p className="text-white text-xs font-medium line-clamp-2">{video.title}</p>
+                    </div>
+                  </div>
+                  {index < 3 && (
+                    <div className="absolute top-2 left-2 bg-accent px-2 py-0.5 text-xs font-bold text-white rounded">
+                      TOP {index + 1}
+                    </div>
+                  )}
+                </div>
+                <div className="p-2 space-y-1">
+                  <p className="text-white text-xs font-medium line-clamp-2">{video.title}</p>
+                  <div className="flex items-center justify-between text-[10px] text-zinc-500">
+                    <span>{formatViews(video.views)} views</span>
+                    <span>{(video.rating / 1000).toFixed(1)}★</span>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          </>
         ))}
       </div>
 
