@@ -13,6 +13,13 @@ export const crackrevenueBanners: CrackRevenueBanner[] = [
     link: 'https://t.vlmai-3.com/407726/7477?aff_sub5=SF_006OG000004lmDN&aff_sub4=AT_0002',
     width: 1280,
     height: 300
+  },
+  {
+    id: 'chaturbate-gif-298x148',
+    image: 'https://www.imglnkx.com/3688/thumbs_Chaturbate.gif',
+    link: 'https://t.acrsmartcam.com/407726/3688/18345?bo=2779,2778,2777,2776,2775&file_id=262434&po=6533&aff_sub5=SF_006OG000004lmDN&aff_sub4=AT_0002',
+    width: 298,
+    height: 148
   }
 ];
 
