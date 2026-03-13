@@ -30,7 +30,7 @@ export default function VideoAdSlot() {
     >
       <ins 
         className="eas6a97888e20" 
-        data-zoneid="5870892"
+        data-zoneid="5871378"
         style={{
           display: 'block',
           width: '100%',
@@ -63,13 +63,13 @@ export function VideoBannerSlot() {
       onClick={() => recordAdClick('banner')}
     >
       <ins 
-        className="eas6a97888e2" 
-        data-zoneid="5870866"
+        className="eas6a97888e20" 
+        data-zoneid="5871378"
         style={{
           display: 'block',
           width: '100%',
-          maxWidth: '728px',
-          height: '90px',
+          maxWidth: '600px',
+          height: '260px',
           margin: '0 auto'
         }}
       />

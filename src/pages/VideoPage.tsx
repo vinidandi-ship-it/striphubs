@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
-import NativeAdSlot from '../components/NativeAdSlot';
 import VideoAdSlot, { VideoBannerSlot } from '../components/VideoAdSlot';
 import { useI18n } from '../i18n';
 import { useSEO } from '../lib/seo';
