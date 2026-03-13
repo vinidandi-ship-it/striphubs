@@ -10,76 +10,76 @@ export default function GuidaCamGratis() {
     <article className="max-w-3xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
       <header className="mb-8">
         <Link to={buildLocalizedPath('/blog', language)} className="text-accent hover:underline mb-4 inline-block">
-          ← Torna alle Guide
+          ← {t('blog.backToGuides')}
         </Link>
         <h1 className="text-3xl font-bold text-white sm:text-4xl mb-4">
-          Guida Completa alle Cam Live Gratis
+          {t('guidaCamGratis.pageTitle')}
         </h1>
         <div className="flex items-center gap-4 text-sm text-zinc-400">
-          <span>5 min lettura</span>
+          <span>5 {t('blog.minRead')}</span>
           <span>•</span>
-          <span>Guide</span>
+          <span>{t('blog.guideCategory')}</span>
         </div>
       </header>
 
       <div className="prose prose-invert max-w-none">
         <p className="text-lg text-zinc-300 mb-6">
-          Accedere a cam live gratis è più semplice di quanto pensi. Con la giusta piattaforma e qualche accorgimento, puoi goderti migliaia di dirette senza spendere un centesimo.
+          {t('guidaCamGratis.intro')}
         </p>
 
-        <h2 className="text-xl font-bold text-white mt-8 mb-4">1. Scegli la Piattaforma Giusta</h2>
+        <h2 className="text-xl font-bold text-white mt-8 mb-4">{t('guidaCamGratis.section1Title')}</h2>
         <p className="text-zinc-300 mb-4">
-          Esistono diverse piattaforme per le cam live, ma StripHubs ti permette di accedere a tutte le modelle di Stripchat in un unico posto. Non è necessaria la registrazione per iniziare a guardare.
+          {t('guidaCamGratis.section1Content')}
         </p>
 
-        <h2 className="text-xl font-bold text-white mt-8 mb-4">2. Naviga per Categorie</h2>
+        <h2 className="text-xl font-bold text-white mt-8 mb-4">{t('guidaCamGratis.section2Title')}</h2>
         <p className="text-zinc-300 mb-4">
-          Utilizza le categorie (Teen, Milf, Asian, ecc.) per trovare rapidamente il tipo di intrattenimento che preferisci. Le modelle sono online 24/7.
+          {t('guidaCamGratis.section2Content')}
         </p>
 
-        <h2 className="text-xl font-bold text-white mt-8 mb-4">3. Consigli per la Privacy</h2>
+        <h2 className="text-xl font-bold text-white mt-8 mb-4">{t('guidaCamGratis.section3Title')}</h2>
         <ul className="list-disc list-inside text-zinc-300 mb-4 space-y-2">
-          <li>Non condividere mai informazioni personali.</li>
-          <li>Usa una connessione sicura (HTTPS).</li>
-          <li>Chiudi la finestra del browser quando hai finito.</li>
+          {(t('guidaCamGratis.section3List') as unknown as string[]).map((item, i) => (
+            <li key={i}>{item}</li>
+          ))}
         </ul>
 
         <div className="bg-accent/10 border border-accent/30 rounded-xl p-6 mt-8">
-          <h3 className="text-lg font-bold text-white mb-2">Pronto a iniziare?</h3>
+          <h3 className="text-lg font-bold text-white mb-2">{t('guidaCamGratis.exploreTitle')}</h3>
           <p className="text-zinc-300 mb-4">
-            Esplora migliaia di modelle online ora stesso.
+            {t('guidaCamGratis.exploreDesc')}
           </p>
           <Link
             to={buildLocalizedPath('/live', language)}
             className="inline-block bg-accent text-white px-6 py-2 rounded-full font-semibold hover:bg-accent/80 transition-colors"
           >
-            Guarda le Cam Live
+            {t('guidaCamGratis.ctaButton')}
           </Link>
         </div>
 
         <div className="mt-8 pt-6 border-t border-border">
           <ShareButtons 
             url={`https://striphubs.com/blog/guida-cam-gratis`} 
-            title="Guida Completa alle Cam Live Gratis - StripHubs" 
+            title={t('guidaCamGratis.pageTitle')} 
           />
         </div>
 
         <div className="mt-8 pt-6 border-t border-border">
-          <h3 className="text-lg font-bold text-white mb-4">Articoli Correlati</h3>
+          <h3 className="text-lg font-bold text-white mb-4">{t('guidaCamGratis.relatedTitle')}</h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <Link
               to={buildLocalizedPath('/blog/migliori-modelle-italiane', language)}
               className="block p-4 bg-bg-card border border-border rounded-xl hover:border-accent transition-colors"
             >
-              <h4 className="font-semibold text-white mb-1">Migliori Modelle Italiane</h4>
-              <p className="text-sm text-zinc-400">Scopri le modelle italiane più popolari.</p>
+              <h4 className="font-semibold text-white mb-1">{t('guidaCamGratis.related1Title')}</h4>
+              <p className="text-sm text-zinc-400">{t('guidaCamGratis.related1Desc')}</p>
             </Link>
             <Link
               to={buildLocalizedPath('/blog/sicurezza-cam', language)}
               className="block p-4 bg-bg-card border border-border rounded-xl hover:border-accent transition-colors"
             >
-              <h4 className="font-semibold text-white mb-1">Sicurezza e Privacy</h4>
-              <p className="text-sm text-zinc-400">Proteggi la tua privacy online.</p>
+              <h4 className="font-semibold text-white mb-1">{t('guidaCamGratis.related2Title')}</h4>
+              <p className="text-sm text-zinc-400">{t('guidaCamGratis.related2Desc')}</p>
             </Link>
           </div>
         </div>
