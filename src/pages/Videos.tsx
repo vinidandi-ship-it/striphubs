@@ -89,7 +89,18 @@ export default function Videos() {
     );
   }
 
-  const displayVideos = filteredVideos.slice(0, 150); // Aumentato da 50 a 150
+  // Ordina i video: prima quelli con tag "cute" o simili, poi per views
+  const sortedVideos = [...filteredVideos].sort((a, b) => {
+    const aHasCute = a.tags.some(t => t.toLowerCase().includes('cute') || t.toLowerCase().includes('pretty'));
+    const bHasCute = b.tags.some(t => t.toLowerCase().includes('cute') || t.toLowerCase().includes('pretty'));
+    
+    if (aHasCute && !bHasCute) return -1;
+    if (!aHasCute && bHasCute) return 1;
+    
+    return b.views - a.views;
+  });
+
+  const displayVideos = sortedVideos.slice(0, 150);
 
   return (
     <div className="space-y-6">
