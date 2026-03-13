@@ -44,12 +44,17 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
       onClick={() => recordAdClick('native')}
     >
       <div className="relative">
-        <iframe 
-          src={`https://ads.exoclick.com/ads.php?zoneid=5870892&charset=utf-8`}
-          className="w-full h-full min-h-[300px]"
-          frameBorder="0"
-          scrolling="no"
-          title="Advertisement"
+        <ins 
+          className="eas6a97888e2" 
+          data-zoneid="5870892"
+        />
+        <script 
+          async 
+          type="application/javascript" 
+          src="https://a.magsrv.com/ad-provider.js"
+        />
+        <script 
+          dangerouslySetInnerHTML={{__html: '(AdProvider = window.AdProvider || []).push({"serve": {}});'}}
         />
       </div>
     </div>
