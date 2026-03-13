@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { isPremiumUser } from '../lib/revenue';
 import { crackrevenueBanners, getRandomCrackRevenueBanner, recordCrackRevenueBannerClick, CrackRevenueBanner as BannerType } from '../lib/crackrevenueBanners';
 
-// Configurazione banner
-const SHOW_CRACKREVENUE_CHANCE = 0.3; // 30% di mostrare CrackRevenue
-const SHOW_EXOCLICK_CHANCE = 0.4;     // 40% di mostrare ExoClick
+// Configurazione monetizzazione
+const MONETIZATION_SOURCES = {
+  crackrevenue: 0.5,
+  exoclick: 0.5
+};
 
 interface UniversalAdsProps {
   containerClass?: string;
@@ -13,18 +15,34 @@ interface UniversalAdsProps {
 
 export default function UniversalAds({ containerClass = '', excludeTypes = [] }: UniversalAdsProps) {
   const [banner, setBanner] = useState<BannerType | null>(null);
-  const [showExoClick, setShowExoClick] = useState(false);
+  const [showExoClick728, setShowExoClick728] = useState(false);
+  const [showExoClick300, setShowExoClick300] = useState(false);
 
   useEffect(() => {
     if (isPremiumUser()) return;
 
     const random = Math.random();
+    let cumulative = 0;
     
-    // Solo CrackRevenue o ExoClick, non entrambi
-    if (random < SHOW_CRACKREVENUE_CHANCE && !excludeTypes.includes('crackrevenue')) {
+    // CrackRevenue (50%)
+    cumulative += MONETIZATION_SOURCES.crackrevenue;
+    if (random < cumulative && !excludeTypes.includes('crackrevenue')) {
       setBanner(getRandomCrackRevenueBanner());
-    } else if (random < SHOW_CRACKREVENUE_CHANCE + SHOW_EXOCLICK_CHANCE && !excludeTypes.includes('exoclick')) {
-      setShowExoClick(true);
+      return;
+    }
+    
+    // ExoClick 728x90 (25%)
+    cumulative += MONETIZATION_SOURCES.exoclick / 2;
+    if (random < cumulative && !excludeTypes.includes('exoclick')) {
+      setShowExoClick728(true);
+      return;
+    }
+    
+    // ExoClick 300x250 (25%)
+    cumulative += MONETIZATION_SOURCES.exoclick / 2;
+    if (random < cumulative && !excludeTypes.includes('exoclick')) {
+      setShowExoClick300(true);
+      return;
     }
   }, [excludeTypes]);
 
@@ -53,12 +71,31 @@ export default function UniversalAds({ containerClass = '', excludeTypes = [] }:
     );
   }
 
-  // ExoClick Placeholder (user will add actual ExoClick script)
-  if (showExoClick) {
+  // ExoClick 728x90 Banner
+  if (showExoClick728) {
     return (
       <div className={`universal-ad exoclick-ad ${containerClass}`}>
-        <div className="exoclick-banner" data-zoneid="5870866">
-          {/* ExoClick script will be loaded here */}
+        <div className="w-full flex justify-center">
+          <ins 
+            className="eas6a97888e2" 
+            data-zoneid="5870866"
+            style={{ display: 'block', width: '728px', maxWidth: '100%', height: '90px' }}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // ExoClick 300x250 Banner
+  if (showExoClick300) {
+    return (
+      <div className={`universal-ad exoclick-ad ${containerClass}`}>
+        <div className="w-full flex justify-center">
+          <ins 
+            className="eas6a97888e10" 
+            data-zoneid="5870904"
+            style={{ display: 'block', width: '300px', height: '250px' }}
+          />
         </div>
       </div>
     );

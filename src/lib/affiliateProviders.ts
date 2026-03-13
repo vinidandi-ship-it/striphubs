@@ -134,9 +134,3 @@ export const resetRotationState = (): void => {
     localStorage.removeItem('sh_rotation_state');
   } catch {}
 };
-
-// CrackRevenue specific exports
-export const CRACKREVENUE_CONFIG = {
-  url: 'https://t.vlmai-3.com/407726/7477?aff_sub5=SF_006OG000004lmDN',
-  bannerUrl: 'https://www.imglnkx.com/10046/GPTGirlfriend_20250320_GGPT-Art-Gen---Characters---1280300.jpg'
-};
