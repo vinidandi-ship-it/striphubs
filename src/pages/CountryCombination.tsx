@@ -48,7 +48,7 @@ const TAG_MAP: Record<string, string> = {
 
 export default function CountryCombination() {
   const { countrySlug = 'italian', category, tag } = useParams<{ countrySlug: string; category?: string; tag?: string }>();
-  const { language } = useI18n();
+  const { language, t } = useI18n();
   const [models, setModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -82,10 +82,10 @@ export default function CountryCombination() {
   }, [countryCode, apiTag]);
 
   const breadcrumbs = useMemo(() => [
-    { label: 'Home', to: '/' },
+    { label: t('common.home'), to: '/' },
     { label: countryName, to: `/country/${countrySlug}` },
     { label: filterValue.charAt(0).toUpperCase() + filterValue.slice(1) }
-  ], [countryName, countrySlug, filterValue]);
+  ], [countryName, countrySlug, filterValue, t]);
 
   return (
     <div className="space-y-8">
