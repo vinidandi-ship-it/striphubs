@@ -11,9 +11,9 @@ import Icon from './Icon';
 
 const INITIAL_RENDER_COUNT = 120;
 const RENDER_BATCH_SIZE = 120;
-const NATIVE_AD_INTERVAL = 6;
+const NATIVE_AD_INTERVAL = 3;
 const CTA_INTERVAL = 12;
-const MAX_ADS = 5;
+const MAX_ADS = 10;
 
 function InlineCTA({ index }: { index: number }) {
   const stats = getClickStats();
