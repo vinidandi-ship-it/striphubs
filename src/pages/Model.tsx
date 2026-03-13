@@ -69,10 +69,10 @@ export default function ModelPage() {
   }, [model]);
 
   const breadcrumbs = useMemo(() => [
-    { label: 'Home', to: '/' },
-    { label: 'Live', to: '/live' },
+    { label: t('common.home'), to: '/' },
+    { label: t('common.live'), to: '/live' },
     { label: decodedName }
-  ], [decodedName]);
+  ], [decodedName, t]);
 
   if (error) return <div className="rounded-2xl border border-border bg-panel p-6 text-red-400">{error}</div>;
   if (!model) return <ModelGrid models={[]} loading={loading} listName="Model Loading" />;
