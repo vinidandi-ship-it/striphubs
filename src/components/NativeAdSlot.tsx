@@ -26,25 +26,25 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
     }, 500);
   }, [cardIndex]);
   
-  // Use different ad formats based on position
+  // ExoClick optimized formats - use only responsive, non-intrusive sizes
   const getAdFormat = () => {
-    const position = cardIndex % 6;
+    const position = cardIndex % 4;
     
     switch (position) {
       case 0:
-        return { id: '5870892', class: 'eas6a97888e20', style: { width: '100%', maxWidth: '600px', height: '280px' } };
+        // Recommendation Widget - best for desktop/mobile
+        return { id: '5870892', class: 'eas6a97888e20', style: { width: '100%', maxWidth: '580px', height: '250px', margin: '0 auto' } };
       case 1:
-        return { id: '5870904', class: 'eas6a97888e10', style: { width: '300px', height: '250px' } };
+        // Mobile Banner 300x250 - good for sidebar
+        return { id: '5870904', class: 'eas6a97888e10', style: { width: '300px', height: '250px', margin: '0 auto' } };
       case 2:
-        return { id: '5870906', class: 'eas6a97888e6', style: { width: '300px', height: '250px' } };
+        // Instant Message 300x250
+        return { id: '5870906', class: 'eas6a97888e6', style: { width: '300px', height: '250px', margin: '0 auto' } };
       case 3:
-        return { id: '5870896', class: 'eas6a97888e38', style: { width: '100%', maxWidth: '500px', height: '320px' } };
-      case 4:
-        return { id: '5871370', class: 'eas6a97888e2', style: { width: '728px', height: '90px', maxWidth: '100%' } };
-      case 5:
-        return { id: '5870892', class: 'eas6a97888e20', style: { width: '100%', maxWidth: '600px', height: '280px' } };
+        // Banner 728x90 - horizontal, fits well
+        return { id: '5870866', class: 'eas6a97888e2', style: { width: '728px', height: '90px', maxWidth: '100%', margin: '0 auto' } };
       default:
-        return { id: '5870892', class: 'eas6a97888e20', style: { width: '100%', maxWidth: '600px', height: '280px' } };
+        return { id: '5870892', class: 'eas6a97888e20', style: { width: '100%', maxWidth: '580px', height: '250px', margin: '0 auto' } };
     }
   };
   
@@ -53,7 +53,7 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
   return (
     <div 
       ref={containerRef}
-      className="native-ad-wrapper col-span-full w-full my-4 flex justify-center items-center"
+      className="native-ad-wrapper col-span-full w-full my-3 py-2 flex justify-center items-center overflow-hidden"
       onClick={() => recordAdClick('native')}
     >
       <ins 
