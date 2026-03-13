@@ -6,6 +6,7 @@ import CookieConsent from './components/CookieConsent';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import HreflangTags from './components/HreflangTags';
+import SmartPopunder from './components/SmartPopunder';
 import { I18nProvider, useI18n } from './i18n';
 import { extractLocaleFromPath } from './i18n/routing';
 import { SITE_NAME, SITE_URL } from './lib/models';
@@ -242,6 +243,7 @@ function AppContent() {
       <Footer />
       <HreflangTags />
       <Analytics />
+      <SmartPopunder />
       <AgeVerification />
       <CookieConsent />
     </div>
