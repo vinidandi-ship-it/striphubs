@@ -11,6 +11,7 @@ import { useModels } from '../lib/useModels';
 import { PAGE_SIZES } from '../lib/constants';
 
 export default function FreeCams() {
+  const { t } = useI18n();
   const {
     models,
     total,
@@ -46,20 +47,20 @@ export default function FreeCams() {
       <Sidebar categories={sidebarCategories} countries={sidebarCountries} />
 
       <div className="flex-1 space-y-6">
-        <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Free Cams' }]} />
+        <Breadcrumbs items={[{ label: t('common.home'), to: '/' }, { label: t('common.freeCams') }]} />
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-2xl font-bold text-white sm:text-3xl flex items-center gap-2">
-            <Icon name="camera" size={28} /> Free Cams - Camere Live Gratis
+            <Icon name="camera" size={28} /> {t('common.freeCams')}
           </h1>
           <button
             type="button"
             onClick={toggleIncludeOffline}
             className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${includeOffline ? 'border-accent bg-accent/10 text-accent' : 'border-border text-zinc-300 hover:border-accent hover:text-white'}`}
           >
-            {includeOffline ? 'Mostra solo live' : 'Includi anche offline'}
+            {includeOffline ? t('common.showOnlyLive') : t('common.includeOffline')}
           </button>
         </div>
-        {!loading ? <p className="text-sm text-zinc-400">{total} cam gratis attive{hasMore ? ' - altre disponibili' : ''}</p> : null}
+        {!loading ? <p className="text-sm text-zinc-400">{total} {t('header.activeCams')}{hasMore ? ` - ${t('common.moreAvailable')}` : ''}</p> : null}
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName="Free Cams" />
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
