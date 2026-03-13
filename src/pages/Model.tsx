@@ -8,7 +8,6 @@ import { api } from '../lib/api';
 import { Model as LiveModel, AFFILIATE_ID } from '../lib/models';
 import { generateModelMeta } from '../lib/metaTags';
 import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
-import UniversalAds from '../components/UniversalAds';
 
 export default function ModelPage() {
   const { username = '' } = useParams();
@@ -168,7 +167,6 @@ export default function ModelPage() {
         </div>
       </section>
 
-      <UniversalAds containerClass="my-4" />
 
       <section>
         <h2 className="mb-4 text-2xl font-bold text-white">{t('model.relatedModels')}</h2>

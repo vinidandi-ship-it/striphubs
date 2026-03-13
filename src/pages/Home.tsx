@@ -4,8 +4,7 @@ import CategoryCard from '../components/CategoryCard';
 import FAQSection from '../components/FAQSection';
 import InfiniteLoader from '../components/InfiniteLoader';
 import ModelCard from '../components/ModelCard';
-import UniversalAds from '../components/UniversalAds';
-import CrackRevenueBanner from '../components/CrackRevenueBanner';
+import ModelGrid from '../components/ModelGrid';
 import Icon from '../components/Icon';
 import { api } from '../lib/api';
 import { countries, findCountryBySlug } from '../lib/countries';
@@ -348,10 +347,6 @@ export default function Home() {
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
         <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
       </section>
-
-      {initialLoadComplete && (
-        <UniversalAds containerClass="my-6" />
-      )}
 
       <section>
         <h2 className="mb-4 text-2xl font-bold text-white flex items-center gap-2">

@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import ModelGrid from '../components/ModelGrid';
-import UniversalAds from '../components/UniversalAds';
 import { api } from '../lib/api';
 import { Model } from '../lib/models';
 import { useSEO } from '../lib/seo';
@@ -113,7 +112,6 @@ export default function Alternative() {
           {models.length} Modelle Live Ora
         </h2>
         <ModelGrid models={models} loading={loading} listName={alt.name} />
-        <UniversalAds containerClass="my-4" />
       </section>
 
       <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

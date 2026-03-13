@@ -6,7 +6,6 @@ import FAQSection from '../components/FAQSection';
 import InfiniteLoader from '../components/InfiniteLoader';
 import InternalLinks from '../components/InternalLinks';
 import ModelGrid from '../components/ModelGrid';
-import UniversalAds from '../components/UniversalAds';
 import { useI18n } from '../i18n';
 import { api } from '../lib/api';
 import { categories as categoryList, categoryName } from '../lib/categories';
@@ -116,7 +115,6 @@ export default function Tag() {
       {!loading ? <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')}{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`Tag ${tag} Models`} />
-      <UniversalAds containerClass="my-4" />
       
       <FAQSection tag={tag} language={language} />
       

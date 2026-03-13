@@ -5,7 +5,6 @@ import FAQSection from '../components/FAQSection';
 import InfiniteLoader from '../components/InfiniteLoader';
 import InternalLinks from '../components/InternalLinks';
 import ModelGrid from '../components/ModelGrid';
-import UniversalAds from '../components/UniversalAds';
 import { api } from '../lib/api';
 import { Model } from '../lib/models';
 import { categoryName, CategorySlug } from '../lib/categories';
@@ -106,7 +105,6 @@ export default function CombinationPage() {
       {!loading ? <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')}{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName={`${categoryName(category)} ${tag} Models`} />
-        <UniversalAds containerClass="my-4" />
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
       <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
     </div>
