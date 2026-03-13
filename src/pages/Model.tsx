@@ -44,10 +44,9 @@ export default function ModelPage() {
             country: apiModel.modelsCountry || apiModel.country || '',
             category: apiModel.gender || apiModel.broadcastGender || 'female',
             isLive: apiModel.strict !== false,
-            clickUrl: apiModel.stream?.url,
+            clickUrl: getAffiliateUrl(apiModel.username), // Always use affiliate link
             provider: 'stripchat'
           };
-          console.log('Model loaded:', mappedModel);
           setModel(mappedModel);
           
           // Get related models
@@ -120,7 +119,7 @@ export default function ModelPage() {
             {model.tags.map((tag) => <span key={tag} className="rounded-full bg-zinc-800 px-3 py-1 text-xs text-zinc-200">#{tag}</span>)}
           </div>
           <a
-            href={model.clickUrl || getAffiliateUrl(model.username)}
+            href={getAffiliateUrl(model.username)}
             target="_blank"
             rel="noopener noreferrer sponsored"
             className="mt-6 inline-block rounded-full bg-accent px-6 py-3 font-semibold text-white"
