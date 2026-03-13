@@ -92,6 +92,8 @@ export default function ModelCard({ model }: { model: Model }) {
             <img
               src={model.thumbnail}
               alt={`${model.username} live preview`}
+              width="300"
+              height="400"
               loading="lazy"
               decoding="async"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
