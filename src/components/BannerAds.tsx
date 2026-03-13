@@ -14,7 +14,7 @@ const useAdScript = () => {
   }, []);
 };
 
-// Banner 728x90 (Desktop)
+// Banner 728x90 (Desktop) - Striphub (5870866)
 export function Banner728x90({ className = '' }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   useAdScript();
@@ -43,7 +43,36 @@ export function Banner728x90({ className = '' }: { className?: string }) {
   );
 }
 
-// Banner 300x250 (Mobile/Message)
+// Banner 728x90 (Desktop) - Banner 2 (5871370)
+export function Banner728x90Second({ className = '' }: { className?: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  useAdScript();
+  
+  useEffect(() => {
+    recordAdImpression('banner');
+  }, []);
+  
+  return (
+    <div 
+      ref={containerRef}
+      className={`${className} w-full flex justify-center`}
+      onClick={() => recordAdClick('banner')}
+    >
+      <ins 
+        className="eas6a97888e2" 
+        data-zoneid="5871370"
+        style={{
+          display: 'block',
+          width: '100%',
+          maxWidth: '728px',
+          height: '90px'
+        }}
+      />
+    </div>
+  );
+}
+
+// Banner 300x250 (Mobile/Message) - Mobile Banner (5870904)
 export function Banner300x250({ className = '' }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   useAdScript();
@@ -71,7 +100,7 @@ export function Banner300x250({ className = '' }: { className?: string }) {
   );
 }
 
-// Recommendation Widget (Griglia 4x1)
+// Recommendation Widget (Griglia 4x1) - Widget (5871378)
 export function RecommendationWidget({ className = '' }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   useAdScript();
@@ -99,7 +128,7 @@ export function RecommendationWidget({ className = '' }: { className?: string })
   );
 }
 
-// Native Ad (Griglia 4x1)
+// Native Ad (Griglia 4x1) - Nativo (5870892)
 export function NativeAd({ className = '' }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   useAdScript();
@@ -127,7 +156,7 @@ export function NativeAd({ className = '' }: { className?: string }) {
   );
 }
 
-// Multiformat
+// Multiformat - Multiformat Totale (5871380)
 export function MultiformatAd({ className = '' }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   useAdScript();
@@ -149,7 +178,7 @@ export function MultiformatAd({ className = '' }: { className?: string }) {
           display: 'block',
           width: '100%',
           maxWidth: '600px',
-          height: '250px',
+          height: '300px',
           margin: '0 auto'
         }}
       />
@@ -157,7 +186,7 @@ export function MultiformatAd({ className = '' }: { className?: string }) {
   );
 }
 
-// Multiformat V2
+// Multiformat V2 - Multiformat (5870896)
 export function MultiformatV2({ className = '' }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   useAdScript();
@@ -179,7 +208,7 @@ export function MultiformatV2({ className = '' }: { className?: string }) {
           display: 'block',
           width: '100%',
           maxWidth: '600px',
-          height: '250px',
+          height: '300px',
           margin: '0 auto'
         }}
       />
@@ -187,7 +216,7 @@ export function MultiformatV2({ className = '' }: { className?: string }) {
   );
 }
 
-// Instant Message 300x250
+// Instant Message 300x250 - Message (5870906)
 export function InstantMessage({ className = '' }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   useAdScript();
@@ -203,7 +232,7 @@ export function InstantMessage({ className = '' }: { className?: string }) {
       onClick={() => recordAdClick('native')}
     >
       <ins 
-        className="eas6a97888e38" 
+        className="eas6a97888e6" 
         data-zoneid="5870906"
         style={{
           display: 'block',
@@ -214,4 +243,3 @@ export function InstantMessage({ className = '' }: { className?: string }) {
     </div>
   );
 }
-
