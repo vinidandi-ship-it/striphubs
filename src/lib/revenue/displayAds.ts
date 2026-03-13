@@ -15,7 +15,7 @@ const DISPLAY_AD_CONFIG = {
     premium: 'exoclick'
   },
   zoneIds: {
-    native: '5870896',
+    native: '5870892',
     banner: '5870866',
     premium: '5870892'
   }

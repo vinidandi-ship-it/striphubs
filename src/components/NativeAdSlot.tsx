@@ -45,7 +45,7 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
     >
       <div className="relative">
         <iframe 
-          src={`https://ads.exoclick.com/ads.php?zoneid=5870896&charset=utf-8`}
+          src={`https://ads.exoclick.com/ads.php?zoneid=5870892&charset=utf-8`}
           className="w-full h-full min-h-[300px]"
           frameBorder="0"
           scrolling="no"
