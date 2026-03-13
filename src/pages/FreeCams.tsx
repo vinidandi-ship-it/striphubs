@@ -3,6 +3,7 @@ import InfiniteLoader from '../components/InfiniteLoader';
 import ModelGrid from '../components/ModelGrid';
 import Sidebar from '../components/Sidebar';
 import Icon from '../components/Icon';
+import { useI18n } from '../i18n';
 import { countries } from '../lib/countries';
 import { categoryName, categories as categoryList } from '../lib/categories';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
