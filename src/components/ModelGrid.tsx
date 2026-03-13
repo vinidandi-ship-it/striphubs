@@ -11,8 +11,9 @@ import Icon from './Icon';
 
 const INITIAL_RENDER_COUNT = 120;
 const RENDER_BATCH_SIZE = 120;
-const NATIVE_AD_INTERVAL = 3;
+const NATIVE_AD_INTERVAL = 6;
 const CTA_INTERVAL = 12;
+const MAX_ADS = 5;
 
 function InlineCTA({ index }: { index: number }) {
   const stats = getClickStats();
@@ -126,17 +127,19 @@ export default function ModelGrid({ models, listName, loading = false }: { model
   const gridItems: JSX.Element[] = [];
   let modelIndex = 0;
   let ctaCount = 0;
+  let adCount = 0;
   
   renderedModels.forEach((model, index) => {
     gridItems.push(<ModelCard key={model.username} model={model} />);
     modelIndex++;
     
-    if (showInlineCta && modelIndex > 0 && modelIndex % CTA_INTERVAL === 0 && ctaCount < 3) {
+    if (showInlineCta && modelIndex > 0 && modelIndex % CTA_INTERVAL === 0 && ctaCount < 2) {
       gridItems.push(<InlineCTA key={`cta-${modelIndex}`} index={ctaCount++} />);
     }
     
-    if (showAds && modelIndex > 0 && modelIndex % NATIVE_AD_INTERVAL === 0) {
+    if (showAds && adCount < MAX_ADS && modelIndex > 0 && modelIndex % NATIVE_AD_INTERVAL === 0) {
       gridItems.push(<NativeAdSlot key={`native-${modelIndex}`} cardIndex={modelIndex} />);
+      adCount++;
     }
   });
 
