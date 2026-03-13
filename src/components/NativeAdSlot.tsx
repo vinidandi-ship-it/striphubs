@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { recordAdImpression, recordAdClick } from '../lib/revenue/displayAds';
+import { shouldShowNativeAd, recordAdImpression, recordAdClick } from '../lib/revenue/displayAds';
 
 interface NativeAdSlotProps {
   cardIndex: number;
@@ -18,14 +18,37 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
       script.async = true;
       document.head.appendChild(script);
     }
+    
+    setTimeout(() => {
+      if (typeof window !== 'undefined' && (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider) {
+        (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider?.push({ serve: {} });
+      }
+    }, 500);
   }, [cardIndex]);
   
-  // Show banner every 3 videos (instead of every 6)
-  const shouldShow = cardIndex % 3 === 0 && cardIndex > 0;
+  // ExoClick optimized formats - use only responsive, non-intrusive sizes
+  const getAdFormat = () => {
+    const position = cardIndex % 4;
+    
+    switch (position) {
+      case 0:
+        // Recommendation Widget - best for desktop/mobile
+        return { id: '5870892', class: 'eas6a97888e20', style: { width: '100%', maxWidth: '580px', height: '250px', margin: '0 auto' } };
+      case 1:
+        // Mobile Banner 300x250 - good for sidebar
+        return { id: '5870904', class: 'eas6a97888e10', style: { width: '300px', height: '250px', margin: '0 auto' } };
+      case 2:
+        // Instant Message 300x250
+        return { id: '5870906', class: 'eas6a97888e6', style: { width: '300px', height: '250px', margin: '0 auto' } };
+      case 3:
+        // Banner 728x90 - horizontal, fits well
+        return { id: '5870866', class: 'eas6a97888e2', style: { width: '728px', height: '90px', maxWidth: '100%', margin: '0 auto' } };
+      default:
+        return { id: '5870892', class: 'eas6a97888e20', style: { width: '100%', maxWidth: '580px', height: '250px', margin: '0 auto' } };
+    }
+  };
   
-  if (!shouldShow) {
-    return null;
-  }
+  const ad = getAdFormat();
   
   return (
     <div 
@@ -34,15 +57,9 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
       onClick={() => recordAdClick('native')}
     >
       <ins 
-        className="eas6a97888e20" 
-        data-zoneid="5870892"
-        style={{ 
-          display: 'block', 
-          width: '100%', 
-          maxWidth: '600px', 
-          height: '250px', 
-          margin: '0 auto' 
-        }}
+        className={ad.class} 
+        data-zoneid={ad.id}
+        style={ad.style}
       />
     </div>
   );
