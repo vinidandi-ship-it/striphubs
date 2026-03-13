@@ -2,11 +2,11 @@ import { useEffect, useRef } from 'react';
 import { shouldShowNativeAd, recordAdImpression, recordAdClick } from '../lib/revenue/displayAds';
 
 const ZONE_IDS = [
-  { id: '5870892', class: 'eas6a97888e20', name: 'Native' },
-  { id: '5870866', class: 'eas6a97888e2', name: 'Banner' },
-  { id: '5870896', class: 'eas6a97888e38', name: 'Multiformat' },
-  { id: '5870904', class: 'eas6a97888e10', name: 'Mobile' },
-  { id: '5870906', class: 'eas6a97888e6', name: 'Message' },
+  { id: '5870892', class: 'eas6a97888e20', name: 'Native', width: '100%', height: '250px', minHeight: '200px' },
+  { id: '5870866', class: 'eas6a97888e2', name: 'Banner 728x90', width: '728px', height: '90px', minHeight: '90px' },
+  { id: '5870896', class: 'eas6a97888e38', name: 'Multiformat', width: '100%', height: '300px', minHeight: '250px' },
+  { id: '5870904', class: 'eas6a97888e10', name: 'Mobile 300x250', width: '300px', height: '250px', minHeight: '250px' },
+  { id: '5870906', class: 'eas6a97888e6', name: 'Message 300x250', width: '300px', height: '250px', minHeight: '250px' },
 ];
 
 interface NativeAdSlotProps {
@@ -43,14 +43,19 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
   return (
     <div 
       ref={containerRef}
-      className="native-ad-wrapper col-span-full w-full my-4 border border-yellow-600 bg-yellow-900/20 p-2"
+      className="native-ad-wrapper col-span-full w-full my-4 flex justify-center"
       onClick={() => recordAdClick('native')}
     >
-      <p className="text-xs text-yellow-500 mb-1">Ad Position {cardIndex} - {zone.name} ({zone.id})</p>
       <ins 
         className={zone.class} 
         data-zoneid={zone.id}
-        style={{ display: 'block', minHeight: '150px', width: '100%' }}
+        style={{ 
+          display: 'block', 
+          width: zone.width, 
+          height: zone.height,
+          minHeight: zone.minHeight,
+          margin: '0 auto'
+        }}
       />
     </div>
   );
