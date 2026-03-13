@@ -16,12 +16,13 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
   
   return (
     <div 
-      className="content-visibility-card sh-card overflow-hidden min-h-[300px]"
+      className="content-visibility-card sh-card overflow-hidden min-h-[300px] relative"
       onClick={() => recordAdClick('native')}
     >
       <ins 
-        className="eas6a97888e20" 
+        className="eas6a97888e20 w-full h-auto block"
         data-zoneid="5870892"
+        style={{ position: 'relative', display: 'block', width: '100%', height: 'auto' }}
       />
     </div>
   );
