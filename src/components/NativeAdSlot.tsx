@@ -26,22 +26,36 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
     }, 500);
   }, [cardIndex]);
   
+  // Use different ad formats based on position
+  const getAdFormat = () => {
+    const position = cardIndex % 4;
+    
+    switch (position) {
+      case 0:
+        return { id: '5870892', class: 'eas6a97888e20', style: { width: '100%', maxWidth: '600px', height: '280px' } };
+      case 1:
+        return { id: '5870904', class: 'eas6a97888e10', style: { width: '300px', height: '250px' } };
+      case 2:
+        return { id: '5870906', class: 'eas6a97888e6', style: { width: '300px', height: '250px' } };
+      case 3:
+        return { id: '5870896', class: 'eas6a97888e38', style: { width: '100%', maxWidth: '500px', height: '320px' } };
+      default:
+        return { id: '5870892', class: 'eas6a97888e20', style: { width: '100%', maxWidth: '600px', height: '280px' } };
+    }
+  };
+  
+  const ad = getAdFormat();
+  
   return (
     <div 
       ref={containerRef}
-      className="native-ad-wrapper col-span-full w-full my-4"
+      className="native-ad-wrapper col-span-full w-full my-4 flex justify-center items-center"
       onClick={() => recordAdClick('native')}
     >
       <ins 
-        className="eas6a97888e20" 
-        data-zoneid="5870892"
-        style={{ 
-          display: 'block', 
-          width: '100%', 
-          maxWidth: '600px',
-          height: '280px',
-          margin: '0 auto'
-        }}
+        className={ad.class} 
+        data-zoneid={ad.id}
+        style={ad.style}
       />
     </div>
   );

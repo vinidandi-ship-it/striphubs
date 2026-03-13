@@ -157,6 +157,8 @@ export default function VideoPage() {
         
         <div className="my-4">
           <NativeAdSlot cardIndex={1} />
+          <div className="my-2"></div>
+          <NativeAdSlot cardIndex={2} />
         </div>
       </div>
 
