@@ -8,7 +8,8 @@ import { api } from '../lib/api';
 import { Model as LiveModel, AFFILIATE_ID } from '../lib/models';
 import { generateModelMeta } from '../lib/metaTags';
 import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
-import { trackAffiliateClick, getAffiliateUrl, getAffiliateUrlWithProvider } from '../lib/affiliateTracking';
+import { trackAffiliateClick, getAffiliateUrl } from '../lib/affiliateTracking';
+import { getAffiliateUrlWithProvider } from '../lib/affiliateProviders';
 
 export default function ModelPage() {
   const { username = '' } = useParams();
