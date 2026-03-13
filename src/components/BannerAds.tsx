@@ -34,7 +34,8 @@ export function Banner728x90({ className = '' }: { className?: string }) {
         data-zoneid="5870866"
         style={{
           display: 'block',
-          width: '728px',
+          width: '100%',
+          maxWidth: '728px',
           height: '90px'
         }}
       />
@@ -148,7 +149,7 @@ export function MultiformatAd({ className = '' }: { className?: string }) {
           display: 'block',
           width: '100%',
           maxWidth: '600px',
-          height: '300px',
+          height: '250px',
           margin: '0 auto'
         }}
       />
@@ -178,7 +179,7 @@ export function MultiformatV2({ className = '' }: { className?: string }) {
           display: 'block',
           width: '100%',
           maxWidth: '600px',
-          height: '300px',
+          height: '250px',
           margin: '0 auto'
         }}
       />

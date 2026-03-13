@@ -81,18 +81,23 @@ export function useSmartPopunder() {
       
       if (isAffiliateLink) return;
 
-      if (checkAndTrigger()) {
-        const history = getClickHistory();
-        const lastClick = history[history.length - 1];
-        
-        if (lastClick) {
-          const { url } = getAffiliateUrlWithProvider(lastClick.username);
+        if (checkAndTrigger()) {
+          const history = getClickHistory();
+          const lastClick = history[history.length - 1];
           
-          const popunder = window.open(
-            url,
-            '_blank',
-            'width=800,height=600,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no'
-          );
+          if (lastClick) {
+            const { url } = getAffiliateUrlWithProvider(lastClick.username);
+            
+            // Determine dimensions based on device
+            const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+            const width = isMobile ? window.innerWidth : 800;
+            const height = isMobile ? window.innerHeight : 600;
+            
+            const popunder = window.open(
+              url,
+              '_blank',
+              `width=${width},height=${height},scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no`
+            );
 
           if (popunder) {
             popunder.blur();
