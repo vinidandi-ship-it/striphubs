@@ -20,6 +20,13 @@ export const crackrevenueBanners: CrackRevenueBanner[] = [
     link: 'https://t.acrsmartcam.com/407726/3688/18345?bo=2779,2778,2777,2776,2775&file_id=262434&po=6533&aff_sub5=SF_006OG000004lmDN&aff_sub4=AT_0002',
     width: 298,
     height: 148
+  },
+  {
+    id: 'gdat-950x250',
+    image: 'https://www.imglnkx.com/3785/010770A_GDAT_18_ALL_EN_83_L.jpg',
+    link: 'https://t.mbjms.com/407726/3785/0?bo=Array&target=banners&file_id=554069&po=6456&aff_sub5=SF_006OG000004lmDN&aff_sub4=AT_0002',
+    width: 950,
+    height: 250
   }
 ];
 
