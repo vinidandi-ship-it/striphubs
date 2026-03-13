@@ -310,6 +310,18 @@
     "related2Title": "Seguridad y Privacidad",
     "related2Desc": "Protege tu privacidad online."
   },
+  "premium": {
+    "welcome": "¡Bienvenido VIP!",
+    "subscriptionActive": "Tu suscripción está activa. Disfruta de todas las funciones premium.",
+    "featuresTitle": "Funciones desbloqueadas:",
+    "features": ["Sin anuncios", "Favoritos ilimitados", "Búsqueda avanzada", "Modelos exclusivos", "Miniaturas HD", "Soporte prioritario"],
+    "redirecting": "Redirigiendo a home en {countdown} segundos...",
+    "becomeVip": "Conviértete en VIP",
+    "unlockFeatures": "Desbloquea todas las funciones premium",
+    "monthly": "Mensual",
+    "annual": "Anual",
+    "save": "Ahorra 2 meses"
+  },
   "internalLinks": {
     "relatedCategories": "Categorías Relacionadas",
     "relatedCountries": "Cams por País",
