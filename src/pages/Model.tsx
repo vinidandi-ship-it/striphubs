@@ -8,7 +8,7 @@ import { api } from '../lib/api';
 import { Model as LiveModel, AFFILIATE_ID } from '../lib/models';
 import { generateModelMeta } from '../lib/metaTags';
 import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
-import { trackAffiliateClick, getAffiliateUrl } from '../lib/affiliateTracking';
+import { trackAffiliateClick, getAffiliateUrl, getAffiliateUrlWithProvider } from '../lib/affiliateTracking';
 
 export default function ModelPage() {
   const { username = '' } = useParams();
@@ -35,18 +35,33 @@ export default function ModelPage() {
         
         if (data.models && data.models.length > 0) {
           const apiModel = data.models[0];
-          // Map API response to our Model type
+          console.log('API Model raw:', apiModel);
+          
+          // Map API response to our Model type - check all possible image fields
+          const thumbnail = 
+            apiModel.snapshotUrl || 
+            apiModel.previewUrl || 
+            apiModel.avatarUrl || 
+            apiModel.widgetPreviewUrl ||
+            apiModel.popularSnapshotUrl ||
+            '';
+          
+          console.log('Thumbnail URL:', thumbnail);
+          
+          const { url: affiliateUrl, provider: affiliateProvider } = getAffiliateUrlWithProvider(apiModel.username);
+          
           const mappedModel: LiveModel = {
             username: apiModel.username,
-            thumbnail: apiModel.snapshotUrl || apiModel.previewUrl || apiModel.avatarUrl || apiModel.widgetPreviewUrl || '',
+            thumbnail: thumbnail,
             viewers: apiModel.viewersCount || apiModel.viewers || 0,
             tags: apiModel.defaultTags || apiModel.tags || [],
             country: apiModel.modelsCountry || apiModel.country || '',
             category: apiModel.gender || apiModel.broadcastGender || 'female',
             isLive: apiModel.strict !== false,
-            clickUrl: getAffiliateUrl(apiModel.username), // Always use affiliate link
-            provider: 'stripchat'
+            clickUrl: affiliateUrl,
+            provider: affiliateProvider
           };
+          console.log('Mapped Model:', mappedModel);
           setModel(mappedModel);
           
           // Get related models
@@ -119,7 +134,7 @@ export default function ModelPage() {
             {model.tags.map((tag) => <span key={tag} className="rounded-full bg-zinc-800 px-3 py-1 text-xs text-zinc-200">#{tag}</span>)}
           </div>
           <a
-            href={getAffiliateUrl(model.username)}
+            href={model.clickUrl}
             target="_blank"
             rel="noopener noreferrer sponsored"
             className="mt-6 inline-block rounded-full bg-accent px-6 py-3 font-semibold text-white"
