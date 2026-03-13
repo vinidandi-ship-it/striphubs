@@ -328,7 +328,7 @@ export default function Home() {
           <Link to={buildLocalizedPath('/live', language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
         </div>
         {error ? <p className="mb-3 text-sm text-red-400">{error}</p> : null}
-        <ModelGrid models={prioritizedModels} loading={loading} listName="Home Live Models" showAds={false} />
+        <ModelGrid models={prioritizedModels} loading={loading} listName="Home Live Models" />
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
         <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
       </section>
@@ -388,7 +388,6 @@ export default function Home() {
               models={categoryModels[category.slug] || []}
               loading={loading}
               listName={`${category.slug} home preview`}
-              showAds={false}
             />
           </section>
         ))}
