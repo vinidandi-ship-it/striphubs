@@ -19,11 +19,11 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
             loadedRef.current = true;
             recordAdImpression('native');
             
-            const script = getAdNetworkScript('native');
-            const scriptContainer = document.getElementById('native-ad-script');
-            if (scriptContainer) {
-              scriptContainer.innerHTML = script;
-            }
+            const script = document.createElement('script');
+            script.src = 'https://a.exoclick.com/5870896.js';
+            script.async = true;
+            script.id = 'exoclick-native-script';
+            document.body.appendChild(script);
             
             observer.disconnect();
           }
@@ -48,8 +48,7 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
       onClick={() => recordAdClick('native')}
     >
       <div className="relative">
-        <div id="native-ad-slot" className="aspect-[3/4] w-full bg-gradient-to-br from-panel to-bg-tertiary flex items-center justify-center">
-          <div id="native-ad-script"></div>
+        <div className="aspect-[3/4] w-full bg-gradient-to-br from-panel to-bg-tertiary flex items-center justify-center">
           <div className="text-center p-4">
             <div className="text-xs text-text-muted mb-2 uppercase tracking-wider">Sponsorizzato</div>
             <div className="h-3 bg-text-muted/20 rounded w-32 mx-auto mb-2"></div>
