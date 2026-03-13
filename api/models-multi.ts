@@ -25,7 +25,7 @@ type CacheEntry = { key: string; expiresAt: number; models: NormalizedModel[]; p
 
 const caches: Map<string, CacheEntry> = new Map();
 
-// Dynamic loop for StripChat
+// Dynamic loop for StripChat with parallel batching
 const fetchStripchatModelsDynamic = async (apiKey: string, params: URLSearchParams): Promise<NormalizedModel[]> => {
   const cacheKey = `stripchat:${params.toString()}`;
   const cached = caches.get(cacheKey);
@@ -39,49 +39,63 @@ const fetchStripchatModelsDynamic = async (apiKey: string, params: URLSearchPara
   let pageCount = 0;
   const maxPages = Math.ceil(MAX_TOTAL_MODELS / MAX_MODELS_PER_REQUEST);
   const limit = MAX_MODELS_PER_REQUEST;
+  const PARALLEL_BATCH = 5;
 
   while (hasMore && offset < MAX_TOTAL_MODELS && pageCount < maxPages) {
-    await waitForRateLimit(2000);
+    if (pageCount % PARALLEL_BATCH === 0) {
+      await waitForRateLimit(2000);
+    }
     
-    const url = new URL(STRIPCHAT_ENDPOINT);
-    params.forEach((value, key) => url.searchParams.set(key, value));
-    url.searchParams.set('userId', PROVIDERS.stripchat.buildClickUrl('').split('userId=')[1]?.split('&')[0] || '');
-    url.searchParams.set('offset', String(offset));
-    url.searchParams.set('limit', String(limit));
+    const batchOffsets: number[] = [];
+    for (let i = 0; i < PARALLEL_BATCH && offset + i * limit < MAX_TOTAL_MODELS; i++) {
+      batchOffsets.push(offset + i * limit);
+    }
     
-    const response = await fetch(url.toString(), {
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${apiKey}`
+    const batchPromises = batchOffsets.map(async (batchOffset) => {
+      const url = new URL(STRIPCHAT_ENDPOINT);
+      params.forEach((value, key) => url.searchParams.set(key, value));
+      url.searchParams.set('userId', PROVIDERS.stripchat.buildClickUrl('').split('userId=')[1]?.split('&')[0] || '');
+      url.searchParams.set('offset', String(batchOffset));
+      url.searchParams.set('limit', String(limit));
+      
+      const response = await fetch(url.toString(), {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${apiKey}`
+        }
+      });
+      
+      if (!response.ok) {
+        console.error(`StripChat API error at offset ${batchOffset}: ${response.status}`);
+        return [];
       }
+      
+      const data = await response.json();
+      return parseProviderModels(data)
+        .map(m => createNormalizedModel(m, 'stripchat'))
+        .filter((item): item is NormalizedModel => Boolean(item));
     });
     
-    if (!response.ok) {
-      console.error(`StripChat API error at offset ${offset}: ${response.status}`);
-      break;
-    }
+    const batchResults = await Promise.all(batchPromises);
     
-    const data = await response.json();
-    const models = parseProviderModels(data)
-      .map(m => createNormalizedModel(m, 'stripchat'))
-      .filter((item): item is NormalizedModel => Boolean(item));
+    batchResults.forEach(models => {
+      if (models.length === 0 || models.length < limit) {
+        hasMore = false;
+      }
+      allModels.push(...models);
+    });
     
-    if (models.length === 0 || models.length < limit) {
-      hasMore = false;
-    }
+    offset += batchOffsets.length * limit;
+    pageCount += batchOffsets.length;
     
-    allModels.push(...models);
-    offset += limit;
-    pageCount++;
-    
-    console.log(`StripChat: Fetched ${models.length} models at offset ${offset - limit}, total so far: ${allModels.length}`);
+    console.log(`StripChat: Fetched ${batchResults.reduce((sum, m) => sum + m.length, 0)} models at offset ${offset - batchOffsets.length * limit}, total so far: ${allModels.length}`);
   }
   
   caches.set(cacheKey, { key: cacheKey, expiresAt: Date.now() + CACHE_TTL_MS, models: allModels, provider: 'stripchat' });
   return allModels;
 };
 
-// Dynamic loop for Chaturbate
+// Dynamic loop for Chaturbate with parallel batching
 const fetchChaturbateModelsDynamic = async (params: URLSearchParams): Promise<NormalizedModel[]> => {
   const cacheKey = `chaturbate:${params.toString()}`;
   const cached = caches.get(cacheKey);
@@ -95,53 +109,67 @@ const fetchChaturbateModelsDynamic = async (params: URLSearchParams): Promise<No
   let pageCount = 0;
   const maxPages = Math.ceil(MAX_TOTAL_MODELS / MAX_MODELS_PER_REQUEST);
   const limit = MAX_MODELS_PER_REQUEST;
+  const PARALLEL_BATCH = 5;
 
   while (hasMore && offset < MAX_TOTAL_MODELS && pageCount < maxPages) {
-    await waitForRateLimit(2000);
-    
-    const url = new URL(CHATURBATE_ENDPOINT);
-    
-    const tag = params.get('tag') || params.get('category');
-    if (tag) {
-      url.searchParams.set('tag', tag);
+    if (pageCount % PARALLEL_BATCH === 0) {
+      await waitForRateLimit(2000);
     }
     
-    url.searchParams.set('limit', String(limit));
-    url.searchParams.set('offset', String(offset));
+    const batchOffsets: number[] = [];
+    for (let i = 0; i < PARALLEL_BATCH && offset + i * limit < MAX_TOTAL_MODELS; i++) {
+      batchOffsets.push(offset + i * limit);
+    }
     
-    const response = await fetch(url.toString(), {
-      headers: {
-        Accept: 'application/json'
+    const batchPromises = batchOffsets.map(async (batchOffset) => {
+      const url = new URL(CHATURBATE_ENDPOINT);
+      
+      const tag = params.get('tag') || params.get('category');
+      if (tag) {
+        url.searchParams.set('tag', tag);
       }
+      
+      url.searchParams.set('limit', String(limit));
+      url.searchParams.set('offset', String(batchOffset));
+      
+      const response = await fetch(url.toString(), {
+        headers: {
+          Accept: 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        console.error(`Chaturbate API error at offset ${batchOffset}: ${response.status}`);
+        return [];
+      }
+      
+      const data = await response.json();
+      return parseProviderModels(data.results || data)
+        .map((m: Record<string, unknown>) => createNormalizedModel({
+          ...m,
+          username: m.username || m.display_name,
+          thumbnail: m.image_url || m.thumbnail,
+          viewers: m.num_users || m.viewers,
+          tags: m.tags || [],
+          country: m.location || m.country,
+          isLive: true
+        }, 'chaturbate'))
+        .filter((item): item is NormalizedModel => Boolean(item));
     });
     
-    if (!response.ok) {
-      console.error(`Chaturbate API error at offset ${offset}: ${response.status}`);
-      break;
-    }
+    const batchResults = await Promise.all(batchPromises);
     
-    const data = await response.json();
-    const models = parseProviderModels(data.results || data)
-      .map((m: Record<string, unknown>) => createNormalizedModel({
-        ...m,
-        username: m.username || m.display_name,
-        thumbnail: m.image_url || m.thumbnail,
-        viewers: m.num_users || m.viewers,
-        tags: m.tags || [],
-        country: m.location || m.country,
-        isLive: true
-      }, 'chaturbate'))
-      .filter((item): item is NormalizedModel => Boolean(item));
+    batchResults.forEach(models => {
+      if (models.length === 0 || models.length < limit) {
+        hasMore = false;
+      }
+      allModels.push(...models);
+    });
     
-    if (models.length === 0 || models.length < limit) {
-      hasMore = false;
-    }
+    offset += batchOffsets.length * limit;
+    pageCount += batchOffsets.length;
     
-    allModels.push(...models);
-    offset += limit;
-    pageCount++;
-    
-    console.log(`Chaturbate: Fetched ${models.length} models at offset ${offset - limit}, total so far: ${allModels.length}`);
+    console.log(`Chaturbate: Fetched ${batchResults.reduce((sum, m) => sum + m.length, 0)} models at offset ${offset - batchOffsets.length * limit}, total so far: ${allModels.length}`);
   }
   
   caches.set(cacheKey, { key: cacheKey, expiresAt: Date.now() + CACHE_TTL_MS, models: allModels, provider: 'chaturbate' });
