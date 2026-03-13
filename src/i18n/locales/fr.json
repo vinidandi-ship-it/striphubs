@@ -1,11 +1,25 @@
 {
   "common": {
+    "home": "Accueil",
+    "live": "En direct",
+    "categories": "Catégories",
+    "countries": "Pays",
+    "tag": "Tag",
+    "blog": "Blog",
+    "freeCams": "Cams Gratuit",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "cookies": "Cookies",
+    "searchResults": "Résultats de recherche",
+    "notFound": "Non trouvé",
+    "showOnlyLive": "Afficher uniquement en direct",
+    "includeOffline": "Inclure hors ligne",
     "loading": "Chargement...",
     "loadMore": "Charger plus de modèles",
     "loadingModels": "Chargement des modèles",
     "error": "Erreur de chargement",
     "viewers": "spectateurs",
-    "live": "Live",
+    "live": "En direct",
     "offline": "Hors ligne",
     "modelsLoaded": "modèles chargés",
     "moreAvailable": "et d'autres disponibles",
@@ -18,16 +32,22 @@
   },
   "nav": {
     "home": "Accueil",
+    "live": "En direct",
     "countries": "Pays",
     "categories": "Catégories",
     "quickLinks": "Liens rapides",
-    "allLive": "Tout en direct"
+    "allLive": "Tout en direct",
+    "milf": "MILF",
+    "teen": "Teen",
+    "asian": "Asiatiques"
   },
   "header": {
     "liveNow": "En direct",
     "activeCams": "cams actives"
   },
   "footer": {
+    "description": "StripHubs - Le meilleur répertoire de cams live gratuit",
+    "disclaimer": "Adultes uniquement 18+",
     "allRightsReserved": "Tous droits réservés.",
     "adultsOnly": "Adultes uniquement (18+). Contenu adulte.",
     "notAffiliated": "StripHubs n'est pas affilié à Stripchat",
@@ -44,6 +64,10 @@
     "spotlightTitle": "Cams jeunes à l'honneur",
     "spotlightSubtitle": "Les modèles les plus jeunes et demandés en ligne maintenant.",
     "discoverTeen": "Découvrir les teens",
+    "categoriesTitle": "Explorer par Catégorie",
+    "categoriesSubtitle": "Trouvez la catégorie parfaite pour vous",
+    "countriesTitle": "Explorer par Pays",
+    "countriesSubtitle": "Modèles du monde entier",
     "allLiveCams": "Toutes les Cams Live",
     "seeAll": "Voir tout",
     "popularCategories": "Catégories populaires",
@@ -172,5 +196,47 @@
     "vote": "Voter",
     "voted": "Voté",
     "totalVotes": "votes au total"
+  },
+  "cta": {
+    "watchLive": "Voir en direct",
+    "chatNow": "Discuter maintenant",
+    "freeAccess": "Accès Gratuit",
+    "noSignup": "Sans Inscription"
+  },
+  "faq": {
+    "title": "Questions Fréquemment Posées",
+    "whatAre": "Ce que sont",
+    "howToFind": "Comment trouver",
+    "areFree": "Sont-ils gratuits",
+    "howMany": "Combien y en a-t-il",
+    "canInteract": "Puis-je interagir",
+    "isSafe": "Est-ce sûr",
+    "needRegister": "Dois-je m'inscrire",
+    "languages": "Quelles langues"
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Lire la suite",
+    "published": "Publié",
+    "updated": "Mis à jour",
+    "relatedPosts": "Articles Connexes",
+    "categories": "Catégories",
+    "notFound": "Article non trouvé",
+    "backToHome": "Retour à l'accueil",
+    "bestCategoryIntro": "Découvrez les meilleures cams {category} en ligne. Guides complets, conseils et astuces.",
+    "completeGuideIntro": "Bienvenue dans le guide complet des cams live. Tout ce que vous devez savoir.",
+    "statisticsIntro": "Analyse complète du marché des cams live avec des données actualisées.",
+    "securityIntro": "Tout sur la sécurité et la vie privée dans les cams live."
+  },
+  "internalLinks": {
+    "relatedCategories": "Catégories Connexes",
+    "relatedCountries": "Cams par Pays",
+    "popularTags": "Tags Populaires"
+  },
+  "videos": {
+    "title": "Videos Porno Gratuit",
+    "subtitle": "Regardez des videos XXX gratuites en ligne",
+    "videos": "vidéos",
+    "search": "Rechercher vidéos, tags, pornstars..."
   }
 }

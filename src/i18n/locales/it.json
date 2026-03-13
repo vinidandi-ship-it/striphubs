@@ -1,5 +1,19 @@
 {
   "common": {
+    "home": "Home",
+    "live": "Live",
+    "categories": "Categorie",
+    "countries": "Paesi",
+    "tag": "Tag",
+    "blog": "Blog",
+    "freeCams": "Cam Gratis",
+    "privacy": "Privacy",
+    "terms": "Termini",
+    "cookies": "Cookies",
+    "searchResults": "Risultati Ricerca",
+    "notFound": "Non trovato",
+    "showOnlyLive": "Mostra solo live",
+    "includeOffline": "Includi anche offline",
     "loading": "Caricamento...",
     "loadMore": "Carica altre",
     "loadingModels": "Caricamento modelle...",
@@ -18,16 +32,22 @@
   },
   "nav": {
     "home": "Home",
+    "live": "Live",
     "countries": "Paesi",
     "categories": "Categorie",
     "quickLinks": "Link Rapidi",
-    "allLive": "Tutte le Live"
+    "allLive": "Tutte le Live",
+    "milf": "MILF",
+    "teen": "Teen",
+    "asian": "Asiatiche"
   },
   "header": {
     "liveNow": "Live Ora",
     "activeCams": "camere attive"
   },
   "footer": {
+    "description": "StripHubs - La migliore directory di live cam gratis",
+    "disclaimer": "Solo per adulti 18+",
     "allRightsReserved": "Tutti i diritti riservati.",
     "adultsOnly": "Contenuti per adulti 18+.",
     "notAffiliated": "StripHubs non è affiliato a Stripchat",
@@ -44,6 +64,10 @@
     "spotlightTitle": "In Primo Piano",
     "spotlightSubtitle": "Le modelle più richieste online ora.",
     "discoverTeen": "Scopri le Teen",
+    "categoriesTitle": "Esplora per Categoria",
+    "categoriesSubtitle": "Trova la categoria perfetta per te",
+    "countriesTitle": "Esplora per Paese",
+    "countriesSubtitle": "Modelle da tutto il mondo",
     "allLiveCams": "Tutte le Camere Live",
     "seeAll": "Vedi tutte",
     "popularCategories": "Categorie Popolari",
@@ -172,6 +196,48 @@
     "vote": "Vota",
     "voted": "Votato",
     "totalVotes": "voti totali"
+  },
+  "cta": {
+    "watchLive": "Guarda Live",
+    "chatNow": "Chatta Ora",
+    "freeAccess": "Accesso Gratuito",
+    "noSignup": "Senza Registrazione"
+  },
+  "faq": {
+    "title": "Domande Frequenti",
+    "whatAre": "Cosa sono",
+    "howToFind": "Come trovare",
+    "areFree": "Sono gratuite",
+    "howMany": "Quante ce ne sono",
+    "canInteract": "Posso interagire",
+    "isSafe": "È sicuro",
+    "needRegister": "Devo registrarmi",
+    "languages": "Quali lingue"
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Leggi di più",
+    "published": "Pubblicato",
+    "updated": "Aggiornato",
+    "relatedPosts": "Articoli Correlati",
+    "categories": "Categorie",
+    "notFound": "Articolo non trovato",
+    "backToHome": "Torna alla Home",
+    "bestCategoryIntro": "Scopri le migliori {category} cam online. Guide complete, consigli e trucchi per trovare le modelle perfette.",
+    "completeGuideIntro": "Benvenuto nella guida completa alle live cam. Tutto quello che devi sapere per iniziare.",
+    "statisticsIntro": "Analisi completa del mercato delle live cam con dati aggiornati.",
+    "securityIntro": "Tutto sulla sicurezza e privacy nelle live cam."
+  },
+  "internalLinks": {
+    "relatedCategories": "Categorie Correlate",
+    "relatedCountries": "Cam per Paese",
+    "popularTags": "Tag Popolari"
+  },
+  "videos": {
+    "title": "Video Porco Gratis",
+    "subtitle": "Guarda video XXX online gratis",
+    "videos": "video",
+    "search": "Cerca video, tag, pornostar..."
   }
 }
 }

@@ -5,9 +5,10 @@ import InternalLinks from '../components/InternalLinks';
 import ModelGrid from '../components/ModelGrid';
 import Sidebar from '../components/Sidebar';
 import Icon from '../components/Icon';
+import { useEffect } from 'react';
 import { countries } from '../lib/countries';
 import { categoryName, categories as categoryList } from '../lib/categories';
-import { generateDescription, generateTitle, useSEO } from '../lib/seo';
+import { generateDescription, generateTitle, useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
 import { useModels } from '../lib/useModels';
 import { PAGE_SIZES } from '../lib/constants';
 import { useI18n } from '../i18n';
@@ -38,6 +39,29 @@ export default function Live() {
       keywords: ['cam live', 'tutte le cam', 'modelle online', 'streaming live', 'cam gratis', 'directory cam']
     }
   );
+
+  // Add structured data for live page
+  useEffect(() => {
+    if (!models.length) return;
+    
+    const itemListElement = models.slice(0, 20).map((model, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `/model/${encodeURIComponent(model.username)}`
+    }));
+    
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: 'Live Cam Models',
+      description: 'All live cam models online 24/7',
+      itemListElement
+    };
+    
+    upsertJsonLd('live-schema', structuredData);
+    
+    return () => removeJsonLd('live-schema');
+  }, [models]);
 
   const sidebarCategories = categoryList.map((slug) => ({
     slug,

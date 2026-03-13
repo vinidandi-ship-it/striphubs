@@ -12,7 +12,7 @@ import {
   InstantMessage
 } from '../components/BannerAds';
 import { useI18n } from '../i18n';
-import { useSEO } from '../lib/seo';
+import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
 import { buildLocalizedPath } from '../i18n/routing';
 import { getAffiliateUrlWithProvider } from '../lib/affiliateProviders';
 
@@ -53,8 +53,42 @@ export default function Videos() {
     currentTag ? `${currentTag} Videos - Top Rated XXX` : 'Porn Videos - Top Rated XXX Videos',
     currentTag ? `Watch the hottest ${currentTag} porn videos online for free.` : 'Watch the hottest porn videos online for free. Top rated XXX content updated daily.',
     '/videos',
-    { lang: language }
+    { 
+      lang: language,
+      keywords: currentTag 
+        ? [currentTag, 'porn videos', 'xxx videos', 'free porn', 'hd porn']
+        : ['porn videos', 'xxx videos', 'free porn', 'hd porn', 'adult videos', 'top rated videos', 'pornhub videos']
+    }
   );
+
+  // Add structured data for videos collection
+  useEffect(() => {
+    const videoItems = filteredVideos.slice(0, 20).map((video) => ({
+      '@type': 'ListItem',
+      position: filteredVideos.indexOf(video) + 1,
+      item: {
+        '@type': 'VideoObject',
+        name: video.title,
+        thumbnailUrl: video.thumbnail,
+        description: video.tags.join(', '),
+        uploadDate: new Date().toISOString(),
+        contentUrl: `/video/${video.id}`,
+        embedUrl: video.embedUrl
+      }
+    }));
+
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: currentTag ? `${currentTag} Videos` : 'Free Porn Videos',
+      description: currentTag ? `Best ${currentTag} porn videos` : 'Top rated free porn videos updated daily',
+      itemListElement: videoItems
+    };
+    
+    upsertJsonLd('videos-schema', structuredData);
+    
+    return () => removeJsonLd('videos-schema');
+  }, [filteredVideos, currentTag]);
 
   useEffect(() => {
     fetch('/top-videos.json')

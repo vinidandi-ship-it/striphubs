@@ -7,7 +7,7 @@ import { useI18n } from '../i18n';
 import { api } from '../lib/api';
 import { Model as LiveModel, AFFILIATE_ID } from '../lib/models';
 import { generateModelMeta } from '../lib/metaTags';
-import { useSEO } from '../lib/seo';
+import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
 import { trackAffiliateClick, getAffiliateUrl } from '../lib/affiliateTracking';
 
 export default function ModelPage() {
@@ -37,6 +37,36 @@ export default function ModelPage() {
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load model profile'))
       .finally(() => setLoading(false));
   }, [decodedName]);
+
+  // Add structured data for model profile
+  useEffect(() => {
+    if (!model) return;
+    
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: model.username,
+      image: model.thumbnail,
+      url: `/model/${encodeURIComponent(model.username)}`,
+      jobTitle: 'Live Cam Model',
+      additionalName: model.username,
+      description: `${model.category} live cam model on StripHubs`,
+      knowsAbout: model.tags,
+      address: {
+        '@type': 'Country',
+        name: model.country
+      },
+      interactionStatistic: {
+        '@type': 'InteractionCounter',
+        interactionType: 'https://schema.org/WatchAction',
+        userInteractionCount: model.viewers
+      }
+    };
+    
+    upsertJsonLd('model-schema', structuredData);
+    
+    return () => removeJsonLd('model-schema');
+  }, [model]);
 
   const breadcrumbs = useMemo(() => [
     { label: 'Home', to: '/' },

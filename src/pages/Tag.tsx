@@ -12,7 +12,7 @@ import { categories as categoryList, categoryName } from '../lib/categories';
 import { Model } from '../lib/models';
 import { featuredCategoryTagCombos } from '../lib/programmaticSeo';
 import { generateTagMeta } from '../lib/metaTags';
-import { useSEO } from '../lib/seo';
+import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
 import { seoTextForTag } from '../lib/seoText';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 
@@ -47,6 +47,29 @@ export default function Tag() {
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load tag'))
       .finally(() => setLoading(false));
   }, [tag]);
+
+  // Add structured data for tag page
+  useEffect(() => {
+    if (!models.length) return;
+    
+    const itemListElement = models.slice(0, 20).map((model, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `/model/${encodeURIComponent(model.username)}`
+    }));
+    
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: `#${tag} Cam Live`,
+      description: `Live cam models with tag ${tag}`,
+      itemListElement
+    };
+    
+    upsertJsonLd('tag-schema', structuredData);
+    
+    return () => removeJsonLd('tag-schema');
+  }, [tag, models]);
 
   const loadMore = () => {
     if (loadingMore || !hasMore) return;

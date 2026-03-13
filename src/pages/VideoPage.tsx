@@ -12,7 +12,7 @@ import {
   InstantMessage
 } from '../components/BannerAds';
 import { useI18n } from '../i18n';
-import { useSEO } from '../lib/seo';
+import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
 import { buildLocalizedPath } from '../i18n/routing';
 import { getAffiliateUrlWithProvider } from '../lib/affiliateProviders';
 import Icon from '../components/Icon';
@@ -64,8 +64,41 @@ export default function VideoPage() {
     video ? `${video.title} - Free XXX Video` : 'Video',
     video ? `Watch ${video.title} for free. ${formatViews(video.views)} views. ${video.tags.slice(0, 5).join(', ')}` : 'Watch free porn videos',
     `/video/${id}`,
-    { lang: language }
+    { 
+      lang: language,
+      keywords: video ? [video.title, ...video.tags.slice(0, 5), 'porn video', 'xxx video', 'free porn'].filter(Boolean) : ['porn video', 'xxx video', 'free porn'],
+      type: 'video.other'
+    }
   );
+
+  // Add VideoObject structured data
+  useEffect(() => {
+    if (!video) return;
+    
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@type': 'VideoObject',
+      name: video.title,
+      description: video.tags.join(', '),
+      thumbnailUrl: video.thumbnail,
+      uploadDate: new Date().toISOString(),
+      contentUrl: `/video/${video.id}`,
+      embedUrl: video.embedUrl,
+      interactionStatistic: {
+        '@type': 'InteractionCounter',
+        interactionType: 'https://schema.org/WatchAction',
+        userInteractionCount: video.views
+      },
+      duration: `PT${Math.floor(video.duration / 60)}M${video.duration % 60}S`,
+      ratingValue: video.rating,
+      bestRating: 5,
+      worstRating: 1
+    };
+    
+    upsertJsonLd('video-schema', structuredData);
+    
+    return () => removeJsonLd('video-schema');
+  }, [video]);
 
   if (loading) {
     return (

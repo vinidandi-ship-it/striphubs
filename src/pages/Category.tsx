@@ -11,7 +11,7 @@ import { api } from '../lib/api';
 import { countries } from '../lib/countries';
 import { categoryName, categories as categoryList, CategorySlug } from '../lib/categories';
 import { generateCategoryMeta } from '../lib/metaTags';
-import { useAdvancedSEO } from '../lib/seo';
+import { useAdvancedSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
 import { seoTextForCategory } from '../lib/seoText';
 import { useModels } from '../lib/useModels';
 import { PAGE_SIZES } from '../lib/constants';
@@ -46,6 +46,29 @@ export default function Category() {
       keywords: meta.keywords
     }
   );
+
+  // Add structured data for category page
+  useEffect(() => {
+    if (!models.length) return;
+    
+    const itemListElement = models.slice(0, 20).map((model, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `/model/${encodeURIComponent(model.username)}`
+    }));
+    
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: `${categoryName(category)} Live Cams`,
+      description: seoTextForCategory(category),
+      itemListElement
+    };
+    
+    upsertJsonLd('category-schema', structuredData);
+    
+    return () => removeJsonLd('category-schema');
+  }, [category, models]);
 
   useEffect(() => {
     api.getCategories().then((data) => setCategories(data.categories));
