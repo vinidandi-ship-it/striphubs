@@ -35,7 +35,7 @@ export default function VideoAdSlot() {
           display: 'block',
           width: '100%',
           maxWidth: '600px',
-          height: '260px',
+          height: '250px',
           margin: '0 auto'
         }}
       />
