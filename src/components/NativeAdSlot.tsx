@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { recordAdImpression, recordAdClick } from '../lib/revenue/displayAds';
-import { crackrevenueBanners, getRandomCrackRevenueBanner, recordCrackRevenueBannerClick, CrackRevenueBanner as BannerType } from '../lib/crackrevenueBanners';
 
 interface NativeAdSlotProps {
   cardIndex: number;
@@ -23,8 +22,6 @@ const isMobile = (): boolean => {
 
 export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [crackRevenueBanner, setCrackRevenueBanner] = useState<BannerType | null>(null);
-  const [useCrackRevenue, setUseCrackRevenue] = useState(false);
   
   // Select format based on position
   const formatIndex = cardIndex % FORMAT_PATTERNS.length;
@@ -35,14 +32,6 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
   const zoneId = mobileMode && format.mobileId ? format.mobileId : format.id;
 
   useEffect(() => {
-    // 50% chance to show CrackRevenue banner instead of ExoClick
-    const random = Math.random();
-    if (random < 0.5) {
-      setUseCrackRevenue(true);
-      setCrackRevenueBanner(getRandomCrackRevenueBanner());
-      return;
-    }
-    
     recordAdImpression('native');
     
     const existingScript = document.querySelector('script[src*="ad-provider"]');
@@ -52,40 +41,8 @@ export default function NativeAdSlot({ cardIndex }: NativeAdSlotProps) {
       script.async = true;
       document.head.appendChild(script);
     }
-    
-    setTimeout(() => {
-      if (typeof window !== 'undefined' && (window as any).AdProvider) {
-        (window as any).AdProvider.push({ serve: {} });
-      }
-    }, 500);
   }, [cardIndex]);
 
-  // Show CrackRevenue banner
-  if (useCrackRevenue && crackRevenueBanner) {
-    return (
-      <div className="native-ad-wrapper col-span-full w-full my-3 py-2 flex justify-center items-center overflow-hidden">
-        <a
-          href={crackRevenueBanner.link}
-          target="_blank"
-          rel="noopener noreferrer sponsored"
-          className="block"
-          onClick={() => recordCrackRevenueBannerClick(crackRevenueBanner.id)}
-        >
-          <img
-            src={crackRevenueBanner.image}
-            alt="CrackRevenue"
-            width={crackRevenueBanner.width}
-            height={crackRevenueBanner.height}
-            loading="lazy"
-            decoding="async"
-            className="w-full h-auto max-w-[600px]"
-          />
-        </a>
-      </div>
-    );
-  }
-  
-  // Show ExoClick banner
   return (
     <div 
       ref={containerRef}
