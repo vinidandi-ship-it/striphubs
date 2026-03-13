@@ -2,7 +2,15 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import VideoAdSlot, { VideoBannerSlot } from '../components/VideoAdSlot';
-import NativeAdSlot from '../components/NativeAdSlot';
+import { 
+  Banner728x90,
+  Banner300x250,
+  RecommendationWidget,
+  NativeAd,
+  MultiformatAd,
+  MultiformatV2,
+  InstantMessage
+} from '../components/BannerAds';
 import { useI18n } from '../i18n';
 import { useSEO } from '../lib/seo';
 import { buildLocalizedPath } from '../i18n/routing';
@@ -155,23 +163,24 @@ export default function VideoPage() {
           </Link>
         </div>
 
+        <Banner300x250 className="my-3" />
+        
         <VideoBannerSlot />
+        
+        <MultiformatAd className="my-3" />
         
         <VideoAdSlot />
         
-        <div className="flex justify-center">
-          <NativeAdSlot cardIndex={1} />
-        </div>
+        <NativeAd className="my-3" />
         
-        <div className="flex justify-center">
-          <VideoBannerSlot />
-        </div>
+        <Banner728x90 className="hidden md:block my-3" />
+        <Banner300x250 className="md:hidden my-3" />
       </div>
 
       <div className="space-y-4">
         <h2 className="text-xl font-bold text-white">Related Videos</h2>
         
-        <NativeAdSlot cardIndex={10} />
+        <RecommendationWidget className="my-2" />
         
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {relatedVideos.map(v => (
@@ -198,7 +207,9 @@ export default function VideoPage() {
           ))}
         </div>
         
-        <NativeAdSlot cardIndex={20} />
+        <InstantMessage className="my-3" />
+        
+        <MultiformatV2 className="my-3" />
       </div>
     </div>
   );
