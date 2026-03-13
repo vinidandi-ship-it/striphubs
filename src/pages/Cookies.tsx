@@ -1,16 +1,24 @@
 import Breadcrumbs from '../components/Breadcrumbs';
 import { useSEO } from '../lib/seo';
+import { useI18n } from '../i18n';
 
 export default function Cookies() {
-  useSEO('Cookie Policy', 'Read the StripHubs cookie policy.', '/cookies');
+  const { t, language } = useI18n();
+  
+  useSEO(
+    t('legal.cookiesTitle') || 'Cookie Policy', 
+    t('legal.cookiesDesc') || 'Read the StripHubs cookie policy.', 
+    '/cookies',
+    language
+  );
 
   return (
     <article className="prose prose-invert max-w-3xl">
-      <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Cookies' }]} />
-      <h1>Cookie Policy</h1>
-      <p>Cookies are used for session integrity, security, and affiliate attribution analytics.</p>
-      <p>You can disable cookies in your browser, but some features may be limited.</p>
-      <p>Continuing to browse the site means you accept this policy.</p>
+      <Breadcrumbs items={[{ label: t('common.home'), to: '/' }, { label: t('footer.cookies') }]} />
+      <h1>{t('legal.cookiesTitle')}</h1>
+      <p>{t('legal.cookiesContent1')}</p>
+      <p>{t('legal.cookiesContent2')}</p>
+      <p>{t('legal.cookiesContent3')}</p>
     </article>
   );
 }

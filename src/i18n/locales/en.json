@@ -81,7 +81,12 @@
   "category": {
     "liveCams": "Live Cams",
     "showOnlyLive": "Show only live",
-    "includeOffline": "Include offline"
+    "includeOffline": "Include offline",
+    "tagPopolari": "Popular tags for {country}",
+    "combinazioniDaSpingere": "Combinations to push"
+  },
+  "combination": {
+    "altreLanding": "Other related landing pages"
   },
   "country": {
     "liveCam": "Live cam"
@@ -242,6 +247,23 @@
     "relatedVideos": "Related Videos",
     "pornstar": "Pornstar",
     "views": "views"
+  },
+  "legal": {
+    "termsTitle": "Terms of Service",
+    "termsDesc": "Read the StripHubs terms of service.",
+    "termsContent1": "This website is intended exclusively for adults aged 18 years or older.",
+    "termsContent2": "StripHubs is a directory and does not host, own, or control third-party live streams.",
+    "termsContent3": "Use of this site is subject to local laws and platform partner rules.",
+    "privacyTitle": "Privacy Policy",
+    "privacyDesc": "Read the StripHubs privacy policy.",
+    "privacyContent1": "StripHubs stores minimal technical and analytics data required for site operation and affiliate tracking.",
+    "privacyContent2": "Outbound links may be tracked by partner platforms for attribution and fraud prevention.",
+    "privacyContent3": "By using this website, you agree to this policy and your local legal obligations.",
+    "cookiesTitle": "Cookie Policy",
+    "cookiesDesc": "Read the StripHubs cookie policy.",
+    "cookiesContent1": "Cookies are used for session integrity, security, and affiliate attribution analytics.",
+    "cookiesContent2": "You can disable cookies in your browser, but some features may be limited.",
+    "cookiesContent3": "Continuing to browse the site means you accept this policy."
   },
   "model": {
     "profile": "Profile",

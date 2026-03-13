@@ -81,7 +81,12 @@
   "category": {
     "liveCams": "Live Cams",
     "showOnlyLive": "Nur Live anzeigen",
-    "includeOffline": "Offline einbeziehen"
+    "includeOffline": "Offline einbeziehen",
+    "tagPopolari": "Beliebte Tags für {country}",
+    "combinazioniDaSpingere": "Kombinationen zu bewerben"
+  },
+  "combination": {
+    "altreLanding": "Weitere zugehörige Landingpages"
   },
   "country": {
     "liveCam": "Live Cam"
@@ -242,6 +247,23 @@
     "relatedVideos": "Ähnliche Videos",
     "pornstar": "Pornostar",
     "views": "Aufrufe"
+  },
+  "legal": {
+    "termsTitle": "Nutzungsbedingungen",
+    "termsDesc": "Lesen Sie die Nutzungsbedingungen von StripHubs.",
+    "termsContent1": "Diese Website ist ausschließlich für Erwachsene ab 18 Jahren gedacht.",
+    "termsContent2": "StripHubs ist ein Verzeichnis und hostet, besitzt oder kontrolliert keine Drittanbieter-Livestreams.",
+    "termsContent3": "Die Nutzung dieser Website unterliegt den lokalen Gesetzen und den Regeln der Partner-Plattformen.",
+    "privacyTitle": "Datenschutzrichtlinie",
+    "privacyDesc": "Lesen Sie die Datenschutzrichtlinie von StripHubs.",
+    "privacyContent1": "StripHubs speichert minimale technische und analytische Daten, die für den Betrieb der Website und das Affiliate-Tracking erforderlich sind.",
+    "privacyContent2": "Ausgehende Links können von Partner-Plattformen für Attribution und Betrugsprävention verfolgt werden.",
+    "privacyContent3": "Durch die Nutzung dieser Website stimmen Sie dieser Richtlinie und Ihren lokalen rechtlichen Verpflichtungen zu.",
+    "cookiesTitle": "Cookie-Richtlinie",
+    "cookiesDesc": "Lesen Sie die Cookie-Richtlinie von StripHubs.",
+    "cookiesContent1": "Cookies werden für Sitzungsintegrität, Sicherheit und Affiliate-Attributions-Analysen verwendet.",
+    "cookiesContent2": "Sie können Cookies in Ihrem Browser deaktivieren, aber einige Funktionen können eingeschränkt sein.",
+    "cookiesContent3": "Wenn Sie weiterhin auf der Website surfen, akzeptieren Sie diese Richtlinie."
   },
   "model": {
     "profile": "Profil",

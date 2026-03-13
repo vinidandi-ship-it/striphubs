@@ -81,7 +81,12 @@
   "category": {
     "liveCams": "Cams ao Vivo",
     "showOnlyLive": "Mostrar apenas ao vivo",
-    "includeOffline": "Incluir offline"
+    "includeOffline": "Incluir offline",
+    "tagPopolari": "Tags populares para {country}",
+    "combinazioniDaSpingere": "Combinações para promover"
+  },
+  "combination": {
+    "altreLanding": "Outras páginas de destino relacionadas"
   },
   "country": {
     "liveCam": "Cam ao vivo"
@@ -242,6 +247,23 @@
     "relatedVideos": "Vídeos Relacionados",
     "pornstar": "Pornstar",
     "views": "visualizações"
+  },
+  "legal": {
+    "termsTitle": "Termos de Serviço",
+    "termsDesc": "Leia os termos de serviço do StripHubs.",
+    "termsContent1": "Este site é destinado exclusivamente a adultos com 18 anos ou mais.",
+    "termsContent2": "StripHubs é um diretório e não hospeda, possui ou controla transmissões ao vivo de terceiros.",
+    "termsContent3": "O uso deste site está sujeito às leis locais e às regras das plataformas parceiras.",
+    "privacyTitle": "Política de Privacidade",
+    "privacyDesc": "Leia a política de privacidade do StripHubs.",
+    "privacyContent1": "StripHubs armazena dados técnicos e analíticos mínimos necessários para a operação do site e rastreamento de afiliados.",
+    "privacyContent2": "Os links de saída podem ser rastreados por plataformas parceiras para atribuição e prevenção de fraude.",
+    "privacyContent3": "Ao usar este site, você concorda com esta política e suas obrigações legais locais.",
+    "cookiesTitle": "Política de Cookies",
+    "cookiesDesc": "Leia a política de cookies do StripHubs.",
+    "cookiesContent1": "Os cookies são usados para integridade da sessão, segurança e análise de atribuição de afiliados.",
+    "cookiesContent2": "Você pode desativar os cookies no seu navegador, mas alguns recursos podem ser limitados.",
+    "cookiesContent3": "Continuar navegando no site significa que você aceita esta política."
   },
   "model": {
     "profile": "Perfil",

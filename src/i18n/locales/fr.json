@@ -81,7 +81,12 @@
   "category": {
     "liveCams": "Cams Live",
     "showOnlyLive": "Afficher uniquement en direct",
-    "includeOffline": "Inclure hors ligne"
+    "includeOffline": "Inclure hors ligne",
+    "tagPopolari": "Tags populaires pour {country}",
+    "combinazioniDaSpingere": "Combinaisons à promouvoir"
+  },
+  "combination": {
+    "altreLanding": "Autres pages d'atterrissage liées"
   },
   "country": {
     "liveCam": "Cam live"
@@ -242,6 +247,23 @@
     "relatedVideos": "Vidéos Connexes",
     "pornstar": "Pornstar",
     "views": "vues"
+  },
+  "legal": {
+    "termsTitle": "Conditions d'Utilisation",
+    "termsDesc": "Lisez les conditions d'utilisation de StripHubs.",
+    "termsContent1": "Ce site est destiné exclusivement aux adultes âgés de 18 ans ou plus.",
+    "termsContent2": "StripHubs est un répertoire et n'héberge, ne possède pas et ne contrôle pas les flux en direct de tiers.",
+    "termsContent3": "L'utilisation de ce site est soumise aux lois locales et aux règles des plateformes partenaires.",
+    "privacyTitle": "Politique de Confidentialité",
+    "privacyDesc": "Lisez la politique de confidentialité de StripHubs.",
+    "privacyContent1": "StripHubs stocke des données techniques et analytiques minimales nécessaires au fonctionnement du site et au suivi des affiliations.",
+    "privacyContent2": "Les liens sortants peuvent être suivis par les plateformes partenaires pour l'attribution et la prévention des fraudes.",
+    "privacyContent3": "En utilisant ce site, vous acceptez cette politique et vos obligations légales locales.",
+    "cookiesTitle": "Politique des Cookies",
+    "cookiesDesc": "Lisez la politique des cookies de StripHubs.",
+    "cookiesContent1": "Les cookies sont utilisés pour l'intégrité de la session, la sécurité et l'analyse de l'attribution des affiliés.",
+    "cookiesContent2": "Vous pouvez désactiver les cookies dans votre navigateur, mais certaines fonctionnalités peuvent être limitées.",
+    "cookiesContent3": "Continuer à naviguer sur le site signifie que vous acceptez cette politique."
   },
   "model": {
     "profile": "Profil",
