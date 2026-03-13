@@ -11,7 +11,7 @@ import Icon from './Icon';
 
 const INITIAL_RENDER_COUNT = 120;
 const RENDER_BATCH_SIZE = 120;
-const NATIVE_AD_INTERVAL = 6;
+const NATIVE_AD_INTERVAL = 3;
 const CTA_INTERVAL = 12;
 
 function InlineCTA({ index }: { index: number }) {
@@ -136,7 +136,7 @@ export default function ModelGrid({ models, listName, loading = false }: { model
     }
     
     if (showAds && modelIndex > 0 && modelIndex % NATIVE_AD_INTERVAL === 0 && index < renderedModels.length - 1) {
-      gridItems.push(<NativeAdSlot key={`native-${index}`} cardIndex={index} />);
+      gridItems.push(<NativeAdSlot key={`native-${modelIndex}`} cardIndex={modelIndex} />);
     }
   });
 
