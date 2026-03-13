@@ -155,7 +155,7 @@ export default function VideoPage() {
           </Link>
         </div>
         
-        <VideoAdSlot position="middle" />
+        <VideoAdSlot />
       </div>
 
       <div className="space-y-4">

@@ -2,10 +2,10 @@ import { useEffect, useRef } from 'react';
 import { recordAdImpression, recordAdClick } from '../lib/revenue/displayAds';
 
 interface VideoAdSlotProps {
-  position: 'top' | 'middle' | 'bottom';
+  position?: 'top' | 'bottom';
 }
 
-export default function VideoAdSlot({ position }: VideoAdSlotProps) {
+export default function VideoAdSlot({ position = 'top' }: VideoAdSlotProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
@@ -26,42 +26,29 @@ export default function VideoAdSlot({ position }: VideoAdSlotProps) {
     }, 500);
   }, [position]);
   
-  // Use different formats based on position
-  const getAdConfig = () => {
-    if (position === 'top') {
-      return { 
-        id: '5870892', 
-        class: 'eas6a97888e20', 
-        style: { width: '100%', maxWidth: '580px', height: '250px', margin: '0 auto', display: 'block' } 
-      };
-    }
-    if (position === 'middle') {
-      return { 
-        id: '5870904', 
-        class: 'eas6a97888e10', 
-        style: { width: '300px', height: '250px', margin: '0 auto', display: 'block' } 
-      };
-    }
-    // bottom
-    return { 
-      id: '5870892', 
-      class: 'eas6a97888e20', 
-      style: { width: '100%', maxWidth: '580px', height: '250px', margin: '0 auto', display: 'block' } 
-    };
+  // Use Recommendation Widget - best for video pages
+  // Format: 5870892 - responsive, fits any screen
+  const ad = {
+    id: '5870892',
+    class: 'eas6a97888e20'
   };
-  
-  const ad = getAdConfig();
   
   return (
     <div 
       ref={containerRef}
-      className="w-full my-4 flex justify-center items-center"
+      className="w-full py-3"
       onClick={() => recordAdClick('native')}
     >
       <ins 
         className={ad.class} 
         data-zoneid={ad.id}
-        style={ad.style}
+        style={{
+          display: 'block',
+          width: '100%',
+          maxWidth: '600px',
+          height: '260px',
+          margin: '0 auto'
+        }}
       />
     </div>
   );
