@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import NativeAdSlot from '../components/NativeAdSlot';
-import VideoAdSlot, { VideoBannerSlot, VideoSidebarAd } from '../components/VideoAdSlot';
+import VideoAdSlot, { VideoBannerSlot } from '../components/VideoAdSlot';
 import { useI18n } from '../i18n';
 import { useSEO } from '../lib/seo';
 import { buildLocalizedPath } from '../i18n/routing';
@@ -156,12 +156,6 @@ export default function VideoPage() {
         </div>
 
         <VideoBannerSlot />
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <VideoSidebarAd />
-          <VideoSidebarAd />
-          <VideoSidebarAd />
-        </div>
         
         <VideoAdSlot />
         

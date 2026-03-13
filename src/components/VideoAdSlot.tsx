@@ -76,36 +76,3 @@ export function VideoBannerSlot() {
     </div>
   );
 }
-
-export function VideoSidebarAd() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
-    const existingScript = document.querySelector('script[src*="ad-provider"]');
-    if (!existingScript) {
-      const script = document.createElement('script');
-      script.src = 'https://a.magsrv.com/ad-provider.js';
-      script.async = true;
-      document.head.appendChild(script);
-    }
-  }, []);
-  
-  return (
-    <div 
-      ref={containerRef}
-      className="w-full flex justify-center py-2"
-      onClick={() => recordAdClick('mobile')}
-    >
-      <ins 
-        className="eas6a97888e2" 
-        data-zoneid="5871370"
-        style={{
-          display: 'block',
-          width: '160px',
-          height: '600px',
-          margin: '0 auto'
-        }}
-      />
-    </div>
-  );
-}
