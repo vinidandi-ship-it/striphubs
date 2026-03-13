@@ -8,6 +8,7 @@ import { isPremiumUser } from '../lib/revenue';
 import { getClickStats, trackAffiliateClick } from '../lib/affiliateTracking';
 import { getAffiliateUrlWithProvider } from '../lib/affiliateProviders';
 import Icon from './Icon';
+import { useI18n } from '../i18n';
 
 const INITIAL_RENDER_COUNT = 120;
 const RENDER_BATCH_SIZE = 120;
@@ -76,6 +77,7 @@ interface ModelGridProps {
 }
 
 export default function ModelGrid({ models, listName, loading = false, showAds: adsEnabled = true }: ModelGridProps) {
+  const { t } = useI18n();
   const [visibleCount, setVisibleCount] = useState(INITIAL_RENDER_COUNT);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -125,7 +127,7 @@ export default function ModelGrid({ models, listName, loading = false, showAds: 
   }
 
   if (!models.length) {
-    return <div className="rounded-2xl border border-border bg-panel p-6 text-zinc-400">No live models found.</div>;
+    return <div className="rounded-2xl border border-border bg-panel p-6 text-zinc-400">{t('common.noResults')}</div>;
   }
   
   const showAds = adsEnabled && !isPremiumUser();
@@ -159,7 +161,7 @@ export default function ModelGrid({ models, listName, loading = false, showAds: 
         <div className="space-y-3">
           <div ref={sentinelRef} className="h-6" aria-hidden="true" />
           <p className="text-center text-xs text-zinc-500">
-            Rendering {renderedModels.length} di {models.length} modelle caricate
+            {t('common.loading')} {renderedModels.length} {t('common.modelsLoaded')}
           </p>
         </div>
       ) : null}
