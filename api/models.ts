@@ -12,6 +12,8 @@ import {
 
 const CACHE_TTL_MS = 60_000;
 const DEFAULT_ENDPOINT = process.env.STRIPCHAT_API_ENDPOINT || 'https://go.mavrtracktor.com/api/models';
+const MAX_MODELS_PER_REQUEST = 500;
+const MAX_TOTAL_MODELS = 50000; // Limite massimo per chiamare tutte le modelle
 
 const CATEGORY_TAG_MAP: Record<string, string> = CATEGORY_DEFINITIONS.reduce<Record<string, string>>((acc, category) => {
   acc[category.slug] = category.tag;
@@ -81,6 +83,61 @@ const buildUpstreamUrl = (req: VercelRequest): string => {
   return url.toString();
 };
 
+// Funzione per chiamare tutte le modelle in modo dinamico
+async function fetchAllModels(apiKey: string, upstreamUrl: string, hasCountry: boolean): Promise<{ models: NormalizedModel[], total: number | null }> {
+  const allModels: NormalizedModel[] = [];
+  let offset = 0;
+  let total: number | null = null;
+  let hasMore = true;
+  let pageCount = 0;
+  const maxPages = Math.ceil(MAX_TOTAL_MODELS / MAX_MODELS_PER_REQUEST);
+
+  // Se ha country, usa limit 500 per ogni pagina
+  // Altrimenti usa limit 5000 per chiamare più modelle in una volta
+  const limit = hasCountry ? MAX_MODELS_PER_REQUEST : 5000;
+
+  while (hasMore && offset < MAX_TOTAL_MODELS && pageCount < maxPages) {
+    await waitForRateLimit(2000); // Rate limit più conservativo per molte chiamate
+    
+    const url = new URL(upstreamUrl);
+    url.searchParams.set('offset', String(offset));
+    url.searchParams.set('limit', String(limit));
+
+    const response = await fetch(url.toString(), {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${apiKey}`
+      }
+    });
+
+    if (!response.ok) {
+      console.error(`API error at offset ${offset}: ${response.status}`);
+      break;
+    }
+
+    const data = await response.json();
+    const models = parseProviderModels(data)
+      .map(createNormalizedModel)
+      .filter((item): item is NormalizedModel => Boolean(item));
+
+    if (total === null) {
+      total = extractProviderTotal(data);
+    }
+
+    if (models.length === 0 || models.length < limit) {
+      hasMore = false;
+    }
+
+    allModels.push(...models);
+    offset += limit;
+    pageCount++;
+
+    console.log(`Fetched ${models.length} models at offset ${offset - limit}, total so far: ${allModels.length}`);
+  }
+
+  return { models: allModels, total };
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') return apiError(res, 'Method not allowed', 405);
 
@@ -93,61 +150,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     let normalized: NormalizedModel[];
     let providerTotal: number | null = null;
-    
+
     if (cache && cache.key === upstreamUrl && cache.expiresAt > Date.now()) {
       normalized = cache.models;
-    } else if (hasCountry) {
-      await waitForRateLimit(5000);
-      
-      const pages = [0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500];
-      const requests = pages.map(async (offset) => {
-        const url = new URL(upstreamUrl);
-        url.searchParams.set('offset', String(offset));
-        url.searchParams.set('limit', '500');
-        
-        const response = await fetch(url.toString(), {
-          headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${apiKey}`
-          }
-        });
-        
-        if (!response.ok) return [];
-        
-        const data = await response.json();
-        providerTotal = extractProviderTotal(data) || providerTotal;
-        return parseProviderModels(data)
-          .map(createNormalizedModel)
-          .filter((item): item is NormalizedModel => Boolean(item));
-      });
-      
-      const results = await Promise.all(requests);
-      normalized = results.flat();
-      
-      cache = {
-        key: upstreamUrl,
-        expiresAt: Date.now() + CACHE_TTL_MS,
-        models: normalized
-      };
     } else {
-      await waitForRateLimit(5000);
-      const upstreamRes = await fetch(upstreamUrl, {
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${apiKey}`
-        }
-      });
-
-      if (!upstreamRes.ok) {
-        const detail = await upstreamRes.text();
-        return apiError(res, `upstream error: ${detail.slice(0, 250)}`, upstreamRes.status);
-      }
-
-      const providerPayload = await upstreamRes.json();
-      providerTotal = extractProviderTotal(providerPayload);
-      normalized = parseProviderModels(providerPayload)
-        .map(createNormalizedModel)
-        .filter((item): item is NormalizedModel => Boolean(item));
+      const result = await fetchAllModels(apiKey, upstreamUrl, hasCountry);
+      normalized = result.models;
+      providerTotal = result.total;
 
       cache = {
         key: upstreamUrl,
@@ -162,6 +171,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const limit = Math.min(Math.max(Number(req.query.limit) || 200, 1), 1000);
     const offset = Math.max(Number(req.query.offset) || 0, 0);
     const total = providerTotal ?? offset + models.length + (models.length === limit ? 1 : 0);
+    
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
     res.status(200).json({
       models,

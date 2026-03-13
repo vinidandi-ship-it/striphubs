@@ -17,85 +17,135 @@ const CHATURBATE_BASE = process.env.CHATURBATE_API_URL || 'https://it.chaturbate
 const CHATURBATE_AFFILIATE = process.env.CHATURBATE_AFFILIATE || 'fxmnz';
 const CHATURBATE_ENDPOINT = `${CHATURBATE_BASE}?wm=${CHATURBATE_AFFILIATE}&client_ip=request_ip&format=json`;
 
+// Limits for dynamic fetching
+const MAX_MODELS_PER_REQUEST = 500;
+const MAX_TOTAL_MODELS = 50000;
+
 type CacheEntry = { key: string; expiresAt: number; models: NormalizedModel[]; provider: string };
 
 const caches: Map<string, CacheEntry> = new Map();
 
-const fetchStripchatModels = async (apiKey: string, params: URLSearchParams): Promise<NormalizedModel[]> => {
+// Dynamic loop for StripChat
+const fetchStripchatModelsDynamic = async (apiKey: string, params: URLSearchParams): Promise<NormalizedModel[]> => {
   const cacheKey = `stripchat:${params.toString()}`;
   const cached = caches.get(cacheKey);
   if (cached && cached.expiresAt > Date.now()) {
     return cached.models;
   }
 
-  await waitForRateLimit(5000);
-  
-  const url = new URL(STRIPCHAT_ENDPOINT);
-  params.forEach((value, key) => url.searchParams.set(key, value));
-  url.searchParams.set('userId', PROVIDERS.stripchat.buildClickUrl('').split('userId=')[1]?.split('&')[0] || '');
-  
-  const response = await fetch(url.toString(), {
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${apiKey}`
+  const allModels: NormalizedModel[] = [];
+  let offset = 0;
+  let hasMore = true;
+  let pageCount = 0;
+  const maxPages = Math.ceil(MAX_TOTAL_MODELS / MAX_MODELS_PER_REQUEST);
+  const limit = MAX_MODELS_PER_REQUEST;
+
+  while (hasMore && offset < MAX_TOTAL_MODELS && pageCount < maxPages) {
+    await waitForRateLimit(2000);
+    
+    const url = new URL(STRIPCHAT_ENDPOINT);
+    params.forEach((value, key) => url.searchParams.set(key, value));
+    url.searchParams.set('userId', PROVIDERS.stripchat.buildClickUrl('').split('userId=')[1]?.split('&')[0] || '');
+    url.searchParams.set('offset', String(offset));
+    url.searchParams.set('limit', String(limit));
+    
+    const response = await fetch(url.toString(), {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${apiKey}`
+      }
+    });
+    
+    if (!response.ok) {
+      console.error(`StripChat API error at offset ${offset}: ${response.status}`);
+      break;
     }
-  });
+    
+    const data = await response.json();
+    const models = parseProviderModels(data)
+      .map(m => createNormalizedModel(m, 'stripchat'))
+      .filter((item): item is NormalizedModel => Boolean(item));
+    
+    if (models.length === 0 || models.length < limit) {
+      hasMore = false;
+    }
+    
+    allModels.push(...models);
+    offset += limit;
+    pageCount++;
+    
+    console.log(`StripChat: Fetched ${models.length} models at offset ${offset - limit}, total so far: ${allModels.length}`);
+  }
   
-  if (!response.ok) return [];
-  
-  const data = await response.json();
-  const models = parseProviderModels(data)
-    .map(m => createNormalizedModel(m, 'stripchat'))
-    .filter((item): item is NormalizedModel => Boolean(item));
-  
-  caches.set(cacheKey, { key: cacheKey, expiresAt: Date.now() + CACHE_TTL_MS, models, provider: 'stripchat' });
-  
-  return models;
+  caches.set(cacheKey, { key: cacheKey, expiresAt: Date.now() + CACHE_TTL_MS, models: allModels, provider: 'stripchat' });
+  return allModels;
 };
 
-const fetchChaturbateModels = async (params: URLSearchParams): Promise<NormalizedModel[]> => {
+// Dynamic loop for Chaturbate
+const fetchChaturbateModelsDynamic = async (params: URLSearchParams): Promise<NormalizedModel[]> => {
   const cacheKey = `chaturbate:${params.toString()}`;
   const cached = caches.get(cacheKey);
   if (cached && cached.expiresAt > Date.now()) {
     return cached.models;
   }
 
-  await waitForRateLimit(3000);
-  
-  const url = new URL(CHATURBATE_ENDPOINT);
-  
-  const tag = params.get('tag') || params.get('category');
-  if (tag) {
-    url.searchParams.set('tag', tag);
+  const allModels: NormalizedModel[] = [];
+  let offset = 0;
+  let hasMore = true;
+  let pageCount = 0;
+  const maxPages = Math.ceil(MAX_TOTAL_MODELS / MAX_MODELS_PER_REQUEST);
+  const limit = MAX_MODELS_PER_REQUEST;
+
+  while (hasMore && offset < MAX_TOTAL_MODELS && pageCount < maxPages) {
+    await waitForRateLimit(2000);
+    
+    const url = new URL(CHATURBATE_ENDPOINT);
+    
+    const tag = params.get('tag') || params.get('category');
+    if (tag) {
+      url.searchParams.set('tag', tag);
+    }
+    
+    url.searchParams.set('limit', String(limit));
+    url.searchParams.set('offset', String(offset));
+    
+    const response = await fetch(url.toString(), {
+      headers: {
+        Accept: 'application/json'
+      }
+    });
+    
+    if (!response.ok) {
+      console.error(`Chaturbate API error at offset ${offset}: ${response.status}`);
+      break;
+    }
+    
+    const data = await response.json();
+    const models = parseProviderModels(data.results || data)
+      .map((m: Record<string, unknown>) => createNormalizedModel({
+        ...m,
+        username: m.username || m.display_name,
+        thumbnail: m.image_url || m.thumbnail,
+        viewers: m.num_users || m.viewers,
+        tags: m.tags || [],
+        country: m.location || m.country,
+        isLive: true
+      }, 'chaturbate'))
+      .filter((item): item is NormalizedModel => Boolean(item));
+    
+    if (models.length === 0 || models.length < limit) {
+      hasMore = false;
+    }
+    
+    allModels.push(...models);
+    offset += limit;
+    pageCount++;
+    
+    console.log(`Chaturbate: Fetched ${models.length} models at offset ${offset - limit}, total so far: ${allModels.length}`);
   }
   
-  const limit = params.get('limit') || '500';
-  url.searchParams.set('limit', limit);
-  
-  const response = await fetch(url.toString(), {
-    headers: {
-      Accept: 'application/json'
-    }
-  });
-  
-  if (!response.ok) return [];
-  
-  const data = await response.json();
-  const models = parseProviderModels(data.results || data)
-    .map((m: Record<string, unknown>) => createNormalizedModel({
-      ...m,
-      username: m.username || m.display_name,
-      thumbnail: m.image_url || m.thumbnail,
-      viewers: m.num_users || m.viewers,
-      tags: m.tags || [],
-      country: m.location || m.country,
-      isLive: true
-    }, 'chaturbate'))
-    .filter((item): item is NormalizedModel => Boolean(item));
-  
-  caches.set(cacheKey, { key: cacheKey, expiresAt: Date.now() + CACHE_TTL_MS, models, provider: 'chaturbate' });
-  
-  return models;
+  caches.set(cacheKey, { key: cacheKey, expiresAt: Date.now() + CACHE_TTL_MS, models: allModels, provider: 'chaturbate' });
+  return allModels;
 };
 
 const filterModels = (models: NormalizedModel[], req: VercelRequest): NormalizedModel[] => {
@@ -148,48 +198,39 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const enableChaturbate = process.env.ENABLE_CHATURBATE !== 'false';
     
     const params = new URLSearchParams();
-    const passKeys = ['limit', 'offset', 'tag', 'category', 'modelsList', 'excludeModelsList', 'strict'];
-    for (const key of passKeys) {
+    
+    // Pass through parameters to StripChat
+    ['limit', 'offset', 'tag', 'category', 'country', 'search', 'modelsList', 'strict'].forEach(key => {
       const value = req.query[key];
-      if (value) params.set(key, String(value));
-    }
-    
-    if (!params.has('limit')) params.set('limit', '500');
-    if (!params.has('fields')) params.set('fields', 'tags');
-
-    const allModels: NormalizedModel[] = [];
-    let stripchatModels: NormalizedModel[] = [];
-    let chaturbateModels: NormalizedModel[] = [];
-    
-    if (apiKey) {
-      stripchatModels = await fetchStripchatModels(apiKey, params);
-      allModels.push(...stripchatModels);
-    }
-    
-    if (enableChaturbate) {
-      try {
-        chaturbateModels = await fetchChaturbateModels(params);
-
-        const hasPrecisionQuery = Boolean(req.query.search || req.query.modelsList);
-        const configuredShare = Number(process.env.CHATURBATE_MAX_SHARE ?? DEFAULT_CHATURBATE_MAX_SHARE);
-        const maxShare = Number.isFinite(configuredShare)
-          ? Math.min(Math.max(configuredShare, 0), 0.5)
-          : DEFAULT_CHATURBATE_MAX_SHARE;
-
-        if (hasPrecisionQuery || stripchatModels.length === 0 || maxShare >= 0.5) {
-          allModels.push(...chaturbateModels);
-        } else {
-          const maxChaturbate = Math.max(1, Math.floor((stripchatModels.length * maxShare) / (1 - maxShare)));
-          allModels.push(...chaturbateModels.slice(0, maxChaturbate));
-        }
-      } catch (e) {
-        console.error('Chaturbate fetch error:', e);
+      if (Array.isArray(value)) {
+        value.forEach(v => params.append(key, String(v)));
+      } else if (value !== undefined && value !== null) {
+        params.set(key, String(value));
       }
+    });
+
+    const promises: Promise<NormalizedModel[]>[] = [];
+    
+    // Fetch StripChat models dynamically
+    if (apiKey) {
+      promises.push(fetchStripchatModelsDynamic(apiKey, params));
+    }
+    
+    // Fetch Chaturbate models dynamically
+    if (enableChaturbate) {
+      promises.push(fetchChaturbateModelsDynamic(params));
     }
 
-    const liveOnly = req.query.liveOnly !== '0' && req.query.liveOnly !== 'false';
-    const filtered = liveOnly ? allModels.filter((model) => model.isLive) : allModels;
-    const models = filterModels(filtered, req);
+    const results = await Promise.allSettled(promises);
+    const allModels: NormalizedModel[] = [];
+
+    results.forEach((result) => {
+      if (result.status === 'fulfilled') {
+        allModels.push(...result.value);
+      }
+    });
+
+    const filtered = filterModels(allModels, req);
     
     const limit = Math.min(Math.max(Number(req.query.limit) || 200, 1), 1000);
     const offset = Math.max(Number(req.query.offset) || 0, 0);
@@ -197,14 +238,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
     res.status(200).json({
-      models,
+      models: filtered,
       total,
       offset,
-      hasMore: offset + models.length < total,
-      providers: {
-        stripchat: allModels.filter(m => m.provider === 'stripchat').length,
-        chaturbate: allModels.filter(m => m.provider === 'chaturbate').length
-      }
+      hasMore: offset + filtered.length < total
     });
   } catch (error) {
     return apiError(res, error instanceof Error ? error.message : 'upstream error', 500);
