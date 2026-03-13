@@ -2,6 +2,15 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import VideoAdSlot, { VideoBannerSlot } from '../components/VideoAdSlot';
+import NativeAdSlot from '../components/NativeAdSlot';
+import { 
+  Banner728x90,
+  Banner300x250,
+  RecommendationWidget,
+  MultiformatAd,
+  MultiformatV2,
+  InstantMessage
+} from '../components/BannerAds';
 import { useI18n } from '../i18n';
 import { useSEO } from '../lib/seo';
 import { buildLocalizedPath } from '../i18n/routing';
@@ -153,10 +162,26 @@ export default function VideoPage() {
             💄 Watch Live Cams
           </Link>
         </div>
+      </div>
 
+      {/* Banner section */}
+      <div className="space-y-4">
         <VideoBannerSlot />
         
+        <MultiformatAd />
+        
         <VideoAdSlot />
+        
+        <Banner728x90 className="hidden md:block mx-auto" />
+        <Banner300x250 className="md:hidden mx-auto" />
+        
+        <NativeAdSlot cardIndex={1} />
+        
+        <RecommendationWidget />
+        
+        <MultiformatV2 />
+        
+        <InstantMessage />
         
         <div className="flex justify-center">
           <VideoBannerSlot />
