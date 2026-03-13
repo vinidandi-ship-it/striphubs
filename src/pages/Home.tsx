@@ -388,6 +388,7 @@ export default function Home() {
               models={categoryModels[category.slug] || []}
               loading={loading}
               listName={`${category.slug} home preview`}
+              showAds={false}
             />
           </section>
         ))}
