@@ -54,10 +54,8 @@ const saveAdState = (state: AdState): void => {
 export const shouldShowNativeAd = (cardIndex: number): boolean => {
   if (!DISPLAY_AD_CONFIG.enabled || !DISPLAY_AD_CONFIG.nativeAdsEnabled) return false;
   
-  const state = getAdState();
-  if (state.userTier === 'premium') return false;
-  
-  return (cardIndex + 1) % DISPLAY_AD_CONFIG.nativeAdInterval === 0;
+  // Simple logic: show on every 6th card (6, 12, 18, 24, 30)
+  return cardIndex % 6 === 0 && cardIndex > 0;
 };
 
 export const shouldShowPremiumAd = (): boolean => {
