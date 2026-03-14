@@ -354,11 +354,11 @@ export default function Home() {
 
       {/* STRIPCHAT MODELS - REAL API DATA */}
       <section>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-            <span className="text-pink-500">●</span> Stripchat Models
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-lg font-bold text-white flex items-center gap-2">
+            <span className="text-pink-500">●</span> Stripchat
           </h2>
-          <Link to={buildLocalizedPath('/live', language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
+          <Link to={buildLocalizedPath('/live', language)} className="text-xs font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
         </div>
         <ModelGrid models={providerData.models.stripchat} loading={providerData.loading.stripchat} listName="Stripchat Models" />
       </section>
@@ -368,11 +368,11 @@ export default function Home() {
 
       {/* CHATURBATE MODELS - REAL API DATA */}
       <section>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-            <span className="text-green-500">●</span> Chaturbate Models
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-lg font-bold text-white flex items-center gap-2">
+            <span className="text-green-500">●</span> Chaturbate
           </h2>
-          <Link to={buildLocalizedPath('/live', language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
+          <Link to={buildLocalizedPath('/live', language)} className="text-xs font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
         </div>
         <ModelGrid models={providerData.models.chaturbate} loading={providerData.loading.chaturbate} listName="Chaturbate Models" />
       </section>

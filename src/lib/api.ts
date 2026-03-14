@@ -29,22 +29,25 @@ const requestChaturbateModels = async (endpoint: string, params: {
   limit?: number;
   offset?: number;
 }): Promise<ModelsResponse> => {
-  const query = new URLSearchParams();
-  if (params?.limit) query.set('limit', String(params.limit));
-  if (params?.offset) query.set('offset', String(params.offset));
+  try {
+    const query = new URLSearchParams();
+    if (params?.limit) query.set('limit', String(params.limit));
+    if (params?.offset) query.set('offset', String(params.offset));
+    
+    const suffix = query.toString() ? `&${query}` : '';
+    const url = `${endpoint}${suffix}`;
+    
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      console.warn(`Chaturbate API error ${response.status}, returning empty`);
+      return { models: [], total: 0, hasMore: false };
+    }
+    
+    const data = await response.json();
   
-  const suffix = query.toString() ? `&${query}` : '';
-  const url = `${endpoint}${suffix}`;
-  
-  const response = await fetch(url);
-  
-  if (!response.ok) {
-    throw new Error(`Chaturbate API error ${response.status}`);
-  }
-  
-  const data = await response.json();
-  
-  let rooms: any[] = data.rooms || [];
+  // Chaturbate API returns { results: [...], count: n }
+  let rooms: any[] = data.results || [];
   
   // Filter by category/gender if provided
   if (params?.category) {
@@ -85,27 +88,31 @@ const requestChaturbateModels = async (endpoint: string, params: {
   // Filter by search if provided
   if (params?.search) {
     rooms = rooms.filter((room: any) => 
-      room.room?.toLowerCase().includes(params.search!.toLowerCase())
+      room.username?.toLowerCase().includes(params.search!.toLowerCase())
     );
   }
   
   const models: Model[] = rooms.slice(0, params?.limit || 50).map((room: any) => ({
-    username: room.room || room.username,
-    thumbnail: room.image_url || room.preview_url || '',
-    viewers: room.viewers || 0,
+    username: room.username || room.slug || '',
+    thumbnail: room.image_url || room.image_url_360x270 || '',
+    viewers: room.num_users || 0,
     tags: room.tags || [],
     country: room.country || '',
     category: room.gender || 'female',
     isLive: true,
     provider: 'chaturbate' as const,
-    languages: room.language ? [room.language] : []
+    languages: room.spoken_languages ? [room.spoken_languages.split(',')[0].trim()] : []
   }));
   
   return {
     models,
-    total: models.length,
-    hasMore: rooms.length > (params?.limit || 50)
+    total: data.count || models.length,
+    hasMore: rooms.length >= (params?.limit || 50)
   };
+  } catch (error) {
+    console.warn('Chaturbate API failed:', error);
+    return { models: [], total: 0, hasMore: false };
+  }
 };
 
 const request = async <T>(path: string): Promise<T> => {

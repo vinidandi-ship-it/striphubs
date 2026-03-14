@@ -113,7 +113,7 @@ export default function CombinationPage() {
       
       {/* STRIPCHAT MODELS - REAL API */}
       <section>
-        <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+        <h3 className="text-base font-bold text-white flex items-center gap-2 mb-3">
           <span className="text-pink-500">●</span> Stripchat
         </h3>
         <ModelGrid models={models.stripchat} loading={loading.stripchat} listName={`${categoryName(category)} ${tag} Stripchat Models`} />
@@ -124,7 +124,7 @@ export default function CombinationPage() {
       
       {/* CHATURBATE MODELS - REAL API */}
       <section>
-        <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+        <h3 className="text-base font-bold text-white flex items-center gap-2 mb-3">
           <span className="text-green-500">●</span> Chaturbate
         </h3>
         <ModelGrid models={models.chaturbate} loading={loading.chaturbate} listName={`${categoryName(category)} ${tag} Chaturbate Models`} />
