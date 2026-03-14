@@ -107,7 +107,6 @@ const requestChaturbateModels = async (endpoint: string, params: {
     hasMore: rooms.length > (params?.limit || 50)
   };
 };
-};
 
 const request = async <T>(path: string): Promise<T> => {
   const isDev = import.meta.env.DEV;
