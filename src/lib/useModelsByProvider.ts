@@ -79,8 +79,10 @@ export function useModelsByProvider({
       });
 
       const newModels = (data.models || []).map(m => {
-        const model = m as Model;
-        return { ...model, provider: provider as ProviderId };
+        const model = { ...m } as Model;
+        // Force provider to be set correctly based on which API was called
+        (model as any).provider = provider;
+        return model;
       });
       
       if (isLoadMore) {

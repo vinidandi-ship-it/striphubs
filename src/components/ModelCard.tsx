@@ -76,6 +76,12 @@ const getViewersTrend = (viewers: number, username: string): 'rising' | 'stable'
 export default function ModelCard({ model }: { model: Model }) {
   const countryFlag = getCountryFlag(model.country);
   const clickProvider = model.provider || 'stripchat';
+  
+  // DEBUG: log if provider is wrong
+  if (typeof window !== 'undefined' && Math.random() < 0.01) {
+    console.log('ModelCard:', model.username, 'provider:', clickProvider, 'model.provider:', model.provider);
+  }
+  
   const affiliateConfig = AFFILIATE_PROVIDERS[clickProvider];
   const clickUrl = model.clickUrl || affiliateConfig.affiliateUrl(model.username);
   const modelLinkProvider = clickProvider;
