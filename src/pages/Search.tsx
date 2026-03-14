@@ -7,6 +7,7 @@ import SearchBar from '../components/SearchBar';
 import { AllCrackRevenueBanners, Banner728x90, Banner300x250, Banner728x90Second, NativeAd, MultiformatAd, MultiformatV2, InstantMessage, RecommendationWidget } from '../components/BannerAds';
 import { api } from '../lib/api';
 import { generateDescription, generateTitle, useAdvancedSEO } from '../lib/seo';
+import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 import { useI18n } from '../i18n';
 
 export default function Search() {
@@ -70,6 +71,13 @@ export default function Search() {
         setResults(prev => ({ ...prev, loading: false }));
       });
   };
+
+  useInfiniteLoad({
+    targetRef: sentinelRef,
+    enabled: results.hasMore && !results.loading,
+    loading: results.loading,
+    onLoadMore: loadMore
+  });
 
   return (
     <div className="space-y-6">

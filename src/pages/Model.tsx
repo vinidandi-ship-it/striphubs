@@ -8,6 +8,7 @@ import { useI18n } from '../i18n';
 import { api } from '../lib/api';
 import { Model as LiveModel } from '../lib/models';
 import { AFFILIATE_PROVIDERS } from '../lib/affiliateProviders';
+import { trackAffiliateClick } from '../lib/affiliateTracking';
 import { generateModelMeta } from '../lib/metaTags';
 import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
 

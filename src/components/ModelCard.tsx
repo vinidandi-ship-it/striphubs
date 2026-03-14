@@ -114,6 +114,14 @@ export default function ModelCard({ model }: { model: Model }) {
             {model.isLive ? <Icon name="live" size={10} /> : null}
             {model.isLive ? 'LIVE' : 'OFFLINE'}
           </span>
+          <span
+            className={`absolute left-2 top-8 sm:top-9 flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold ${
+              clickProvider === 'chaturbate' ? 'bg-green-600 text-white' : 'bg-pink-600 text-white'
+            }`}
+            title={clickProvider === 'chaturbate' ? 'Chaturbate' : 'Stripchat'}
+          >
+            {clickProvider === 'chaturbate' ? 'CB' : 'SC'}
+          </span>
           {countryFlag && (
             <span
               className="absolute right-2 top-2 flex items-center justify-center rounded-full bg-black/60 px-1.5 py-0.5 text-sm backdrop-blur-sm sm:right-3 sm:top-3 sm:text-base"
