@@ -77,10 +77,7 @@ export default function ModelCard({ model }: { model: Model }) {
   const countryFlag = getCountryFlag(model.country);
   const clickProvider = model.provider || 'stripchat';
   
-  // DEBUG: log if provider is wrong
-  if (typeof window !== 'undefined' && Math.random() < 0.01) {
-    console.log('ModelCard:', model.username, 'provider:', clickProvider, 'model.provider:', model.provider);
-  }
+  console.log('[ModelCard] Rendering:', model.username, 'provider:', model.provider, 'clickProvider:', clickProvider);
   
   const affiliateConfig = AFFILIATE_PROVIDERS[clickProvider];
   const clickUrl = model.clickUrl || affiliateConfig.affiliateUrl(model.username);

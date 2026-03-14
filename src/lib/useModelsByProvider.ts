@@ -82,6 +82,7 @@ export function useModelsByProvider({
         const model = { ...m } as Model;
         // Force provider to be set correctly based on which API was called
         (model as any).provider = provider;
+        console.log(`[useModelsByProvider] Setting provider=${provider} for model:`, model.username);
         return model;
       });
       
