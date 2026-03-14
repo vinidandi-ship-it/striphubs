@@ -118,7 +118,7 @@ export default function ModelCard({ model }: { model: Model }) {
           <span
             className={`absolute left-2 top-8 sm:top-9 flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold ${
               provider === 'chaturbate' ? 'bg-green-600 text-white' : 'bg-pink-600 text-white'
-            }
+            }`}
             title={provider === 'chaturbate' ? 'Chaturbate' : 'Stripchat'}
           >
             {provider === 'chaturbate' ? 'CB' : 'SC'}
