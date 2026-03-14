@@ -6,9 +6,7 @@ import ModelGrid from '../components/ModelGrid';
 import SearchBar from '../components/SearchBar';
 import { AllCrackRevenueBanners, Banner728x90, Banner300x250, Banner728x90Second, NativeAd, MultiformatAd, MultiformatV2, InstantMessage, RecommendationWidget } from '../components/BannerAds';
 import { api } from '../lib/api';
-import { Model } from '../lib/models';
 import { generateDescription, generateTitle, useAdvancedSEO } from '../lib/seo';
-import { useInfiniteLoad } from '../lib/useInfiniteLoad';
 import { useI18n } from '../i18n';
 
 export default function Search() {
@@ -16,74 +14,93 @@ export default function Search() {
   const [params] = useSearchParams();
   const query = params.get('q') || '';
   const { t } = useI18n();
-
-  const [models, setModels] = useState<Model[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [error, setError] = useState('');
-  const [offset, setOffset] = useState(0);
-  const [hasMore, setHasMore] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
+
+  const [results, setResults] = useState<{ stripchat: any[]; chaturbate: any[]; loading: boolean; error: string; hasMore: boolean }>({
+    stripchat: [],
+    chaturbate: [],
+    loading: true,
+    error: '',
+    hasMore: false
+  });
 
   useAdvancedSEO(generateTitle('search'), generateDescription('search'), '/search', { noindex: true });
 
   useEffect(() => {
-    setLoading(true);
-    setOffset(0);
-    setHasMore(false);
-    setError('');
-    void Promise.allSettled([
-      api.getModels({ search: query, limit: PAGE_SIZE, offset: 0, liveOnly: false }),
-      query.trim() ? api.getModel(query.trim()) : Promise.reject(new Error('empty query'))
-    ]).then(([searchResult, exactResult]) => {
-      const searchModels = searchResult.status === 'fulfilled' ? searchResult.value.models : [];
-      const exactModel = exactResult.status === 'fulfilled' ? exactResult.value : null;
-
-      const merged = exactModel
-        ? [exactModel, ...searchModels.filter((item) => item.username.toLowerCase() !== exactModel.username.toLowerCase())]
-        : searchModels;
-
-      setModels(merged);
-      setOffset(searchModels.length);
-      setHasMore(searchResult.status === 'fulfilled' ? Boolean(searchResult.value.hasMore) : false);
-    })
-      .catch((err) => setError(err instanceof Error ? err.message : 'Search failed'))
-      .finally(() => setLoading(false));
+    setResults(prev => ({ ...prev, loading: true, error: '' }));
+    
+    Promise.all([
+      api.getModels({ search: query, limit: PAGE_SIZE, offset: 0, provider: 'stripchat' }),
+      api.getModels({ search: query, limit: PAGE_SIZE, offset: 0, provider: 'chaturbate' })
+    ])
+      .then(([stripchatData, chaturbateData]) => {
+        setResults({
+          stripchat: (stripchatData.models || []).map(m => ({ ...m, provider: 'stripchat' })),
+          chaturbate: (chaturbateData.models || []).map(m => ({ ...m, provider: 'chaturbate' })),
+          loading: false,
+          error: '',
+          hasMore: (stripchatData.hasMore || chaturbateData.hasMore) || false
+        });
+      })
+      .catch((err) => {
+        setResults(prev => ({ ...prev, loading: false, error: err.message }));
+      });
   }, [query]);
 
-  const loadMore = () => {
-    if (loadingMore || !hasMore) return;
-    setLoadingMore(true);
-    void api.getModels({ search: query, limit: PAGE_SIZE, offset, liveOnly: false })
-      .then((data) => {
-        setModels((current) => [...current, ...data.models]);
-        setOffset((current) => current + data.models.length);
-        setHasMore(Boolean(data.hasMore));
-      })
-      .catch((err) => setError(err instanceof Error ? err.message : 'Search failed'))
-      .finally(() => setLoadingMore(false));
-  };
+  const allModels = [...results.stripchat, ...results.chaturbate];
 
-  useInfiniteLoad({
-    targetRef: sentinelRef,
-    enabled: hasMore && !loading,
-    loading: loadingMore,
-    onLoadMore: loadMore
-  });
+  const loadMore = () => {
+    if (results.loading) return;
+    setResults(prev => ({ ...prev, loading: true }));
+    
+    Promise.all([
+      api.getModels({ search: query, limit: PAGE_SIZE, offset: allModels.length, provider: 'stripchat' }),
+      api.getModels({ search: query, limit: PAGE_SIZE, offset: allModels.length, provider: 'chaturbate' })
+    ])
+      .then(([stripchatData, chaturbateData]) => {
+        setResults(prev => ({
+          ...prev,
+          stripchat: [...prev.stripchat, ...(stripchatData.models || []).map(m => ({ ...m, provider: 'stripchat' }))],
+          chaturbate: [...prev.chaturbate, ...(chaturbateData.models || []).map(m => ({ ...m, provider: 'chaturbate' }))],
+          loading: false,
+          hasMore: (stripchatData.hasMore || chaturbateData.hasMore) || false
+        }));
+      })
+      .catch(() => {
+        setResults(prev => ({ ...prev, loading: false }));
+      });
+  };
 
   return (
     <div className="space-y-6">
       <Breadcrumbs items={[{ label: t('common.home'), to: '/' }, { label: t('search.searchTitle') }]} />
       <h1 className="text-3xl font-bold text-white">{t('search.searchTitle')}</h1>
       <SearchBar initialValue={query} />
-      <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')} {t('search.resultsFor')} "{query || 'all'}"{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p>
-      {error ? <p className="text-sm text-red-400">{error}</p> : null}
+      <p className="text-sm text-zinc-400">{allModels.length} {t('common.modelsLoaded')} {t('search.resultsFor')} "{query || 'all'}"{results.hasMore ? ` ${t('common.moreAvailable')}` : ''}</p>
+      {results.error ? <p className="text-sm text-red-400">{results.error}</p> : null}
       
-      {/* Banner section - interleaved */}
+      {/* Banner section */}
       <AllCrackRevenueBanners className="my-4" />
       <MultiformatAd className="my-4" />
       
-      <ModelGrid models={models} loading={loading} listName={t('search.title')} />
+      {/* STRIPCHAT RESULTS */}
+      <section>
+        <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+          <span className="text-pink-500">●</span> Stripchat
+        </h3>
+        <ModelGrid models={results.stripchat} loading={results.loading} listName="Stripchat Search Results" />
+      </section>
+
+      {/* Banner between providers */}
+      <AllCrackRevenueBanners className="my-4" />
+      
+      {/* CHATURBATE RESULTS */}
+      <section>
+        <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+          <span className="text-green-500">●</span> Chaturbate
+        </h3>
+        <ModelGrid models={results.chaturbate} loading={results.loading} listName="Chaturbate Search Results" />
+      </section>
       
       <Banner728x90 className="hidden md:block mx-auto my-2" />
       <Banner300x250 className="md:hidden mx-auto my-2" />
@@ -93,8 +110,8 @@ export default function Search() {
       <RecommendationWidget className="my-4" />
       <InstantMessage className="my-4" />
       
-      {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
-      <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
+      {results.hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
+      <InfiniteLoader loading={results.loading} hasMore={results.hasMore} />
     </div>
   );
 }

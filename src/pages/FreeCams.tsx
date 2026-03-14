@@ -8,39 +8,32 @@ import { useI18n } from '../i18n';
 import { countries } from '../lib/countries';
 import { categoryName, categories as categoryList } from '../lib/categories';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
-import { useModels } from '../lib/useModels';
+import { useModelsByProvider } from '../lib/useModelsByProvider';
 import { PAGE_SIZES } from '../lib/constants';
 
 export default function FreeCams() {
   const { t } = useI18n();
-  const {
-    models,
-    total,
-    loading,
-    loadingMore,
-    error,
-    hasMore,
-    includeOffline,
-    toggleIncludeOffline,
-    sentinelRef
-  } = useModels({
+  const providerData = useModelsByProvider({
     pageSize: PAGE_SIZES.LIVE,
     initialIncludeOffline: false
   });
 
-  // Ottimizzazione SEO specifica per "Free Cams"
+  const { models, total, loading, loadingMore, error, hasMore, includeOffline, toggleIncludeOffline, sentinelRef } = providerData;
+  
+  const allModels = [...models.stripchat, ...models.chaturbate];
+
   useSEO('Free Cams - Camere Live Gratis', 'Guarda free cams gratis su StripHubs. Accesso immediato a centinaia di modelle live senza registrazione.', '/free-cams');
 
   const sidebarCategories = categoryList.map((slug) => ({
     slug,
     name: categoryName(slug),
-    count: models.filter((model) => model.category === slug).length
+    count: allModels.filter((model) => model.category === slug).length
   }));
 
   const sidebarCountries = countries.map((country) => ({
     slug: country.slug,
     name: country.name,
-    count: models.filter((model) => model.country === country.code).length
+    count: allModels.filter((model) => model.country === country.code).length
   }));
 
   return (
@@ -61,14 +54,31 @@ export default function FreeCams() {
             {includeOffline ? t('common.showOnlyLive') : t('common.includeOffline')}
           </button>
         </div>
-        {!loading ? <p className="text-sm text-zinc-400">{total} {t('header.activeCams')}{hasMore ? ` - ${t('common.moreAvailable')}` : ''}</p> : null}
-        {error ? <p className="text-sm text-red-400">{error}</p> : null}
+        {!loading.stripchat && !loading.chaturbate ? <p className="text-sm text-zinc-400">{total.stripchat + total.chaturbate} {t('header.activeCams')}{(hasMore.stripchat || hasMore.chaturbate) ? ` - ${t('common.moreAvailable')}` : ''}</p> : null}
+        {error.stripchat || error.chaturbate ? <p className="text-sm text-red-400">{error.stripchat || error.chaturbate}</p> : null}
         
         {/* Banner section - interleaved */}
         <AllCrackRevenueBanners className="my-4" />
         <MultiformatAd className="my-4" />
         
-        <ModelGrid models={models} loading={loading} listName="Free Cams" />
+        {/* STRIPCHAT MODELS - REAL API */}
+        <section>
+          <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <span className="text-pink-500">●</span> Stripchat
+          </h3>
+          <ModelGrid models={models.stripchat} loading={loading.stripchat} listName="Stripchat Free Cams" />
+        </section>
+
+        {/* Banner between providers */}
+        <AllCrackRevenueBanners className="my-4" />
+        
+        {/* CHATURBATE MODELS - REAL API */}
+        <section>
+          <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <span className="text-green-500">●</span> Chaturbate
+          </h3>
+          <ModelGrid models={models.chaturbate} loading={loading.chaturbate} listName="Chaturbate Free Cams" />
+        </section>
         
         <Banner728x90 className="hidden md:block mx-auto my-2" />
         <Banner300x250 className="md:hidden mx-auto my-2" />
@@ -78,8 +88,8 @@ export default function FreeCams() {
         <RecommendationWidget className="my-4" />
         <InstantMessage className="my-4" />
         
-        {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
-        <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
+        {(hasMore.stripchat || hasMore.chaturbate) ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
+        <InfiniteLoader loading={loadingMore.stripchat || loadingMore.chaturbate} hasMore={hasMore.stripchat || hasMore.chaturbate} />
       </div>
     </div>
   );
