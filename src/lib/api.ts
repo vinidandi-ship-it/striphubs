@@ -12,6 +12,59 @@ type CategoryResponse = {
   categories: { slug: string; name: string; count: number }[];
 };
 
+type ChaturbateRoom = {
+  room: string;
+  viewers: number;
+  gender: string;
+  tags: string[];
+  language: string;
+  image_url: string;
+};
+
+const requestChaturbateModels = async (endpoint: string, params: {
+  category?: string;
+  tag?: string;
+  country?: string;
+  search?: string;
+  limit?: number;
+  offset?: number;
+}): Promise<ModelsResponse> => {
+  const query = new URLSearchParams();
+  if (params?.limit) query.set('limit', String(params.limit));
+  if (params?.offset) query.set('offset', String(params.offset));
+  
+  const suffix = query.toString() ? `&${query}` : '';
+  const url = `${endpoint}${suffix}`;
+  
+  const response = await fetch(url);
+  
+  if (!response.ok) {
+    throw new Error(`Chaturbate API error ${response.status}`);
+  }
+  
+  const data = await response.json();
+  
+  const rooms: ChaturbateRoom[] = data.rooms || [];
+  
+  const models: Model[] = rooms.map((room: any) => ({
+    username: room.room || room.username,
+    thumbnail: room.image_url || room.preview_url || '',
+    viewers: room.viewers || 0,
+    tags: room.tags || [],
+    country: room.country || '',
+    category: room.gender || 'female',
+    isLive: true,
+    provider: 'chaturbate' as const,
+    languages: room.language ? [room.language] : []
+  }));
+  
+  return {
+    models,
+    total: models.length,
+    hasMore: models.length >= (params.limit || 50)
+  };
+};
+
 const request = async <T>(path: string): Promise<T> => {
   const isDev = import.meta.env.DEV;
 
@@ -80,13 +133,18 @@ export const api = {
     if (params?.modelsList) query.set('modelsList', params.modelsList);
     if (typeof params?.strict === 'number') query.set('strict', String(params.strict));
     if (typeof params?.liveOnly === 'boolean') query.set('liveOnly', params.liveOnly ? '1' : '0');
-    if (params?.provider) query.set('provider', params.provider);
 
     const suffix = query.toString() ? `?${query}` : '';
 
-    const preferredEndpoint = import.meta.env.VITE_MODELS_ENDPOINT || '/api/models-multi';
-
-    return request<ModelsResponse>(`${preferredEndpoint}${suffix}`).catch(() => request<ModelsResponse>(`/api/models${suffix}`));
+    let endpoint: string;
+    
+    if (params?.provider === 'chaturbate') {
+      endpoint = import.meta.env.CHATURBATE_API_URL || 'https://it.chaturbate.com/api/public/affiliates/onlinerooms/';
+      return requestChaturbateModels(endpoint, params);
+    } else {
+      endpoint = import.meta.env.VITE_MODELS_ENDPOINT || import.meta.env.STRIPCHAT_API_ENDPOINT || '/api/models-multi';
+      return request<ModelsResponse>(`${endpoint}${suffix}`).catch(() => request<ModelsResponse>(`/api/models${suffix}`));
+    }
   },
 
   getModel: (name: string) => request<Model>(`/api/model?name=${encodeURIComponent(name)}`),

@@ -17,7 +17,7 @@ export const AFFILIATE_PROVIDERS: Record<ProviderId, ProviderConfig> = {
     priority: 1,
     affiliateUrl: (username: string) =>
       `https://go.mavrtracktor.com?userId=d28a8a923e19b6fd3ed0c160238cdfed71b13f759191c9457b28797b81780881&model=${encodeURIComponent(username)}`,
-    apiEndpoint: 'https://go.mavrtracktor.com/api/models'
+    apiEndpoint: import.meta.env.VITE_MODELS_ENDPOINT || import.meta.env.STRIPCHAT_API_ENDPOINT
   },
   chaturbate: {
     id: 'chaturbate',
@@ -25,7 +25,8 @@ export const AFFILIATE_PROVIDERS: Record<ProviderId, ProviderConfig> = {
     weight: 40,
     priority: 2,
     affiliateUrl: (username: string, options?: { room?: string }) =>
-      `https://chaturbate.com/in/?tour=LQps&campaign=fxmnz&track=default&room=${encodeURIComponent(username)}`
+      `https://chaturbate.com/in/?tour=LQps&campaign=fxmnz&track=default&room=${encodeURIComponent(username)}`,
+    apiEndpoint: import.meta.env.CHATURBATE_API_URL
   }
 };
 
