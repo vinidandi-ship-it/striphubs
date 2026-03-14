@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { api } from './api';
-import type { Model } from './models';
+import type { Model, ProviderId } from './models';
 
 type UseModelsByProviderParams = {
   category?: string;
@@ -78,7 +78,10 @@ export function useModelsByProvider({
         provider
       });
 
-      const newModels = (data.models || []).map(m => ({ ...m, provider }));
+      const newModels = (data.models || []).map(m => {
+        const model = m as Model;
+        return { ...model, provider: provider as ProviderId };
+      });
       
       if (isLoadMore) {
         if (provider === 'stripchat') {
