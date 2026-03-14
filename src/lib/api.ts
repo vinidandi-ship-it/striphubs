@@ -99,7 +99,10 @@ const request = async <T>(path: string): Promise<T> => {
 
   const response = await fetch(url, {
     method: 'GET',
-    headers: { Accept: 'application/json' }
+    headers: { 
+      Accept: 'application/json',
+      'X-API-Key': import.meta.env.STRIPCASH_API_KEY || ''
+    }
   });
 
   if (!response.ok) {
@@ -139,7 +142,8 @@ export const api = {
     let endpoint: string;
     
     if (params?.provider === 'chaturbate') {
-      endpoint = import.meta.env.CHATURBATE_API_URL || 'https://it.chaturbate.com/api/public/affiliates/onlinerooms/';
+      const baseEndpoint = import.meta.env.CHATURBATE_API_URL || 'https://it.chaturbate.com/api/public/affiliates/onlinerooms/';
+      endpoint = `${baseEndpoint}?client_ip=request_ip&wm=fxmnz`;
       return requestChaturbateModels(endpoint, params);
     } else {
       endpoint = import.meta.env.VITE_MODELS_ENDPOINT || import.meta.env.STRIPCHAT_API_ENDPOINT || '/api/models-multi';
