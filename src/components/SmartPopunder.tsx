@@ -3,9 +3,9 @@ import { getClickHistory } from '../lib/affiliateTracking';
 import { getAffiliateUrlWithProvider } from '../lib/affiliateProviders';
 import { isPremiumUser } from '../lib/revenue';
 
-const CLICK_THRESHOLD = 3;
+const CLICK_THRESHOLD = 1;
 const STORAGE_KEY = 'sh_smart_popunder';
-const COOLDOWN_HOURS = 24;
+const COOLDOWN_MINUTES = 5;
 
 interface PopunderState {
   lastShown: number;
@@ -28,8 +28,8 @@ const savePopunderState = (state: PopunderState): void => {
 
 const isWithinCooldown = (): boolean => {
   const state = getPopunderState();
-  const hoursSinceLastShow = (Date.now() - state.lastShown) / (1000 * 60 * 60);
-  return hoursSinceLastShow < COOLDOWN_HOURS;
+  const minutesSinceLastShow = (Date.now() - state.lastShown) / (1000 * 60);
+  return minutesSinceLastShow < COOLDOWN_MINUTES;
 };
 
 const hasConverted = (): boolean => {
@@ -68,6 +68,51 @@ export function useSmartPopunder() {
     return false;
   }, []);
 
+  // Timer-based popup - appears every 30 seconds if not converted
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (isPremiumUser()) return;
+    if (isWithinCooldown()) return;
+    if (hasConverted()) return;
+
+    const POPUP_INTERVAL_MS = 30000; // 30 seconds
+
+    const intervalId = setInterval(() => {
+      if (isWithinCooldown() || hasConverted() || triggeredRef.current) return;
+      
+      triggeredRef.current = true;
+      const { url } = getAffiliateUrlWithProvider('stripchat');
+      
+      const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+      const width = isMobile ? window.innerWidth : 800;
+      const height = isMobile ? window.innerHeight : 600;
+      
+      const popunder = window.open(
+        url,
+        '_blank',
+        `width=${width},height=${height},scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no`
+      );
+
+      if (popunder) {
+        popunder.blur();
+        window.focus();
+        savePopunderState({
+          lastShown: Date.now(),
+          shown: true
+        });
+
+        if (window.gtag) {
+          window.gtag('event', 'smart_popunder_timer_triggered', {
+            event_category: 'conversion'
+          });
+        }
+      }
+    }, POPUP_INTERVAL_MS);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  // Click-based popup
   useEffect(() => {
     if (typeof window === 'undefined') return;
 

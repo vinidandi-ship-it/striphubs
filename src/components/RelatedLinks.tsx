@@ -318,7 +318,7 @@ export const ModelRelatedModels: React.FC<ModelRelatedModelsProps> = ({
         {models.slice(0, maxModels).map(model => (
           <Link
             key={model.username}
-            to={`/model/${model.username}`}
+            to={`/model/${model.provider || 'stripchat'}/${model.username}`}
             className="group"
           >
             <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-gray-800">

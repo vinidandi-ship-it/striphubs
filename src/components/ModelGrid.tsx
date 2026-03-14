@@ -89,7 +89,7 @@ export default function ModelGrid({ models, listName, loading = false, showAds: 
       itemListElement: models.slice(0, 20).map((model, index) => ({
         '@type': 'ListItem',
         position: index + 1,
-        url: `${SITE_URL}/model/${encodeURIComponent(model.username)}`,
+        url: `${SITE_URL}/model/${model.provider || 'stripchat'}/${encodeURIComponent(model.username)}`,
         name: model.username
       }))
     });

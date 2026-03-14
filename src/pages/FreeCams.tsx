@@ -3,6 +3,7 @@ import InfiniteLoader from '../components/InfiniteLoader';
 import ModelGrid from '../components/ModelGrid';
 import Sidebar from '../components/Sidebar';
 import Icon from '../components/Icon';
+import { AllCrackRevenueBanners, Banner728x90, Banner300x250, Banner728x90Second, NativeAd, MultiformatAd, MultiformatV2, InstantMessage, RecommendationWidget } from '../components/BannerAds';
 import { useI18n } from '../i18n';
 import { countries } from '../lib/countries';
 import { categoryName, categories as categoryList } from '../lib/categories';
@@ -62,7 +63,21 @@ export default function FreeCams() {
         </div>
         {!loading ? <p className="text-sm text-zinc-400">{total} {t('header.activeCams')}{hasMore ? ` - ${t('common.moreAvailable')}` : ''}</p> : null}
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
+        
+        {/* Banner section - interleaved */}
+        <AllCrackRevenueBanners className="my-4" />
+        <MultiformatAd className="my-4" />
+        
         <ModelGrid models={models} loading={loading} listName="Free Cams" />
+        
+        <Banner728x90 className="hidden md:block mx-auto my-2" />
+        <Banner300x250 className="md:hidden mx-auto my-2" />
+        <Banner728x90Second className="hidden md:block mx-auto my-2" />
+        <NativeAd className="my-4" />
+        <MultiformatV2 className="my-4" />
+        <RecommendationWidget className="my-4" />
+        <InstantMessage className="my-4" />
+        
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
         <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
       </div>

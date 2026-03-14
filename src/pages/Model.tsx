@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import InternalLinks from '../components/InternalLinks';
 import ModelGrid from '../components/ModelGrid';
+import { AllCrackRevenueBanners, Banner728x90, Banner300x250, Banner728x90Second, NativeAd, MultiformatAd, MultiformatV2, InstantMessage } from '../components/BannerAds';
 import { useI18n } from '../i18n';
 import { api } from '../lib/api';
 import { Model as LiveModel, AFFILIATE_ID } from '../lib/models';
@@ -10,7 +11,7 @@ import { generateModelMeta } from '../lib/metaTags';
 import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
 
 export default function ModelPage() {
-  const { username = '' } = useParams();
+  const { provider = 'stripchat', username = '' } = useParams();
   const { language, t } = useI18n();
   const decodedName = decodeURIComponent(username);
 
@@ -29,8 +30,9 @@ export default function ModelPage() {
     
     const loadModel = async () => {
       try {
-        // Search by username using search parameter
-        const data = await api.getModels({ search: decodedName, limit: 1 });
+        // Search by username using search parameter, with provider filter
+        const validProvider = provider === 'chaturbate' ? 'chaturbate' : 'stripchat';
+        const data = await api.getModels({ search: decodedName, limit: 1, provider: validProvider });
         
         if (data.models && data.models.length > 0) {
           const apiModel = data.models[0];
@@ -61,7 +63,7 @@ export default function ModelPage() {
           
           // Get related models in background (don't block)
           setTimeout(() => {
-            api.getModels({ limit: 9 })
+            api.getModels({ limit: 9, provider: validProvider })
               .then(relatedData => {
                 setRelated(relatedData.models.filter((m) => m.username !== apiModel.username).slice(0, 8));
               })
@@ -80,7 +82,7 @@ export default function ModelPage() {
     };
     
     loadModel();
-  }, [decodedName, t]);
+  }, [decodedName, provider, t]);
 
   // Add structured data for model profile
   useEffect(() => {
@@ -126,7 +128,7 @@ export default function ModelPage() {
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 md:space-y-8">
       <Breadcrumbs items={breadcrumbs} />
 
       <section className="grid gap-6 rounded-2xl border border-border bg-panel p-5 md:grid-cols-[360px_1fr]">
@@ -167,11 +169,21 @@ export default function ModelPage() {
         </div>
       </section>
 
+      {/* Banner after profile */}
+      <AllCrackRevenueBanners className="my-4" />
+      <MultiformatAd className="my-4" />
 
       <section>
         <h2 className="mb-4 text-2xl font-bold text-white">{t('model.relatedModels')}</h2>
         <ModelGrid models={related} loading={loading} listName={t('model.relatedModels')} />
       </section>
+      
+      {/* Banner after related models */}
+      <Banner728x90 className="hidden md:block mx-auto my-4" />
+      <Banner300x250 className="md:hidden mx-auto my-4" />
+      <NativeAd className="my-4" />
+      <MultiformatV2 className="my-4" />
+      <InstantMessage className="my-4" />
       
       <InternalLinks language={language} />
     </div>

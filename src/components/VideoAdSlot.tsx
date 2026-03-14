@@ -25,7 +25,7 @@ export default function VideoAdSlot() {
   return (
     <div 
       ref={containerRef}
-      className="w-full flex justify-center py-3"
+      className="w-full flex justify-center py-1 md:py-3"
       onClick={() => recordAdClick('native')}
     >
       <ins 

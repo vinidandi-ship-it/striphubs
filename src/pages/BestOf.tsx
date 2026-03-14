@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import ModelGrid from '../components/ModelGrid';
+import { AllCrackRevenueBanners, Banner728x90, Banner300x250, Banner728x90Second, NativeAd, MultiformatAd, MultiformatV2, InstantMessage, RecommendationWidget } from '../components/BannerAds';
 import { useI18n } from '../i18n';
 import { api } from '../lib/api';
 import { Model } from '../lib/models';
@@ -59,7 +60,7 @@ export default function BestOf() {
   ], [tf.label, category, t]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 md:space-y-8">
       <Breadcrumbs items={breadcrumbs} />
       
       <header className="space-y-4">
@@ -107,7 +108,19 @@ export default function BestOf() {
       </nav>
 
       <section>
+        {/* Banner section - interleaved */}
+        <AllCrackRevenueBanners className="my-4" />
+        <MultiformatAd className="my-4" />
+        
         <ModelGrid models={models} loading={loading} listName={`Best ${category} ${tf.label}`} />
+        
+        <Banner728x90 className="hidden md:block mx-auto my-2" />
+        <Banner300x250 className="md:hidden mx-auto my-2" />
+        <Banner728x90Second className="hidden md:block mx-auto my-2" />
+        <NativeAd className="my-4" />
+        <MultiformatV2 className="my-4" />
+        <RecommendationWidget className="my-4" />
+        <InstantMessage className="my-4" />
       </section>
     </div>
   );

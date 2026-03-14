@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import ModelGrid from '../components/ModelGrid';
+import { AllCrackRevenueBanners, Banner728x90, Banner300x250, Banner728x90Second, NativeAd, MultiformatAd, MultiformatV2, InstantMessage, RecommendationWidget } from '../components/BannerAds';
 import { useI18n } from '../i18n';
-import { api } from '../lib/api';
-import { Model } from '../lib/models';
-import { useSEO } from '../lib/seo';
+import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
+import { useModelsByProvider } from '../lib/useModelsByProvider';
+import { PAGE_SIZES } from '../lib/constants';
 
 const COUNTRY_NAMES: Record<string, string> = {
   italian: 'Italiane', american: 'Americane', british: 'Britanniche',
@@ -49,8 +50,6 @@ const TAG_MAP: Record<string, string> = {
 export default function CountryCombination() {
   const { countrySlug = 'italian', category, tag } = useParams<{ countrySlug: string; category?: string; tag?: string }>();
   const { language, t } = useI18n();
-  const [models, setModels] = useState<Model[]>([]);
-  const [loading, setLoading] = useState(true);
 
   const countryCode = COUNTRY_CODES[countrySlug.toLowerCase()] || 'IT';
   const countryName = COUNTRY_NAMES[countrySlug.toLowerCase()] || countrySlug;
@@ -58,6 +57,17 @@ export default function CountryCombination() {
   const filterValue = category || tag || '';
   const apiTag = TAG_MAP[filterValue.toLowerCase()] || filterValue;
 
+  const providerData = useModelsByProvider({
+    country: countryCode,
+    tag: apiTag,
+    pageSize: PAGE_SIZES.COUNTRY_COMBINATION,
+    initialIncludeOffline: false
+  });
+
+  const { models, total, loading, error } = providerData;
+  
+  const allModels = [...models.stripchat, ...models.chaturbate];
+  
   const title = category 
     ? `${countryName} ${category.charAt(0).toUpperCase() + category.slice(1)} Cam Live`
     : `${countryName} ${(tag || '').charAt(0).toUpperCase() + (tag || '').slice(1)} Live`;
@@ -69,17 +79,28 @@ export default function CountryCombination() {
     language
   );
 
+  // Add structured data
   useEffect(() => {
-    setLoading(true);
-    api.getModels({ 
-      country: countryCode, 
-      tag: apiTag, 
-      limit: 48, 
-      offset: 0 
-    })
-      .then(data => setModels(data.models))
-      .finally(() => setLoading(false));
-  }, [countryCode, apiTag]);
+    if (!allModels.length) return;
+    
+    const itemListElement = allModels.slice(0, 20).map((model, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `/model/${model.provider || 'stripchat'}/${encodeURIComponent(model.username)}`
+    }));
+    
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: title,
+      description: `${countryName.toLowerCase()} ${filterValue} live cam models`,
+      itemListElement
+    };
+    
+    upsertJsonLd('country-combination-schema', structuredData);
+    
+    return () => removeJsonLd('country-combination-schema');
+  }, [title, countryName, filterValue, allModels]);
 
   const breadcrumbs = useMemo(() => [
     { label: t('common.home'), to: '/' },
@@ -88,32 +109,61 @@ export default function CountryCombination() {
   ], [countryName, countrySlug, filterValue, t]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 md:space-y-8">
       <Breadcrumbs items={breadcrumbs} />
       
       <header className="space-y-4">
         <h1 className="text-3xl font-bold text-white">{title}</h1>
         <p className="text-zinc-400 max-w-2xl">
-          {models.length} modelle {countryName.toLowerCase()} {filterValue} online in questo momento.
+          {total.stripchat + total.chaturbate} modelle {countryName.toLowerCase()} {filterValue} online in questo momento.
         </p>
       </header>
 
+      {error.stripchat || error.chaturbate ? <p className="text-sm text-red-400">{error.stripchat || error.chaturbate}</p> : null}
+
+      {/* Banner section */}
+      <AllCrackRevenueBanners className="my-4" />
+      <MultiformatAd className="my-4" />
+
+      {/* STRIPCHAT MODELS - REAL API */}
       <section>
-        <ModelGrid models={models} loading={loading} listName={title} />
+        <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+          <span className="text-pink-500">●</span> Stripchat
+        </h3>
+        <ModelGrid models={models.stripchat} loading={loading.stripchat} listName={`${title} Stripchat`} />
       </section>
 
+      {/* Banner between providers */}
+      <AllCrackRevenueBanners className="my-4" />
+      
+      {/* CHATURBATE MODELS - REAL API */}
+      <section>
+        <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+          <span className="text-green-500">●</span> Chaturbate
+        </h3>
+        <ModelGrid models={models.chaturbate} loading={loading.chaturbate} listName={`${title} Chaturbate`} />
+      </section>
+
+      <Banner728x90 className="hidden md:block mx-auto my-2" />
+      <Banner300x250 className="md:hidden mx-auto my-2" />
+      <Banner728x90Second className="hidden md:block mx-auto my-2" />
+      <NativeAd className="my-4" />
+      <MultiformatV2 className="my-4" />
+      <RecommendationWidget className="my-4" />
+      <InstantMessage className="my-4" />
+
       <nav className="flex flex-wrap gap-2">
-        {Object.keys(TAG_MAP).slice(0, 12).map(t => (
+        {Object.keys(TAG_MAP).slice(0, 12).map(tg => (
           <Link
-            key={t}
-            to={`/country/${countrySlug}/tag/${t}`}
+            key={tg}
+            to={`/country/${countrySlug}/tag/${tg}`}
             className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-              t === filterValue.toLowerCase() 
+              tg === filterValue.toLowerCase() 
                 ? 'bg-accent-primary text-white' 
                 : 'bg-zinc-800 text-zinc-400 hover:text-white'
             }`}
           >
-            {t}
+            {tg}
           </Link>
         ))}
       </nav>

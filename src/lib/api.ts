@@ -68,6 +68,7 @@ export const api = {
     modelsList?: string;
     strict?: 0 | 1;
     liveOnly?: boolean;
+    provider?: 'stripchat' | 'chaturbate';
   }) => {
     const query = new URLSearchParams();
     if (params?.category) query.set('category', params.category);
@@ -79,6 +80,7 @@ export const api = {
     if (params?.modelsList) query.set('modelsList', params.modelsList);
     if (typeof params?.strict === 'number') query.set('strict', String(params.strict));
     if (typeof params?.liveOnly === 'boolean') query.set('liveOnly', params.liveOnly ? '1' : '0');
+    if (params?.provider) query.set('provider', params.provider);
 
     const suffix = query.toString() ? `?${query}` : '';
 

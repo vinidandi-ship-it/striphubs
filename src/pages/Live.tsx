@@ -5,29 +5,25 @@ import InternalLinks from '../components/InternalLinks';
 import ModelGrid from '../components/ModelGrid';
 import Sidebar from '../components/Sidebar';
 import Icon from '../components/Icon';
+import { AllCrackRevenueBanners, Banner728x90, Banner300x250, Banner728x90Second, NativeAd, MultiformatAd, MultiformatV2, InstantMessage, RecommendationWidget } from '../components/BannerAds';
 import { useEffect } from 'react';
+import { useI18n } from '../i18n';
 import { countries } from '../lib/countries';
 import { categoryName, categories as categoryList } from '../lib/categories';
 import { generateDescription, generateTitle, useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
-import { useModels } from '../lib/useModels';
+import { useModelsByProvider } from '../lib/useModelsByProvider';
 import { PAGE_SIZES } from '../lib/constants';
 
 export default function Live() {
   const { language, t } = useI18n();
-  const {
-    models,
-    total,
-    loading,
-    loadingMore,
-    error,
-    hasMore,
-    includeOffline,
-    toggleIncludeOffline,
-    sentinelRef
-  } = useModels({
+  const providerData = useModelsByProvider({
     pageSize: PAGE_SIZES.LIVE,
     initialIncludeOffline: false
   });
+
+  const { models, total, loading, loadingMore, error, hasMore, includeOffline, toggleIncludeOffline, sentinelRef } = providerData;
+  
+  const allModels = [...models.stripchat, ...models.chaturbate];
 
   useSEO(
     generateTitle('live'),
@@ -41,12 +37,12 @@ export default function Live() {
 
   // Add structured data for live page
   useEffect(() => {
-    if (!models.length) return;
-    
-    const itemListElement = models.slice(0, 20).map((model, index) => ({
+    if (!allModels.length) return;
+
+    const itemListElement = allModels.slice(0, 20).map((model, index) => ({
       '@type': 'ListItem',
       position: index + 1,
-      url: `/model/${encodeURIComponent(model.username)}`
+      url: `/model/${model.provider || 'stripchat'}/${encodeURIComponent(model.username)}`
     }));
     
     const structuredData = {
@@ -60,18 +56,18 @@ export default function Live() {
     upsertJsonLd('live-schema', structuredData);
     
     return () => removeJsonLd('live-schema');
-  }, [models]);
+  }, [allModels]);
 
   const sidebarCategories = categoryList.map((slug) => ({
     slug,
     name: categoryName(slug),
-    count: models.filter((model) => model.category === slug).length
+    count: allModels.filter((model) => model.category === slug).length
   }));
 
   const sidebarCountries = countries.map((country) => ({
     slug: country.slug,
     name: country.name,
-    count: models.filter((model) => model.country === country.code).length
+    count: allModels.filter((model) => model.country === country.code).length
   }));
 
   return (
@@ -89,15 +85,44 @@ export default function Live() {
             onClick={toggleIncludeOffline}
             className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${includeOffline ? 'border-accent bg-accent/10 text-accent' : 'border-border text-zinc-300 hover:border-accent hover:text-white'}`}
           >
-            {includeOffline ? t('common.showOnlyLive') : t('common.includeOffline')}
+            {providerData.includeOffline ? t('common.showOnlyLive') : t('common.includeOffline')}
           </button>
         </div>
-        {!loading ? <p className="text-sm text-zinc-400">{total} {t('header.activeCams')}{hasMore ? ` - ${t('common.moreAvailable')}` : ''}</p> : null}
-        {error ? <p className="text-sm text-red-400">{error}</p> : null}
-        <ModelGrid models={models} loading={loading} listName="All Live Cams" />
-        {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
-        <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
-        <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
+        {!loading.stripchat && !loading.chaturbate ? <p className="text-sm text-zinc-400">{total.stripchat + total.chaturbate} {t('header.activeCams')}</p> : null}
+        {error.stripchat || error.chaturbate ? <p className="text-sm text-red-400">{error.stripchat || error.chaturbate}</p> : null}
+        
+        {/* Banner section - distributed like VideoPage */}
+        <AllCrackRevenueBanners className="my-1 md:my-3" />
+        <MultiformatAd className="my-1 md:my-3" />
+        
+        {/* STRIPCHAT MODELS - REAL API */}
+        <section>
+          <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <span className="text-pink-500">●</span> Stripchat
+          </h3>
+          <ModelGrid models={models.stripchat} loading={loading.stripchat} listName="Stripchat Live Cams" />
+        </section>
+
+        {/* Banner between providers */}
+        <AllCrackRevenueBanners className="my-1 md:my-3" />
+        
+        {/* CHATURBATE MODELS - REAL API */}
+        <section>
+          <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <span className="text-green-500">●</span> Chaturbate
+          </h3>
+          <ModelGrid models={models.chaturbate} loading={loading.chaturbate} listName="Chaturbate Live Cams" />
+        </section>
+        
+        <Banner728x90 className="hidden md:block mx-auto my-2" />
+        <Banner300x250 className="md:hidden mx-auto my-2" />
+        <Banner728x90Second className="hidden md:block mx-auto my-2" />
+        <NativeAd className="my-1 md:my-3" />
+        <MultiformatV2 className="my-1 md:my-3" />
+        <RecommendationWidget className="my-1 md:my-3" />
+        
+        <InstantMessage className="my-1 md:my-3" />
+        
         <FAQSection language={language} />
         <InternalLinks language={language} />
       </div>

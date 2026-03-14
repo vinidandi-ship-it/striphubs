@@ -6,6 +6,7 @@ import InfiniteLoader from '../components/InfiniteLoader';
 import InternalLinks from '../components/InternalLinks';
 import ModelGrid from '../components/ModelGrid';
 import Sidebar from '../components/Sidebar';
+import { AllCrackRevenueBanners, Banner728x90, Banner300x250, Banner728x90Second, NativeAd, MultiformatAd, MultiformatV2, InstantMessage, RecommendationWidget } from '../components/BannerAds';
 import { useI18n, Language } from '../i18n';
 import { api } from '../lib/api';
 import { countries } from '../lib/countries';
@@ -13,7 +14,7 @@ import { categoryName, categories as categoryList, CategorySlug } from '../lib/c
 import { generateCategoryMeta } from '../lib/metaTags';
 import { useAdvancedSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
 import { seoTextForCategory } from '../lib/seoText';
-import { useModels } from '../lib/useModels';
+import { useModelsByProvider } from '../lib/useModelsByProvider';
 import { PAGE_SIZES } from '../lib/constants';
 
 export default function Category() {
@@ -21,22 +22,16 @@ export default function Category() {
   const { language, t } = useI18n();
   const [categories, setCategories] = useState<{ slug: string; name: string; count: number }[]>([]);
 
-  const {
-    models,
-    loading,
-    loadingMore,
-    error,
-    hasMore,
-    includeOffline,
-    toggleIncludeOffline,
-    sentinelRef
-  } = useModels({
+  const providerData = useModelsByProvider({
     category,
     pageSize: PAGE_SIZES.CATEGORY,
     initialIncludeOffline: false
   });
 
-  const meta = generateCategoryMeta(category as CategorySlug, language, models.length || 150);
+  const { models, total, loading, loadingMore, error, hasMore, includeOffline, toggleIncludeOffline, sentinelRef } = providerData;
+  
+  const allModels = [...models.stripchat, ...models.chaturbate];
+  const meta = generateCategoryMeta(category as CategorySlug, language, allModels.length || 150);
   useAdvancedSEO(
     meta.title,
     meta.description,
@@ -49,12 +44,12 @@ export default function Category() {
 
   // Add structured data for category page
   useEffect(() => {
-    if (!models.length) return;
+    if (!allModels.length) return;
     
-    const itemListElement = models.slice(0, 20).map((model, index) => ({
+    const itemListElement = allModels.slice(0, 20).map((model, index) => ({
       '@type': 'ListItem',
       position: index + 1,
-      url: `/model/${encodeURIComponent(model.username)}`
+      url: `/model/${model.provider || 'stripchat'}/${encodeURIComponent(model.username)}`
     }));
     
     const structuredData = {
@@ -68,7 +63,7 @@ export default function Category() {
     upsertJsonLd('category-schema', structuredData);
     
     return () => removeJsonLd('category-schema');
-  }, [category, models]);
+  }, [category, allModels]);
 
   useEffect(() => {
     api.getCategories().then((data) => setCategories(data.categories));
@@ -86,7 +81,7 @@ export default function Category() {
   const sidebarCountries = countries.map((country) => ({
     slug: country.slug,
     name: country.name,
-    count: models.filter((model) => model.country === country.code).length
+    count: allModels.filter((model) => model.country === country.code).length
   }));
 
   return (
@@ -110,11 +105,43 @@ export default function Category() {
             {includeOffline ? t('common.showOnlyLive') : t('common.includeOffline')}
           </button>
         </div>
-        {!loading ? <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')}{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
-        {error ? <p className="text-sm text-red-400">{error}</p> : null}
-        <ModelGrid models={models} loading={loading} listName={`${categoryName(category)} Models`} />
-        {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
-        <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
+        {!loading.stripchat && !loading.chaturbate ? <p className="text-sm text-zinc-400">{total.stripchat + total.chaturbate} {t('common.modelsLoaded')}{(hasMore.stripchat || hasMore.chaturbate) ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
+        {error.stripchat || error.chaturbate ? <p className="text-sm text-red-400">{error.stripchat || error.chaturbate}</p> : null}
+        
+        {/* Banner section - distributed like VideoPage */}
+        <AllCrackRevenueBanners className="my-1 md:my-3" />
+        <MultiformatAd className="my-1 md:my-3" />
+        
+        {/* STRIPCHAT MODELS - REAL API */}
+        <section>
+          <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <span className="text-pink-500">●</span> Stripchat
+          </h3>
+          <ModelGrid models={models.stripchat} loading={loading.stripchat} listName={`${categoryName(category)} Stripchat Models`} />
+        </section>
+
+        {/* Banner between providers */}
+        <AllCrackRevenueBanners className="my-1 md:my-3" />
+        
+        {/* CHATURBATE MODELS - REAL API */}
+        <section>
+          <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <span className="text-green-500">●</span> Chaturbate
+          </h3>
+          <ModelGrid models={models.chaturbate} loading={loading.chaturbate} listName={`${categoryName(category)} Chaturbate Models`} />
+        </section>
+        
+        <Banner728x90 className="hidden md:block mx-auto my-2" />
+        <Banner300x250 className="md:hidden mx-auto my-2" />
+        <Banner728x90Second className="hidden md:block mx-auto my-2" />
+        <NativeAd className="my-1 md:my-3" />
+        <MultiformatV2 className="my-1 md:my-3" />
+        <RecommendationWidget className="my-1 md:my-3" />
+        
+        {(hasMore.stripchat || hasMore.chaturbate) ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
+        <InfiniteLoader loading={loadingMore.stripchat || loadingMore.chaturbate} hasMore={hasMore.stripchat || hasMore.chaturbate} />
+        
+        <InstantMessage className="my-1 md:my-3" />
         
         <FAQSection category={category as CategorySlug} language={language} />
         

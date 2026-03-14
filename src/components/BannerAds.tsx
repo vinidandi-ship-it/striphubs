@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { recordAdImpression, recordAdClick } from '../lib/revenue/displayAds';
+import { crackrevenueBanners, recordCrackRevenueBannerClick, CrackRevenueBanner } from '../lib/crackrevenueBanners';
 
 const isMobile = (): boolean => {
   if (typeof window === 'undefined') return false;
@@ -34,6 +35,13 @@ export function Banner728x90({ className = '' }: { className?: string }) {
   
   useEffect(() => {
     recordAdImpression('banner');
+    
+    // Trigger ExoClick ad
+    setTimeout(() => {
+      if (typeof window !== 'undefined' && (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider) {
+        (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider?.push({ serve: {} });
+      }
+    }, 500);
   }, []);
   
   return (
@@ -71,6 +79,13 @@ export function Banner728x90Second({ className = '' }: { className?: string }) {
   
   useEffect(() => {
     recordAdImpression('banner');
+    
+    // Trigger ExoClick ad
+    setTimeout(() => {
+      if (typeof window !== 'undefined' && (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider) {
+        (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider?.push({ serve: {} });
+      }
+    }, 500);
   }, []);
   
   return (
@@ -108,6 +123,13 @@ export function Banner300x250({ className = '' }: { className?: string }) {
   
   useEffect(() => {
     recordAdImpression('banner');
+    
+    // Trigger ExoClick ad
+    setTimeout(() => {
+      if (typeof window !== 'undefined' && (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider) {
+        (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider?.push({ serve: {} });
+      }
+    }, 500);
   }, []);
   
   return (
@@ -145,6 +167,13 @@ export function RecommendationWidget({ className = '' }: { className?: string })
   
   useEffect(() => {
     recordAdImpression('premium');
+    
+    // Trigger ExoClick ad
+    setTimeout(() => {
+      if (typeof window !== 'undefined' && (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider) {
+        (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider?.push({ serve: {} });
+      }
+    }, 500);
   }, []);
   
   return (
@@ -183,6 +212,13 @@ export function NativeAd({ className = '' }: { className?: string }) {
   
   useEffect(() => {
     recordAdImpression('native');
+    
+    // Trigger ExoClick ad
+    setTimeout(() => {
+      if (typeof window !== 'undefined' && (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider) {
+        (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider?.push({ serve: {} });
+      }
+    }, 500);
   }, []);
   
   return (
@@ -221,6 +257,13 @@ export function MultiformatAd({ className = '' }: { className?: string }) {
   
   useEffect(() => {
     recordAdImpression('native');
+    
+    // Trigger ExoClick ad
+    setTimeout(() => {
+      if (typeof window !== 'undefined' && (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider) {
+        (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider?.push({ serve: {} });
+      }
+    }, 500);
   }, []);
   
   return (
@@ -259,6 +302,13 @@ export function MultiformatV2({ className = '' }: { className?: string }) {
   
   useEffect(() => {
     recordAdImpression('native');
+    
+    // Trigger ExoClick ad
+    setTimeout(() => {
+      if (typeof window !== 'undefined' && (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider) {
+        (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider?.push({ serve: {} });
+      }
+    }, 500);
   }, []);
   
   return (
@@ -297,6 +347,13 @@ export function InstantMessage({ className = '' }: { className?: string }) {
   
   useEffect(() => {
     recordAdImpression('native');
+    
+    // Trigger ExoClick ad
+    setTimeout(() => {
+      if (typeof window !== 'undefined' && (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider) {
+        (window as unknown as { AdProvider?: { push: (obj: object) => void }[] }).AdProvider?.push({ serve: {} });
+      }
+    }, 500);
   }, []);
   
   return (
@@ -370,6 +427,47 @@ export function CrackRevenueAd({ className = '', bannerId }: { className?: strin
           }}
         />
       </a>
+    </div>
+  );
+}
+
+// MOSTRA TUTTI I BANNER CRACKREVENUE - tutti visibili insieme
+export function AllCrackRevenueBanners({ className = '' }: { className?: string }) {
+  return (
+    <div className={`${className} flex flex-col gap-4`}>
+      {crackrevenueBanners.map((banner) => (
+        <div 
+          key={banner.id}
+          className="w-full flex justify-center"
+          onClick={() => recordCrackRevenueBannerClick(banner.id)}
+        >
+          <a
+            href={banner.link}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="block overflow-hidden"
+            style={{
+              display: 'block',
+              width: '100%',
+              maxWidth: '1280px',
+              height: 'auto'
+            }}
+          >
+            <img
+              src={banner.image}
+              alt="CrackRevenue"
+              width={banner.width}
+              height={banner.height}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-auto"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          </a>
+        </div>
+      ))}
     </div>
   );
 }

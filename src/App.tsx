@@ -2,7 +2,6 @@ import { lazy, Suspense, useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import AgeVerification from './components/AgeVerification';
 import Analytics from './components/Analytics';
-import { Banner728x90, Banner300x250, CrackRevenueAd } from './components/BannerAds';
 import CookieConsent from './components/CookieConsent';
 import Footer from './components/Footer';
 import Header from './components/Header';
@@ -83,11 +82,6 @@ function AppContent() {
     <div className="min-h-screen bg-bg text-zinc-100">
       <Header />
       <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div className="my-4">
-          <Banner728x90 className="hidden md:block mx-auto" />
-          <Banner300x250 className="md:hidden mx-auto" />
-          <CrackRevenueAd className="my-2" />
-        </div>
         <Suspense fallback={<div className="rounded-2xl border border-border bg-panel p-6">Loading...</div>}>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -132,12 +126,12 @@ function AppContent() {
             <Route path="/fr/tag/:tag" element={<Tag />} />
             <Route path="/es/tag/:tag" element={<Tag />} />
             <Route path="/pt/tag/:tag" element={<Tag />} />
-            <Route path="/model/:username" element={<ModelPage />} />
-            <Route path="/en/model/:username" element={<ModelPage />} />
-            <Route path="/de/model/:username" element={<ModelPage />} />
-            <Route path="/fr/model/:username" element={<ModelPage />} />
-            <Route path="/es/model/:username" element={<ModelPage />} />
-            <Route path="/pt/model/:username" element={<ModelPage />} />
+            <Route path="/model/:provider/:username" element={<ModelPage />} />
+            <Route path="/en/model/:provider/:username" element={<ModelPage />} />
+            <Route path="/de/model/:provider/:username" element={<ModelPage />} />
+            <Route path="/fr/model/:provider/:username" element={<ModelPage />} />
+            <Route path="/es/model/:provider/:username" element={<ModelPage />} />
+            <Route path="/pt/model/:provider/:username" element={<ModelPage />} />
             <Route path="/search" element={<Search />} />
             <Route path="/en/search" element={<Search />} />
             <Route path="/de/search" element={<Search />} />
@@ -245,11 +239,6 @@ function AppContent() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
-        <div className="my-4">
-          <CrackRevenueAd className="my-2" />
-          <Banner728x90 className="hidden md:block mx-auto" />
-          <Banner300x250 className="md:hidden mx-auto" />
-        </div>
       </main>
       <Footer />
       <HreflangTags />

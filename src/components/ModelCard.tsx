@@ -78,6 +78,7 @@ export default function ModelCard({ model }: { model: Model }) {
   const { url: rotatedUrl, provider: rotatedProvider } = getAffiliateUrlWithProvider(model.username);
   const clickUrl = model.clickUrl || rotatedUrl;
   const clickProvider = model.provider || rotatedProvider;
+  const modelLinkProvider = clickProvider || 'stripchat';
   
   const onlineMinutes = model.isLive ? getOnlineMinutes(model.username) : 0;
   const viewersTrend = model.isLive ? getViewersTrend(model.viewers, model.username) : 'stable';
@@ -86,7 +87,7 @@ export default function ModelCard({ model }: { model: Model }) {
   
   return (
     <article className="content-visibility-card group relative overflow-hidden sh-card transition-all hover:-translate-y-1">
-      <Link to={`/model/${encodeURIComponent(model.username)}`} className="block focus:outline-none focus:ring-2 focus:ring-accent-primary" aria-label={`Open ${model.username} profile`}>
+      <Link to={`/model/${modelLinkProvider}/${encodeURIComponent(model.username)}`} className="block focus:outline-none focus:ring-2 focus:ring-accent-primary" aria-label={`Open ${model.username} profile`}>
         <div className="relative">
           <div className="aspect-[3/4] w-full overflow-hidden rounded-t-2xl bg-zinc-800">
             <img

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import ModelGrid from '../components/ModelGrid';
+import { AllCrackRevenueBanners, Banner728x90, Banner300x250, Banner728x90Second, NativeAd, MultiformatAd, MultiformatV2, InstantMessage, RecommendationWidget } from '../components/BannerAds';
 import { useI18n } from '../i18n';
 import { api } from '../lib/api';
 import { Model } from '../lib/models';
@@ -91,7 +92,7 @@ export default function Comparison() {
   ], [cat1, cat2, t]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 md:space-y-8">
       <Breadcrumbs items={breadcrumbs} />
       
       <header className="text-center space-y-4">
@@ -140,6 +141,10 @@ export default function Comparison() {
           <ModelGrid models={models1} loading={loading} listName={cat1} />
         </section>
 
+        {/* Banner between comparison sections */}
+        <AllCrackRevenueBanners className="my-4" />
+        <MultiformatAd className="my-4" />
+
         <section className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-white">{cat2.toUpperCase()}</h2>
@@ -159,6 +164,13 @@ export default function Comparison() {
           </div>
           <ModelGrid models={models2} loading={loading} listName={cat2} />
         </section>
+        
+        {/* Banner after comparison */}
+        <Banner728x90 className="hidden md:block mx-auto my-4" />
+        <Banner300x250 className="md:hidden mx-auto my-4" />
+        <NativeAd className="my-4" />
+        <MultiformatV2 className="my-4" />
+        <InstantMessage className="my-4" />
       </div>
     </div>
   );

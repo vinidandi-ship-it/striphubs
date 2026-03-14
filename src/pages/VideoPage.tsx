@@ -4,13 +4,15 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import VideoAdSlot, { VideoBannerSlot } from '../components/VideoAdSlot';
 import NativeAdSlot from '../components/NativeAdSlot';
 import { 
+  AllCrackRevenueBanners,
   Banner728x90,
   Banner300x250,
   RecommendationWidget,
   MultiformatAd,
   MultiformatV2,
   InstantMessage,
-  CrackRevenueAd
+  CrackRevenueAd,
+  NativeAd
 } from '../components/BannerAds';
 import { useI18n } from '../i18n';
 import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';

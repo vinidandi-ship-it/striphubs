@@ -4,10 +4,12 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import InfiniteLoader from '../components/InfiniteLoader';
 import ModelGrid from '../components/ModelGrid';
 import SearchBar from '../components/SearchBar';
+import { AllCrackRevenueBanners, Banner728x90, Banner300x250, Banner728x90Second, NativeAd, MultiformatAd, MultiformatV2, InstantMessage, RecommendationWidget } from '../components/BannerAds';
 import { api } from '../lib/api';
 import { Model } from '../lib/models';
 import { generateDescription, generateTitle, useAdvancedSEO } from '../lib/seo';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
+import { useI18n } from '../i18n';
 
 export default function Search() {
   const PAGE_SIZE = 120;
@@ -76,7 +78,21 @@ export default function Search() {
       <SearchBar initialValue={query} />
       <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')} {t('search.resultsFor')} "{query || 'all'}"{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p>
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
+      
+      {/* Banner section - interleaved */}
+      <AllCrackRevenueBanners className="my-4" />
+      <MultiformatAd className="my-4" />
+      
       <ModelGrid models={models} loading={loading} listName={t('search.title')} />
+      
+      <Banner728x90 className="hidden md:block mx-auto my-2" />
+      <Banner300x250 className="md:hidden mx-auto my-2" />
+      <Banner728x90Second className="hidden md:block mx-auto my-2" />
+      <NativeAd className="my-4" />
+      <MultiformatV2 className="my-4" />
+      <RecommendationWidget className="my-4" />
+      <InstantMessage className="my-4" />
+      
       {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
       <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
     </div>

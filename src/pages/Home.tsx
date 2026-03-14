@@ -6,6 +6,7 @@ import InfiniteLoader from '../components/InfiniteLoader';
 import ModelCard from '../components/ModelCard';
 import ModelGrid from '../components/ModelGrid';
 import Icon from '../components/Icon';
+import { AllCrackRevenueBanners, Banner728x90, Banner300x250, Banner728x90Second, NativeAd, MultiformatAd, MultiformatV2, InstantMessage, RecommendationWidget } from '../components/BannerAds';
 import { api } from '../lib/api';
 import { countries, findCountryBySlug } from '../lib/countries';
 import { Model } from '../lib/models';
@@ -14,6 +15,7 @@ import { extractSeoTags, featuredTagGroups } from '../lib/tags';
 import { generateDescription, generateTitle, useSEO } from '../lib/seo';
 import { featuredCategoryTagCombos, featuredCountryRoutes, priorityTagSlugs } from '../lib/programmaticSeo';
 import { useInfiniteLoad } from '../lib/useInfiniteLoad';
+import { useModelsByProvider } from '../lib/useModelsByProvider';
 import { useI18n } from '../i18n';
 import { buildLocalizedPath } from '../i18n/routing';
 import {
@@ -78,6 +80,12 @@ export default function Home() {
   const [error, setError] = useState('');
   const sentinelRef = useRef<HTMLDivElement>(null);
   const { t, language } = useI18n();
+
+  // Separate models by provider - REAL DATA from two APIs
+  const providerData = useModelsByProvider({
+    pageSize: 24,
+    initialIncludeOffline: false
+  });
 
   useSEO(
     generateTitle('home'),
@@ -265,7 +273,7 @@ export default function Home() {
   });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 md:space-y-8">
       <section className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-purple-900/50 via-zinc-900 to-zinc-950 p-5 sm:p-8 md:p-12">
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-10 left-10 w-32 h-32 bg-accent/30 rounded-full blur-3xl"></div>
@@ -313,6 +321,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* BANNER dopo hero */}
+      <AllCrackRevenueBanners className="my-1 md:my-3" />
+      <MultiformatAd className="my-1 md:my-3" />
+
+      {/* Young Spotlight - modelli */}
       {youngSpotlight.length ? (
         <section className="space-y-3 rounded-3xl border border-border bg-panel p-5">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
@@ -335,29 +348,40 @@ export default function Home() {
         </section>
       ) : null}
 
+      {/* BANNER dopo spotlight */}
+      <Banner728x90 className="hidden md:block mx-auto my-1 md:my-3" />
+      <Banner300x250 className="md:hidden mx-auto my-2" />
+
+      {/* STRIPCHAT MODELS - REAL API DATA */}
       <section>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-            <Icon name="allLive" size={24} /> {t('home.allLiveCams')}
+            <span className="text-pink-500">●</span> Stripchat Models
           </h2>
           <Link to={buildLocalizedPath('/live', language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
         </div>
-        {error ? <p className="mb-3 text-sm text-red-400">{error}</p> : null}
-        <ModelGrid models={prioritizedModels} loading={loading} listName="Home Live Models" />
-        {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
-        <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
+        <ModelGrid models={providerData.models.stripchat} loading={providerData.loading.stripchat} listName="Stripchat Models" />
       </section>
 
+      {/* Banner between providers */}
+      <AllCrackRevenueBanners className="my-1 md:my-3" />
+
+      {/* CHATURBATE MODELS - REAL API DATA */}
       <section>
-        <h2 className="mb-4 text-2xl font-bold text-white flex items-center gap-2">
-          <Icon name="globe" size={24} /> {t('home.camsByCountry')}
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {categories.map((category) => (
-            <CategoryCard key={category.slug} slug={category.slug} name={category.name} count={category.count} />
-          ))}
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+            <span className="text-green-500">●</span> Chaturbate Models
+          </h2>
+          <Link to={buildLocalizedPath('/live', language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
         </div>
+        <ModelGrid models={providerData.models.chaturbate} loading={providerData.loading.chaturbate} listName="Chaturbate Models" />
       </section>
+
+      {/* Banner section - distributed like VideoPage */}
+      <AllCrackRevenueBanners className="my-1 md:my-3" />
+      <MultiformatAd className="my-1 md:my-3" />
+      <Banner728x90 className="hidden md:block mx-auto my-2" />
+      <Banner300x250 className="md:hidden mx-auto my-2" />
 
       <section className="space-y-4">
         <div className="flex items-center justify-between">
@@ -383,6 +407,10 @@ export default function Home() {
         </div>
       </section>
 
+      {/* BANNER dopo paesi */}
+      <Banner728x90Second className="hidden md:block mx-auto my-4" />
+      <NativeAd className="my-4" />
+
       <section className="space-y-8">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-white flex items-center gap-2">
@@ -407,6 +435,12 @@ export default function Home() {
           </section>
         ))}
       </section>
+
+      {/* More banners distributed in page */}
+      <Banner728x90Second className="hidden md:block mx-auto my-2" />
+      <NativeAd className="my-4" />
+      <MultiformatV2 className="my-4" />
+      <RecommendationWidget className="my-4" />
 
       <section className="space-y-4">
         <div className="flex items-center justify-between">
@@ -477,6 +511,12 @@ export default function Home() {
       </section>
 
       <FAQSection language={language} />
+
+      {/* Final banners at bottom */}
+      <AllCrackRevenueBanners className="my-4" />
+      <InstantMessage className="my-4" />
+      <Banner728x90 className="hidden md:block mx-auto my-2" />
+      <Banner300x250 className="md:hidden mx-auto my-2" />
 
       <section className="py-8 text-center text-zinc-400">
         <p>{t('home.bestSite')}</p>

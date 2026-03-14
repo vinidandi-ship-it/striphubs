@@ -2,7 +2,10 @@ export const PAGE_SIZES = {
   HOME: 200,
   CATEGORY: 200,
   COUNTRY: 200,
-  LIVE: 200
+  LIVE: 200,
+  TAG: 96,
+  COMBINATION: 96,
+  COUNTRY_COMBINATION: 48
 } as const;
 
 export const YOUNG_SPOTLIGHT_THRESHOLD = 60;

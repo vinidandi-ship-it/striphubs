@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon';
 import NativeAdSlot from '../components/NativeAdSlot';
 import { 
+  AllCrackRevenueBanners,
   Banner728x90,
   Banner728x90Second,
   Banner300x250,
@@ -10,7 +11,8 @@ import {
   MultiformatAd,
   MultiformatV2,
   InstantMessage,
-  CrackRevenueAd
+  CrackRevenueAd,
+  NativeAd
 } from '../components/BannerAds';
 import { useI18n } from '../i18n';
 import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
@@ -189,12 +191,13 @@ export default function Videos() {
         ))}
       </div>
 
-      <RecommendationWidget className="my-1" />
+      {/* Banner after title/search */}
+      <AllCrackRevenueBanners className="my-1 md:my-3" />
+      <MultiformatAd className="my-1 md:my-3" />
 
-      <Banner728x90 className="hidden md:block mx-auto my-1" />
-      <Banner728x90Second className="hidden md:block mx-auto my-1" />
-      <Banner300x250 className="md:hidden mx-auto my-1" />
-      <CrackRevenueAd className="my-1" />
+      <Banner728x90 className="hidden md:block mx-auto my-2" />
+      <Banner728x90Second className="hidden md:block mx-auto my-2" />
+      <Banner300x250 className="md:hidden mx-auto my-2" />
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
         {displayVideos.map((video, index) => (
@@ -244,14 +247,19 @@ export default function Videos() {
         ))}
       </div>
 
-      <Banner728x90 className="hidden md:block mx-auto my-1" />
-      <Banner728x90Second className="hidden md:block mx-auto my-1" />
-      <Banner300x250 className="md:hidden mx-auto my-1" />
-      <CrackRevenueAd className="my-1" />
+      {/* Banner at bottom */}
+      <AllCrackRevenueBanners className="my-1 md:my-3" />
+      <Banner728x90 className="hidden md:block mx-auto my-2" />
+      <Banner728x90Second className="hidden md:block mx-auto my-2" />
+      <Banner300x250 className="md:hidden mx-auto my-2" />
+      <CrackRevenueAd className="my-1 md:my-3" />
 
-      <MultiformatAd className="my-1" />
+      <MultiformatAd className="my-1 md:my-3" />
+      <NativeAd className="my-1 md:my-3" />
+      <MultiformatV2 className="my-1 md:my-3" />
+      <RecommendationWidget className="my-1 md:my-3" />
       
-      <InstantMessage className="my-1" />
+      <InstantMessage className="my-1 md:my-3" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <a

@@ -1,70 +1,62 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import FAQSection from '../components/FAQSection';
 import InfiniteLoader from '../components/InfiniteLoader';
 import InternalLinks from '../components/InternalLinks';
 import ModelGrid from '../components/ModelGrid';
-import { api } from '../lib/api';
-import { Model } from '../lib/models';
+import { AllCrackRevenueBanners, Banner728x90, Banner300x250, Banner728x90Second, NativeAd, MultiformatAd, MultiformatV2, InstantMessage, RecommendationWidget } from '../components/BannerAds';
 import { categoryName, CategorySlug } from '../lib/categories';
 import { featuredCategoryTagCombos } from '../lib/programmaticSeo';
 import { generateCombinationMeta } from '../lib/metaTags';
-import { useSEO } from '../lib/seo';
+import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
 import { seoTextForCombination } from '../lib/seoText';
-import { useInfiniteLoad } from '../lib/useInfiniteLoad';
+import { useModelsByProvider } from '../lib/useModelsByProvider';
+import { PAGE_SIZES } from '../lib/constants';
+import { useI18n } from '../i18n';
 
 export default function CombinationPage() {
-  const PAGE_SIZE = 96;
   const { category = 'milf', tag = 'tattoo' } = useParams();
   const { language, t } = useI18n();
-  const [models, setModels] = useState<Model[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [error, setError] = useState('');
-  const [offset, setOffset] = useState(0);
-  const [hasMore, setHasMore] = useState(false);
-  const sentinelRef = useRef<HTMLDivElement>(null);
   const relatedCombos = featuredCategoryTagCombos.filter(
     (entry) => entry.category === category || entry.tag === tag
   ).slice(0, 8);
 
-  const meta = generateCombinationMeta(category as CategorySlug, tag, language, models.length || 50);
+  const providerData = useModelsByProvider({
+    category,
+    tag,
+    pageSize: PAGE_SIZES.COMBINATION,
+    initialIncludeOffline: false
+  });
+
+  const { models, total, loading, loadingMore, error, hasMore, includeOffline, toggleIncludeOffline, sentinelRef } = providerData;
+  
+  const allModels = [...models.stripchat, ...models.chaturbate];
+  const meta = generateCombinationMeta(category as CategorySlug, tag, language, allModels.length || 50);
   useSEO(meta.title, meta.description, `/cam/${category}/${tag}`, language);
 
+  // Add structured data for combination page
   useEffect(() => {
-    setLoading(true);
-    setOffset(0);
-    setHasMore(false);
-    void api.getModels({ category, tag, limit: PAGE_SIZE, offset: 0 })
-      .then((data) => {
-        setModels(data.models);
-        setOffset(data.models.length);
-        setHasMore(Boolean(data.hasMore));
-      })
-      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load combination'))
-      .finally(() => setLoading(false));
-  }, [category, tag]);
-
-  const loadMore = () => {
-    if (loadingMore || !hasMore) return;
-    setLoadingMore(true);
-    void api.getModels({ category, tag, limit: PAGE_SIZE, offset })
-      .then((data) => {
-        setModels((current) => [...current, ...data.models]);
-        setOffset((current) => current + data.models.length);
-        setHasMore(Boolean(data.hasMore));
-      })
-      .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load more combination models'))
-      .finally(() => setLoadingMore(false));
-  };
-
-  useInfiniteLoad({
-    targetRef: sentinelRef,
-    enabled: hasMore && !loading,
-    loading: loadingMore,
-    onLoadMore: loadMore
-  });
+    if (!allModels.length) return;
+    
+    const itemListElement = allModels.slice(0, 20).map((model, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `/model/${model.provider || 'stripchat'}/${encodeURIComponent(model.username)}`
+    }));
+    
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: `${categoryName(category)} + ${tag} Live Cams`,
+      description: seoTextForCombination(category, tag),
+      itemListElement
+    };
+    
+    upsertJsonLd('combination-schema', structuredData);
+    
+    return () => removeJsonLd('combination-schema');
+  }, [category, tag, allModels]);
 
   return (
     <div className="space-y-6">
@@ -102,11 +94,52 @@ export default function CombinationPage() {
         </section>
       ) : null}
 
-      {!loading ? <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')}{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
-      {error ? <p className="text-sm text-red-400">{error}</p> : null}
-        <ModelGrid models={models} loading={loading} listName={`${categoryName(category)} ${tag} Models`} />
-        {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
-      <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
+      <button
+        type="button"
+        onClick={toggleIncludeOffline}
+        className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
+          includeOffline ? 'border-accent bg-accent/10 text-accent' : 'border-border text-zinc-300 hover:border-accent hover:text-white'
+        }`}
+      >
+        {includeOffline ? t('common.showOnlyLive') : t('common.includeOffline')}
+      </button>
+
+      {!loading.stripchat && !loading.chaturbate ? <p className="text-sm text-zinc-400">{total.stripchat + total.chaturbate} {t('common.modelsLoaded')}{(hasMore.stripchat || hasMore.chaturbate) ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
+      {error.stripchat || error.chaturbate ? <p className="text-sm text-red-400">{error.stripchat || error.chaturbate}</p> : null}
+      
+      {/* Banner section - distributed like VideoPage */}
+      <AllCrackRevenueBanners className="my-4" />
+      <MultiformatAd className="my-4" />
+      
+      {/* STRIPCHAT MODELS - REAL API */}
+      <section>
+        <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+          <span className="text-pink-500">●</span> Stripchat
+        </h3>
+        <ModelGrid models={models.stripchat} loading={loading.stripchat} listName={`${categoryName(category)} ${tag} Stripchat Models`} />
+      </section>
+
+      {/* Banner between providers */}
+      <AllCrackRevenueBanners className="my-4" />
+      
+      {/* CHATURBATE MODELS - REAL API */}
+      <section>
+        <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+          <span className="text-green-500">●</span> Chaturbate
+        </h3>
+        <ModelGrid models={models.chaturbate} loading={loading.chaturbate} listName={`${categoryName(category)} ${tag} Chaturbate Models`} />
+      </section>
+      
+      <Banner728x90 className="hidden md:block mx-auto my-2" />
+      <Banner300x250 className="md:hidden mx-auto my-2" />
+      <Banner728x90Second className="hidden md:block mx-auto my-2" />
+      <NativeAd className="my-4" />
+      <MultiformatV2 className="my-4" />
+      <RecommendationWidget className="my-4" />
+      <InstantMessage className="my-4" />
+      
+      {(hasMore.stripchat || hasMore.chaturbate) ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
+      <InfiniteLoader loading={loadingMore.stripchat || loadingMore.chaturbate} hasMore={hasMore.stripchat || hasMore.chaturbate} />
     </div>
   );
 }

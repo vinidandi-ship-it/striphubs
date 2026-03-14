@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import ModelGrid from '../components/ModelGrid';
+import { AllCrackRevenueBanners, Banner728x90, Banner300x250, Banner728x90Second, NativeAd, MultiformatAd, MultiformatV2, InstantMessage, RecommendationWidget } from '../components/BannerAds';
 import { api } from '../lib/api';
 import { Model } from '../lib/models';
 import { useSEO } from '../lib/seo';
+import { useI18n } from '../i18n';
 
 const ALTERNATIVES: Record<string, { name: string; description: string; tag: string }> = {
   chaturbate: { 
@@ -88,7 +90,7 @@ export default function Alternative() {
   ], [alt.name, t]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 md:space-y-8">
       <Breadcrumbs items={breadcrumbs} />
       
       <header className="space-y-4">
@@ -111,7 +113,20 @@ export default function Alternative() {
         <h2 className="mb-4 text-xl font-semibold text-white">
           {models.length} Modelle Live Ora
         </h2>
+        
+        {/* Banner section - interleaved */}
+        <AllCrackRevenueBanners className="my-4" />
+        <MultiformatAd className="my-4" />
+        
         <ModelGrid models={models} loading={loading} listName={alt.name} />
+        
+        <Banner728x90 className="hidden md:block mx-auto my-2" />
+        <Banner300x250 className="md:hidden mx-auto my-2" />
+        <Banner728x90Second className="hidden md:block mx-auto my-2" />
+        <NativeAd className="my-4" />
+        <MultiformatV2 className="my-4" />
+        <RecommendationWidget className="my-4" />
+        <InstantMessage className="my-4" />
       </section>
 
       <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

@@ -5,40 +5,36 @@ import FAQSection from '../components/FAQSection';
 import InfiniteLoader from '../components/InfiniteLoader';
 import InternalLinks from '../components/InternalLinks';
 import ModelGrid from '../components/ModelGrid';
+import { AllCrackRevenueBanners, Banner728x90, Banner300x250, Banner728x90Second, NativeAd, MultiformatAd, MultiformatV2, InstantMessage, RecommendationWidget } from '../components/BannerAds';
 import { useI18n } from '../i18n';
 import { findCountryBySlug, CountrySlug } from '../lib/countries';
 import { featuredCategoryTagCombos, priorityTagSlugs } from '../lib/programmaticSeo';
 import { generateCountryMeta } from '../lib/metaTags';
 import { useSEO } from '../lib/seo';
 import { seoTextForCountry } from '../lib/seoText';
-import { useModels } from '../lib/useModels';
+import { useModelsByProvider } from '../lib/useModelsByProvider';
+import { PAGE_SIZES } from '../lib/constants';
 
 export default function Country() {
   const { countrySlug = 'italian' } = useParams();
   const { language, t } = useI18n();
   const country = findCountryBySlug(countrySlug);
 
-  const {
-    models,
-    loading,
-    loadingMore,
-    error,
-    hasMore,
-    includeOffline,
-    toggleIncludeOffline,
-    sentinelRef
-  } = useModels({
+  const providerData = useModelsByProvider({
     country: country?.code,
     pageSize: PAGE_SIZES.COUNTRY,
     initialIncludeOffline: false
   });
 
-  const meta = generateCountryMeta(countrySlug as CountrySlug, language, t, models.length || 100);
+  const { models, total, loading, loadingMore, error, hasMore, includeOffline, toggleIncludeOffline, sentinelRef } = providerData;
+  
+  const allModels = [...models.stripchat, ...models.chaturbate];
+  const meta = generateCountryMeta(countrySlug as CountrySlug, language, t, allModels.length || 100);
   useSEO(meta.title, meta.description, `/country/${countrySlug}`, language);
 
   const relatedCombos = useMemo(
-    () => featuredCategoryTagCombos.filter((entry) => models.some((model) => model.category === entry.category)).slice(0, 6),
-    [models]
+    () => featuredCategoryTagCombos.filter((entry) => allModels.some((model) => model.category === entry.category)).slice(0, 6),
+    [allModels]
   );
 
   if (!country) {
@@ -102,11 +98,43 @@ export default function Country() {
         </section>
       ) : null}
 
-      {error ? <p className="text-sm text-red-400">{error}</p> : null}
-      {!loading ? <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')}{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
-      <ModelGrid models={models} loading={loading} listName={`${country.name} Live Models`} />
-      {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
-      <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
+      {error.stripchat || error.chaturbate ? <p className="text-sm text-red-400">{error.stripchat || error.chaturbate}</p> : null}
+      {!loading.stripchat && !loading.chaturbate ? <p className="text-sm text-zinc-400">{total.stripchat + total.chaturbate} {t('common.modelsLoaded')}{(hasMore.stripchat || hasMore.chaturbate) ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
+      
+      {/* Banner section - distributed like VideoPage */}
+      <AllCrackRevenueBanners className="my-1 md:my-3" />
+      <MultiformatAd className="my-1 md:my-3" />
+      
+      {/* STRIPCHAT MODELS - REAL API */}
+      <section>
+        <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+          <span className="text-pink-500">●</span> Stripchat
+        </h3>
+        <ModelGrid models={models.stripchat} loading={loading.stripchat} listName={`${country.name} Stripchat Models`} />
+      </section>
+
+      {/* Banner between providers */}
+      <AllCrackRevenueBanners className="my-1 md:my-3" />
+      
+      {/* CHATURBATE MODELS - REAL API */}
+      <section>
+        <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+          <span className="text-green-500">●</span> Chaturbate
+        </h3>
+        <ModelGrid models={models.chaturbate} loading={loading.chaturbate} listName={`${country.name} Chaturbate Models`} />
+      </section>
+      
+      <Banner728x90 className="hidden md:block mx-auto my-2" />
+      <Banner300x250 className="md:hidden mx-auto my-2" />
+      <Banner728x90Second className="hidden md:block mx-auto my-2" />
+      <NativeAd className="my-1 md:my-3" />
+      <MultiformatV2 className="my-1 md:my-3" />
+      <RecommendationWidget className="my-1 md:my-3" />
+      
+      {(hasMore.stripchat || hasMore.chaturbate) ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
+      <InfiniteLoader loading={loadingMore.stripchat || loadingMore.chaturbate} hasMore={hasMore.stripchat || hasMore.chaturbate} />
+      
+      <InstantMessage className="my-1 md:my-3" />
       
       <FAQSection country={countrySlug as CountrySlug} language={language} />
       
