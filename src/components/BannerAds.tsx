@@ -319,3 +319,57 @@ export function InstantMessage({ className = '' }: { className?: string }) {
     </div>
   );
 }
+
+// CrackRevenue Banner - Fisso (senza rotazione)
+export function CrackRevenueAd({ className = '', bannerId }: { className?: string, bannerId?: string }) {
+  const [banner, setBanner] = useState(null);
+
+  useEffect(() => {
+    import('../lib/crackrevenueBanners').then((module) => {
+      const banners = module.crackrevenueBanners;
+      const selected = bannerId 
+        ? banners.find(b => b.id === bannerId) 
+        : banners[0];
+      setBanner(selected);
+    });
+  }, [bannerId]);
+
+  if (!banner) return null;
+
+  return (
+    <div 
+      className={`${className} w-full flex justify-center`}
+      onClick={() => {
+        import('../lib/crackrevenueBanners').then((module) => {
+          module.recordCrackRevenueBannerClick(banner.id);
+        });
+      }}
+    >
+      <a
+        href={banner.link}
+        target="_blank"
+        rel="noopener noreferrer sponsored"
+        className="block overflow-hidden"
+        style={{
+          display: 'block',
+          width: '100%',
+          maxWidth: '1280px',
+          height: 'auto'
+        }}
+      >
+        <img
+          src={banner.image}
+          alt="CrackRevenue"
+          width={banner.width}
+          height={banner.height}
+          loading="lazy"
+          decoding="async"
+          className="w-full h-auto"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+          }}
+        />
+      </a>
+    </div>
+  );
+}

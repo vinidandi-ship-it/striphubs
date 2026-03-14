@@ -9,7 +9,8 @@ import {
   RecommendationWidget,
   MultiformatAd,
   MultiformatV2,
-  InstantMessage
+  InstantMessage,
+  CrackRevenueAd
 } from '../components/BannerAds';
 import { useI18n } from '../i18n';
 import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
@@ -207,6 +208,7 @@ export default function VideoPage() {
         
         <Banner728x90 className="hidden md:block mx-auto" />
         <Banner300x250 className="md:hidden mx-auto" />
+        <CrackRevenueAd className="my-2" />
         
         <NativeAdSlot cardIndex={1} />
         
