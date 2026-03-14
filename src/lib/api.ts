@@ -44,9 +44,52 @@ const requestChaturbateModels = async (endpoint: string, params: {
   
   const data = await response.json();
   
-  const rooms: ChaturbateRoom[] = data.rooms || [];
+  let rooms: any[] = data.rooms || [];
   
-  const models: Model[] = rooms.map((room: any) => ({
+  // Filter by category/gender if provided
+  if (params?.category) {
+    const categoryMap: Record<string, string[]> = {
+      'teen': ['f', 'm'],
+      'milf': ['m', 'f'],
+      'asian': ['f', 'm'],
+      'latina': ['f', 'm'],
+      'blonde': ['f', 'm'],
+      'brunette': ['f', 'm'],
+      'ebony': ['f', 'm'],
+      'bbw': ['f'],
+      'couple': ['c'],
+      'trans': ['t'],
+      'gay': ['m'],
+      'lesbian': ['f']
+    };
+    const genders = categoryMap[params.category.toLowerCase()];
+    if (genders) {
+      rooms = rooms.filter((room: any) => genders.includes(room.gender?.toLowerCase()));
+    }
+  }
+  
+  // Filter by tag if provided
+  if (params?.tag) {
+    rooms = rooms.filter((room: any) => 
+      room.tags?.some((t: string) => t.toLowerCase().includes(params.tag!.toLowerCase()))
+    );
+  }
+  
+  // Filter by country if provided
+  if (params?.country) {
+    rooms = rooms.filter((room: any) => 
+      room.country?.toUpperCase() === params.country!.toUpperCase()
+    );
+  }
+  
+  // Filter by search if provided
+  if (params?.search) {
+    rooms = rooms.filter((room: any) => 
+      room.room?.toLowerCase().includes(params.search!.toLowerCase())
+    );
+  }
+  
+  const models: Model[] = rooms.slice(0, params?.limit || 50).map((room: any) => ({
     username: room.room || room.username,
     thumbnail: room.image_url || room.preview_url || '',
     viewers: room.viewers || 0,
@@ -61,8 +104,9 @@ const requestChaturbateModels = async (endpoint: string, params: {
   return {
     models,
     total: models.length,
-    hasMore: models.length >= (params.limit || 50)
+    hasMore: rooms.length > (params?.limit || 50)
   };
+};
 };
 
 const request = async <T>(path: string): Promise<T> => {

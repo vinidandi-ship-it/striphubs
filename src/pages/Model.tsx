@@ -6,7 +6,8 @@ import ModelGrid from '../components/ModelGrid';
 import { AllCrackRevenueBanners, Banner728x90, Banner300x250, Banner728x90Second, NativeAd, MultiformatAd, MultiformatV2, InstantMessage } from '../components/BannerAds';
 import { useI18n } from '../i18n';
 import { api } from '../lib/api';
-import { Model as LiveModel, AFFILIATE_ID } from '../lib/models';
+import { Model as LiveModel } from '../lib/models';
+import { AFFILIATE_PROVIDERS } from '../lib/affiliateProviders';
 import { generateModelMeta } from '../lib/metaTags';
 import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
 
@@ -46,7 +47,10 @@ export default function ModelPage() {
             apiModel.popularSnapshotUrl ||
             '';
           
-          const { url: affiliateUrl, provider: affiliateProvider } = getAffiliateUrlWithProvider(apiModel.username);
+          const { url: affiliateUrl, provider: affiliateProvider } = {
+            url: AFFILIATE_PROVIDERS[validProvider].affiliateUrl(apiModel.username),
+            provider: validProvider
+          };
           
           const mappedModel: LiveModel = {
             username: apiModel.username,
