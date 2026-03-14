@@ -79,11 +79,12 @@ export function useModelsByProvider({
       });
 
       const newModels = (data.models || []).map(m => {
-        const model = { ...m } as Model;
-        // Force provider to be set correctly based on which API was called
-        (model as any).provider = provider;
-        console.log(`[useModelsByProvider] Setting provider=${provider} for model:`, model.username);
-        return model;
+        // Create new object with explicit provider
+        const modelWithProvider = {
+          ...m,
+          provider: provider as 'stripchat' | 'chaturbate'
+        } as Model;
+        return modelWithProvider;
       });
       
       if (isLoadMore) {

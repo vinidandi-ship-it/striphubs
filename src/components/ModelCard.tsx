@@ -75,13 +75,11 @@ const getViewersTrend = (viewers: number, username: string): 'rising' | 'stable'
 
 export default function ModelCard({ model }: { model: Model }) {
   const countryFlag = getCountryFlag(model.country);
-  const clickProvider = model.provider || 'stripchat';
   
-  console.log('[ModelCard] Rendering:', model.username, 'provider:', model.provider, 'clickProvider:', clickProvider);
-  
-  const affiliateConfig = AFFILIATE_PROVIDERS[clickProvider];
+  // Get provider - if undefined, default to stripchat
+  const provider = model.provider === 'chaturbate' ? 'chaturbate' : 'stripchat';
+  const affiliateConfig = AFFILIATE_PROVIDERS[provider];
   const clickUrl = model.clickUrl || affiliateConfig.affiliateUrl(model.username);
-  const modelLinkProvider = clickProvider;
   
   const onlineMinutes = model.isLive ? getOnlineMinutes(model.username) : 0;
   const viewersTrend = model.isLive ? getViewersTrend(model.viewers, model.username) : 'stable';
@@ -90,7 +88,7 @@ export default function ModelCard({ model }: { model: Model }) {
   
   return (
     <article className="content-visibility-card group relative overflow-hidden sh-card transition-all hover:-translate-y-1">
-      <Link to={`/model/${modelLinkProvider}/${encodeURIComponent(model.username)}`} className="block focus:outline-none focus:ring-2 focus:ring-accent-primary" aria-label={`Open ${model.username} profile`}>
+      <Link to={`/model/${provider}/${encodeURIComponent(model.username)}`} className="block focus:outline-none focus:ring-2 focus:ring-accent-primary" aria-label={`Open ${model.username} profile`}>
         <div className="relative">
           <div className="aspect-[3/4] w-full overflow-hidden rounded-t-2xl bg-zinc-800">
             <img
@@ -119,11 +117,11 @@ export default function ModelCard({ model }: { model: Model }) {
           </span>
           <span
             className={`absolute left-2 top-8 sm:top-9 flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold ${
-              clickProvider === 'chaturbate' ? 'bg-green-600 text-white' : 'bg-pink-600 text-white'
-            }`}
-            title={clickProvider === 'chaturbate' ? 'Chaturbate' : 'Stripchat'}
+              provider === 'chaturbate' ? 'bg-green-600 text-white' : 'bg-pink-600 text-white'
+            }
+            title={provider === 'chaturbate' ? 'Chaturbate' : 'Stripchat'}
           >
-            {clickProvider === 'chaturbate' ? 'CB' : 'SC'}
+            {provider === 'chaturbate' ? 'CB' : 'SC'}
           </span>
           {countryFlag && (
             <span
@@ -196,7 +194,7 @@ export default function ModelCard({ model }: { model: Model }) {
             category: model.category,
             country: model.country,
             viewers: model.viewers,
-            provider: clickProvider
+            provider: provider
           })}
         >
           <Icon name="play" size={14} />
