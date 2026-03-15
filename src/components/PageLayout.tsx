@@ -11,6 +11,7 @@ import {
   MultiformatV2,
   InstantMessage
 } from './BannerAds';
+import CrackRevenueBanner from './CrackRevenueBanner';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -20,8 +21,11 @@ export default function PageLayout({ children }: PageLayoutProps) {
   return (
     <>
       <div className="space-y-2 my-4">
-        <Banner728x90 className="hidden md:block mx-auto" />
-        <Banner300x250 className="md:hidden mx-auto" />
+        <div className="flex justify-center">
+          <Banner728x90 className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
         <RecommendationWidget className="my-2" />
         <NativeAd className="my-2" />
         <VideoBannerSlot />
@@ -30,8 +34,11 @@ export default function PageLayout({ children }: PageLayoutProps) {
       {children}
       
       <div className="space-y-2 my-4">
-        <Banner728x90Second className="hidden md:block mx-auto" />
-        <Banner300x250 className="md:hidden mx-auto" />
+        <div className="flex justify-center">
+          <Banner728x90Second className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
         <MultiformatAd className="my-2" />
         <MultiformatV2 className="my-2" />
         <InstantMessage className="my-2" />
