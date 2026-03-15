@@ -22,7 +22,7 @@ export default function Cookies() {
     <article className="prose prose-invert max-w-3xl">
       <Breadcrumbs items={[{ label: t('common.home'), to: '/' }, { label: t('footer.cookies') }]} />
       
-      <div className="space-y-2 my-4">
+      <div className="space-y-1 my-2">
         <div className="flex justify-center">
           <Banner728x90 className="hidden md:block" />
           <Banner300x250 className="md:hidden" />
@@ -35,7 +35,7 @@ export default function Cookies() {
       <p>{t('legal.cookiesContent2')}</p>
       <p>{t('legal.cookiesContent3')}</p>
       
-      <div className="space-y-2 my-4">
+      <div className="space-y-1 my-2">
         <div className="flex justify-center">
           <Banner728x90Second className="hidden md:block" />
           <Banner300x250 className="md:hidden" />

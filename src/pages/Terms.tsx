@@ -22,7 +22,7 @@ export default function Terms() {
     <article className="prose prose-invert max-w-3xl">
       <Breadcrumbs items={[{ label: t('common.home'), to: '/' }, { label: t('footer.terms') }]} />
       
-      <div className="space-y-2 my-4">
+      <div className="space-y-1 my-2">
         <div className="flex justify-center">
           <Banner728x90 className="hidden md:block" />
           <Banner300x250 className="md:hidden" />
@@ -35,7 +35,7 @@ export default function Terms() {
       <p>{t('legal.termsContent2')}</p>
       <p>{t('legal.termsContent3')}</p>
       
-      <div className="space-y-2 my-4">
+      <div className="space-y-1 my-2">
         <div className="flex justify-center">
           <Banner728x90Second className="hidden md:block" />
           <Banner300x250 className="md:hidden" />

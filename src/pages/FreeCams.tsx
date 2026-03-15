@@ -75,7 +75,7 @@ export default function FreeCams() {
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
         <ModelGrid models={models} loading={loading} listName="Free Cams" />
         
-        <div className="space-y-2 my-4">
+        <div className="space-y-1 my-2">
           <div className="flex justify-center">
             <Banner728x90 className="hidden md:block" />
             <Banner300x250 className="md:hidden" />
@@ -86,7 +86,7 @@ export default function FreeCams() {
         {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
         <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
         
-        <div className="space-y-2 my-4">
+        <div className="space-y-1 my-2">
           <div className="flex justify-center">
             <Banner728x90Second className="hidden md:block" />
             <Banner300x250 className="md:hidden" />

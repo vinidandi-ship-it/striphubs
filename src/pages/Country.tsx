@@ -118,7 +118,7 @@ export default function Country() {
       {!loading ? <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')}{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`${country.name} Live Models`} />
       
-      <div className="space-y-2 my-4">
+      <div className="space-y-1 my-2">
         <div className="flex justify-center">
           <Banner728x90 className="hidden md:block" />
           <Banner300x250 className="md:hidden" />
@@ -133,7 +133,7 @@ export default function Country() {
       
       <InternalLinks currentCountry={countrySlug as CountrySlug} language={language} />
       
-      <div className="space-y-2 my-4">
+      <div className="space-y-1 my-2">
         <div className="flex justify-center">
           <Banner728x90Second className="hidden md:block" />
           <Banner300x250 className="md:hidden" />

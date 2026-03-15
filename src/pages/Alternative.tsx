@@ -126,7 +126,7 @@ export default function Alternative() {
         <ModelGrid models={models} loading={loading} listName={alt.name} />
       </section>
 
-      <div className="space-y-2 my-4">
+      <div className="space-y-1 my-2">
         <div className="flex justify-center">
           <Banner728x90 className="hidden md:block" />
           <Banner300x250 className="md:hidden" />
@@ -150,7 +150,7 @@ export default function Alternative() {
           ))}
       </section>
 
-      <div className="space-y-2 my-4">
+      <div className="space-y-1 my-2">
         <div className="flex justify-center">
           <Banner728x90Second className="hidden md:block" />
           <Banner300x250 className="md:hidden" />
