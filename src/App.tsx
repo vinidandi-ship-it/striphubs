@@ -12,6 +12,7 @@ import { I18nProvider, useI18n } from './i18n';
 import { extractLocaleFromPath } from './i18n/routing';
 import { SITE_NAME, SITE_URL } from './lib/models';
 import { upsertJsonLd } from './lib/seo';
+import type { Language } from './i18n/translations';
 
 const Home = lazy(() => import('./pages/Home'));
 const Live = lazy(() => import('./pages/Live'));
@@ -55,7 +56,7 @@ function AppContent() {
   useEffect(() => {
     const { locale: routeLocale } = extractLocaleFromPath(location.pathname);
     if (routeLocale !== language) {
-      setLanguage(routeLocale);
+      setLanguage(routeLocale as Language);
     }
   }, [location.pathname, language, setLanguage]);
 

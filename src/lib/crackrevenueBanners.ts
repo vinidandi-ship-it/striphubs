@@ -20,6 +20,13 @@ export const crackrevenueBanners: CrackRevenueBanner[] = [
     link: 'https://t.datsk11.com/407726/7234?bo=2753,2754,2755,2756&aff_sub5=SF_006OG000004lmDN&aff_sub4=AT_0002',
     width: 300,
     height: 250
+  },
+  {
+    id: 'latexjoy-640x360',
+    image: 'https://www.imglnkx.com/6224/JM-645_DESIGN-22450_LATEXJOY_640360.jpg',
+    link: 'https://t.ajrkmx1.com/407726/6224/0?bo=2779,2778,2777,2776,2775&file_id=617408&po=6533&aff_sub5=SF_006OG000004lmDN&aff_sub4=AT_0002',
+    width: 640,
+    height: 360
   }
 ];
 

@@ -156,9 +156,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const totalRevenue = PROVIDERS.reduce((acc, provider) => acc + providerStats[provider].revenue, 0);
 
   const last24hStart = Date.now() - 24 * 60 * 60 * 1000;
-  const last24h = clicksStore.filter((c) => c.timestamp >= last24hStart).length;
-  const last1h = clicksStore.filter((c) => c.timestamp >= Date.now() - 60 * 60 * 1000).length;
-  const conversions24h = conversionEvents.filter((c) => c.timestamp >= last24hStart).length;
+  const last24h = clicksStore.filter((c) => c.timestamp !== undefined && c.timestamp >= last24hStart).length;
+  const last1h = clicksStore.filter((c) => c.timestamp !== undefined && c.timestamp >= Date.now() - 60 * 60 * 1000).length;
+  const conversions24h = conversionEvents.filter((c) => c.timestamp !== undefined && c.timestamp >= last24hStart).length;
 
   const now = Date.now();
   const firstBucket = toHourBucket(now - 23 * 3_600_000);
@@ -184,14 +184,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   for (const click of clicksStore) {
-    if (click.timestamp < firstBucket) continue;
+    if (click.timestamp === undefined || click.timestamp < firstBucket) continue;
     const ts = toHourBucket(click.timestamp);
     const bucket = buckets.get(ts);
     if (bucket) bucket.clicks++;
   }
 
   for (const conversion of conversionEvents) {
-    if (conversion.timestamp < firstBucket) continue;
+    if (conversion.timestamp === undefined || conversion.timestamp < firstBucket) continue;
     const ts = toHourBucket(conversion.timestamp);
     const bucket = buckets.get(ts);
     if (!bucket) continue;

@@ -1,6 +1,7 @@
 import { useI18n } from '../i18n';
 import { trackAffiliateClick } from '../lib/affiliateTracking';
 import { crackrevenueBanners } from '../lib/crackrevenueBanners';
+import type { ProviderId } from '../lib/affiliateProviders';
 
 interface ChaturbateListingProps {
   gender?: 'f' | 'm' | 't' | 'c' | 'x';
@@ -23,7 +24,7 @@ export default function ChaturbateListing({
   const chaturbateSrc = `https://chaturbate.com/in/?tour=x1Rd&campaign=fxmnz&track=default&c=${count}&p=${page}&gender=${gender}`;
   
   const track = (label: string, provider: string = 'chaturbate') => {
-    trackAffiliateClick(label, 'inline_cta', { provider });
+    trackAffiliateClick(label, 'inline_cta', { provider: provider as ProviderId });
   };
   
   return (
