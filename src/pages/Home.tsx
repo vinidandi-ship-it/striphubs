@@ -6,6 +6,19 @@ import InfiniteLoader from '../components/InfiniteLoader';
 import ModelCard from '../components/ModelCard';
 import ModelGrid from '../components/ModelGrid';
 import Icon from '../components/Icon';
+import VideoAdSlot, { VideoBannerSlot } from '../components/VideoAdSlot';
+import NativeAdSlot from '../components/NativeAdSlot';
+import { 
+  Banner728x90, 
+  Banner300x250, 
+  Banner728x90Second,
+  RecommendationWidget,
+  NativeAd,
+  MultiformatAd,
+  MultiformatV2,
+  InstantMessage
+} from '../components/BannerAds';
+import CrackRevenueBanner from '../components/CrackRevenueBanner';
 import { api } from '../lib/api';
 import { countries, findCountryBySlug } from '../lib/countries';
 import { Model } from '../lib/models';
@@ -313,51 +326,15 @@ export default function Home() {
         </div>
       </section>
 
-      {youngSpotlight.length ? (
-        <section className="space-y-3 rounded-3xl border border-border bg-panel p-5">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Spotlight</p>
-              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                <Icon name="spotlight" size={24} /> {t('home.spotlightTitle')}
-              </h2>
-              <p className="text-sm text-zinc-400">{t('home.spotlightSubtitle')}</p>
-            </div>
-            <Link to={buildLocalizedPath('/cam/teen', language)} className="text-sm font-semibold text-accent hover:text-accent/80">
-              {t('home.discoverTeen')} →
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
-            {youngSpotlight.map((model) => (
-              <ModelCard key={model.username} model={model} />
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      <section>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-            <Icon name="allLive" size={24} /> {t('home.allLiveCams')}
-          </h2>
-          <Link to={buildLocalizedPath('/live', language)} className="text-sm font-semibold text-accent hover:text-accent/80">{t('home.seeAll')} →</Link>
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90 className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
         </div>
-        {error ? <p className="mb-3 text-sm text-red-400">{error}</p> : null}
-        <ModelGrid models={prioritizedModels} loading={loading} listName="Home Live Models" />
-        {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
-        <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-2xl font-bold text-white flex items-center gap-2">
-          <Icon name="categories" size={24} /> {t('home.popularCategories')}
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {categories.map((category) => (
-            <CategoryCard key={category.slug} slug={category.slug} name={category.name} count={category.count} />
-          ))}
-        </div>
-      </section>
+        <CrackRevenueBanner />
+        <RecommendationWidget className="my-2" />
+        <NativeAd className="my-2" />
+      </div>
 
       <section className="space-y-4">
         <div className="flex items-center justify-between">
@@ -476,7 +453,25 @@ export default function Home() {
         </div>
       </section>
 
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90Second className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+        <MultiformatAd className="my-2" />
+        <InstantMessage className="my-2" />
+      </div>
+
       <FAQSection language={language} />
+
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90 className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
 
       <section className="py-8 text-center text-zinc-400">
         <p>{t('home.bestSite')}</p>
