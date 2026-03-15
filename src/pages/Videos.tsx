@@ -3,11 +3,15 @@ import { Link, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon';
 import NativeAdSlot from '../components/NativeAdSlot';
 import { 
+  Banner728x90, 
+  Banner300x250, 
+  Banner728x90Second,
   RecommendationWidget,
   MultiformatAd,
   MultiformatV2,
   InstantMessage
 } from '../components/BannerAds';
+import CrackRevenueBanner from '../components/CrackRevenueBanner';
 import { useI18n } from '../i18n';
 import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
 import { buildLocalizedPath } from '../i18n/routing';
@@ -185,6 +189,14 @@ export default function Videos() {
         ))}
       </div>
 
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90 className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
+
       <RecommendationWidget className="my-1" />
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
@@ -263,6 +275,14 @@ export default function Videos() {
           Showing 50 of {filteredVideos.length} videos
         </p>
       )}
+
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90Second className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
     </div>
   );
 }

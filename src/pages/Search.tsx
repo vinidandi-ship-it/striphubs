@@ -1,3 +1,14 @@
+import { 
+  Banner728x90, 
+  Banner300x250, 
+  Banner728x90Second,
+  RecommendationWidget,
+  NativeAd,
+  MultiformatAd,
+  MultiformatV2,
+  InstantMessage
+} from '../components/BannerAds';
+import CrackRevenueBanner from '../components/CrackRevenueBanner';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -78,8 +89,25 @@ export default function Search() {
       <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')} {t('search.resultsFor')} "{query || 'all'}"{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p>
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       <ModelGrid models={models} loading={loading} listName={t('search.title')} />
+      
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90 className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
+      
       {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
       <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
+      
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90Second className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
     </div>
   );
 }

@@ -1,3 +1,14 @@
+import { 
+  Banner728x90, 
+  Banner300x250, 
+  Banner728x90Second,
+  RecommendationWidget,
+  NativeAd,
+  MultiformatAd,
+  MultiformatV2,
+  InstantMessage
+} from '../components/BannerAds';
+import CrackRevenueBanner from '../components/CrackRevenueBanner';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -109,6 +120,14 @@ export default function BestOf() {
       <section>
         <ModelGrid models={models} loading={loading} listName={`Best ${category} ${tf.label}`} />
       </section>
+
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90 className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
     </div>
   );
 }

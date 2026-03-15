@@ -1,3 +1,14 @@
+import { 
+  Banner728x90, 
+  Banner300x250, 
+  Banner728x90Second,
+  RecommendationWidget,
+  NativeAd,
+  MultiformatAd,
+  MultiformatV2,
+  InstantMessage
+} from '../components/BannerAds';
+import CrackRevenueBanner from '../components/CrackRevenueBanner';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../i18n';
@@ -99,6 +110,14 @@ export default function Blog() {
           </Link>
         ))}
       </div>
+
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90 className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
       
       {hasMore && (
         <div className="text-center mt-8">
@@ -111,6 +130,14 @@ export default function Blog() {
           </button>
         </div>
       )}
+
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90Second className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
     </div>
   );
 }

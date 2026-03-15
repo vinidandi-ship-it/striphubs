@@ -1,3 +1,14 @@
+import { 
+  Banner728x90, 
+  Banner300x250, 
+  Banner728x90Second,
+  RecommendationWidget,
+  NativeAd,
+  MultiformatAd,
+  MultiformatV2,
+  InstantMessage
+} from '../components/BannerAds';
+import CrackRevenueBanner from '../components/CrackRevenueBanner';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -102,6 +113,14 @@ export default function CountryCombination() {
         <ModelGrid models={models} loading={loading} listName={title} />
       </section>
 
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90 className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
+
       <nav className="flex flex-wrap gap-2">
         {Object.keys(TAG_MAP).slice(0, 12).map(t => (
           <Link
@@ -113,10 +132,18 @@ export default function CountryCombination() {
                 : 'bg-zinc-800 text-zinc-400 hover:text-white'
             }`}
           >
-            {t}
-          </Link>
-        ))}
-      </nav>
+          {t}
+        </Link>
+      ))}
+    </nav>
+
+    <div className="space-y-2 my-4">
+      <div className="flex justify-center">
+        <Banner728x90Second className="hidden md:block" />
+        <Banner300x250 className="md:hidden" />
+      </div>
+      <CrackRevenueBanner />
     </div>
+  </div>
   );
 }

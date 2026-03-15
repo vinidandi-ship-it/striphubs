@@ -1,3 +1,14 @@
+import { 
+  Banner728x90, 
+  Banner300x250, 
+  Banner728x90Second,
+  RecommendationWidget,
+  NativeAd,
+  MultiformatAd,
+  MultiformatV2,
+  InstantMessage
+} from '../components/BannerAds';
+import CrackRevenueBanner from '../components/CrackRevenueBanner';
 import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -106,12 +117,29 @@ export default function Country() {
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       {!loading ? <p className="text-sm text-zinc-400">{models.length} {t('common.modelsLoaded')}{hasMore ? ` ${t('common.moreAvailable')}` : ''}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`${country.name} Live Models`} />
+      
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90 className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
+      
       {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
       <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
       
       <FAQSection country={countrySlug as CountrySlug} language={language} />
       
       <InternalLinks currentCountry={countrySlug as CountrySlug} language={language} />
+      
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90Second className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
     </div>
   );
 }

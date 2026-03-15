@@ -1,3 +1,14 @@
+import { 
+  Banner728x90, 
+  Banner300x250, 
+  Banner728x90Second,
+  RecommendationWidget,
+  NativeAd,
+  MultiformatAd,
+  MultiformatV2,
+  InstantMessage
+} from '../components/BannerAds';
+import CrackRevenueBanner from '../components/CrackRevenueBanner';
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -116,12 +127,28 @@ export default function Tag() {
       {error ? <p className="text-sm text-red-400">{error}</p> : null}
       <ModelGrid models={models} loading={loading} listName={`Tag ${tag} Models`} />
       
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90 className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
+      
       <FAQSection tag={tag} language={language} />
       
       <InternalLinks currentTag={tag} language={language} />
       
       {hasMore ? <div ref={sentinelRef} className="h-6" aria-hidden="true" /> : null}
       <InfiniteLoader loading={loadingMore} hasMore={hasMore} />
+      
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90Second className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
     </div>
   );
 }
