@@ -13,6 +13,13 @@ export const crackrevenueBanners: CrackRevenueBanner[] = [
     link: 'https://t.vlmai-3.com/407726/7477?aff_sub5=SF_006OG000004lmDN&aff_sub4=AT_0002',
     width: 1280,
     height: 300
+  },
+  {
+    id: 'dat-300x250',
+    image: 'https://www.imglnkx.com/9863/DAT-1173_DESIGN-27368_Banners_Holidays_BlackFriday-NSFW_300250.jpg',
+    link: 'https://t.datsk11.com/407726/7234?bo=2753,2754,2755,2756&aff_sub5=SF_006OG000004lmDN&aff_sub4=AT_0002',
+    width: 300,
+    height: 250
   }
 ];
 
