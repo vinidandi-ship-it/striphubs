@@ -3,6 +3,12 @@ import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import InternalLinks from '../components/InternalLinks';
 import ModelGrid from '../components/ModelGrid';
+import { 
+  Banner728x90, 
+  Banner300x250, 
+  Banner728x90Second
+} from '../components/BannerAds';
+import CrackRevenueBanner from '../components/CrackRevenueBanner';
 import { useI18n } from '../i18n';
 import { api } from '../lib/api';
 import { Model as LiveModel, AFFILIATE_ID } from '../lib/models';
@@ -169,10 +175,26 @@ export default function ModelPage() {
         </div>
       </section>
 
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90 className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
+
       <section>
         <h2 className="mb-4 text-2xl font-bold text-white">{t('model.relatedModels')}</h2>
         <ModelGrid models={related} loading={loading} listName={t('model.relatedModels')} />
       </section>
+
+      <div className="space-y-2 my-4">
+        <div className="flex justify-center">
+          <Banner728x90Second className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
       
       <InternalLinks language={language} />
     </div>
