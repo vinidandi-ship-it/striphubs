@@ -9,6 +9,7 @@ import {
   MultiformatV2,
   InstantMessage
 } from '../components/BannerAds';
+import CrackRevenueBanner from '../components/CrackRevenueBanner';
 import { useI18n } from '../i18n';
 import { useSEO, upsertJsonLd, removeJsonLd } from '../lib/seo';
 import { buildLocalizedPath } from '../i18n/routing';
@@ -210,6 +211,8 @@ export default function VideoPage() {
         <MultiformatV2 />
         
         <InstantMessage />
+
+        <CrackRevenueBanner />
         
         <div className="flex justify-center">
           <VideoBannerSlot />
