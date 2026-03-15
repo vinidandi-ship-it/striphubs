@@ -2,6 +2,12 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createCheckoutSession } from '../../lib/revenue/premium';
 import { useI18n } from '../../i18n';
+import { 
+  Banner728x90, 
+  Banner300x250, 
+  Banner728x90Second
+} from '../../components/BannerAds';
+import CrackRevenueBanner from '../../components/CrackRevenueBanner';
 
 export default function PremiumCheckout() {
   const [email, setEmail] = useState('');
@@ -38,6 +44,14 @@ export default function PremiumCheckout() {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">{t('premium.becomeVip')}</h1>
           <p className="text-text-secondary">{t('premium.unlockFeatures')}</p>
+        </div>
+
+        <div className="space-y-1 my-2">
+          <div className="flex justify-center">
+            <Banner728x90 className="hidden md:block" />
+            <Banner300x250 className="md:hidden" />
+          </div>
+          <CrackRevenueBanner />
         </div>
 
         <div className="bg-panel rounded-2xl border border-border p-6 mb-6">
@@ -117,6 +131,14 @@ export default function PremiumCheckout() {
         >
           ← {t('premium.backToHome')}
         </button>
+
+        <div className="space-y-1 my-2">
+          <div className="flex justify-center">
+            <Banner728x90Second className="hidden md:block" />
+            <Banner300x250 className="md:hidden" />
+          </div>
+          <CrackRevenueBanner />
+        </div>
       </div>
     </div>
   );

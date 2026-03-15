@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useI18n } from '../../i18n';
 import { buildLocalizedPath } from '../../i18n/routing';
+import { 
+  Banner728x90, 
+  Banner300x250, 
+  Banner728x90Second
+} from '../../components/BannerAds';
+import CrackRevenueBanner from '../../components/CrackRevenueBanner';
 
 export default function TagPopolari() {
   const { t, language } = useI18n();
@@ -20,6 +26,14 @@ export default function TagPopolari() {
           <span>{t('blog.listCategory')}</span>
         </div>
       </header>
+
+      <div className="space-y-1 my-2">
+        <div className="flex justify-center">
+          <Banner728x90 className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
+      </div>
 
       <div className="prose prose-invert max-w-none">
         <p className="text-lg text-zinc-300 mb-6">
@@ -64,6 +78,13 @@ export default function TagPopolari() {
             {t('tagPopolari.viewPopularTags')}
           </Link>
         </div>
+      </div>
+      <div className="space-y-1 my-2">
+        <div className="flex justify-center">
+          <Banner728x90Second className="hidden md:block" />
+          <Banner300x250 className="md:hidden" />
+        </div>
+        <CrackRevenueBanner />
       </div>
     </article>
   );

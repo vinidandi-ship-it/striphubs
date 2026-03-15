@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../../i18n';
+import { 
+  Banner728x90, 
+  Banner300x250, 
+  Banner728x90Second
+} from '../../components/BannerAds';
+import CrackRevenueBanner from '../../components/CrackRevenueBanner';
 
 export default function PremiumSuccess() {
   const [countdown, setCountdown] = useState(5);
@@ -38,6 +44,14 @@ export default function PremiumSuccess() {
           </p>
         </div>
 
+        <div className="space-y-1 my-2">
+          <div className="flex justify-center">
+            <Banner728x90 className="hidden md:block" />
+            <Banner300x250 className="md:hidden" />
+          </div>
+          <CrackRevenueBanner />
+        </div>
+
         <div className="bg-panel rounded-2xl border border-border p-6 mb-6">
           <h2 className="text-lg font-semibold text-white mb-4">{t('premium.featuresTitle')}</h2>
           <ul className="space-y-2 text-left">
@@ -52,6 +66,14 @@ export default function PremiumSuccess() {
         <p className="text-sm text-text-muted">
           {t('premium.redirecting', { countdown })}
         </p>
+
+        <div className="space-y-1 my-2">
+          <div className="flex justify-center">
+            <Banner728x90Second className="hidden md:block" />
+            <Banner300x250 className="md:hidden" />
+          </div>
+          <CrackRevenueBanner />
+        </div>
       </div>
     </div>
   );
