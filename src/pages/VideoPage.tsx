@@ -4,8 +4,6 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import VideoAdSlot, { VideoBannerSlot } from '../components/VideoAdSlot';
 import NativeAdSlot from '../components/NativeAdSlot';
 import { 
-  Banner728x90,
-  Banner300x250,
   RecommendationWidget,
   MultiformatAd,
   MultiformatV2,
@@ -204,9 +202,6 @@ export default function VideoPage() {
         <MultiformatAd />
         
         <VideoAdSlot />
-        
-        <Banner728x90 className="hidden md:block mx-auto" />
-        <Banner300x250 className="md:hidden mx-auto" />
         
         <NativeAdSlot cardIndex={1} />
         
